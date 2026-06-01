@@ -14,7 +14,7 @@
             background-color: #f7f9fa;
         }
 
-        /* ヘッダー：申請中であることを明記 */
+        /* ヘッダー */
         header {
             background-color: #ffffff;
             padding: 25px 40px;
@@ -123,6 +123,15 @@
             border-bottom: 2px solid #1a5276;
         }
 
+        main h3 {
+            font-size: 16px;
+            color: #2c3e50;
+            border-left: 4px solid #1a5276;
+            padding-left: 10px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
         /* 新着情報リスト */
         .news-list {
             list-style: none;
@@ -179,19 +188,54 @@
             color: #34495e;
         }
 
+        /* 事業内容内のプロジェクト紹介ボックス */
+        .project-card {
+            background-color: #fcfcfc;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        .project-card h4 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #1a5276;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .project-badge {
+            background-color: #1a5276;
+            color: #ffffff;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 2px;
+        }
+        .project-badge.summit {
+            background-color: #e67e22; /* サミットはオレンジ */
+        }
+
         /* ボタンスタイル */
         .btn-link {
             display: inline-block;
             background-color: #27ae60;
             color: #ffffff;
-            padding: 12px 25px;
+            padding: 10px 20px;
             text-decoration: none;
             border-radius: 4px;
             font-weight: bold;
             margin-top: 15px;
+            font-size: 13px;
+            transition: background-color 0.2s;
         }
         .btn-link:hover {
             background-color: #219653;
+        }
+        .btn-summit {
+            background-color: #2980b9; /* サミット用ブルーボタン */
+        }
+        .btn-summit:hover {
+            background-color: #2471a3;
         }
 
         footer {
@@ -230,7 +274,7 @@
         <ul class="side-menu">
             <li><button class="menu-btn active" onclick="switchTab('tab-news')">ホーム / 新着情報</button></li>
             <li><button class="menu-btn" onclick="switchTab('tab-about')">当法人について</button></li>
-            <li><button class="menu-btn" onclick="switchTab('tab-services')">事業内容</button></li>
+            <li><button class="menu-btn" onclick="switchTab('tab-services')">事業内容・プロジェクト</button></li>
             <li><button class="menu-btn" onclick="switchTab('tab-governance')">情報公開・設立公告</button></li>
         </ul>
     </aside>
@@ -276,16 +320,18 @@
 
         <div id="tab-services" class="content-panel">
             <h2>主な事業・活動内容</h2>
-            <p>当団体は設立認証後、若者たちの熱意と行動力を社会の確かな原動力へと変えていくため、以下の事業を推進してまいります。</p>
-            <ul>
-                <li style="margin-bottom: 15px;"><strong>学生団体「NSF PROJECTs」の運営・管理支援事業：</strong><br>全国の若者が主体となる防災復興プロジェクトの法的・財政的基盤を支え、安全かつ持続可能な活動環境を提供します。</li>
-                <li style="margin-bottom: 15px;"><strong>防災啓発・被災地支援事業：</strong><br>若者世代の視点を活かした防災ワークショップの開催、SNSを用いた情報発信、被災地への直接的な復興支援活動を行います。</li>
-            </ul>
-            <div style="margin-top: 30px; background: #f9f9f9; padding: 20px; border: 1px solid #e0e0e0; border-radius: 4px;">
-                <strong>【学生メンバーの活動実績・最新情報】</strong><br>
-                当団体が運営支援を行う、中高生・大学生たちの実際の活動については、公式プロジェクトサイトをご覧ください。
-                <br>
+            <p>当団体は、若者たちの主体的かつ創造的な防災・復興活動を全面的にサポートするため、以下の基盤事業を展開・支援してまいります。</p>
+            
+            <div class="project-card" style="border-left: 4px solid #27ae60;">
+                <h4><span class="project-badge">支援基盤事業</span>学生主体プロジェクト「NSF PROJECTs」</h4>
+                <p>全国の中高生・大学生が中心となり、能登半島地震をはじめとする被災地への復興支援（募金、現地ボランティア、郷土料理発信など）や、若者目線での柔軟な防災啓発・ネットワーク構築を行っています。当団体は、彼らの法的・財政的基盤を支え、安全な活動環境を提供しています。</p>
                 <a href="#" class="btn-link" target="_blank">NSF PROJECTs 公式サイト ➔</a>
+            </div>
+
+            <div class="project-card" style="border-left: 4px solid #e67e22;">
+                <h4><span class="project-badge summit">主催事業</span>全国若者防災サミット</h4>
+                <p>JAYRACが主催し、NSF PROJECTsが共催する、全国の若者防災リーダーが一堂に会する最重要サミットです。東日本大震災や能登半島地震などの教訓の継承、地域や世代を超えた防災ディスカッションを行い、若者発の「次世代防災提言」を社会へ発信しています。</p>
+                <a href="https://sites.google.com/view/bousaisumithp/home" class="btn-link btn-summit" target="_blank">全国若者防災サミット 公式サイト ➔</a>
             </div>
         </div>
 
@@ -294,7 +340,7 @@
             
             <div style="background-color: #fff3cd; border-left: 5px solid #ffc107; color: #856404; padding: 20px; margin-bottom: 25px; border-radius: 4px;">
                 <strong>【特定非営利活動法人設立認証の申請に関する公告】</strong><br>
-                当団体は、特定非営利活動促進法第10条第1項の規定に基づき、東京都知事に対して設立認証の申請を行っております。
+                当団体は、特定非営利活動促進法第10条第1項の規定に基づき、東京都知事に対して設立認証の申請を行っております。現在、同法第10条第2項の規定による縦覧（一般公開）期間中です。
             </div>
 
             <h3 style="margin-top:30px;">縦覧（申請）書類の公開</h3>
