@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>特定非営利活動法人 日本若者防災復興協会（JAYRAC）</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            line-height: 1.7;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f9fa;
+        }
+
+        header {
+            background-color: #ffffff;
+            padding: 25px 40px;
+            border-bottom: 3px solid #1a5276;
+        }
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #1a5276;
+            letter-spacing: 0.5px;
+        }
+        .subtitle {
+            font-size: 11px;
+            color: #7f8c8d;
+            margin-top: 3px;
+            font-weight: bold;
+        }
+
+        .main-wrapper {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 30px;
+        }
+
+        /* 左側サイドメニュー */
+        aside {
+            width: 260px;
+            flex-shrink: 0;
+        }
+        .side-menu {
+            background-color: #ffffff;
+            border: 1px solid #dcdde1;
+            border-top: 4px solid #1a5276;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .side-menu li {
+            border-bottom: 1px solid #dcdde1;
+        }
+        .side-menu li:last-child {
+            border-bottom: none;
+        }
+        .side-menu button {
+            display: block;
+            width: 100%;
+            padding: 15px 20px;
+            color: #2c3e50;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+            background-color: #ffffff;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .side-menu button:hover {
+            background-color: #f1f2f6;
+            color: #1a5276;
+            padding-left: 25px;
+        }
+        /* 選択されているメニューの見た目 */
+        .side-menu button.active {
+            background-color: #1a5276;
+            color: #ffffff;
+        }
+
+        /* 右側メインコンテンツ表示エリア */
+        main {
+            flex-grow: 1;
+            background-color: #ffffff;
+            padding: 35px;
+            border: 1px solid #dcdde1;
+            min-height: 450px;
+        }
+
+        /* 最初は非表示にするための設定 */
+        .content-panel {
+            display: none;
+        }
+        /* activeクラスがついたパネルだけを表示する */
+        .content-panel.active {
+            display: block;
+        }
+
+        main h2 {
+            font-size: 20px;
+            color: #1a5276;
+            margin-top: 0;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #1a5276;
+        }
+
+        /* 新着情報リストのスタイル */
+        .news-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .news-list li {
+            padding: 15px 10px;
+            border-bottom: 1px dashed #dcdde1;
+            display: flex;
+            align-items: baseline;
+        }
+        .news-list li:hover {
+            background-color: #f9f9f9;
+        }
+        .news-date {
+            font-family: Georgia, serif;
+            font-weight: bold;
+            color: #7f8c8d;
+            width: 110px;
+            flex-shrink: 0;
+            font-size: 14px;
+        }
+        .news-label {
+            background-color: #e67e22;
+            color: #ffffff;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 3px;
+            margin-right: 15px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .news-title {
+            color: #333333;
+            font-size: 15px;
+        }
+
+        /* テーブルスタイル */
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .info-table th, .info-table td {
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+            font-size: 14px;
+        }
+        .info-table th {
+            width: 25%;
+            background-color: #fcfcfc;
+            color: #34495e;
+        }
+
+        /* ボタンスタイル */
+        .btn-link {
+            display: inline-block;
+            background-color: #27ae60;
+            color: #ffffff;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        .btn-link:hover {
+            background-color: #219653;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            background-color: #2c3e50;
+            color: #ffffff;
+            font-size: 12px;
+            margin-top: 60px;
+            border-top: 5px solid #1a5276;
+        }
+
+        @media (max-width: 768px) {
+            .main-wrapper {
+                flex-direction: column;
+                margin: 15px auto;
+            }
+            aside { width: 100%; }
+            main { padding: 20px; }
+            .news-list li { flex-direction: column; gap: 5px; }
+            .news-date { width: auto; }
+            .info-table th, .info-table td { display: block; width: 100%; box-sizing: border-box; }
+            .info-table th { border-bottom: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <h1>特定非営利活動法人 日本若者防災復興協会</h1>
+        <div class="subtitle">JAYRAC (Japan Youth Association for Relief and Access of Citizens)</div>
+    </div>
+</header>
+
+<div class="main-wrapper">
+
+    <aside>
+        <ul class="side-menu">
+            <li><button class="menu-btn active" onclick="switchTab('tab-news')">ホーム / 新着情報</button></li>
+            <li><button class="menu-btn" onclick="switchTab('tab-about')">当法人について</button></li>
+            <li><button class="menu-btn" onclick="switchTab('tab-services')">事業内容</button></li>
+            <li><button class="menu-btn" onclick="switchTab('tab-governance')">情報公開・決算公告</button></li>
+        </ul>
+    </aside>
+
+    <main>
+        
+        <div id="tab-news" class="content-panel active">
+            <h2>新着情報・お知らせ一覧</h2>
+            <ul class="news-list">
+                <li>
+                    <span class="news-date">2026.04.10</span>
+                    <span class="news-label">重要</span>
+                    <span class="news-title">東京都へ特定非営利活動法人（NPO法人）の設立認証申請を行いました。</span>
+                </li>
+            </ul>
+        </div>
+
+        <div id="tab-about" class="content-panel">
+            <h2>当法人について</h2>
+            <h3>設立趣旨</h3>
+            <p>災害大国と呼ばれる日本において、これからの未来を担う世代が「防災・減災」を自分ごととして捉え、備えることは、持続可能な社会を築くための最優先課題です。</p>
+            <p>当法人は、若者が主体となって防災、減災及び災害復興に関わる活動、学習及び発信を行う環境を整え、地域及び世代を超えた協働を促進することにより、安全で持続可能な社会の形成に寄与することを目的として設立されました。</p>
+            
+            <h3 style="margin-top:30px;">法人概要</h3>
+            <table class="info-table">
+                <tr>
+                    <th>法人名称</th>
+                    <td>特定非営利活動法人 日本若者防災復興協会</td>
+                </tr>
+                <tr>
+                    <th>代表者</th>
+                    <td>代表理事　久保 壮太郎</td>
+                </tr>
+                <tr>
+                    <th>事務所所在地</th>
+                    <td>東京都文京区小日向四丁目４番６―６０３号</td>
+                </tr>
+                <tr>
+                    <th>活動分野</th>
+                    <td>社会教育の推進 / まちづくりの推進 / 災害救援 / 人権の擁護又は平和の推進 / NPO支援</td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="tab-services" class="content-panel">
+            <h2>主な事業・活動内容</h2>
+            <ul>
+                <li style="margin-bottom: 15px;"><strong>学生団体「NSF PROJECTs」の運営・管理支援事業：</strong><br>全国の若者が主体となる防災復興プロジェクトの法的・財政的基盤を支え、安全かつ持続可能な活動環境を提供します。</li>
+                <li style="margin-bottom: 15px;"><strong>防災啓発・被災地支援事業：</strong><br>若者世代の視点を活かした防災ワークショップの開催、SNSを用いた情報発信、被災地への直接的な復興支援活動を行います。</li>
+            </ul>
+            <div style="margin-top: 30px; background: #f9f9f9; padding: 20px; border: 1px solid #e0e0e0; border-radius: 4px;">
+                <strong>【学生メンバーの活動実績・最新情報】</strong><br>
+                当法人が運営支援を行う、中高生・大学生たちの実際の活動については、公式プロジェクトサイトをご覧ください。
+                <br>
+                <a href="#" class="btn-link" target="_blank">NSF PROJECTs 公式サイト ➔</a>
+            </div>
+        </div>
+
+        <div id="tab-governance" class="content-panel">
+            <h2>情報公開・決算公告</h2>
+            <p>特定非営利活動促進法に基づき、事業報告書および財務諸表等の情報公開を行います。</p>
+            <h3 style="margin-top:20px;">提出書類・規約</h3>
+            <ul>
+                <li><a href="https://www.seikatubunka1.metro.tokyo.lg.jp/houjin/npo_houjin/list/ledger/0014987/14987-SNS-I1776126482338.pdf" target="_blank" rel="noopener">設立趣旨書（PDF）</a></li>
+            </ul>
+            <p style="color: #7f8c8d; background-color: #f9f9f9; padding: 15px; border-left: 3px solid #ccc; font-size: 13px; margin-top:20px;">
+                ※当法人は現在設立初年度につき、過去の決算書類はありません。最初の決算公告（令和8年度分の貸借対照表の掲載）は、第1期事業年度終了後の令和9年6月頃を予定しております。
+            </p>
+        </div>
+
+    </main>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 特定非営利活動法人 日本若者防災復興協会（JAYRAC） All Rights Reserved.</p>
+</footer>
+
+<script>
+    function switchTab(tabId) {
+        // すべてのコンテンツパネルを一旦非表示にする
+        const panels = document.querySelectorAll('.content-panel');
+        panels.forEach(panel => panel.classList.remove('active'));
+
+        // すべてのメニューボタンの選択状態（青色）を解除する
+        const buttons = document.querySelectorAll('.menu-btn');
+        buttons.forEach(button => button.classList.remove('active'));
+
+        // クリックされた選択肢のパネルとボタンだけを表示・強調する
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+</script>
+
+</body>
+</html>
