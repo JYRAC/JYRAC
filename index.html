@@ -16,8 +16,7 @@
             --navy-light: #0a3d6d;
             --accent: #e67e22;
             --accent-light: #ff9f43;
-            --cyber-bg: #09131a;
-            --card-bg: rgba(255, 255, 255, 0.92);
+            --panel-bg: rgba(255, 255, 255, 0.88);
         }
 
         body {
@@ -26,13 +25,14 @@
             color: #2c3e50;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #d2f1f3 0%, #ffffff 40%, #e8f6f7 100%);
+            background: linear-gradient(135deg, #e3f6f7 0%, #ffffff 50%, #f4fafb 100%);
             background-attachment: fixed;
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
         }
 
+        /* スマートシティの防災グリッドをイメージした極薄の背景線 */
         body::before {
             content: '';
             position: fixed;
@@ -40,77 +40,105 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(rgba(0, 154, 166, 0.03) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(0, 154, 166, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+            background: linear-gradient(rgba(0, 154, 166, 0.02) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0, 154, 166, 0.02) 1px, transparent 1px);
+            background-size: 60px 60px;
             pointer-events: none;
             z-index: -1;
         }
 
-        /* ヘッダー */
+        /* 空間に漂う無重力デジタル・クリスタル（装飾） */
+        .crystal-field {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .crystal {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 35px solid rgba(0, 154, 166, 0.12);
+            filter: drop-shadow(0 4px 10px rgba(0, 210, 224, 0.2));
+        }
+        .crystal::after {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 35px;
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 35px solid rgba(0, 43, 84, 0.08);
+        }
+        .cr-1 { top: 15%; left: 3%; transform: scale(0.7); animation: cryFloat1 18s ease-in-out infinite alternate, cryRotate 30s linear infinite; }
+        .cr-2 { top: 75%; left: 6%; transform: scale(1.1); animation: cryFloat2 22s ease-in-out infinite alternate, cryRotate 40s linear infinite; }
+        .cr-3 { top: 35%; right: 4%; transform: scale(1.4); border-bottom-color: rgba(230, 126, 34, 0.08); animation: cryFloat3 15s ease-in-out infinite alternate, cryRotate 25s linear infinite; }
+        .cr-4 { top: 80%; right: 8%; transform: scale(0.8); animation: cryFloat1 20s ease-in-out infinite alternate, cryRotate 35s linear infinite; }
+
+        @keyframes cryFloat1 { 0% { transform: translateY(0) scale(0.7); } 100% { transform: translateY(-30px) scale(0.7); } }
+        @keyframes cryFloat2 { 0% { transform: translateY(0) scale(1.1); } 100% { transform: translateY(40px) scale(1.1); } }
+        @keyframes cryFloat3 { 0% { transform: translateX(0) scale(1.4); } 100% { transform: translateX(-25px) translateY(-20px) scale(1.4); } }
+        @keyframes cryRotate { 0% { filter: rotate(0deg); } 100% { filter: rotate(360deg); } }
+
+        /* ヘッダー：ロゴとタイトルのシンプル構成に変更 */
         header {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            padding: 20px 40px;
-            border-bottom: 2px solid rgba(0, 154, 166, 0.3);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 24px 40px;
+            border-bottom: 1px solid rgba(0, 154, 166, 0.2);
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 4px 30px rgba(0, 43, 84, 0.05);
         }
         .header-container {
             max-width: 1200px;
             margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
         }
-        header h1 {
+        .brand-zone h1 {
             margin: 0;
-            font-size: 24px;
+            font-size: 22px;
             color: var(--navy);
-            letter-spacing: 1px;
             font-weight: 800;
             display: flex;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
         }
-        header h1 span {
-            font-size: 11px;
+        .brand-zone h1 span {
+            font-size: 10px;
             color: #ffffff;
             font-weight: 700;
             background: linear-gradient(135deg, var(--accent) 0%, #d35400 100%);
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 20px;
-            letter-spacing: 0;
-            box-shadow: 0 0 10px rgba(230, 126, 34, 0.4);
-            animation: pulse 2s infinite;
         }
         .subtitle {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--primary-dark);
             font-weight: 700;
             letter-spacing: 1px;
-            text-transform: uppercase;
+            margin-top: 2px;
         }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(230, 126, 34, 0.4); }
-            70% { box-shadow: 0 0 0 6px rgba(230, 126, 34, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(230, 126, 34, 0); }
-        }
-
-        .main-wrapper {
+        /* メインラッパー：メニューを左側に戻した2カラムダッシュボード */
+        .dashboard-container {
             max-width: 1200px;
             margin: 40px auto;
             padding: 0 20px;
             display: flex;
             gap: 40px;
+            position: relative;
+            z-index: 10;
         }
 
-        /* 左側サイドメニュー */
+        /* 左側サイドメニュー（元に戻した配置 ＋ 浮遊ギア風デザイン） */
         aside {
             width: 280px;
             flex-shrink: 0;
@@ -123,9 +151,6 @@
             flex-direction: column;
             gap: 14px;
         }
-        .side-menu li {
-            border: none;
-        }
         .side-menu button {
             display: block;
             width: 100%;
@@ -134,22 +159,28 @@
             text-decoration: none;
             font-weight: 700;
             font-size: 14px;
-            background: var(--card-bg);
+            background: var(--panel-bg);
             border: 1px solid rgba(0, 154, 166, 0.2);
             border-radius: 14px;
             text-align: left;
             cursor: pointer;
             position: relative;
             overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             box-shadow: 0 4px 15px rgba(0, 43, 84, 0.02);
-            /* 💡 ボタンごとに少し時間をずらしてフワフワ浮遊させる */
-            animation: floatAnimation 6s ease-in-out infinite;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            
+            /* メニューパーツもそれぞれフワフワ浮遊させる */
+            animation: floatMenu 6s ease-in-out infinite alternate;
         }
         .side-menu li:nth-child(1) button { animation-delay: 0s; }
-        .side-menu li:nth-child(2) button { animation-delay: 0.5s; }
-        .side-menu li:nth-child(3) button { animation-delay: 1s; }
-        .side-menu li:nth-child(4) button { animation-delay: 1.5s; }
+        .side-menu li:nth-child(2) button { animation-delay: 0.4s; }
+        .side-menu li:nth-child(3) button { animation-delay: 0.8s; }
+        .side-menu li:nth-child(4) button { animation-delay: 1.2s; }
+
+        @keyframes floatMenu {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-6px); }
+        }
 
         .side-menu button::before {
             content: '';
@@ -165,10 +196,10 @@
         .side-menu button:hover {
             color: #ffffff;
             border-color: var(--primary-light);
-            /* ホバー時は浮遊アニメーションを一時停止してターゲットロック状態に */
             animation-play-state: paused;
-            transform: scale(1.04) translateX(4px);
-            box-shadow: 0 8px 25px rgba(0, 210, 224, 0.3);
+            transform: scale(1.03) translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 210, 224, 0.25);
+            padding-left: 30px;
         }
         .side-menu button:hover::before {
             width: 100%;
@@ -178,42 +209,40 @@
             color: #ffffff;
             border: 1px solid var(--primary-light);
             box-shadow: 0 10px 30px rgba(0, 43, 84, 0.25);
-            animation-play-state: paused; /* アクティブ時も固定 */
-        }
-        .side-menu button.active::after {
-            content: '';
-            position: absolute;
-            right: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 6px;
-            height: 6px;
-            background-color: var(--primary-light);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--primary-light);
+            animation-play-state: paused;
         }
 
-        /* 右側メイン表示エリア */
+        /* 右側メインコクピットエリア */
         main {
             flex-grow: 1;
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             padding: 50px;
-            border: 1px solid rgba(0, 154, 166, 0.15);
-            min-height: 520px;
-            box-shadow: 0 15px 45px rgba(0, 43, 84, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-top: 4px solid var(--primary);
+            min-height: 500px;
+            box-shadow: 0 20px 50px rgba(0, 43, 84, 0.04);
             border-radius: 24px;
             position: relative;
+            
+            /* パネル全体が心地よくフワフワ浮くエフェクト */
+            animation: mainFloat 8s ease-in-out infinite alternate;
         }
 
+        @keyframes mainFloat {
+            0% { transform: translateY(0px); box-shadow: 0 20px 50px rgba(0, 43, 84, 0.04); }
+            100% { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0, 154, 166, 0.07); }
+        }
+
+        /* コーナーのテック装飾 */
         main::before {
             content: '';
             position: absolute;
-            top: 15px;
-            right: 15px;
-            width: 20px;
-            height: 20px;
+            top: 16px;
+            right: 16px;
+            width: 16px;
+            height: 16px;
             border-top: 2px solid var(--primary-light);
             border-right: 2px solid var(--primary-light);
             pointer-events: none;
@@ -221,10 +250,10 @@
 
         .content-panel {
             display: none;
-            animation: cyberFade 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+            animation: panelFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        @keyframes cyberFade {
-            from { opacity: 0; transform: translateY(15px); filter: blur(4px); }
+        @keyframes panelFade {
+            from { opacity: 0; transform: translateY(10px); filter: blur(3px); }
             to { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
         .content-panel.active {
@@ -232,34 +261,32 @@
         }
 
         main h2 {
-            font-size: 26px;
+            font-size: 24px;
             color: var(--navy);
             margin-top: 0;
-            margin-bottom: 40px;
-            padding-bottom: 18px;
-            border-bottom: 2px solid rgba(0, 154, 166, 0.15);
+            margin-bottom: 35px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 154, 166, 0.15);
             position: relative;
             font-weight: 800;
-            letter-spacing: 0.5px;
         }
         main h2::after {
             content: '';
             position: absolute;
-            bottom: -2px;
+            bottom: -1px;
             left: 0;
-            width: 100px;
-            height: 4px;
+            width: 80px;
+            height: 3px;
             background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
-            box-shadow: 0 0 8px var(--primary-light);
             border-radius: 2px;
         }
 
         main h3 {
-            font-size: 19px;
+            font-size: 18px;
             color: var(--navy);
-            padding-left: 16px;
-            margin-top: 50px;
-            margin-bottom: 22px;
+            padding-left: 14px;
+            margin-top: 45px;
+            margin-bottom: 20px;
             font-weight: 800;
             position: relative;
         }
@@ -267,23 +294,22 @@
             content: '';
             position: absolute;
             left: 0;
-            top: 2px;
-            bottom: 2px;
-            width: 5px;
-            background: linear-gradient(to bottom, var(--primary-light), var(--navy));
-            border-radius: 4px;
-            box-shadow: 0 0 8px rgba(0, 210, 224, 0.5);
+            top: 4px;
+            bottom: 4px;
+            width: 4px;
+            background: var(--primary);
+            border-radius: 2px;
         }
 
-        /* 新着情報 */
+        /* 新着情報リスト */
         .news-list {
             list-style: none;
             padding: 0;
             margin: 0;
         }
         .news-list li {
-            padding: 22px 20px;
-            border-bottom: 1px solid rgba(0, 154, 166, 0.1);
+            padding: 20px;
+            border-bottom: 1px solid rgba(0, 154, 166, 0.08);
             display: flex;
             align-items: center;
             transition: all 0.3s ease;
@@ -291,29 +317,26 @@
             margin-bottom: 4px;
         }
         .news-list li:hover {
-            background-color: rgba(0, 154, 166, 0.05);
+            background-color: rgba(255, 255, 255, 0.8);
             transform: translateX(4px);
-            box-shadow: inset 4px 0 0 var(--primary-light);
+            box-shadow: 0 4px 15px rgba(0, 43, 84, 0.02);
         }
         .news-date {
-            font-family: -apple-system, sans-serif;
             font-weight: 800;
             color: var(--primary);
             width: 120px;
             flex-shrink: 0;
             font-size: 15px;
-            letter-spacing: 0.5px;
         }
         .news-label {
             background: linear-gradient(135deg, var(--accent) 0%, #d35400 100%);
             color: #ffffff;
             font-size: 11px;
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 6px;
             margin-right: 24px;
             font-weight: 800;
-            flex-shrink: 0;
-            box-shadow: 0 4px 10px rgba(230, 126, 34, 0.25);
+            box-shadow: 0 4px 10px rgba(230, 126, 34, 0.15);
         }
         .news-title {
             color: #2c3e50;
@@ -321,31 +344,29 @@
             font-weight: 700;
         }
 
-        /* テーブルスタイル */
+        /* 団体概要テーブル */
         .info-table {
             width: 100%;
             border-collapse: separate;
             border-spacing: 0;
-            margin-top: 30px;
+            margin-top: 25px;
             border-radius: 16px;
             overflow: hidden;
-            border: 1px solid rgba(0, 154, 166, 0.15);
-            box-shadow: 0 4px 20px rgba(0, 43, 84, 0.01);
+            border: 1px solid rgba(0, 154, 166, 0.12);
         }
         .info-table th, .info-table td {
             padding: 20px 24px;
-            border-bottom: 1px solid rgba(0, 154, 166, 0.1);
+            border-bottom: 1px solid rgba(0, 154, 166, 0.08);
             font-size: 14px;
         }
         .info-table tr:last-child th, .info-table tr:last-child td {
             border-bottom: none;
         }
         .info-table th {
-            width: 25%;
-            background-color: #f4fbfb;
+            width: 28%;
+            background-color: #f6fbfc;
             color: var(--navy);
             font-weight: 800;
-            border-right: 1px solid rgba(0, 154, 166, 0.05);
         }
         .info-table td {
             background-color: #ffffff;
@@ -353,170 +374,166 @@
             font-weight: 600;
         }
 
-        /* プロジェクト紹介ボックス */
+        /* プロジェクトのグリッド2カラム並び（先進的カード化） */
+        .project-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 25px;
+        }
         .project-card {
             background: #ffffff;
             border: 1px solid rgba(0, 154, 166, 0.15);
             border-radius: 20px;
-            padding: 35px;
-            margin-bottom: 30px;
+            padding: 30px;
             position: relative;
-            box-shadow: 0 4px 25px rgba(0, 43, 84, 0.01);
-            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 43, 84, 0.01);
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            /* 💡 カード単体もフワフワと浮遊させる */
-            animation: floatAnimation 8s ease-in-out infinite alternate;
-        }
-        .project-card.orange-card {
-            animation-delay: 1s; /* アニメーションのタイミングをずらす */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .project-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 6px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--primary-light), var(--navy));
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-light), var(--navy));
         }
         .project-card.orange-card::before {
-            background: linear-gradient(to bottom, var(--accent-light), var(--accent));
+            background: linear-gradient(90deg, var(--accent-light), var(--accent));
         }
         .project-card:hover {
-            animation-play-state: paused;
             transform: translateY(-6px);
-            box-shadow: 0 16px 35px rgba(0, 154, 166, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 154, 166, 0.12);
             border-color: var(--primary-light);
         }
         .project-card.orange-card:hover {
-            box-shadow: 0 16px 35px rgba(230, 126, 34, 0.15);
+            box-shadow: 0 15px 35px rgba(230, 126, 34, 0.12);
             border-color: var(--accent-light);
         }
-        
         .project-card h4 {
-            margin-top: 0;
-            font-size: 19px;
+            margin: 0 0 15px 0;
+            font-size: 17px;
             color: var(--navy);
-            display: flex;
-            align-items: center;
-            gap: 14px;
             font-weight: 800;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
         }
         .project-badge {
-            background: rgba(0, 154, 166, 0.08);
+            background: rgba(0, 154, 166, 0.06);
             color: var(--primary-dark);
-            font-size: 11px;
-            padding: 4px 12px;
-            border-radius: 8px;
+            font-size: 10px;
+            padding: 2px 10px;
+            border-radius: 6px;
             font-weight: 800;
-            border: 1px solid rgba(0, 154, 166, 0.15);
+            border: 1px solid rgba(0, 154, 166, 0.12);
         }
         .project-badge.summit {
-            background: rgba(230, 126, 34, 0.08);
+            background: rgba(230, 126, 34, 0.06);
             color: var(--accent);
-            border: 1px solid rgba(230, 126, 34, 0.15);
+            border: 1px solid rgba(230, 126, 34, 0.12);
         }
 
         /* ボタン */
         .btn-link {
             display: inline-flex;
+            justify-content: center;
             align-items: center;
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: #ffffff;
-            padding: 14px 28px;
+            padding: 12px 20px;
             text-decoration: none;
             border-radius: 10px;
             font-weight: 700;
-            margin-top: 20px;
-            font-size: 13px;
-            letter-spacing: 0.5px;
+            font-size: 12px;
+            margin-top: 15px;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
         }
         .btn-link:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.45);
-            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
         }
         .btn-summit {
             background: linear-gradient(135deg, var(--primary) 0%, var(--navy) 100%);
-            box-shadow: 0 4px 18px rgba(0, 154, 166, 0.3);
-            border: 1px solid var(--primary-light);
+            box-shadow: 0 4px 12px rgba(0, 154, 166, 0.2);
         }
         .btn-summit:hover {
-            box-shadow: 0 8px 25px rgba(0, 210, 224, 0.4);
-            background: linear-gradient(135deg, var(--primary-light) 0%, var(--navy) 100%);
+            box-shadow: 0 6px 20px rgba(0, 210, 224, 0.3);
         }
 
-        /* 💡 ずっと浮遊し続ける無重力アニメーションの定義 */
-        @keyframes floatAnimation {
-            0% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-8px); /* 上に8pxフワッと浮く */
-            }
-            100% {
-                transform: translateY(0px);
-            }
-        }
-
-        /* 警告モジュール */
+        /* 公告アラート */
         .alert-box {
-            background-color: #fffdf5;
-            border: 1px solid rgba(241, 196, 15, 0.3);
-            border-left: 6px solid #f1c40f;
-            color: #614e0b;
+            background-color: #fffdf6;
+            border: 1px solid rgba(241, 196, 15, 0.25);
+            border-left: 5px solid #f1c40f;
+            color: #5d4b07;
             padding: 22px;
             margin-bottom: 35px;
-            border-radius: 12px;
+            border-radius: 14px;
             font-size: 14px;
             font-weight: 700;
-            box-shadow: 0 4px 15px rgba(241, 196, 15, 0.05);
         }
 
         /* フッター */
         footer {
             text-align: center;
-            padding: 50px 20px;
+            padding: 45px 20px;
             background-color: var(--navy);
-            color: rgba(255, 255, 255, 0.75);
+            color: rgba(255, 255, 255, 0.7);
             font-size: 13px;
             margin-top: 100px;
-            border-top: 6px solid var(--primary-light);
-            box-shadow: 0 -5px 30px rgba(0, 43, 84, 0.3);
-            letter-spacing: 0.8px;
+            border-top: 5px solid var(--primary-light);
+            position: relative;
+            z-index: 20;
         }
 
-        @media (max-width: 768px) {
-            .main-wrapper { flex-direction: column; margin: 20px auto; gap: 24px; }
+        @media (max-width: 850px) {
+            header { padding: 20px; text-align: center; }
+            .dashboard-container { flex-direction: column; margin: 20px auto; gap: 24px; }
             aside { width: 100%; }
-            main { padding: 30px 20px; }
+            .side-menu { display: grid; grid-template-columns: 1fr 1fr; border-radius: 16px; gap: 10px; }
+            .side-menu button { text-align: center; border-radius: 10px; padding: 12px 5px; animation: none !important; }
+            .project-grid { grid-template-columns: 1fr; }
+            main { padding: 30px 20px; animation: none !important; }
             .news-list li { flex-direction: column; align-items: flex-start; gap: 8px; }
-            .news-date { width: auto; }
             .info-table th, .info-table td { display: block; width: 100%; box-sizing: border-box; }
-            .info-table th { border-bottom: none; border-right: none; background-color: #f4fbfb; }
-            .side-menu button, .project-card { animation: none !important; } /* スマホでは負荷軽減のため停止 */
+            .info-table th { border-bottom: none; background-color: #f6fbfc; }
+            .crystal-field { display: none; }
         }
     </style>
 </head>
 <body>
 
+<div class="crystal-field">
+    <div class="crystal cr-1"></div>
+    <div class="crystal cr-2"></div>
+    <div class="crystal cr-3"></div>
+    <div class="crystal cr-4"></div>
+</div>
+
 <header>
     <div class="header-container">
-        <h1>日本若者防災復興協会<span>NPO法人設立認証申請中</span></h1>
-        <div class="subtitle">Japan Youth Resilience Action Consortium (JYRAC)</div>
+        <div class="brand-zone">
+            <h1>日本若者防災復興協会<span>NPO法人設立認証申請中</span></h1>
+            <div class="subtitle">Japan Youth Resilience Action Consortium (JYRAC)</div>
+        </div>
     </div>
 </header>
 
-<div class="main-wrapper">
+<div class="dashboard-container">
 
     <aside>
         <ul class="side-menu">
-            <li><button class="menu-btn active" onclick="switchTab('tab-news')">ホーム / 新着情報</button></li>
-            <li><button class="menu-btn" onclick="switchTab('tab-about')">当法人について</button></li>
-            <li><button class="menu-btn" onclick="switchTab('tab-services')">事業内容・プロジェクト</button></li>
-            <li><button class="menu-btn" onclick="switchTab('tab-governance')">情報公開・設立公告</button></li>
+            <li><button class="menu-btn active" onclick="switchTab(this, 'tab-news')">ホーム / 新着情報</button></li>
+            <li><button class="menu-btn" onclick="switchTab(this, 'tab-about')">当法人について</button></li>
+            <li><button class="menu-btn" onclick="switchTab(this, 'tab-services')">事業内容・活動</button></li>
+            <li><button class="menu-btn" onclick="switchTab(this, 'tab-governance')">情報公開・設立公告</button></li>
         </ul>
     </aside>
 
@@ -563,16 +580,24 @@
             <h2>主な事業・活動内容</h2>
             <p>当団体は、若者たちの主体的かつ創造的な防災・復興活動を全面的にサポートするため、以下の基盤事業を展開・支援してまいります。</p>
             
-            <div class="project-card">
-                <h4><span class="project-badge">支援基盤事業</span>学生主体プロジェクト「NSF PROJECTs」</h4>
-                <p>全国の中高生・大学生が中心となり、能登半島地震をはじめとする被災地への復興支援（募金、現地ボランティア、郷土料理発信など）や、若者目線での柔軟な防災啓発・ネットワーク構築を行っています。当団体は、彼らの法的・財政的基盤を支え、安全な活動環境を提供しています。</p>
-                <a href="https://nsf.stki.org/" class="btn-link" target="_blank">NSF PROJECTs 公式サイト ➔</a>
-            </div>
+            <div class="project-grid">
+                <div class="project-card">
+                    <h4>
+                        <span class="project-badge">支援基盤事業</span>
+                        学生主体プロジェクト「NSF PROJECTs」
+                    </h4>
+                    <p>全国の中高生・大学生が中心となり、能登半島地震をはじめとする被災地への復興支援や、若者目線での柔軟な防災啓発を行っています。当団体は、彼らの法的・財政的基盤を支えています。</p>
+                    <a href="https://nsf.stki.org/" class="btn-link" target="_blank">公式サイト ➔</a>
+                </div>
 
-            <div class="project-card orange-card">
-                <h4><span class="project-badge summit">主催事業</span>全国若者防災サミット</h4>
-                <p>JYRACが主催する、全国の若者防災リーダーが一堂に会する最重要サミットです。東日本大震災や能登半島地震などの教訓の継承、地域や世代を超えた防災ディスカッションを行い、若者発の「次世代防災提言」を社会へ発信しています。</p>
-                <a href="https://sites.google.com/view/bousaisumithp/home" class="btn-link btn-summit" target="_blank">全国若者防災サミット 公式サイト ➔</a>
+                <div class="project-card orange-card">
+                    <h4>
+                        <span class="project-badge summit">主催事業</span>
+                        全国若者防災サミット
+                    </h4>
+                    <p>JYRACが主催する最重要サミットです。東日本大震災や能登半島地震などの教訓の継承、地域や世代を超えた防災ディスカッションを行い、若者発の「次世代防災提言」を発信しています。</p>
+                    <a href="https://sites.google.com/view/bousaisumithp/home" class="btn-link btn-summit" target="_blank">公式サイト ➔</a>
+                </div>
             </div>
         </div>
 
@@ -627,15 +652,16 @@
 </footer>
 
 <script>
-    function switchTab(tabId) {
+    function switchTab(buttonElement, tabId) {
+        // パネルの切り替え
         const panels = document.querySelectorAll('.content-panel');
         panels.forEach(panel => panel.classList.remove('active'));
-
-        const buttons = document.querySelectorAll('.menu-btn');
-        buttons.forEach(button => button.classList.remove('active'));
-
         document.getElementById(tabId).classList.add('active');
-        event.currentTarget.classList.add('active');
+
+        // ボタンのアクティブ状態の切り替え
+        const buttons = document.querySelectorAll('.menu-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        buttonElement.classList.add('active');
     } 
 </script>
 
