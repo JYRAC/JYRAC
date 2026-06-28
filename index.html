@@ -48,7 +48,7 @@
             z-index: -1;
         }
 
-        /* 空間に漂う無重力デジタル・クリスタル（装飾） */
+        /* 浮遊クリスタル空間 */
         .crystal-field {
             position: fixed;
             top: 0;
@@ -66,7 +66,6 @@
             border-right: 20px solid transparent;
             border-bottom: 35px solid rgba(0, 154, 166, 0.12);
             filter: drop-shadow(0 4px 10px rgba(0, 210, 224, 0.2));
-            /* GSAPで制御するため、CSSアニメーションは全廃止して軽量化 */
             transform: translate3d(0, 0, 0);
         }
         .crystal::after {
@@ -80,8 +79,6 @@
             border-right: 20px solid transparent;
             border-top: 35px solid rgba(0, 43, 84, 0.08);
         }
-        
-        /* 初期位置の設定 */
         .cr-1 { top: 15%; left: 3%; transform: scale(0.7); }
         .cr-2 { top: 75%; left: 6%; transform: scale(1.1); }
         .cr-3 { top: 35%; right: 4%; transform: scale(1.4); border-bottom-color: rgba(230, 126, 34, 0.08); }
@@ -169,7 +166,6 @@
             transition: color 0.25s, border-color 0.25s, padding-left 0.25s, background 0.25s;
             transform: translate3d(0, 0, 0);
         }
-
         .side-menu button::before {
             content: '';
             position: absolute;
@@ -257,44 +253,31 @@
             border-radius: 2px;
         }
 
-        main h3 {
-            font-size: 18px;
-            color: var(--navy);
-            padding-left: 14px;
-            margin-top: 45px;
-            margin-bottom: 20px;
-            font-weight: 800;
-            position: relative;
-        }
-        main h3::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 4px;
-            bottom: 4px;
-            width: 4px;
-            background: var(--primary);
-            border-radius: 2px;
-        }
-
-        /* 新着情報リスト */
+        /* 💡 新着情報アコーディオン構造のスタイル */
         .news-list {
             list-style: none;
             padding: 0;
             margin: 0;
         }
-        .news-list li {
-            padding: 20px;
+        .news-item {
             border-bottom: 1px solid rgba(0, 154, 166, 0.08);
+            margin-bottom: 6px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.4);
+            transition: background 0.3s;
+        }
+        .news-item:hover {
+            background: rgba(255, 255, 255, 0.8);
+        }
+        /* クリックするヘッダー部分 */
+        .news-header {
+            padding: 20px;
             display: flex;
             align-items: center;
-            transition: all 0.2s ease;
-            border-radius: 12px;
-            margin-bottom: 4px;
-        }
-        .news-list li:hover {
-            background-color: rgba(255, 255, 255, 0.8);
-            transform: translate3d(3px, 0, 0);
+            cursor: pointer;
+            position: relative;
+            user-select: none;
         }
         .news-date {
             font-weight: 800;
@@ -317,6 +300,35 @@
             color: #2c3e50;
             font-size: 15px;
             font-weight: 700;
+            padding-right: 30px; /* 矢印と被らないように */
+        }
+        /* 右端の近未来風の矢印マーク */
+        .news-icon {
+            position: absolute;
+            right: 20px;
+            width: 10px;
+            height: 10px;
+            border-right: 2px solid var(--primary);
+            border-bottom: 2px solid var(--primary);
+            transform: rotate(45deg);
+            transition: transform 0.3s ease;
+        }
+        /* 開いたときに矢印を上に向ける */
+        .news-item.is-open .news-icon {
+            transform: rotate(-135deg);
+        }
+        /* 💡 最初は隠れている詳細テキストエリア */
+        .news-body {
+            height: 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .news-body-inner {
+            padding: 5px 20px 25px 140px; /* 日付の位置に合わせて美しくインデント */
+            color: #4f5e71;
+            font-size: 14px;
+            font-weight: 600;
+            border-top: 1px dashed rgba(0, 154, 166, 0.05);
         }
 
         /* 団体概要テーブル */
@@ -468,7 +480,9 @@
             .side-menu button { text-align: center; border-radius: 10px; padding: 12px 5px; transform: none !important; }
             .project-grid { grid-template-columns: 1fr; }
             main { padding: 30px 20px; transform: none !important; }
-            .news-list li { flex-direction: column; align-items: flex-start; gap: 8px; }
+            .news-header { flex-direction: column; align-items: flex-start; gap: 6px; }
+            .news-date { width: auto; }
+            .news-body-inner { padding: 15px; }
             .info-table th, .info-table td { display: block; width: 100%; box-sizing: border-box; }
             .info-table th { border-bottom: none; background-color: #f6fbfc; }
             .crystal-field { display: none; }
@@ -508,18 +522,29 @@
         <div id="tab-news" class="content-panel active">
             <h2>新着情報・お知らせ一覧</h2>
             <ul class="news-list">
-                <li>
-                    <span class="news-date">2026.04.10</span>
-                    <span class="news-label">重要</span>
-                    <span class="news-title">東京都へ特定非営利活動法人（NPO法人）の設立認証申請を行いました。</span>
+                
+                <li class="news-item">
+                    <div class="news-header" onclick="toggleNews(this)">
+                        <span class="news-date">2026.04.10</span>
+                        <span class="news-label">重要</span>
+                        <span class="news-title">東京都へ特定非営利活動法人（NPO法人）の設立認証申請を行いました。</span>
+                        <span class="news-icon"></span>
+                    </div>
+                    <div class="news-body">
+                        <div class="news-body-inner">
+                            本日、令和8年4月10日をもちまして、所轄庁である東京都へ特定非営利活動法人の認証申請書類一式を正式に提出いたしました。<br>
+                            今後は約2ヶ月間の縦覧・審査期間を経て、認証および登記の完了を目指してまいります。法人化により、学生ボランティアの皆様がより安全かつ強固な基盤の上で防災復興活動に専念できるよう、環境整備を進めてまいります。
+                        </div>
+                    </div>
                 </li>
+
             </ul>
         </div>
 
         <div id="tab-about" class="content-panel">
             <h2>当法人について（設立趣旨）</h2>
             <p>災害大国と呼ばれる日本において、これからの未来を担う世代が「防災・減災」を自分ごととして捉え、備えることは、持続可能な社会を築くための最優先課題です。</p>
-            <p>当法人は、若者が主体となって防災、減災及び災害復興に関わる活動、学習及び発信を行う環境を整え、地域及び世代を超えた協働を促進することにより、安全で持続可能な社会の形成に寄与することを目的として設立申請されました。</p>
+            <p>当法人は、若者が主体となって防災、減減及び災害復興に関わる活動、学習及び発信を行う環境を整え、地域及び世代を超えた協働を促進することにより、安全で持続可能な社会の形成に寄与することを目的として設立申請されました。</p>
             
             <h3>団体概要</h3>
             <table class="info-table">
@@ -629,19 +654,32 @@
         buttonElement.classList.add('active');
     }
 
-    // 💡 GSAPによる超スムーズな「近未来浮遊アニメーション」の制御
-    // 画面幅が850px以上（PC環境）の時だけ超軽量に実行
+    // 💡 GSAPによるお知らせ開閉（アコーディオン）制御関数
+    function toggleNews(headerElement) {
+        const item = headerElement.closest('.news-item');
+        const body = item.querySelector('.news-body');
+        const isOpen = item.classList.contains('is-open');
+
+        if (isOpen) {
+            // 閉じるアニメーション（高さを0にする）
+            gsap.to(body, { height: 0, duration: 0.4, ease: "power2.inOut" });
+            item.classList.remove('is-open');
+        } else {
+            // 開くアニメーション（中身に合わせた自動の高さにする）
+            item.classList.add('is-open');
+            gsap.set(body, { height: "auto" });
+            gsap.from(body, { height: 0, duration: 0.4, ease: "power2.out" });
+        }
+    }
+
+    // GSAPによる超スムーズな「近未来浮遊アニメーション」の制御
     if (window.innerWidth > 850) {
-        
-        // 1. クリスタルの滑らかな浮遊 ＋ 3D回転
         gsap.to(".cr-1", { y: -25, rotation: 360, duration: 12, repeat: -1, yoyo: true, ease: "power1.inOut" });
         gsap.to(".cr-2", { y: 20, rotation: -360, duration: 15, repeat: -1, yoyo: true, ease: "power1.inOut" });
         gsap.to(".cr-3", { y: -30, rotation: 180, duration: 10, repeat: -1, yoyo: true, ease: "power1.inOut" });
 
-        // 2. メインパネル全体の心地よい無重力フローティング
         gsap.to("#main-panel", { y: -8, duration: 6, repeat: -1, yoyo: true, ease: "power1.inOut" });
 
-        // 3. 左側メニューボタンの互い違いのフワフワ感
         const menuButtons = document.querySelectorAll('.side-menu button');
         menuButtons.forEach((btn, index) => {
             gsap.to(btn, {
@@ -650,15 +688,13 @@
                 repeat: -1,
                 yoyo: true,
                 ease: "power1.inOut",
-                delay: index * 0.2 // ボタンごとに浮くタイミングを少しずつずらす
+                delay: index * 0.2
             });
 
-            // マウスホバーした時は、浮遊を一時的に止めてピタッと手前に浮かび上がらせる
             btn.addEventListener('mouseenter', () => {
                 gsap.to(btn, { y: -2, scale: 1.03, duration: 0.3, ease: "power2.out" });
             });
             btn.addEventListener('mouseleave', () => {
-                // 離れたら再び通常の無限浮遊に戻す
                 gsap.to(btn, { scale: 1, duration: 0.3, ease: "power2.inOut" });
             });
         });
