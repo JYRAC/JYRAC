@@ -26,7 +26,6 @@
             color: #2c3e50;
             margin: 0;
             padding: 0;
-            /* 近未来的な深みのあるサイバーグラデーション */
             background: linear-gradient(135deg, #d2f1f3 0%, #ffffff 40%, #e8f6f7 100%);
             background-attachment: fixed;
             min-height: 100vh;
@@ -34,7 +33,6 @@
             overflow-x: hidden;
         }
 
-        /* 背景にうっすら流れる防災サイバースキャンライン */
         body::before {
             content: '';
             position: fixed;
@@ -49,7 +47,7 @@
             z-index: -1;
         }
 
-        /* ヘッダー：近未来インターフェース風 */
+        /* ヘッダー */
         header {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(16px);
@@ -112,7 +110,7 @@
             gap: 40px;
         }
 
-        /* 左側サイドメニュー（デジタルギア風モジュール） */
+        /* 左側サイドメニュー */
         aside {
             width: 280px;
             flex-shrink: 0;
@@ -145,7 +143,14 @@
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             box-shadow: 0 4px 15px rgba(0, 43, 84, 0.02);
+            /* 💡 ボタンごとに少し時間をずらしてフワフワ浮遊させる */
+            animation: floatAnimation 6s ease-in-out infinite;
         }
+        .side-menu li:nth-child(1) button { animation-delay: 0s; }
+        .side-menu li:nth-child(2) button { animation-delay: 0.5s; }
+        .side-menu li:nth-child(3) button { animation-delay: 1s; }
+        .side-menu li:nth-child(4) button { animation-delay: 1.5s; }
+
         .side-menu button::before {
             content: '';
             position: absolute;
@@ -160,8 +165,10 @@
         .side-menu button:hover {
             color: #ffffff;
             border-color: var(--primary-light);
-            transform: scale(1.02) translateX(4px);
-            box-shadow: 0 8px 25px rgba(0, 210, 224, 0.2);
+            /* ホバー時は浮遊アニメーションを一時停止してターゲットロック状態に */
+            animation-play-state: paused;
+            transform: scale(1.04) translateX(4px);
+            box-shadow: 0 8px 25px rgba(0, 210, 224, 0.3);
         }
         .side-menu button:hover::before {
             width: 100%;
@@ -171,6 +178,7 @@
             color: #ffffff;
             border: 1px solid var(--primary-light);
             box-shadow: 0 10px 30px rgba(0, 43, 84, 0.25);
+            animation-play-state: paused; /* アクティブ時も固定 */
         }
         .side-menu button.active::after {
             content: '';
@@ -185,7 +193,7 @@
             box-shadow: 0 0 10px var(--primary-light);
         }
 
-        /* 右側メインコクピットエリア */
+        /* 右側メイン表示エリア */
         main {
             flex-grow: 1;
             background: var(--card-bg);
@@ -199,7 +207,6 @@
             position: relative;
         }
 
-        /* コーナーにテック感を出す装飾 */
         main::before {
             content: '';
             position: absolute;
@@ -235,7 +242,6 @@
             font-weight: 800;
             letter-spacing: 0.5px;
         }
-        /* スキャンラインのように伸びる見出し線 */
         main h2::after {
             content: '';
             position: absolute;
@@ -269,7 +275,7 @@
             box-shadow: 0 0 8px rgba(0, 210, 224, 0.5);
         }
 
-        /* 新着情報：ホバー時にネオンライン化 */
+        /* 新着情報 */
         .news-list {
             list-style: none;
             padding: 0;
@@ -315,7 +321,7 @@
             font-weight: 700;
         }
 
-        /* データマトリクス風テーブル */
+        /* テーブルスタイル */
         .info-table {
             width: 100%;
             border-collapse: separate;
@@ -347,7 +353,7 @@
             font-weight: 600;
         }
 
-        /* 次世代防災・復興プロジェクトカード */
+        /* プロジェクト紹介ボックス */
         .project-card {
             background: #ffffff;
             border: 1px solid rgba(0, 154, 166, 0.15);
@@ -358,6 +364,11 @@
             box-shadow: 0 4px 25px rgba(0, 43, 84, 0.01);
             overflow: hidden;
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            /* 💡 カード単体もフワフワと浮遊させる */
+            animation: floatAnimation 8s ease-in-out infinite alternate;
+        }
+        .project-card.orange-card {
+            animation-delay: 1s; /* アニメーションのタイミングをずらす */
         }
         .project-card::before {
             content: '';
@@ -372,12 +383,13 @@
             background: linear-gradient(to bottom, var(--accent-light), var(--accent));
         }
         .project-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 35px rgba(0, 154, 166, 0.12);
+            animation-play-state: paused;
+            transform: translateY(-6px);
+            box-shadow: 0 16px 35px rgba(0, 154, 166, 0.15);
             border-color: var(--primary-light);
         }
         .project-card.orange-card:hover {
-            box-shadow: 0 12px 35px rgba(230, 126, 34, 0.12);
+            box-shadow: 0 16px 35px rgba(230, 126, 34, 0.15);
             border-color: var(--accent-light);
         }
         
@@ -405,7 +417,7 @@
             border: 1px solid rgba(230, 126, 34, 0.15);
         }
 
-        /* 近未来風インターフェースボタン（グローエフェクト） */
+        /* ボタン */
         .btn-link {
             display: inline-flex;
             align-items: center;
@@ -436,6 +448,19 @@
             background: linear-gradient(135deg, var(--primary-light) 0%, var(--navy) 100%);
         }
 
+        /* 💡 ずっと浮遊し続ける無重力アニメーションの定義 */
+        @keyframes floatAnimation {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-8px); /* 上に8pxフワッと浮く */
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
         /* 警告モジュール */
         .alert-box {
             background-color: #fffdf5;
@@ -450,7 +475,7 @@
             box-shadow: 0 4px 15px rgba(241, 196, 15, 0.05);
         }
 
-        /* フッター（要塞ネイビー） */
+        /* フッター */
         footer {
             text-align: center;
             padding: 50px 20px;
@@ -471,6 +496,7 @@
             .news-date { width: auto; }
             .info-table th, .info-table td { display: block; width: 100%; box-sizing: border-box; }
             .info-table th { border-bottom: none; border-right: none; background-color: #f4fbfb; }
+            .side-menu button, .project-card { animation: none !important; } /* スマホでは負荷軽減のため停止 */
         }
     </style>
 </head>
