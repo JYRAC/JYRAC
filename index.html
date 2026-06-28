@@ -7,7 +7,7 @@
 
     <link rel="icon" href="JYRAC.jpg" type="image/jpeg">
     <link rel="apple-touch-icon" href="JYRAC.jpg">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
     <style>
         :root {
             --primary: #009aa6;
@@ -83,7 +83,6 @@
         .cr-2 { top: 75%; left: 6%; transform: scale(1.1); }
         .cr-3 { top: 35%; right: 4%; transform: scale(1.4); border-bottom-color: rgba(230, 126, 34, 0.08); }
 
-        /* ヘッダー */
         header {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(20px);
@@ -123,7 +122,6 @@
             margin-top: 2px;
         }
 
-        /* メインラッパー */
         .dashboard-container {
             max-width: 1200px;
             margin: 40px auto;
@@ -134,7 +132,6 @@
             z-index: 10;
         }
 
-        /* 左側サイドメニュー */
         aside {
             width: 280px;
             flex-shrink: 0;
@@ -192,7 +189,6 @@
             box-shadow: 0 10px 25px rgba(0, 43, 84, 0.15);
         }
 
-        /* 右側メインコクピットエリア（💡 浮遊をなくしてピタッと固定） */
         main {
             flex-grow: 1;
             background: var(--panel-bg);
@@ -205,7 +201,7 @@
             box-shadow: 0 20px 50px rgba(0, 43, 84, 0.03);
             border-radius: 24px;
             position: relative;
-            transform: translate3d(0, 0, 0); /* アニメーションはJS側から削除 */
+            transform: translate3d(0, 0, 0);
         }
 
         main::before {
@@ -253,7 +249,7 @@
             border-radius: 2px;
         }
 
-        /* 新着情報 */
+        /* 新着情報アコーディオン */
         .news-list {
             list-style: none;
             padding: 0;
@@ -357,7 +353,7 @@
             font-weight: 600;
         }
 
-        /* プロジェクトのグリッド（💡 浮遊はなくし、すっきり安定化） */
+        /* プロジェクトのグリッド */
         .project-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -375,7 +371,6 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transform: translate3d(0, 0, 0); /* 常時浮遊アニメーションは削除 */
         }
         .project-card::before {
             content: '';
@@ -389,7 +384,6 @@
         .project-card.orange-card::before {
             background: linear-gradient(90deg, var(--accent-light), var(--accent));
         }
-        /* マウスを乗せた時だけ手前にフワッと浮き上がるスタイリッシュな挙動に変更 */
         .project-card:hover {
             transform: translate3d(0, -6px, 0);
             box-shadow: 0 12px 30px rgba(0, 154, 166, 0.1);
@@ -419,7 +413,6 @@
             border: 1px solid rgba(230, 126, 34, 0.12);
         }
 
-        /* ボタン */
         .btn-link {
             display: inline-flex;
             justify-content: center;
@@ -444,7 +437,6 @@
             box-shadow: 0 4px 12px rgba(0, 154, 166, 0.15);
         }
 
-        /* 公告アラート */
         .alert-box {
             background-color: #fffdf6;
             border: 1px solid rgba(241, 196, 15, 0.25);
@@ -457,7 +449,6 @@
             font-weight: 700;
         }
 
-        /* フッター */
         footer {
             text-align: center;
             padding: 45px 20px;
@@ -508,10 +499,10 @@
 
     <aside>
         <ul class="side-menu">
-            <li><button class="menu-btn active" onclick="switchTab(this, 'tab-news')">ホーム / 新着情報</button></li>
-            <li><button class="menu-btn" onclick="switchTab(this, 'tab-about')">当法人について</button></li>
-            <li><button class="menu-btn" onclick="switchTab(this, 'tab-services')">事業内容・活動</button></li>
-            <li><button class="menu-btn" onclick="switchTab(this, 'tab-governance')">情報公開・設立公告</button></li>
+            <li><button class="menu-btn active" data-tab="tab-news">ホーム / 新着情報</button></li>
+            <li><button class="menu-btn" data-tab="tab-about">当法人について</button></li>
+            <li><button class="menu-btn" data-tab="tab-services">事業内容・活動</button></li>
+            <li><button class="menu-btn" data-tab="tab-governance">情報公開・設立公告</button></li>
         </ul>
     </aside>
 
@@ -519,27 +510,12 @@
         
         <div id="tab-news" class="content-panel active">
             <h2>新着情報・お知らせ一覧</h2>
-            <ul class="news-list">
-                <li class="news-item">
-                    <div class="news-header" onclick="toggleNews(this)">
-                        <span class="news-date">2026.04.10</span>
-                        <span class="news-label">重要</span>
-                        <span class="news-title">東京都へ特定非営利活動法人（NPO法人）の設立認証申請を行いました。</span>
-                        <span class="news-icon"></span>
-                    </div>
-                    <div class="news-body">
-                        <div class="news-body-inner">
-                            本日、令和8年4月10日をもちまして、所轄庁である東京都へ特定非営利活動法人の認証申請書類一式を正式に提出いたしました。<br>
-                            今後は約2ヶ月間の縦覧・審査期間を経て、認証および登記の完了を目指してまいります。法人化により、学生ボランティアの皆様がより安全かつ強固な基盤の上で防災復興活動に専念できるよう、環境整備を進めてまいります。
-                        </div>
-                    </div>
-                </li>
-            </ul>
+            <ul class="news-list" id="dynamic-news-list"></ul>
         </div>
 
         <div id="tab-about" class="content-panel">
             <h2>当法人について（設立趣旨）</h2>
-            <p>災害大国と呼ばれる日本において、これからの未来を担う世代が「防災・減減」を自分ごととして捉え、備えることは、持続可能な社会を築くための最優先課題です。</p>
+            <p>災害大国と呼ばれる日本において、これからの未来を担う世代が「防災・減災」を自分ごととして捉え、備えることは、持続可能な社会を築くための最優先課題です。</p>
             <p>当法人は、若者が主体となって防災、減災及び災害復興に関わる活動、学習及び発信を行う環境を整え、地域及び世代を超えた協働を促進することにより、安全で持続可能な社会の形成に寄与することを目的として設立申請されました。</p>
             
             <h3>団体概要</h3>
@@ -554,7 +530,7 @@
                 </tr>
                 <tr>
                     <th>主たる事務所の所在地</th>
-                    <td>東京都文京区小日向四丁目４番６―６０３号</td>
+                    <td>東京都文京区小日向四丁目４番６―６０3号</td>
                 </tr>
                 <tr>
                     <th>想定される活動分野</th>
@@ -639,62 +615,99 @@
 </footer>
 
 <script>
-    // タブの切り替え関数
-    function switchTab(buttonElement, tabId) {
-        const panels = document.querySelectorAll('.content-panel');
-        panels.forEach(panel => panel.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
-
-        const buttons = document.querySelectorAll('.menu-btn');
-        buttons.forEach(btn => btn.classList.remove('active'));
-        buttonElement.classList.add('active');
-    }
-
-    // お知らせ開閉アコーディオン関数
-    function toggleNews(headerElement) {
-        const item = headerElement.closest('.news-item');
-        const body = item.querySelector('.news-body');
-        const isOpen = item.classList.contains('is-open');
-
-        if (isOpen) {
-            gsap.to(body, { height: 0, duration: 0.4, ease: "power2.inOut" });
-            item.classList.remove('is-open');
-        } else {
-            item.classList.add('is-open');
-            gsap.set(body, { height: "auto" });
-            gsap.from(body, { height: 0, duration: 0.4, ease: "power2.out" });
+    // 💡 だるさ解消：今後お知らせを増やしたい時は、この中に項目を同じように追加するだけ！
+    // HTMLのコードを直接触る必要はありません。
+    const newsData = [
+        {
+            date: "2026.04.10",
+            label: "重要",
+            title: "東京都へ特定非営利活動法人（NPO法人）の設立認証申請を行いました。",
+            content: "本日、令和8年4月10日をもちまして、所轄庁である東京都へ特定非営利活動法人の認証申請書類一式を正式に提出いたしました。<br>今後は約2ヶ月間の縦覧・審査期間を経て、認証および登記の完了を目指してまいります。法人化により、学生ボランティアの皆様がより安全かつ強固な基盤の上で防災復興活動に専念できるよう、環境整備を進めてまいります。"
         }
-    }
+        // 新しいお知らせを追加する場合は、ここにコピペして文字を書き換えるだけ！
+    ];
 
-    // GSAPによるスムーズなアニメーション（💡 mainの浮遊とproject-cardの浮遊は完全廃止）
-    if (window.innerWidth > 850) {
-        
-        // 背景クリスタルの浮遊と回転は残す（空間の未来感）
-        gsap.to(".cr-1", { y: -25, rotation: 360, duration: 12, repeat: -1, yoyo: true, ease: "power1.inOut" });
-        gsap.to(".cr-2", { y: 20, rotation: -360, duration: 15, repeat: -1, yoyo: true, ease: "power1.inOut" });
-        gsap.to(".cr-3", { y: -30, rotation: 180, duration: 10, repeat: -1, yoyo: true, ease: "power1.inOut" });
-
-        // 左側メニューボタンの浮遊は残す（インターフェースの立体感）
-        const menuButtons = document.querySelectorAll('.side-menu button');
-        menuButtons.forEach((btn, index) => {
-            gsap.to(btn, {
-                y: -5,
-                duration: 5,
-                repeat: -1,
-                yoyo: true,
-                ease: "power1.inOut",
-                delay: index * 0.2
+    document.addEventListener("DOMContentLoaded", () => {
+        // 1. お知らせをJavaScriptから自動生成してカチッとはめ込む
+        const newsListContainer = document.getElementById("dynamic-news-list");
+        if (newsListContainer) {
+            newsData.forEach(data => {
+                const li = document.createElement("li");
+                li.className = "news-item";
+                li.innerHTML = `
+                    <div class="news-header">
+                        <span class="news-date">${data.date}</span>
+                        <span class="news-label">${data.label}</span>
+                        <span class="news-title">${data.title}</span>
+                        <span class="news-icon"></span>
+                    </div>
+                    <div class="news-body">
+                        <div class="news-body-inner">${data.content}</div>
+                    </div>
+                `;
+                newsListContainer.appendChild(li);
             });
+        }
 
-            btn.addEventListener('mouseenter', () => {
-                gsap.to(btn, { y: -2, scale: 1.03, duration: 0.3, ease: "power2.out" });
-            });
-            btn.addEventListener('mouseleave', () => {
-                gsap.to(btn, { scale: 1, duration: 0.3, ease: "power2.inOut" });
+        // GSAPなどのスクリプト処理を確実に実行するための安全弁
+        if (typeof gsap === "undefined") return;
+
+        // 2. タブ切り替えの制御
+        const menuButtons = document.querySelectorAll('.menu-btn');
+        menuButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const targetTab = e.currentTarget.getAttribute('data-tab');
+                document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+                document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+                document.getElementById(targetTab).classList.add('active');
+                e.currentTarget.classList.add('active');
             });
         });
-    }
-</script>
 
+        // 3. アコーディオン（折りたたみ）の開閉処理
+        const newsHeaders = document.querySelectorAll('.news-header');
+        newsHeaders.forEach(header => {
+            header.addEventListener('click', (e) => {
+                const item = e.currentTarget.closest('.news-item');
+                const body = item.querySelector('.news-body');
+                const isOpen = item.classList.contains('is-open');
+
+                if (isOpen) {
+                    gsap.to(body, { height: 0, duration: 0.4, ease: "power2.inOut" });
+                    item.classList.remove('is-open');
+                } else {
+                    item.classList.add('is-open');
+                    gsap.set(body, { height: "auto" });
+                    gsap.from(body, { height: 0, duration: 0.4, ease: "power2.out" });
+                }
+            });
+        });
+
+        // 4. PC（画面幅850px以上）の時だけ、軽量化した浮遊をスムーズに実行
+        if (window.innerWidth > 850) {
+            gsap.to(".cr-1", { y: -25, rotation: 360, duration: 12, repeat: -1, yoyo: true, ease: "power1.inOut" });
+            gsap.to(".cr-2", { y: 20, rotation: -360, duration: 15, repeat: -1, yoyo: true, ease: "power1.inOut" });
+            gsap.to(".cr-3", { y: -30, rotation: 180, duration: 10, repeat: -1, yoyo: true, ease: "power1.inOut" });
+
+            menuButtons.forEach((btn, index) => {
+                gsap.to(btn, {
+                    y: -5,
+                    duration: 5,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "power1.inOut",
+                    delay: index * 0.2
+                });
+
+                btn.addEventListener('mouseenter', () => {
+                    gsap.to(btn, { y: -2, scale: 1.03, duration: 0.3, ease: "power2.out" });
+                });
+                btn.addEventListener('mouseleave', () => {
+                    gsap.to(btn, { scale: 1, duration: 0.3, ease: "power2.inOut" });
+                });
+            });
+        }
+    });
+</script>
 </body>
 </html>
