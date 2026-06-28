@@ -32,7 +32,7 @@
             overflow-x: hidden;
         }
 
-        /* スマートシティの防災グリッドをイメージした極薄の背景線 */
+        /* 背景のグリッド線 */
         body::before {
             content: '';
             position: fixed;
@@ -65,6 +65,9 @@
             border-right: 20px solid transparent;
             border-bottom: 35px solid rgba(0, 154, 166, 0.12);
             filter: drop-shadow(0 4px 10px rgba(0, 210, 224, 0.2));
+            /* 💡 カクつき対策：ブラウザのGPU処理を強制起動 */
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
         }
         .crystal::after {
             content: '';
@@ -77,17 +80,35 @@
             border-right: 20px solid transparent;
             border-top: 35px solid rgba(0, 43, 84, 0.08);
         }
-        .cr-1 { top: 15%; left: 3%; transform: scale(0.7); animation: cryFloat1 18s ease-in-out infinite alternate, cryRotate 30s linear infinite; }
-        .cr-2 { top: 75%; left: 6%; transform: scale(1.1); animation: cryFloat2 22s ease-in-out infinite alternate, cryRotate 40s linear infinite; }
-        .cr-3 { top: 35%; right: 4%; transform: scale(1.4); border-bottom-color: rgba(230, 126, 34, 0.08); animation: cryFloat3 15s ease-in-out infinite alternate, cryRotate 25s linear infinite; }
-        .cr-4 { top: 80%; right: 8%; transform: scale(0.8); animation: cryFloat1 20s ease-in-out infinite alternate, cryRotate 35s linear infinite; }
+        
+        /* 💡 カクつき対策：複合アニメーションを1つの3D移動＋回転に統合して軽量化 */
+        .cr-1 { top: 15%; left: 3%; transform: scale(0.7); animation: cryFloat1 25s linear infinite; }
+        .cr-2 { top: 75%; left: 6%; transform: scale(1.1); animation: cryFloat2 30s linear infinite; }
+        .cr-3 { top: 35%; right: 4%; transform: scale(1.4); border-bottom-color: rgba(230, 126, 34, 0.08); animation: cryFloat3 22s linear infinite; }
+        .cr-4 { top: 80%; right: 8%; transform: scale(0.8); animation: cryFloat4 28s linear infinite; }
 
-        @keyframes cryFloat1 { 0% { transform: translateY(0) scale(0.7); } 100% { transform: translateY(-30px) scale(0.7); } }
-        @keyframes cryFloat2 { 0% { transform: translateY(0) scale(1.1); } 100% { transform: translateY(40px) scale(1.1); } }
-        @keyframes cryFloat3 { 0% { transform: translateX(0) scale(1.4); } 100% { transform: translateX(-25px) translateY(-20px) scale(1.4); } }
-        @keyframes cryRotate { 0% { filter: rotate(0deg); } 100% { filter: rotate(360deg); } }
+        @keyframes cryFloat1 {
+            0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(0.7); }
+            50% { transform: translate3d(5px, -20px, 0) rotate(180deg) scale(0.7); }
+            100% { transform: translate3d(0, 0, 0) rotate(360deg) scale(0.7); }
+        }
+        @keyframes cryFloat2 {
+            0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1.1); }
+            50% { transform: translate3d(-10px, 25px, 0) rotate(-180deg) scale(1.1); }
+            100% { transform: translate3d(0, 0, 0) rotate(-360deg) scale(1.1); }
+        }
+        @keyframes cryFloat3 {
+            0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1.4); }
+            50% { transform: translate3d(-20px, -15px, 0) rotate(180deg) scale(1.4); }
+            100% { transform: translate3d(0, 0, 0) rotate(360deg) scale(1.4); }
+        }
+        @keyframes cryFloat4 {
+            0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(0.8); }
+            50% { transform: translate3d(15px, 20px, 0) rotate(-180deg) scale(0.8); }
+            100% { transform: translate3d(0, 0, 0) rotate(-360deg) scale(0.8); }
+        }
 
-        /* ヘッダー：ロゴとタイトルのシンプル構成に変更 */
+        /* ヘッダー */
         header {
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(20px);
@@ -127,7 +148,7 @@
             margin-top: 2px;
         }
 
-        /* メインラッパー：メニューを左側に戻した2カラムダッシュボード */
+        /* メインラッパー */
         .dashboard-container {
             max-width: 1200px;
             margin: 40px auto;
@@ -138,7 +159,7 @@
             z-index: 10;
         }
 
-        /* 左側サイドメニュー（元に戻した配置 ＋ 浮遊ギア風デザイン） */
+        /* 左側サイドメニュー */
         aside {
             width: 280px;
             flex-shrink: 0;
@@ -167,19 +188,22 @@
             position: relative;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0, 43, 84, 0.02);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition: color 0.3s, border-color 0.3s, padding-left 0.3s, background 0.3s;
             
-            /* メニューパーツもそれぞれフワフワ浮遊させる */
-            animation: floatMenu 6s ease-in-out infinite alternate;
+            /* 💡 カクつき対策：GPU支援の有効化と3Dレイヤー化 */
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
+            animation: floatMenu 5s ease-in-out infinite alternate;
         }
         .side-menu li:nth-child(1) button { animation-delay: 0s; }
-        .side-menu li:nth-child(2) button { animation-delay: 0.4s; }
-        .side-menu li:nth-child(3) button { animation-delay: 0.8s; }
-        .side-menu li:nth-child(4) button { animation-delay: 1.2s; }
+        .side-menu li:nth-child(2) button { animation-delay: 0.3s; }
+        .side-menu li:nth-child(3) button { animation-delay: 0.6s; }
+        .side-menu li:nth-child(4) button { animation-delay: 0.9s; }
 
+        /* 💡 カクつき対策：topやmarginではなくtranslate3dを使って滑らかに */
         @keyframes floatMenu {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-6px); }
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(0, -5px, 0); }
         }
 
         .side-menu button::before {
@@ -190,15 +214,15 @@
             height: 100%;
             width: 0;
             background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
-            transition: all 0.3s ease;
+            transition: width 0.25s ease;
             z-index: -1;
         }
         .side-menu button:hover {
             color: #ffffff;
             border-color: var(--primary-light);
             animation-play-state: paused;
-            transform: scale(1.03) translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 210, 224, 0.25);
+            transform: translate3d(0, -2px, 0) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 210, 224, 0.2);
             padding-left: 30px;
         }
         .side-menu button:hover::before {
@@ -208,7 +232,7 @@
             background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
             color: #ffffff;
             border: 1px solid var(--primary-light);
-            box-shadow: 0 10px 30px rgba(0, 43, 84, 0.25);
+            box-shadow: 0 10px 30px rgba(0, 43, 84, 0.2);
             animation-play-state: paused;
         }
 
@@ -226,16 +250,18 @@
             border-radius: 24px;
             position: relative;
             
-            /* パネル全体が心地よくフワフワ浮くエフェクト */
-            animation: mainFloat 8s ease-in-out infinite alternate;
+            /* 💡 カクつき対策 */
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
+            animation: mainFloat 7s ease-in-out infinite alternate;
         }
 
+        /* 💡 カクつき対策：translate3dに変更 */
         @keyframes mainFloat {
-            0% { transform: translateY(0px); box-shadow: 0 20px 50px rgba(0, 43, 84, 0.04); }
-            100% { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0, 154, 166, 0.07); }
+            0% { transform: translate3d(0, 0, 0); box-shadow: 0 20px 50px rgba(0, 43, 84, 0.04); }
+            100% { transform: translate3d(0, -8px, 0); box-shadow: 0 30px 60px rgba(0, 154, 166, 0.06); }
         }
 
-        /* コーナーのテック装飾 */
         main::before {
             content: '';
             position: absolute;
@@ -250,11 +276,11 @@
 
         .content-panel {
             display: none;
-            animation: panelFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: panelFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         @keyframes panelFade {
-            from { opacity: 0; transform: translateY(10px); filter: blur(3px); }
-            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+            from { opacity: 0; transform: translate3d(0, 8px, 0); filter: blur(2px); }
+            to { opacity: 1; transform: translate3d(0, 0, 0); filter: blur(0); }
         }
         .content-panel.active {
             display: block;
@@ -312,13 +338,13 @@
             border-bottom: 1px solid rgba(0, 154, 166, 0.08);
             display: flex;
             align-items: center;
-            transition: all 0.3s ease;
+            transition: all 0.25s ease;
             border-radius: 12px;
             margin-bottom: 4px;
         }
         .news-list li:hover {
             background-color: rgba(255, 255, 255, 0.8);
-            transform: translateX(4px);
+            transform: translate3d(4px, 0, 0);
             box-shadow: 0 4px 15px rgba(0, 43, 84, 0.02);
         }
         .news-date {
@@ -374,7 +400,7 @@
             font-weight: 600;
         }
 
-        /* プロジェクトのグリッド2カラム並び（先進的カード化） */
+        /* プロジェクトのグリッド */
         .project-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -388,7 +414,7 @@
             padding: 30px;
             position: relative;
             box-shadow: 0 4px 20px rgba(0, 43, 84, 0.01);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -406,7 +432,7 @@
             background: linear-gradient(90deg, var(--accent-light), var(--accent));
         }
         .project-card:hover {
-            transform: translateY(-6px);
+            transform: translate3d(0, -5px, 0);
             box-shadow: 0 15px 35px rgba(0, 154, 166, 0.12);
             border-color: var(--primary-light);
         }
@@ -452,11 +478,11 @@
             font-weight: 700;
             font-size: 12px;
             margin-top: 15px;
-            transition: all 0.3s;
+            transition: all 0.25s;
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
         }
         .btn-link:hover {
-            transform: translateY(-2px);
+            transform: translate3d(0, -2px, 0);
             box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
         }
         .btn-summit {
@@ -653,12 +679,10 @@
 
 <script>
     function switchTab(buttonElement, tabId) {
-        // パネルの切り替え
         const panels = document.querySelectorAll('.content-panel');
         panels.forEach(panel => panel.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
 
-        // ボタンのアクティブ状態の切り替え
         const buttons = document.querySelectorAll('.menu-btn');
         buttons.forEach(btn => btn.classList.remove('active'));
         buttonElement.classList.add('active');
