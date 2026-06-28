@@ -14,14 +14,19 @@
             color: #333333;
             margin: 0;
             padding: 0;
-            background-color: #f7f9fa;
+            /* 💡 【変更】背景を資料（PAGE 1）をイメージした爽やかなグラデーションに */
+            background: linear-gradient(135deg, #e6f7f8 0%, #ffffff 50%, #e6f7f8 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
         }
 
         /* ヘッダー */
         header {
-            background-color: #ffffff;
+            /* 💡 【変更】ヘッダー自体もほんのりグラデーションにして質感をアップ */
+            background: linear-gradient(90deg, #ffffff 0%, #f0fafb 100%);
             padding: 25px 40px;
-            border-bottom: 3px solid #1a5276;
+            /* 💡 【変更】境界線をメインカラーのターコイズブルーに */
+            border-bottom: 3px solid #009aa6;
         }
         .header-container {
             max-width: 1200px;
@@ -30,7 +35,8 @@
         header h1 {
             margin: 0;
             font-size: 22px;
-            color: #1a5276;
+            /* 💡 【変更】文字色を深いネイビーにしてロゴと統一 */
+            color: #002b54;
             letter-spacing: 0.5px;
         }
         header h1 span {
@@ -66,10 +72,13 @@
         .side-menu {
             background-color: #ffffff;
             border: 1px solid #dcdde1;
-            border-top: 4px solid #1a5276;
+            /* 💡 【変更】メニューのトップ線をターコイズに */
+            border-top: 4px solid #009aa6;
             padding: 0;
             margin: 0;
             list-style: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-radius: 0 0 4px 4px;
         }
         .side-menu li {
             border-bottom: 1px solid #dcdde1;
@@ -92,12 +101,13 @@
             transition: all 0.2s;
         }
         .side-menu button:hover {
-            background-color: #f1f2f6;
-            color: #1a5276;
+            background-color: #e6f7f8; /* 💡 【変更】ホバー時もミントグリーンに */
+            color: #009aa6;
             padding-left: 25px;
         }
         .side-menu button.active {
-            background-color: #1a5276;
+            /* 💡 【変更】選択中のメニューをグラデーションに変更 */
+            background: linear-gradient(135deg, #009aa6 0%, #1d8b98 100%);
             color: #ffffff;
         }
 
@@ -108,6 +118,8 @@
             padding: 35px;
             border: 1px solid #dcdde1;
             min-height: 450px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-radius: 4px;
         }
 
         .content-panel {
@@ -119,17 +131,17 @@
 
         main h2 {
             font-size: 20px;
-            color: #1a5276;
+            color: #002b54; /* 💡 【変更】深いネイビーに */
             margin-top: 0;
             margin-bottom: 25px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #1a5276;
+            border-bottom: 2px solid #009aa6; /* 💡 【変更】線をターコイズに */
         }
 
         main h3 {
             font-size: 16px;
             color: #2c3e50;
-            border-left: 4px solid #1a5276;
+            border-left: 4px solid #009aa6; /* 💡 【変更】左の飾り線をターコイズに */
             padding-left: 10px;
             margin-top: 30px;
             margin-bottom: 15px;
@@ -202,13 +214,13 @@
         .project-card h4 {
             margin-top: 0;
             font-size: 16px;
-            color: #1a5276;
+            color: #002b54; /* 💡 【変更】深いネイビーに */
             display: flex;
             align-items: center;
             gap: 10px;
         }
         .project-badge {
-            background-color: #1a5276;
+            background-color: #009aa6; /* 💡 【変更】ターコイズに */
             color: #ffffff;
             font-size: 11px;
             padding: 2px 6px;
@@ -244,11 +256,11 @@
         footer {
             text-align: center;
             padding: 30px 20px;
-            background-color: #2c3e50;
+            background-color: #002b54; /* 💡 【変更】フッターをロゴのネイビーに */
             color: #ffffff;
             font-size: 12px;
             margin-top: 60px;
-            border-top: 5px solid #1a5276;
+            border-top: 5px solid #009aa6; /* 💡 【変更】アクセントラインをターコイズに */
         }
 
         @media (max-width: 768px) {
@@ -267,7 +279,7 @@
 <header>
     <div class="header-container">
         <h1>日本若者防災復興協会<span>NPO法人設立認証申請中</span></h1>
-        <div class="subtitle">Japan Youth Association for Relief and Access of Citizens (JYRAC)</div>
+        <div class="subtitle">Japan Youth Resilience Action Consortium (JYRAC)</div>
     </div>
 </header>
 
@@ -363,7 +375,7 @@
                     <td>
                         <ul style="margin: 0; padding-left: 20px;">
                             <li style="margin-bottom: 8px;">
-                                <a href="https://www.seikatubunka1.metro.tokyo.lg.jp/houjin/npo_houjin/list/ledger/0014987/14987-SNS-I1776126482338.pdf" target="_blank" rel="noopener" style="color: #1a5276; font-weight: bold;">
+                                <a href="https://www.seikatubunka1.metro.tokyo.lg.jp/houjin/npo_houjin/list/ledger/0014987/14987-SNS-I1776126482338.pdf" target="_blank" rel="noopener" style="color: #009aa6; font-weight: bold;">
                                     設立趣旨書（PDF）
                                 </a>
                             </li>
@@ -376,7 +388,7 @@
             </table>
 
             <p style="color: #7f8c8d; background-color: #f9f9f9; padding: 15px; border-left: 3px solid #ccc; font-size: 13px; margin-top:25px;">
-                ※正式な法人格の表記、および決算報告（貸借対照表の公告）の掲載は、無事に設立認証・登記が完了し、第1期事業年度（令和9年3月31日まで）が終了した後の令和9年6月頃から開始いたします。
+                ※正式な法人格の表記、および決算報告（貸借対照表の公告）の掲載は、無さに設立認証・登記が完了し、第1期事業年度（令和9年3月31日まで）が終了した後の令和9年6月頃から開始いたします。
             </p>
         </div>
 
