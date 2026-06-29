@@ -1,0 +1,235 @@
+---
+// src/layouts/Layout.astro
+interface Props {
+  title: string;
+  currentTab: 'news' | 'about' | 'services' | 'governance'; // 現在のページ/タブを指定
+}
+
+const { title, currentTab } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title}</title>
+    <link rel="icon" href="/JYRAC.jpg" type="image/jpeg">
+    <link rel="apple-touch-icon" href="/JYRAC.jpg">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" is:inline></script>
+    
+    <style is:global>
+        /* CSSスタイルはすべて共通（変更なしのため省略、以前のものをそのまま維持してください） */
+        :root {
+            --primary: #009aa6;
+            --primary-light: #00d2e0;
+            --primary-dark: #1d8b98;
+            --navy: #002b54;
+            --navy-light: #0a3d6d;
+            --accent: #e67e22;
+            --accent-light: #ff9f43;
+            --panel-bg: rgba(255, 255, 255, 0.90);
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            line-height: 1.8;
+            color: #2c3e50;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #e3f6f7 0%, #ffffff 50%, #f4fafb 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--navy); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; color: #ffffff; }
+        .splash-logo { font-size: 32px; font-weight: 800; letter-spacing: 4px; margin-bottom: 20px; background: linear-gradient(135deg, #ffffff 0%, var(--primary-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .splash-progress-bar { width: 140px; height: 2px; background: rgba(255, 255, 255, 0.1); position: relative; overflow: hidden; border-radius: 2px; }
+        .splash-progress { position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, var(--primary-light), transparent); }
+        #site-content { opacity: 0; visibility: hidden; }
+        body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0, 154, 166, 0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 154, 166, 0.01) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: -1; }
+        .crystal-field { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+        .crystal { position: absolute; width: 0; height: 0; border-left: 20px solid transparent; border-right: 20px solid transparent; border-bottom: 35px solid rgba(0, 154, 166, 0.12); filter: drop-shadow(0 4px 10px rgba(0, 210, 224, 0.2)); }
+        .crystal::after { content: ''; position: absolute; left: -20px; top: 35px; width: 0; height: 0; border-left: 20px solid transparent; border-right: 20px solid transparent; border-top: 35px solid rgba(0, 43, 84, 0.08); }
+        .cr-1 { top: 15%; left: 3%; transform: scale(0.7); }
+        .cr-2 { top: 75%; left: 6%; transform: scale(1.1); }
+        .cr-3 { top: 35%; right: 4%; transform: scale(1.4); border-bottom-color: rgba(230, 126, 34, 0.08); }
+        header { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 24px 40px; border-bottom: 1px solid rgba(0, 154, 166, 0.2); position: sticky; top: 0; z-index: 100; }
+        .header-container { max-width: 1200px; margin: 0 auto; }
+        .brand-zone h1 { margin: 0; font-size: 22px; color: var(--navy); font-weight: 800; display: flex; align-items: center; gap: 10px; }
+        .brand-zone h1 span { font-size: 10px; color: #ffffff; font-weight: 700; background: linear-gradient(135deg, var(--accent) 0%, #d35400 100%); padding: 3px 10px; border-radius: 20px; }
+        .subtitle { font-size: 10px; color: var(--primary-dark); font-weight: 700; letter-spacing: 1px; margin-top: 2px; }
+        .dashboard-container { max-width: 1200px; margin: 40px auto; padding: 0 20px; display: flex; gap: 40px; position: relative; z-index: 10; }
+        aside { width: 280px; flex-shrink: 0; }
+        .side-menu { padding: 0; margin: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
+        .side-menu button { display: block; width: 100%; padding: 18px 24px; color: var(--navy); font-weight: 700; font-size: 14px; background: var(--panel-bg); border: 1px solid rgba(0, 154, 166, 0.2); border-radius: 14px; text-align: left; cursor: pointer; position: relative; overflow: hidden; transition: all 0.25s; }
+        .side-menu button::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 0; background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%); transition: width 0.2s ease; z-index: -1; }
+        .side-menu button:hover { color: #ffffff; border-color: var(--primary-light); padding-left: 30px; }
+        .side-menu button:hover::before { width: 100%; }
+        .side-menu button.active { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%); color: #ffffff; border: 1px solid var(--primary-light); }
+        main { flex-grow: 1; background: var(--panel-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 50px; border: 1px solid rgba(255, 255, 255, 0.7); border-top: 4px solid var(--primary); min-height: 500px; border-radius: 24px; position: relative; }
+        .content-panel { display: none; animation: panelFade 0.4s ease-out forwards; }
+        @keyframes panelFade { from { opacity: 0; transform: translate3d(0, 5px, 0); } to { opacity: 1; transform: translate3d(0, 0, 0); } }
+        .content-panel.active { display: block; }
+        main h2 { font-size: 24px; color: var(--navy); margin: 0 0 35px 0; padding-bottom: 15px; border-bottom: 1px solid rgba(0, 154, 166, 0.15); position: relative; font-weight: 800; }
+        main h2::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 80px; height: 3px; background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%); border-radius: 2px; }
+        .news-list { list-style: none; padding: 0; margin: 0; }
+        .news-item { border-bottom: 1px solid rgba(0, 154, 166, 0.08); margin-bottom: 6px; border-radius: 12px; overflow: hidden; background: rgba(255, 255, 255, 0.4); transition: background 0.3s; }
+        .news-item:hover { background: rgba(255, 255, 255, 0.8); }
+        .news-header { padding: 20px; display: flex; align-items: center; cursor: pointer; position: relative; user-select: none; }
+        .news-date { font-weight: 800; color: var(--primary); width: 120px; flex-shrink: 0; font-size: 15px; }
+        .news-label { background: linear-gradient(135deg, var(--accent) 0%, #d35400 100%); color: #ffffff; font-size: 11px; padding: 3px 10px; border-radius: 6px; margin-right: 24px; font-weight: 800; }
+        .news-title { color: #2c3e50; font-size: 15px; font-weight: 700; padding-right: 30px; }
+        .news-icon { position: absolute; right: 20px; width: 10px; height: 10px; border-right: 2px solid var(--primary); border-bottom: 2px solid var(--primary); transform: rotate(45deg); transition: transform 0.3s ease; }
+        .news-item.is-open .news-icon { transform: rotate(-135deg); }
+        .news-body { height: 0; overflow: hidden; position: relative; }
+        .news-body-inner { padding: 5px 20px 25px 140px; color: #4f5e71; font-size: 14px; font-weight: 600; border-top: 1px dashed rgba(0, 154, 166, 0.05); }
+        .info-table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 25px; border-radius: 16px; overflow: hidden; border: 1px solid rgba(0, 154, 166, 0.12); }
+        .info-table th, .info-table td { padding: 20px 24px; border-bottom: 1px solid rgba(0, 154, 166, 0.08); font-size: 14px; }
+        .info-table tr:last-child th, .info-table tr:last-child td { border-bottom: none; }
+        .info-table th { width: 28%; background-color: #f6fbfc; color: var(--navy); font-weight: 800; }
+        .info-table td { background-color: #ffffff; color: #4f5e71; font-weight: 600; }
+        .project-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 25px; }
+        .project-card { background: #ffffff; border: 1px solid rgba(0, 154, 166, 0.15); border-radius: 20px; padding: 30px; position: relative; display: flex; flex-direction: column; justify-content: space-between; transition: all 0.3s ease; }
+        .project-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--primary-light), var(--navy)); }
+        .project-card.orange-card::before { background: linear-gradient(90deg, var(--accent-light), var(--accent)); }
+        .project-card:hover { transform: translate3d(0, -6px, 0); box-shadow: 0 12px 30px rgba(0, 154, 166, 0.1); }
+        .project-card h4 { margin: 0 0 15px 0; font-size: 17px; color: var(--navy); font-weight: 800; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+        .project-badge { background: rgba(0, 154, 166, 0.06); color: var(--primary-dark); font-size: 10px; padding: 2px 10px; border-radius: 6px; font-weight: 800; border: 1px solid rgba(0, 154, 166, 0.12); }
+        .project-badge.summit { background: rgba(230, 126, 34, 0.06); color: var(--accent); border: 1px solid rgba(230, 126, 34, 0.12); }
+        .btn-link { display: inline-flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #ffffff; padding: 12px 20px; text-decoration: none; border-radius: 10px; font-weight: 700; font-size: 12px; margin-top: 15px; transition: all 0.2s; }
+        .btn-summit { background: linear-gradient(135deg, var(--primary) 0%, var(--navy) 100%); }
+        .alert-box { background-color: #fffdf6; border: 1px solid rgba(241, 196, 15, 0.25); border-left: 5px solid #f1c40f; color: #5d4b07; padding: 22px; margin-bottom: 35px; border-radius: 14px; font-size: 14px; font-weight: 700; }
+        footer { text-align: center; padding: 45px 20px; background-color: var(--navy); color: rgba(255, 255, 255, 0.7); font-size: 13px; margin-top: 100px; border-top: 5px solid var(--primary-light); position: relative; z-index: 20; }
+        @media (max-width: 850px) {
+            header { padding: 20px; text-align: center; }
+            .dashboard-container { flex-direction: column; margin: 20px auto; gap: 24px; }
+            aside { width: 100%; }
+            .side-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+            .side-menu button { text-align: center; padding: 12px 5px; }
+            .project-grid { grid-template-columns: 1fr; }
+            main { padding: 30px 20px; }
+            .news-header { flex-direction: column; align-items: flex-start; gap: 6px; }
+            .news-date { width: auto; }
+            .news-body-inner { padding: 15px; }
+            .info-table th, .info-table td { display: block; width: 100%; }
+            .info-table th { background-color: #f6fbfc; }
+            .crystal-field { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="splash-screen">
+    <div class="splash-logo">JYRAC</div>
+    <div class="splash-progress-bar"><div class="splash-progress"></div></div>
+</div>
+
+<div id="site-content">
+    <div class="crystal-field">
+        <div class="crystal cr-1"></div>
+        <div class="crystal cr-2"></div>
+        <div class="crystal cr-3"></div>
+    </div>
+
+    <header>
+        <div class="header-container">
+            <div class="brand-zone">
+                <h1>日本若者防災復興協会<span>特定非営利活動法人 設立登記申請中</span></h1>
+                <div class="subtitle">Japan Youth Resilience Action Consortium (JYRAC)</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <aside>
+            <ul class="side-menu">
+                <li><button class:list={["menu-btn", { active: currentTab === 'news' }]} data-tab="tab-news">ホーム / 新着情報</button></li>
+                <li><button class:list={["menu-btn", { active: currentTab === 'about' }]} data-tab="tab-about">当法人について</button></li>
+                <li><button class:list={["menu-btn", { active: currentTab === 'services' }]} data-tab="tab-services">事業内容・活動</button></li>
+                <li><button class:list={["menu-btn", { active: currentTab === 'governance' }]} data-tab="tab-governance">情報公開・設立公告</button></li>
+            </ul>
+        </aside>
+
+        <main id="main-panel">
+            <slot />
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 日本若者防災復興協会（特定非営利活動法人 設立登記申請中） All Rights Reserved.</p>
+    </footer>
+</div>
+
+<script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+        if (typeof gsap === "undefined") return;
+
+        // スプラッシュフェード
+        const tl = gsap.timeline();
+        tl.to(".splash-progress", { left: "100%", duration: 1.5, ease: "power2.inOut" })
+          .to(".splash-logo, .splash-progress-bar", { opacity: 0, y: -20, duration: 0.4, ease: "power2.in" })
+          .to("#splash-screen", { display: "none", duration: 0 })
+          .to("#site-content", { autoAlpha: 1, duration: 0.8, ease: "power2.out" });
+
+        // メニュー切り替えUIイベント
+        const menuButtons = document.querySelectorAll('.menu-btn');
+        menuButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const targetTab = e.currentTarget.getAttribute('data-tab');
+                const targetPanel = document.getElementById(targetTab);
+                
+                // 同じSPA的な単一ページ内にタブパネルが存在する場合の切り替え
+                if (targetPanel) {
+                    document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+                    document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+                    targetPanel.classList.add('active');
+                    e.currentTarget.classList.add('active');
+                    document.dispatchEvent(new Event('tabChanged'));
+                } else {
+                    // 別ファイルページへ遷移させたい場合は、ファイルパス（例: /about など）へ飛ばすロジックに拡張可能
+                }
+            });
+        });
+
+        // アコーディオン初期化関数
+        const initAccordion = () => {
+            const newsHeaders = document.querySelectorAll('.news-header');
+            newsHeaders.forEach(header => {
+                if (header.hasAttribute('data-accordion-init')) return;
+                header.setAttribute('data-accordion-init', 'true');
+                header.addEventListener('click', (e) => {
+                    const item = e.currentTarget.closest('.news-item');
+                    const body = item.querySelector('.news-body');
+                    const isOpen = item.classList.contains('is-open');
+
+                    if (isOpen) {
+                        gsap.to(body, { height: 0, duration: 0.4, ease: "power2.inOut" });
+                        item.classList.remove('is-open');
+                    } else {
+                        item.classList.add('is-open');
+                        gsap.set(body, { height: "auto" });
+                        gsap.from(body, { height: 0, duration: 0.4, ease: "power2.out" });
+                    }
+                });
+            });
+        };
+
+        initAccordion();
+        document.addEventListener('tabChanged', initAccordion);
+
+        if (window.innerWidth > 850) {
+            gsap.to(".cr-1", { y: -25, rotation: 360, duration: 12, repeat: -1, yoyo: true, ease: "power1.inOut" });
+            gsap.to(".cr-2", { y: 20, rotation: -360, duration: 15, repeat: -1, yoyo: true, ease: "power1.inOut" });
+            gsap.to(".cr-3", { y: -30, rotation: 180, duration: 10, repeat: -1, yoyo: true, ease: "power1.inOut" });
+
+            menuButtons.forEach((btn, index) => {
+                gsap.to(btn, { y: -5, duration: 5, repeat: -1, yoyo: true, ease: "power1.inOut", delay: index * 0.2 });
+                btn.addEventListener('mouseenter', () => gsap.to(btn, { y: -2, scale: 1.03, duration: 0.3, ease: "power2.out" }));
+                btn.addEventListener('mouseleave', () => gsap.to(btn, { scale: 1, duration: 0.3, ease: "power2.inOut" }));
+            });
+        }
+    });
+</script>
+</body>
+</html>
