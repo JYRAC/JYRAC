@@ -1,0 +1,48 @@
+---
+// src/pages/contact.astro
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="お問い合わせ | 日本若者防災復興協会" currentTab="governance">
+    <div class="content-panel">
+        <h2>お問い合わせ</h2>
+        <p>当団体へのご質問、活動へのご参加希望、取材・協賛のご依頼などは、下記の公式お問い合わせフォーム（Googleフォーム）よりお気軽にご連絡ください。</p>
+        
+        <div class="alert-box" style="margin: 30px 0; border-left-color: var(--primary);">
+            <strong>【法人設立登記申請中のご連絡について】</strong><br>
+            現在は法人格の登記申請手続き中のため、フォームよりいただいたお問い合わせは設立準備事務局にて順次確認し、担当者より折り返しご連絡させていただきます。
+        </div>
+
+        <div style="text-align: center; margin: 45px 0;">
+            <a href="https://forms.gle/aJGpNosn9FEYdaEG8" target="_blank" class="google-form-btn">
+                お問い合わせフォームを開く（Googleフォーム） ➔
+            </a>
+            <p style="font-size: 12px; color: #7f8c8d; margin-top: 12px;">※外部サイト（Googleフォーム）のウインドウが開きます。</p>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    /* Googleフォームボタン専用のスタイリッシュなデザイン */
+    .google-form-btn {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--navy) 100%);
+        color: #ffffff;
+        padding: 20px 38px;
+        text-decoration: none;
+        border-radius: 14px;
+        font-weight: 800;
+        font-size: 16px;
+        letter-spacing: 0.5px;
+        box-shadow: 0 6px 20px rgba(0, 43, 84, 0.15);
+        transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .google-form-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0, 154, 166, 0.3);
+        color: #ffffff;
+    }
+</style>
