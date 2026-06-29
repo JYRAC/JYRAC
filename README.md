@@ -1,35 +1,43 @@
+# Astro Starter Kit: Minimal
 
-📂 ファイル構成
-Plaintext
-├── index.html       # サイト本体（このファイル1枚で全メニューを表示）
-└── README.md        # 本マニュアル（このファイル）
-🛠️ 基本的な運用・更新方法
-1. 新着情報・お知らせの追加
-トップページの「新着情報・お知らせ一覧」を更新する手順です。
+```sh
+npm create astro@latest -- --template minimal
+```
 
-index.html をテキストエディタ（メモ帳、VS Code等）で開きます。
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
 
-`` の中にある <ul class="news-list"> を探します。
+## 🚀 Project Structure
 
-一番上（最新のもの）に、以下のルールで <li> タグを追加します。
+Inside of your Astro project, you'll see the following folders and files:
 
-HTML
-<li>
-    <span class="news-date">2026.06.01</span> <span class="news-label">お知らせ</span>   <span class="news-title">新しいお知らせの文章をここに記述します。</span> </li>
-💡 ラベルの使い分け
-<span class="news-label">重要</span> ➔ オレンジ色の目立つラベルになります（設立公告や重大な変更など）。
+```text
+/
+├── public/
+├── src/
+│   └── pages/
+│       └── index.astro
+└── package.json
+```
 
-<span class="news-label info">お知らせ</span> ➔ info クラスを半角スペースで付け足すと、学校サイト風の落ち着いた青色ラベルになります（通常のお知らせ、サイト開設など）。
+Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
 
-2. NSF PROJECTs（別サイト）へのリンク設定
-事業内容パネル内にある「NSF PROJECTs 公式サイト」のボタンリンクを有効化します。
+There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
 
-index.html 内の `` エリアを探します。
+Any static assets, like images, can be placed in the `public/` directory.
 
-<a href="#" class="btn-link" target="_blank"> の href="#" の部分を、実際のNSFサイトのURL（例: href="https://nsf-projects.example.com") に書き換えて上書き保存します。
+## 🧞 Commands
 
+All commands are run from the root of the project, from a terminal:
 
-📄 著作権・免責事項
-本テンプレートの著作権は 特定非営利活動法人 日本若者防災復興協会（JAYRAC） に帰属します。
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies                            |
+| `npm run dev`             | Starts local dev server at `localhost:4321`      |
+| `npm run build`           | Build your production site to `./dist/`          |
+| `npm run preview`         | Preview your build locally, before deploying     |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `npm run astro -- --help` | Get help using the Astro CLI                     |
 
-認証申請時の提出書類（定款・設立趣旨書等）と記載内容が乖離しないよう、文言の修正時には十分ご注意ください。
+## 👀 Want to learn more?
+
+Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
