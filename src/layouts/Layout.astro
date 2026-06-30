@@ -2,7 +2,7 @@
 // src/layouts/Layout.astro
 interface Props {
   title: string;
-  currentTab: 'news' | 'about' | 'services' | 'governance'; // 現在のページを指定
+  currentTab: 'news' | 'about' | 'services' | 'governance' | 'contact'; // 👈 'contact' を追加してエラーを防ぎます
 }
 
 const { title, currentTab } = Astro.props;
@@ -64,7 +64,6 @@ const { title, currentTab } = Astro.props;
         aside { width: 280px; flex-shrink: 0; }
         .side-menu { padding: 0; margin: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
         
-        /* <a>タグ用にスタイルを微調整 */
         .side-menu .menu-btn { display: block; padding: 18px 24px; color: var(--navy); font-weight: 700; font-size: 14px; background: var(--panel-bg); border: 1px solid rgba(0, 154, 166, 0.2); border-radius: 14px; text-align: left; text-decoration: none; position: relative; overflow: hidden; transition: all 0.25s; box-sizing: border-box; }
         .side-menu .menu-btn::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 0; background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%); transition: width 0.2s ease; z-index: -1; }
         .side-menu .menu-btn:hover { color: #ffffff; border-color: var(--primary-light); padding-left: 30px; }
@@ -151,7 +150,7 @@ const { title, currentTab } = Astro.props;
                 <li><a href="/about" class:list={["menu-btn", { active: currentTab === 'about' }]}>当法人について</a></li>
                 <li><a href="/services" class:list={["menu-btn", { active: currentTab === 'services' }]}>事業内容・活動</a></li>
                 <li><a href="/governance" class:list={["menu-btn", { active: currentTab === 'governance' }]}>情報公開・設立公告</a></li>
-            </ul>
+                <li><a href="/contact" class:list={["menu-btn", { active: currentTab === 'contact' }]}>お問い合わせ</a></li> </ul>
         </aside>
 
         <main id="main-panel">
@@ -175,7 +174,7 @@ const { title, currentTab } = Astro.props;
           .to("#splash-screen", { display: "none", duration: 0 })
           .to("#site-content", { autoAlpha: 1, duration: 0.8, ease: "power2.out" });
 
-        // アコーディオン初期化関数（現在のページ内にある要素にアタッチ）
+        // アコーディオン初期化関数
         const initAccordion = () => {
             const newsHeaders = document.querySelectorAll('.news-header');
             newsHeaders.forEach(header => {
@@ -199,7 +198,7 @@ const { title, currentTab } = Astro.props;
         };
         initAccordion();
 
-        // 3D背景などの演出エフェクト（PC用）
+        // エフェクト（PC用）
         if (window.innerWidth > 850) {
             gsap.to(".cr-1", { y: -25, rotation: 360, duration: 12, repeat: -1, yoyo: true, ease: "power1.inOut" });
             gsap.to(".cr-2", { y: 20, rotation: -360, duration: 15, repeat: -1, yoyo: true, ease: "power1.inOut" });
