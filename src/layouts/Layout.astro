@@ -2,7 +2,6 @@
 // src/layouts/Layout.astro
 interface Props {
   title: string;
-  // 💡 'gioco' を新しく受け取れるように追加
   currentTab: 'news' | 'about' | 'services' | 'governance' | 'sns' | 'contact' | 'gioco'; 
 }
 
@@ -21,8 +20,7 @@ const { title, currentTab } = Astro.props;
     <link rel="apple-touch-icon" href="/JYRAC.jpg">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" is:inline></script>
     
-    <style is:global>
-        /* (既存のスタイル設定はそのまま維持されます) */
+    <style>
         :root {
             --primary: #009aa6;
             --primary-light: #00d2e0;
@@ -35,7 +33,6 @@ const { title, currentTab } = Astro.props;
         }
         /* ...中略（既存の共通スタイル）... */
         
-        /* 💡 HUG Gioco用専用ボタンカラー（ブランド由来のネイビーネオン） */
         .btn-gioco-launch {
             display: inline-flex;
             justify-content: center;
@@ -75,62 +72,3 @@ const { title, currentTab } = Astro.props;
         }
     </style>
 </head>
-<body>
-
-<div class="crystal-field">
-    <div class="crystal cr-1"></div>
-    <div class="crystal cr-2"></div>
-    <div class="crystal cr-3"></div>
-</div>
-
-<header>
-    <div class="header-container">
-        <div class="brand-zone">
-            <h1>日本若者防災復興協会<span>特定非営利活動法人 設立登記申請中</span></h1>
-            <div class="subtitle">Japan Youth Resilience Action Consortium (JYRAC)</div>
-        </div>
-    </div>
-</header>
-
-<div class="dashboard-container">
-    <aside>
-        <ul class="side-menu">
-            <li><a href="/" class={`menu-btn ${currentTab === 'news' ? 'active' : ''}`}>ホーム / 新着情報</a></li>
-            <li><a href="/about" class={`menu-btn ${currentTab === 'about' ? 'active' : ''}`}>当法人について</a></li>
-            <li><a href="/services" class={`menu-btn ${currentTab === 'services' ? 'active' : ''}`}>事業内容・活動</a></li>
-            <li><a href="/gioco" class={`menu-btn ${currentTab === 'gioco' ? 'active' : ''}`}>HUG Gioco (教材)</a></li>
-            <li><a href="/governance" class={`menu-btn ${currentTab === 'governance' ? 'active' : ''}`}>情報公開・設立公告</a></li>
-            <li><a href="/sns" class={`menu-btn ${currentTab === 'sns' ? 'active' : ''}`}>公式SNS一覧</a></li>
-            <li><a href="/contact" class={`menu-btn ${currentTab === 'contact' ? 'active' : ''}`}>お問い合わせ</a></li>
-        </ul>
-    </aside>
-
-    <main id="main-panel">
-        <slot /> </main>
-</div>
-
-<footer>
-    <p>&copy; 2026 日本若者防災復興協会（特定非営利活動法人 設立登記申請中） All Rights Reserved.</p>
-</footer>
-
-<script is:inline>
-    // PCのみのGSAP浮遊エフェクト制御
-    document.addEventListener("DOMContentLoaded", () => {
-        if (typeof gsap === "undefined") return;
-
-        if (window.innerWidth > 850) {
-            gsap.to(".cr-1", { y: -25, rotation: 360, duration: 12, repeat: -1, yoyo: true, ease: "power1.inOut" });
-            gsap.to(".cr-2", { y: 20, rotation: -360, duration: 15, repeat: -1, yoyo: true, ease: "power1.inOut" });
-            gsap.to(".cr-3", { y: -30, rotation: 180, duration: 10, repeat: -1, yoyo: true, ease: "power1.inOut" });
-
-            const menuButtons = document.querySelectorAll('.side-menu a');
-            menuButtons.forEach((btn, index) => {
-                gsap.to(btn, { y: -5, duration: 5, repeat: -1, yoyo: true, ease: "power1.inOut", delay: index * 0.2 });
-                btn.addEventListener('mouseenter', () => gsap.to(btn, { y: -2, scale: 1.03, duration: 0.3, ease: "power2.out" }));
-                btn.addEventListener('mouseleave', () => gsap.to(btn, { scale: 1, duration: 0.3, ease: "power2.inOut" }));
-            });
-        }
-    });
-</script>
-</body>
-</html>
