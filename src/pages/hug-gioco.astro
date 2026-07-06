@@ -1,6 +1,7 @@
 ---
 // ==========================================
-// 1. Astroレイアウトのインポートとデータ層の一元管理
+// 1. DATA LAYER (Astroフロントマターでデータを一元管理)
+// サーバー側でここを編集するだけで、画面のHTMLとJSのデータの両方が自動更新されます。
 // ==========================================
 import Layout from '../layouts/Layout.astro';
 
@@ -36,13 +37,9 @@ const CH_CARDS = [
 ];
 ---
 
-{/* 💡 JYRACのサイドメニュー・クリスタル装飾・GSAP枠の中にゲームを完全統合 */}
 <Layout title="HUG Gioco — TKB型避難所運営ディスカッションゲーム" currentTab="gioco">
   
-  {/* --- 2. GAME MAIN AREA (生HTMLタグを一切排除し、メインパネルに収まる構造に最適化) --- */}
-  <div class="game-container">
-    
-    {/* ゲーム専用インラインヘッダーバー (元のHTMLのデザイン・文言を完全再現) */}
+  <div class="game-container" id="game-scope">
     <div class="game-header-bar">
       <div class="game-header-titles">
         <b>HUG Gioco</b>
@@ -73,14 +70,14 @@ const CH_CARDS = [
       </div>
 
       <div style="text-align: center; margin: 28px 0 20px;">
-        <button id="btn-draw" class="btn big">🎲 カードを引いて状況を作る</button>
+        <button id="btn-draw" class="btn big" type="button">🎲 カードを引いて状況を作る</button>
       </div>
 
       <div id="sit-cards" class="cards">
         </div>
 
       <div style="text-align: center; margin-top: 40px;">
-        <button id="btn-next-step1" class="btn green" disabled>次へ進む（課題検討） ➔</button>
+        <button id="btn-next-step1" class="btn green" type="button" disabled>次へ進む（課題検討） ➔</button>
       </div>
     </div>
 
@@ -118,8 +115,8 @@ const CH_CARDS = [
       </div>
 
       <div class="final-actions">
-        <button id="btn-back-step2" class="btn ghost small">🔀 状況を引き直す</button>
-        <button id="btn-next-step2" class="btn green">次へ進む（アクシデント発生） ➔</button>
+        <button id="btn-back-step2" class="btn ghost small" type="button">🔀 状況を引き直す</button>
+        <button id="btn-next-step2" class="btn green" type="button">次へ進む（アクシデント発生） ➔</button>
       </div>
     </div>
 
@@ -148,8 +145,8 @@ const CH_CARDS = [
       </div>
 
       <div class="final-actions">
-        <button id="btn-back-step3" class="btn ghost small">⬅ 戻る</button>
-        <button id="btn-next-step3" class="btn green">シートをまとめて完成！ ➔</button>
+        <button id="btn-back-step3" class="btn ghost small" type="button">⬅ 戻る</button>
+        <button id="btn-next-step3" class="btn green" type="button">シートをまとめて完成！ ➔</button>
       </div>
     </div>
 
@@ -167,10 +164,10 @@ const CH_CARDS = [
         </div>
       </div>
       <div class="final-actions">
-        <button id="btn-back-step4" class="btn ghost small">⬅ 修正する</button>
-        <button id="btn-copy" class="btn sun">📋 テキストをコピーする</button>
-        <button id="btn-print" class="btn sky">🖨️ A4用紙に印刷する</button>
-        <button id="btn-restart" class="btn red">🔄 最初からやり直す</button>
+        <button id="btn-back-step4" class="btn ghost small" type="button">⬅ 修正する</button>
+        <button id="btn-copy" class="btn sun" type="button">📋 テキストをコピーする</button>
+        <button id="btn-print" class="btn sky" type="button">🖨️ A4用紙に印刷する</button>
+        <button id="btn-restart" class="btn red" type="button">🔄 最初からやり直す</button>
       </div>
       <div class="footer-note"><b>HUG Gioco (グロッコ)</b> — TKB型避難所運営ディスカッションゲーム<br>協力：日本若者防災復興協会（JYRAC）</div>
     </div>
@@ -179,16 +176,17 @@ const CH_CARDS = [
   <div id="game-toast" class="game-toast"></div>
 </Layout>
 
-{/* --- 3. STYLE LAYER (JYRACダッシュボード枠を汚染しないよう、スコープをゲーム内に限定) --- */}
+{/* ==========================================
+// JYRACサイト枠と完全同化させつつ、スコープを保護するスタイル
+// ========================================== */}
 <style is:global>
-  /* ゲームエリア専用のパレットと、元のHTMLの背景グラデーションをJYRACのパネルにドッキング */
   .game-container {
     --navy: #1B3A8C; --navy-deep: #152E70; --green: #2E9E4F; --green-deep: #1f7d3c; --red: #E01E2B; --red-deep: #b8161f;
     --sky: #4AA9E0; --sky-soft: #DDEEFA; --sun: #FFD23F; --sun-soft: #FFF3C9;
     --ink: #233047; --ink-soft: #5b6779; --line: #E7E0D0; --shadow: 0 10px 24px rgba(27, 58, 140, 0.12); --shadow-lg: 0 18px 44px rgba(27, 58, 140, 0.18);
     --radius: 22px; --radius-sm: 14px;
     
-    padding: 10px; min-height: 600px;
+    padding: 25px; min-height: 600px;
     background-image: 
       radial-gradient(circle at 12% 8%, rgba(74,169,224,0.06) 0 22px, transparent 23px),
       radial-gradient(circle at 88% 14%, rgba(46,158,79,0.05) 0 26px, transparent 27px),
@@ -197,17 +195,10 @@ const CH_CARDS = [
     background-color: #FDFBF5; border-radius: var(--radius); border: 1px solid var(--line);
   }
 
-  /* ゲーム内ミニヘッダーバー */
-  .game-header-bar {
-    border-bottom: 2px solid var(--navy); padding: 0 0 12px 0; display: flex; align-items: center; margin-bottom: 25px;
-  }
+  .game-header-bar { border-bottom: 2px solid var(--navy); padding: 0 0 12px 0; display: flex; align-items: center; margin-bottom: 25px; }
   .game-header-titles b { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 1.15rem; color: var(--navy); }
   .game-header-titles span { font-size: 0.72rem; color: var(--ink-soft); font-weight: 700; display: block; }
 
-  .view { display: none; animation: pop 0.4s ease; }
-  .view.active { display: block; }
-
-  /* 元のHTMLロゴマークを完全再現 */
   .hero-zone { text-align: center; padding: 12px 0 6px; }
   .logo-main { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 15px; font-family: 'Baloo 2', sans-serif; filter: drop-shadow(0 8px 16px rgba(27,58,140,0.12)); }
   .logo-h, .logo-u, .logo-g2 { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; font-size: 32px; font-weight: 800; border-radius: 14px; position: relative; box-shadow: inset 0 -4px 0 rgba(0,0,0,0.15), 0 4px 10px rgba(0,0,0,0.08); text-shadow: 0 2px 4px rgba(0,0,0,0.15); line-height: 1; color:#fff; }
@@ -221,9 +212,6 @@ const CH_CARDS = [
   .logo-text-gioco { font-size: 46px; font-weight: 800; color: var(--navy); margin-left: 6px; letter-spacing: -0.01em; transform: rotate(1deg); display: inline-block; }
   .game-sub-title { color: var(--green); font-size: 1.15rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 25px; text-transform: uppercase; display: block; text-align: center; }
 
-  .game-container p.desc { max-width: 580px; margin: 0 auto 30px; font-size: 1rem; color: var(--ink-soft); line-height: 1.8; text-align: left; }
-
-  /* 共通パーツのスタイル */
   .game-container .btn {
     font-family: 'Baloo 2', 'Zen Maru Gothic'; font-weight: 800; border: none; cursor: pointer; border-radius: 999px;
     padding: 15px 32px; font-size: 1.05rem; color: #fff; background: var(--navy);
@@ -242,7 +230,6 @@ const CH_CARDS = [
   .tkb-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 999px; font-size: 0.88rem; font-weight: 800; color: #fff; }
   .tkb-badge.t { background: var(--green); } .tkb-badge.k { background: var(--red); } .tkb-badge.b { background: var(--navy); }
 
-  /* カードと問いのデザイン */
   .cards { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); margin-top: 20px; }
   .gcard { position: relative; background: #fff; border-radius: var(--radius-sm); padding: 18px 14px; box-shadow: var(--shadow); border-left: 6px solid var(--navy); overflow: hidden; text-align: left; }
   .gcard .cat { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 4px; }
@@ -303,19 +290,22 @@ const CH_CARDS = [
   }
 </style>
 
-{/* --- 4. SCRIPT LAYER (Astroから引き渡したデータ配列を使ってブラウザ側でパパッと動かす安全な仕組み) --- */}
+{/* ==========================================
+// 4. SCRIPT LAYER (外部衝突を100%遮断する安全なJS制御)
+// ========================================== */}
 <script is:inline define:vars={{ CARDS, DISCUSSIONS, CH_CARDS }}>
   let DECK = [...CARDS];
   let CURRENT = null;
 
-  const $ = sel => document.querySelector(sel);
-  const $$ = sel => document.querySelectorAll(sel);
+  // スコープをゲーム内に限定して外部干渉をセキュアにブロック
+  const $ = sel => document.querySelector(`#game-scope ${sel}`);
+  const $$ = sel => document.querySelectorAll(`#game-scope ${sel}`);
 
   function showView(id){
-    $$('.view').forEach(v => v.classList.remove('active'));
-    $(`#view-${id}`).classList.add('active');
+    document.querySelectorAll('#game-scope .view').forEach(v => v.classList.remove('active'));
+    document.querySelector(`#game-scope #view-${id}`).classList.add('active');
     
-    $$('.step-dots i').forEach((dot, idx) => {
+    document.querySelectorAll('.step-dots i').forEach((dot, idx) => {
       dot.className = '';
       if(idx === id - 1) dot.className = 'on';
       else if(idx < id - 1) dot.className = 'done';
@@ -340,7 +330,8 @@ const CH_CARDS = [
     showView(1);
   }
 
-  function drawSituation(){
+  function drawSituation(e){
+    if(e) { e.preventDefault(); e.stopPropagation(); }
     const dis = DECK.filter(c => c.c === 'dis'), time = DECK.filter(c => c.c === 'time'), fac = DECK.filter(c => c.c === 'fac'), peo = DECK.filter(c => c.c === 'peo');
     const c1 = sample(dis), c2 = sample(time), c3 = sample(fac);
     let p1 = sample(peo), p2 = sample(peo);
@@ -356,7 +347,8 @@ const CH_CARDS = [
     return `【${cur.dis.txt}】のなか、発災から【${cur.time.txt}】が経過。避難所環境は【${cur.fac.txt}】という条件です。そこへ【${cur.p1.txt}】や【${cur.p2.txt}】が避難しています。`;
   }
 
-  function buildStep2(){
+  function buildStep2(e){
+    if(e) { e.preventDefault(); e.stopPropagation(); }
     if(!CURRENT) return;
     $('#step2-sit-text').innerHTML = `外の状況：<b>${CURRENT.dis.txt}</b><br>時間の経過：<b>${CURRENT.time.txt}</b><br>使えるもの：<b>${CURRENT.fac.txt}</b><br>避難者の様子：<b>${CURRENT.p1.txt}</b> ／ <b>${CURRENT.p2.txt}</b>`;
     $('#q-cards-box').innerHTML = `
@@ -366,7 +358,8 @@ const CH_CARDS = [
     showView(2);
   }
 
-  function buildStep3(){
+  function buildStep3(e){
+    if(e) { e.preventDefault(); e.stopPropagation(); }
     let idx1 = Math.floor(Math.random()*CH_CARDS.length);
     let idx2 = Math.floor(Math.random()*CH_CARDS.length);
     while(idx1 === idx2){ idx2 = Math.floor(Math.random()*CH_CARDS.length); }
@@ -375,25 +368,26 @@ const CH_CARDS = [
   }
 
   function collectMemo(){
-    const d = {}; $$('textarea[data-memo]').forEach(t => d[t.dataset.memo] = t.value.trim()); return d;
+    const d = {}; document.querySelectorAll('#game-scope textarea[data-memo]').forEach(t => d[t.dataset.memo] = t.value.trim()); return d;
   }
 
   function buildReview(){
     $('#rSit').textContent = CURRENT ? situationText(CURRENT) : '';
     const d = collectMemo();
-    $$('.content[data-r]').forEach(el => {
+    document.querySelectorAll('#game-scope .content[data-r]').forEach(el => {
       const v = d[el.dataset.r];
       el.textContent = v || '（未入力）';
       if(!v) el.classList.add('empty'); else el.classList.remove('empty');
     });
   }
 
-  function copyReview(){
+  function copyReview(e){
+    if(e) { e.preventDefault(); e.stopPropagation(); }
     const d = collectMemo();
     const sit = CURRENT ? situationText(CURRENT) : '（シチュエーション未作成）';
     const text = `【HUG Gioco ワーク記録シート】\n\n■状況\n${sit}\n\n■課題\n${d.issues||'-'}\n\n■配慮\n${d.care||'-'}\n\n■対応\n${d.now||'-'}\n\n■準備\n${d.prep||'-'}\n\n■提案\n${d.propose||'-'}`;
     navigator.clipboard.writeText(text).then(() => {
-      const t = $('#game-toast'); t.textContent = 'クリップボードにコピーしました！'; t.classList.add('show');
+      const t = document.querySelector('#game-toast'); t.textContent = 'クリップボードにコピーしました！'; t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 2000);
     });
   }
@@ -402,12 +396,14 @@ const CH_CARDS = [
     $('#btn-draw').addEventListener('click', drawSituation);
     $('#btn-next-step1').addEventListener('click', buildStep2);
     $('#btn-next-step2').addEventListener('click', buildStep3);
-    $('#btn-next-step3').addEventListener('click', () => { buildReview(); showView(4); });
-    $('#btn-back-step2').addEventListener('click', () => showView(1));
-    $('#btn-back-step3').addEventListener('click', () => showView(2));
-    $('#btn-back-step4').addEventListener('click', () => showView(3));
+    $('#btn-next-step3').addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} buildReview(); showView(4); });
+    
+    $('#btn-back-step2').addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} showView(1); });
+    $('#btn-back-step3').addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} showView(2); });
+    $('#btn-back-step4').addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} showView(3); });
+    
     $('#btn-copy').addEventListener('click', copyReview);
-    $('#btn-print').addEventListener('click', () => window.print());
-    $('#btn-restart').addEventListener('click', () => { if(confirm('新しくゲームをはじめますか？')) startTool(); });
+    $('#btn-print').addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} window.print(); });
+    $('#btn-restart').addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} if(confirm('新しくゲームをはじめますか？')) startTool(); });
   });
 </script>
