@@ -58,7 +58,6 @@ const CH_CARDS = [
   header.site .titles span{ font-size:.72rem; color:var(--primary); font-weight:700; letter-spacing: 0.05em; }
   header.site .nav-spacer{ flex:1; }
   
-  /* サイトへ戻るボタン（target="_blank"を使わない同一タブ仕様） */
   .btn-back-to-site { font-weight:700; font-size:.85rem; color:var(--primary); text-decoration:none; background:#fff; border:2px solid var(--primary); padding:6px 16px; border-radius:999px; transition:.2s; display:inline-flex; align-items:center; gap:6px; }
   .btn-back-to-site:hover { background:var(--primary); color:#fff; }
 
@@ -90,13 +89,13 @@ const CH_CARDS = [
   .situation p{ font-size:clamp(1.05rem, 3vw, 1.25rem); font-weight:700; margin:.6em 0 0; line-height: 1.6; }
 
   .cards{ display:grid; gap:16px; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); margin: 25px 0; }
-  .gcard{ position:relative; background:#fff; border-radius:20px; padding:20px 18px; box-shadow:var(--shadow); border: 1px solid rgba(0,0,0,0.04); border-top:8px solid var(--primary); overflow:hidden; }
+  .gcard{ position:relative; background:#fff; border-radius:20px; padding:20px 18px; box-shadow:var(--shadow); border: 1px solid rgba(0,0,0,0.04); border-top:8px solid var(--primary); overflow:hidden; text-align: left; }
   .gcard .cat{ font-size:.75rem; font-weight:800; opacity:.85; letter-spacing: 0.05em; margin-bottom: 6px; }
   .gcard .txt{ font-weight:700; font-size:1.05rem; line-height: 1.5; color: var(--navy); }
   .gcard .emoji{ font-size:1.8rem; display: block; margin-bottom: 12px; }
   
   .c-dis{ border-top-color:var(--red); } .c-dis .cat{ color:var(--red); }
-  .c-time{ border-top-color:var(--sky); } .c-time .cat{ color:var(--sky); }
+  .c-time{ border-top-color:var(--sky); } .c-time .cat{ color(--sky); }
   .c-fac{ border-top-color:var(--navy); } .c-fac .cat{ color:var(--navy); }
   .c-peo{ border-top-color:var(--sun); } .c-peo .cat{ color:#d4a017; }
   .c-con{ border-top-color:#7a5cc0; } .c-con .cat{ color:#7a5cc0; }
@@ -252,6 +251,7 @@ const CH_CARDS = [
     window.scrollTo(0,0);
   }
 
+  // 💡 絵文字のキー参照を c.emoji からフロントマターと一致する c.e へ修正して確実に出力
   function makeCardHtml(c){
     const catMaps = {dis:'災害・状況',time:'経過時間',fac:'施設・物資',peo:'避難者',con:'運営・情報',sup:'支援・対話'};
     const catName = catMaps[c.c] || c.c;
