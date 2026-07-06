@@ -1,8 +1,9 @@
 ---
 // ==========================================
 // 1. DATA LAYER (Astroフロントマターでデータを一元管理)
-// サーバー側でここを編集するだけで、画面のHTMLとJSのデータの両方が自動更新されます。
 // ==========================================
+import Layout from '../layouts/Layout.astro';
+
 const CARDS = [
   { id: 1, c: 'dis', txt: '避難所に指定された学校の体育館。外は激しい雨と風。', e: '⛈️' },
   { id: 2, c: 'dis', txt: '夜間に大きな地震が発生。周辺一帯が停電している。', e: '🌑' },
@@ -15,7 +16,7 @@ const CARDS = [
   { id: 9, c: 'fac', txt: '学校の受水槽が生きており、水は出るが流せない。', e: '🚰' },
   { id: 10, c: 'fac', txt: '備蓄倉庫からアルファ米300食と毛布50枚を発見。', e: '📦' },
   { id: 11, c: 'peo', txt: '乳幼児を連れた母親。授乳スペースを求めている。', e: '👶' },
-  { id: 12, c: 'peo', txt: '車椅子の高齢者と, そのお世話をする家族。', e: '👨‍🦽' },
+  { id: 12, c: 'peo', txt: '車椅子の高齢者と、そのお世話をする家族。', e: '👨‍🦽' },
   { id: 13, c: 'peo', txt: '日本語が苦手な外国人の家族（大人2人、子ども1人）。', e: '🗣️' },
   { id: 14, c: 'peo', txt: 'ペット（大型犬）を連れて避難してきた飼い主。', e: '🐕' },
   { id: 15, c: 'peo', txt: '修学旅行中の高校生グループ30名が避難を求めてきた。', e: '🎒' }
@@ -30,51 +31,198 @@ const DISCUSSIONS = {
 const CH_CARDS = [
   { id: 'ch1', c: 'con', txt: '避難所内の連絡・情報共有をどう行うか？', e: '📢' },
   { id: 'ch2', c: 'con', txt: '外部（役場や救急）との通信手段の確保は？', e: '📱' },
-  { id: 'ch3', c: 'sup', txt: '届いた物資の仕分け·管理の担当者をどうするか？', e: '🤝' },
+  { id: 'ch3', c: 'sup', txt: '届いた物資の仕分け・管理の担当者をどうするか？', e: '🤝' },
   { id: 'ch4', c: 'sup', txt: '避難者同士のトラブル（騒音・ペット等）の対応は？', e: '⚡' }
 ];
 ---
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HUG Gioco — TKB型避難所運営ディスカッションゲーム</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
 
-<style is:global>
-  :root {
+<Layout title="HUG Gioco — TKB型避難所運営ディスカッションゲーム" currentTab="gioco">
+  
+  {/* 💡 他のページを崩さないよう、ゲーム画面全体を固有のクラスで包み込んで隔離します */}
+  <div class="gioco-page-scoped" id="game-scope-root">
+    
+    <header class="site-header">
+      <div class="titles">
+        <b>HUG Gioco</b>
+        <span>TKB型避難所運営ディスカッションゲーム</span>
+      </div>
+      <div class="nav-spacer"></div>
+      <a href="/gioco" class="btn-back-to-site">JYRACサイトに戻る ➔</a>
+      <div class="step-dots">
+        <i id="dot-1" class="on"></i>
+        <i id="dot-2"></i>
+        <i id="dot-3"></i>
+        <i id="dot-4"></i>
+      </div>
+    </header>
+
+    <div class="game-main-content">
+      <div id="view-1" class="view active">
+        <div class="hero">
+          <div class="logo-main">
+            <div class="logo-h">H</div>
+            <div class="logo-u">U</div>
+            <div class="logo-g2">G</div>
+            <div class="logo-text-gioco">Gioco</div>
+          </div>
+          <span class="sub">TKB型避難所運営ディスカッションゲーム</span>
+        </div>
+
+        <p class="desc" style="text-align: center;">
+          避難所運営の命題となる<strong>TKB（トイレ・キッチン・ベッド）</strong>をテーマに、直感的なグループワークを行えるシミュレーションゲームです。<br><br>
+          「🎲 カードを引く」ボタンを押すと、現在の災害シナリオ、経過時間、施設の物資条件、特別な要配慮者を含む避難者のシチュエーションが自動生成されます。
+        </p>
+
+        <div class="tkb-badge-row">
+          <span class="tkb-badge t">🚾 T: Toilet (トイレ対策)</span>
+          <span class="tkb-badge k">🍳 K: Kitchen (食事・炊き出し)</span>
+          <span class="tkb-badge b">🛏️ B: Bed (快適な睡眠・居住)</span>
+        </div>
+
+        <div style="text-align: center; margin: 28px 0 20px;">
+          <button id="btn-draw" class="btn big" type="button">🎲 カードを引いて状況を作る</button>
+        </div>
+
+        <div id="sit-cards" class="cards">
+          </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+          <button id="btn-next-step1" class="btn green" type="button" disabled>次へ進む（課題検討） ➔</button>
+        </div>
+      </div>
+
+      <div id="view-2" class="view">
+        <div class="screen-head">
+          <h2>STEP 2: TKBの課題に向き合う</h2>
+          <span class="tag">グループワーク</span>
+        </div>
+
+        <div class="situation">
+          <div class="lbl">現在のシチュエーション設定</div>
+          <p id="step2-sit-text"></p>
+        </div>
+
+        <div class="note-line">
+          💡 下記の<b>T・K・Bそれぞれの問い</b>について、グループで「何が問題になるか」「どう対応するか」を話し合ってみましょう。
+        </div>
+
+        <div id="q-cards-box" class="q-groups">
+          </div>
+
+        <div class="section-label">
+          <span class="pill">記録メモ</span> ワーク中の気づきや意見をメモしよう
+        </div>
+
+        <div class="memo-grid">
+          <div class="memo m1">
+            <label>① 今回の状況で「想定される課題」は？</label>
+            <textarea data-memo="issues" placeholder="例：停電しているので夜間のトイレが非常に危険、物資の毛布50枚に対して避難者が多すぎる、など"></textarea>
+          </div>
+          <div class="memo m2">
+            <label>② 「特に配慮が必要な人」は誰？</label>
+            <textarea data-memo="care" placeholder="例：日本語が不慣れな外国人家族への案内掲示、乳幼児の泣き声や授乳のための個室教室の割り当て、など"></textarea>
+          </div>
+        </div>
+
+        <div class="final-actions">
+          <button id="btn-back-step2" class="btn ghost small" type="button">🔀 状況を引き直す</button>
+          <button id="btn-next-step2" class="btn green" type="button">次へ進む（アクシデント発生） ➔</button>
+        </div>
+      </div>
+
+      <div id="view-3" class="view">
+        <div class="screen-head">
+          <h2>STEP 3: 突然のアクシデント・運営課題</h2>
+          <span class="tag" style="background:#fde3e5; color:var(--red);">トラブル対応</span>
+        </div>
+
+        <div class="note-line" style="background:#fde3e5; border-color:var(--red); color:var(--red-deep);">
+          ⚠️ <b>追加チャレンジ発生！</b> 運営ディスカッションを進める中、さらに以下のアクシデントや追加の運営問題が発生しました。どう乗り越えますか？
+        </div>
+
+        <div id="ch-cards-box" class="cards">
+          </div>
+
+        <div class="memo-grid">
+          <div class="memo m3">
+            <label>③ 混乱を防ぐために「今すぐ必要な対応」は？</label>
+            <textarea data-memo="now" placeholder="例：修学旅行中の元気な高校生たちに物資搬入やゴミ集積の手伝いチームを結成してもらう、など"></textarea>
+          </div>
+          <div class="memo m4">
+            <label>④ 普段の生活から「事前に準備すべきこと」は？</label>
+            <textarea data-memo="prep" placeholder="例：学校の備蓄品見直し、防災訓練の実施など"></textarea>
+          </div>
+        </div>
+
+        <div class="final-actions">
+          <button id="btn-back-step3" class="btn ghost small" type="button">⬅ 戻る</button>
+          <button id="btn-next-step3" class="btn green" type="button">シートをまとめて完成！ ➔</button>
+        </div>
+      </div>
+
+      <div id="view-4" class="view">
+        <div class="screen-head"><h2>HUG Gioco ワーク記録シート</h2></div>
+        <div class="review-box">
+          <div class="r-item"><h5>設定シチュエーション</h5><div id="rSit" class="content"></div></div>
+          <div class="r-item"><h5>Q1. 今回の状況で「想定される課題」</h5><div class="content" data-r="issues"></div></div>
+          <div class="r-item"><h5>Q2. 「特に配慮が必要な人」への気づき</h5><div class="content" data-r="care"></div></div>
+          <div class="r-item"><h5>Q3. トラブルを防ぐために「今すぐ必要な対応」</h5><div class="content" data-r="now"></div></div>
+          <div class="r-item"><h5>Q4. 防災のために「事前に準備・備蓄すべきこと」</h5><div class="content" data-r="prep"></div></div>
+          <div class="r-item">
+            <h5>Q5. 学校・自治体・地域への提案・アイデア</h5>
+            <div class="memo m5" style="border:none; padding:0; box-shadow:none;"><textarea data-memo="propose" placeholder="例：地域の防災訓練に子どもを巻き込むアイデアなど" style="min-height:100px; margin-top:8px;"></textarea></div>
+          </div>
+        </div>
+        <div class="final-actions">
+          <button id="btn-back-step4" class="btn ghost small" type="button">⬅ 修正する</button>
+          <button id="btn-copy" class="btn sun" type="button">📋 テキストをコピーする</button>
+          <button id="btn-print" class="btn sky" type="button">🖨️ A4用紙に印刷する</button>
+          <button id="btn-restart" class="btn red" type="button">🔄 最初からやり直す</button>
+        </div>
+        <div class="footer-note"><b>HUG Gioco (グロッコ)</b> — TKB型避難所運営ディスカッションゲーム<br>協力：日本若者防災復興協会（JYRAC）</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+</Layout>
+
+{/* ==========================================
+// 3. SCOPED STYLE LAYER (is:globalを排除し、他ページへの干渉を完全に遮断)
+// ========================================== */}
+<style>
+  /* 全て頭に「.gioco-page-scoped」をつけ、このゲーム画面内だけに適用を縛り付けます */
+  .gioco-page-scoped {
     --navy: #1B3A8C; --navy-deep: #152E70; --green: #2E9E4F; --green-deep: #1f7d3c; --red: #E01E2B; --red-deep: #b8161f;
     --white: #FFFFFF; --sky: #4AA9E0; --sky-soft: #DDEEFA; --sun: #FFD23F; --sun-soft: #FFF3C9; --cream: #FDFBF5; --cream-2: #F5F0E4;
     --ink: #233047; --ink-soft: #5b6779; --line: #E7E0D0; --shadow: 0 10px 24px rgba(27, 58, 140, 0.12); --shadow-lg: 0 18px 44px rgba(27, 58, 140, 0.18);
     --radius: 22px; --radius-sm: 14px;
     --primary: #009aa6;
-  }
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { margin: 0; padding: 0; }
-  body {
-    font-family: 'Zen Maru Gothic', 'Baloo 2', system-ui, sans-serif; background: var(--cream); color: var(--ink); line-height: 1.7;
+
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 20px;
+    border-radius: var(--radius);
     background-image: 
       radial-gradient(circle at 12% 8%, rgba(74,169,224,0.10) 0 22px, transparent 23px),
       radial-gradient(circle at 88% 14%, rgba(46,158,79,0.08) 0 26px, transparent 27px),
       radial-gradient(circle at 78% 82%, rgba(224,30,43,0.06) 0 24px, transparent 25px),
       radial-gradient(circle at 20% 90%, rgba(255,210,63,0.14) 0 30px, transparent 31px);
-    background-attachment: fixed;
   }
-  .display { font-family: 'Baloo 2', 'Zen Maru Gothic', sans-serif; }
+
+  .game-main-content { max-width: 1080px; margin: 0 auto; padding: 22px 0 90px; }
 
   /* ---------- ヘッダー ---------- */
-  header.site {
-    position: sticky; top: 0; z-index: 50; background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(8px);
-    border-bottom: 3px solid var(--navy); padding: 10px 18px; display: flex; align-items: center; gap: 12px;
-    box-shadow: 0 4px 14px rgba(27, 58, 140, 0.08);
+  .site-header {
+    border-bottom: 3px solid var(--navy);
+    padding: 10px 0; display: flex; align-items: center; gap: 12px;
+    margin-bottom: 20px;
   }
-  header.site .titles { display: flex; flex-direction: column; line-height: 1.15; }
-  header.site .titles b { font-family: 'Baloo 2'; font-weight: 800; font-size: 1.18rem; color: var(--navy); letter-spacing: 0.5px; }
-  header.site .titles span { font-size: 0.72rem; color: var(--ink-soft); font-weight: 700; }
-  header.site .nav-spacer { flex: 1; }
+  .site-header .titles { display: flex; flex-direction: column; line-height: 1.15; }
+  .site-header .titles b { font-family: 'Baloo 2'; font-weight: 800; font-size: 1.18rem; color: var(--navy); letter-spacing: 0.5px; }
+  .site-header .titles span { font-size: 0.72rem; color: var(--ink-soft); font-weight: 700; }
+  .site-header .nav-spacer { flex: 1; }
   .step-dots { display: flex; gap: 7px; align-items: center; }
   .step-dots i { width: 11px; height: 11px; border-radius: 50%; background: var(--line); display: block; transition: 0.25s; }
   .step-dots i.on { background: var(--navy); transform: scale(1.25); }
@@ -82,8 +230,6 @@ const CH_CARDS = [
   
   .btn-back-to-site { font-weight:700; font-size:.85rem; color: var(--navy); text-decoration:none; background:#fff; border:2px solid var(--navy); padding:6px 16px; border-radius:999px; transition:.2s; display:inline-flex; align-items:center; gap:6px; margin-right: 15px; }
   .btn-back-to-site:hover { background:var(--navy); color:#fff; }
-
-  main { max-width: 1080px; margin: 0 auto; padding: 22px 16px 90px; }
 
   /* ---------- 共通パーツ ---------- */
   .btn {
@@ -100,14 +246,11 @@ const CH_CARDS = [
   .btn.ghost { background: #fff; color: var(--navy); border: 2.5px solid var(--navy); box-shadow: 0 6px 0 rgba(27, 58, 140, 0.16); }
   .btn.small { padding: 11px 20px; font-size: 0.95rem; }
   .btn.big { padding: 20px 44px; font-size: 1.35rem; }
-  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
   .view { display: none; animation: pop 0.4s ease; }
   .view.active { display: block; }
-  @keyframes pop { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-  @keyframes cardIn { from { opacity: 0; transform: translateY(18px) scale(0.94); } to { opacity: 1; transform: none; } }
 
-  /* ---------- トップ画面（元のロゴデザインを完全再現） ---------- */
+  /* ---------- ロゴマーク完全再現 ---------- */
   .hero { text-align: center; padding: 12px 0 6px; }
   .logo-main { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 15px; font-family: 'Baloo 2', sans-serif; filter: drop-shadow(0 8px 16px rgba(27,58,140,0.12)); }
   .logo-h, .logo-u, .logo-g2 { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; font-size: 32px; font-weight: 800; border-radius: 14px; position: relative; box-shadow: inset 0 -4px 0 rgba(0,0,0,0.15), 0 4px 10px rgba(0,0,0,0.08); text-shadow: 0 2px 4px rgba(0,0,0,0.15); line-height: 1; color:#fff; }
@@ -119,9 +262,7 @@ const CH_CARDS = [
   .logo-g2 { background: linear-gradient(135deg, #FF4D58 0%, var(--red) 100%); transform: rotate(-2deg); margin-top: 6px; }
   .logo-g2::before { border-bottom: 12px solid #FF4D58; }
   .logo-text-gioco { font-size: 46px; font-weight: 800; color: var(--navy); margin-left: 6px; letter-spacing: -0.01em; transform: rotate(1deg); display: inline-block; }
-
   .hero .sub { color: var(--green); font-size: clamp(1rem, 3vw, 1.25rem); font-weight: 800; letter-spacing: 1px; margin-bottom: 25px; text-transform: uppercase; display: block; text-align: center; }
-  .hero p.desc { max-width: 620px; margin: 0 auto 30px; font-size: 1.05rem; color: var(--ink-soft); font-weight: 500; }
 
   .tkb-badge-row { display: flex; justify-content: center; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
   .tkb-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 18px; border-radius: 999px; font-size: 0.95rem; font-weight: 800; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
@@ -143,35 +284,34 @@ const CH_CARDS = [
   .c-con { border-left-color: #7a5cc0; background: linear-gradient(180deg, #f7f4ff 0%, #fff 100%); } .c-con .cat { color: #5c3fa0; }
   .c-sup { border-left-color: var(--green); background: linear-gradient(180deg, #f2fbf5 0%, #fff 100%); } .c-sup .cat { color: var(--green-deep); }
 
-  /* ---------- ステップ共通 ---------- */
   .screen-head { display: flex; align-items: center; gap: 14px; margin: 6px 0 20px; flex-wrap: wrap; }
   .screen-head h2 { font-family: 'Baloo 2'; color: var(--navy); font-size: clamp(1.3rem, 4vw, 1.8rem); margin: 0; font-weight: 800; }
   .screen-head .tag { background: var(--sky-soft); color: var(--navy); font-weight: 700; padding: 5px 14px; border-radius: 999px; font-size: 0.8rem; }
 
-  .situation { background: linear-gradient(135deg, var(--navy), #2a52b0); color: #fff; border-radius: var(--radius-sm); padding: 18px 20px; margin-bottom: 20px; box-shadow: var(--shadow); }
-  .situation .lbl { font-weight: 800; font-size: 0.85rem; opacity: 0.85; }
-  .situation p { font-size: 1.1rem; font-weight: 700; margin: 6px 0 0; line-height: 1.7; }
+  .situation { background: linear-gradient(135deg, var(--navy), #2a52b0); color: #fff; border-radius: var(--radius); padding: 22px 24px; margin: 6px 0 25px; box-shadow: var(--shadow-lg); position: relative; }
+  .situation .lbl { font-family: 'Baloo 2'; font-weight: 800; font-size: 0.9rem; letter-spacing: 1px; opacity: 0.9; display: flex; align-items: center; gap: 8px; }
+  .situation p { font-size: clamp(1.05rem, 3vw, 1.32rem); font-weight: 700; margin: 0.5em 0 0; line-height: 1.85; }
 
-  .q-groups { display: grid; gap: 14px; grid-template-columns: 1fr; margin-bottom: 20px; }
+  .q-groups { display: grid; gap: 16px; grid-template-columns: 1fr; margin-bottom: 24px; }
   @media(min-width: 760px) { .q-groups { grid-template-columns: 1fr 1fr 1fr; } }
-  .q-card { background: #fff; border-radius: var(--radius-sm); padding: 16px; box-shadow: var(--shadow); border-top: 6px solid var(--sky); }
+  .q-card { background: #fff; border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); border-top: 7px solid var(--sky); border-left: 1px solid rgba(0,0,0,0.02); border-right: 1px solid rgba(0,0,0,0.02); }
   .q-card.a { border-top-color: var(--red); } .q-card.b { border-top-color: var(--green); } .q-card.c { border-top-color: var(--sun); }
-  .q-card h4 { color: var(--navy); margin: 0 0 10px 0; font-size: 1rem; font-weight: 800; }
-  .q-card ul { margin: 0; padding: 0; list-style: none; }
-  .q-card li { position: relative; padding: 5px 0 5px 22px; font-size: 0.9rem; border-bottom: 1px dashed var(--line); color: var(--ink); font-weight: 700; text-align: left; }
+  .q-card h4 { font-family: 'Baloo 2'; color: var(--navy); margin: 0.1em 0 0.6em; font-size: 1.08rem; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+  .q-card ul { margin: 0; padding-left: 0; list-style: none; }
+  .q-card li { position: relative; padding: 7px 0 7px 26px; font-size: 0.95rem; border-bottom: 1px dashed var(--line); color: var(--ink); font-weight: 700; text-align: left; }
   .q-card li::before { content: "？"; position: absolute; left: 0; top: 4px; width: 16px; height: 16px; background: var(--sky-soft); color: var(--navy); border-radius: 50%; font-size: 0.65rem; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; }
   .q-card.a li::before { background: #fde8e8; color: var(--red); } .q-card.b li::before { background: #eafaf1; color: var(--green); } .q-card.c li::before { background: var(--sun-soft); color: #a67c00; }
 
   .section-label { display: flex; align-items: center; gap: 6px; font-weight: 800; color: var(--navy); font-size: 1rem; margin: 20px 0 10px; }
   .section-label .pill { background: var(--navy); color: #fff; border-radius: 6px; font-size: 0.7rem; padding: 2px 8px; }
 
-  .memo-grid { display: grid; gap: 16px; grid-template-columns: 1fr; margin-bottom: 25px; }
+  .memo-grid { display: grid; gap: 16px; grid-template-columns: 1fr; margin-bottom: 30px; }
   @media(min-width: 720px) { .memo-grid { grid-template-columns: 1fr 1fr; } }
-  .memo { background:#fff; border-radius:var(--radius-sm); padding:16px; box-shadow:var(--shadow); border: 1px solid rgba(0, 154, 166, 0.04); border-left:8px solid var(--navy); }
+  .memo { background:#fff; border-radius:var(--radius-sm); padding:20px; box-shadow:var(--shadow); border: 1px solid rgba(0, 154, 166, 0.04); border-left:8px solid var(--navy); }
   .memo.m1 { border-left-color:var(--red); } .memo.m2 { border-left-color:var(--sun); }
   .memo.m3 { border-left-color:var(--sky); } .memo.m4 { border-left-color:var(--green); }
   .memo.m5 { border-left-color:#7a5cc0; }
-  .memo label { font-weight:800; color:var(--navy); display:block; margin-bottom:12px; font-size: .95rem; }
+  .memo label { font-weight: 800; color: var(--navy); display: block; margin-bottom: 12px; font-size: 0.95rem; }
   .memo textarea { width: 100%; border: 2px solid var(--line); border-radius: 12px; padding: 10px; font-family: inherit; font-size: 0.95rem; resize: vertical; min-height: 85px; background: #fafafa; color: var(--ink); font-weight: 500; }
   .memo textarea:focus { outline: none; border-color: var(--primary); background: #fff; }
 
@@ -185,174 +325,26 @@ const CH_CARDS = [
   .final-actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 25px; }
   .footer-note { text-align: center; color: var(--ink-soft); font-size: 0.8rem; margin-top: 40px; padding: 15px; background: rgba(255,255,255,0.5); border-radius: 12px; border: 1px dashed var(--line); }
 
-  @media print {
-    header.site, .final-actions, .step-dots, .btn, .footer-note, .note-line, aside, header { display: none !important; }
-    body, .game-container { background: #fff !important; background-image: none !important; border: none; padding: 0; }
-    .view { display: none !important; }
-    .view#view-4 { display: block !important; }
-    .review-box { box-shadow: none; border: 2px solid #000; }
-    .memo.m5 textarea { border: none; background: transparent; padding: 0; }
-  }
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(30px); background: var(--navy); color: #fff; padding: 13px 26px; border-radius: 999px; font-weight: 800; box-shadow: var(--shadow-lg); opacity: 0; pointer-events: none; transition: 0.3s; z-index: 200; }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 </style>
-</head>
-<body>
 
-<header class="site">
-  <div class="titles">
-    <b>HUG Gioco</b>
-    <span>TKB型避難所運営ディスカッションゲーム</span>
-  </div>
-  <div class="nav-spacer"></div>
-  <a href="/gioco" class="btn-back-to-site">JYRACサイトに戻る ➔</a>
-  <div class="step-dots">
-    <i id="dot-1" class="on"></i>
-    <i id="dot-2"></i>
-    <i id="dot-3"></i>
-    <i id="dot-4"></i>
-  </div>
-</header>
-
-<main id="game-scope-wrapper">
-  <div id="view-1" class="view active">
-    <div class="hero">
-      <div class="logo-main">
-        <div class="logo-h">H</div>
-        <div class="logo-u">U</div>
-        <div class="logo-g2">G</div>
-        <div class="logo-text-gioco">Gioco</div>
-      </div>
-      <span class="sub">TKB型避難所運営ディスカッションゲーム</span>
-    </div>
-
-    <p class="desc" style="text-align: center;">
-      避難所運営の命題となる<strong>TKB（トイレ·キッチン·ベッド）</strong>をテーマに、直感的なグループワークを行えるシミュレーションゲームです。<br><br>
-      「🎲 カードを引く」ボタンを押すと、現在の災害シナリオ、経過時間、施設の物資条件、特別な要配慮者を含む避難者のシチュエーションが自動生成されます。
-    </p>
-
-    <div class="tkb-badge-row">
-      <span class="tkb-badge t">🚾 T: Toilet (トイレ対策)</span>
-      <span class="tkb-badge k">🍳 K: Kitchen (食事・炊き出し)</span>
-      <span class="tkb-badge b">🛏️ B: Bed (快適な睡眠・居住)</span>
-    </div>
-
-    <div style="text-align: center; margin: 28px 0 20px;">
-      <button id="btn-draw" class="btn big" type="button">🎲 カードを引いて状況を作る</button>
-    </div>
-
-    <div id="sit-cards" class="cards">
-      </div>
-
-    <div style="text-align: center; margin-top: 40px;">
-      <button id="btn-next-step1" class="btn green" type="button" disabled>次へ進む（課題検討） ➔</button>
-    </div>
-  </div>
-
-  <div id="view-2" class="view">
-    <div class="screen-head">
-      <h2>STEP 2: TKBの課題に向き合う</h2>
-      <span class="tag">グループワーク</span>
-    </div>
-
-    <div class="situation">
-      <div class="lbl">現在のシチュエーション設定</div>
-      <p id="step2-sit-text"></p>
-    </div>
-
-    <div class="note-line">
-      💡 下記の<b>T・K・Bそれぞれの問い</b>について、グループで「何が問題になるか」「どう対応するか」を話し合ってみましょう。
-    </div>
-
-    <div id="q-cards-box" class="q-groups">
-      </div>
-
-    <div class="section-label">
-      <span class="pill">記録メモ</span> ワーク中の気づきや意見をメモしよう
-    </div>
-
-    <div class="memo-grid">
-      <div class="memo m1">
-        <label>① 今回の状況で「想定される課題」は？</label>
-        <textarea data-memo="issues" placeholder="例：停電しているので夜間のトイレが非常に危険、物資の毛布50枚に対して避難者が多すぎる、など"></textarea>
-      </div>
-      <div class="memo m2">
-        <label>② 「特に配慮が必要な人」は誰？</label>
-        <textarea data-memo="care" placeholder="例：日本語が不慣れな外国人家族への案内掲示、乳幼児の泣き声や授乳のための個室教室の割り当て、など"></textarea>
-      </div>
-    </div>
-
-    <div class="final-actions">
-      <button id="btn-back-step2" class="btn ghost small" type="button">🔀 状況を引き直す</button>
-      <button id="btn-next-step2" class="btn green" type="button">次へ進む（アクシデント発生） ➔</button>
-    </div>
-  </div>
-
-  <div id="view-3" class="view">
-    <div class="screen-head">
-      <h2>STEP 3: 突然のアクシデント・運営課題</h2>
-      <span class="tag" style="background:#fde3e5; color:var(--red);">トラブル対応</span>
-    </div>
-
-    <div class="note-line" style="background:#fde3e5; border-color:var(--red); color:var(--red-deep);">
-      ⚠️ <b>追加チャレンジ発生！</b> 運営ディスカッションを進める中、さらに以下のアクシデントや追加の運営問題が発生しました。どう乗り越えますか？
-    </div>
-
-    <div id="ch-cards-box" class="cards">
-      </div>
-
-    <div class="memo-grid">
-      <div class="memo m3">
-        <label>③ 混乱を防ぐために「今すぐ必要な対応」は？</label>
-        <textarea data-memo="now" placeholder="例：修学旅行中の元気な高校生たちに物資搬入やゴミ集積の手伝いチームを結成してもらう、など"></textarea>
-      </div>
-      <div class="memo m4">
-        <label>④ 普段の生活から「事前に準備すべきこと」は？</label>
-        <textarea data-memo="prep" placeholder="例：学校の備蓄品見直し、防災訓練の実施など"></textarea>
-      </div>
-    </div>
-
-    <div class="final-actions">
-      <button id="btn-back-step3" class="btn ghost small" type="button">⬅ 戻る</button>
-      <button id="btn-next-step3" class="btn green" type="button">シートをまとめて完成！ ➔</button>
-    </div>
-  </div>
-
-  <div id="view-4" class="view">
-    <div class="screen-head"><h2>HUG Gioco ワーク記録シート</h2></div>
-    <div class="review-box">
-      <div class="r-item"><h5>設定シチュエーション</h5><div id="rSit" class="content"></div></div>
-      <div class="r-item"><h5>Q1. 今回の状況で「想定される課題」</h5><div class="content" data-r="issues"></div></div>
-      <div class="r-item"><h5>Q2. 「特に配慮が必要な人」への気づき</h5><div class="content" data-r="care"></div></div>
-      <div class="r-item"><h5>Q3. トラブルを防ぐために「今すぐ必要な対応」</h5><div class="content" data-r="now"></div></div>
-      <div class="r-item"><h5>Q4. 防災のために「事前に準備・備蓄すべきこと」</h5><div class="content" data-r="prep"></div></div>
-      <div class="r-item">
-        <h5>Q5. 学校・自治体・地域への提案・アイデア</h5>
-        <div class="memo m5" style="border:none; padding:0; box-shadow:none;"><textarea data-memo="propose" placeholder="例：地域の防災訓練に子どもを巻き込むアイデアなど" style="min-height:100px; margin-top:8px;"></textarea></div>
-      </div>
-    </div>
-    <div class="final-actions">
-      <button id="btn-back-step4" class="btn ghost small" type="button">⬅ 修正する</button>
-      <button id="btn-copy" class="btn sun" type="button">📋 テキストをコピーする</button>
-      <button id="btn-print" class="btn sky" type="button">🖨️ A4用紙に印刷する</button>
-      <button id="btn-restart" class="btn red" type="button">🔄 最初からやり直す</button>
-    </div>
-    <div class="footer-note"><b>HUG Gioco (グロッコ)</b> — TKB型避難所運営ディスカッションゲーム<br>協力：日本若者防災復興協会（JYRAC）</div>
-  </div>
-</main>
-
-<div id="toast" class="toast"></div>
-
+{/* ==========================================
+// 4. SCRIPT LAYER (安全なJS画面遷移ロジック)
+// ========================================== */}
 <script is:inline define:vars={{ CARDS, DISCUSSIONS, CH_CARDS }}>
   let DECK = [...CARDS];
   let CURRENT = null;
 
-  const $ = sel => document.querySelector(sel);
-  const $$ = sel => document.querySelectorAll(sel);
+  // ルート要素からの相対指定に限定して競合を防御
+  const $ = sel => document.querySelector(`#game-scope-root ${sel}`);
+  const $$ = sel => document.querySelectorAll(`#game-scope-root ${sel}`);
 
   function showView(id){
-    $$('.view').forEach(v => v.classList.remove('active'));
-    $(`#view-${id}`).classList.add('active');
+    document.querySelectorAll('#game-scope-root .view').forEach(v => v.classList.remove('active'));
+    document.querySelector(`#game-scope-root #view-${id}`).classList.add('active');
     
-    $$('.step-dots i').forEach((dot, idx) => {
+    document.querySelectorAll('.step-dots i').forEach((dot, idx) => {
       dot.className = '';
       if(idx === id - 1) dot.className = 'on';
       else if(idx < id - 1) dot.className = 'done';
@@ -415,13 +407,13 @@ const CH_CARDS = [
   }
 
   function collectMemo(){
-    const d = {}; $$('textarea[data-memo]').forEach(t => d[t.dataset.memo] = t.value.trim()); return d;
+    const d = {}; document.querySelectorAll('#game-scope-root textarea[data-memo]').forEach(t => d[t.dataset.memo] = t.value.trim()); return d;
   }
 
   function buildReview(){
     $('#rSit').textContent = CURRENT ? situationText(CURRENT) : '';
     const d = collectMemo();
-    $$('.content[data-r]').forEach(el => {
+    document.querySelectorAll('#game-scope-root .content[data-r]').forEach(el => {
       const v = d[el.dataset.r];
       el.textContent = v || '（未入力）';
       if(!v) el.classList.add('empty'); else el.classList.remove('empty');
@@ -454,5 +446,3 @@ const CH_CARDS = [
     $('#btn-restart').addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} if(confirm('新しくゲームをはじめますか？')) startTool(); });
   });
 </script>
-</body>
-</html>
