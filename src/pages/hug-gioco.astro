@@ -1,42 +1,50 @@
 ---
-// src/pages/hug-gioco.astro
-import HugGiocoBody from '../components/HugGiocoBody.astro';
+// src/pages/gioco.astro
+import Layout from '../layouts/Layout.astro';
 ---
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HUG Gioco — TKB型避難所運営ディスカッションゲーム</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
 
-<style is:global>
-  :root {
-    --navy: #1B3A8C;        
-    --navy-deep: #152E70;
-    --green: #2E9E4F;       
-    --green-deep: #1f7d3c;
-    --red: #E01E2B;         
-    --red-deep: #b8161f;
-    --white: #FFFFFF;
-    --sky: #4AA9E0;
-    --sky-soft: #DDEEFA;
-    --sun: #FFD23F;
-    --sun-soft: #FFF3C9;
-    --cream: #FDFBF5;
-    --cream-2: #F5F0E4;
-    --ink: #222222;
-  }
+<Layout title="HUG Gioco (教材) | 日本若者防災復興協会" currentTab="gioco">
+    <div class="content-panel">
+        <h2>HUG Gioco — 避難所運営ディスカッションゲーム</h2>
+        
+        <div class="info-card-box">
+            <p>
+                <strong>【JYRAC独自開発・デジタルふりかえりシートツール】</strong><br><br>
+                「HUG Gioco（グロッコ）」は、TKB（トイレ・キッチン・ベッド）型避難所運営をテーマにした、子どもから大人まで直感的に学べる防災シミュレーションディスカッションゲームです。<br><br>
+                従来の避難所運営ゲームの枠を超え、ゲームを通じて見つかった地域のリアルな課題や、配慮が必要な避難者への対応策をその場でスマホ・タブレットから入力・集約し、学校や自治体へ提出できる「次世代のデジタルふりかえりシート」をJYRACが完全独自開発しました。
+            </p>
+            
+            <div style="text-align: center; margin: 30px 0;">
+                <a href="/hug-gioco" class="btn-gioco-launch-large" target="_blank" rel="noopener">
+                    ふりかえりシートツールを起動する ➔
+                </a>
+                <p style="font-size: 12px; color: #7f8c8d; margin-top: 12px;">※ゲーム画面が新しいウインドウ（フル画面）で開きます。</p>
+            </div>
+        </div>
+    </div>
+</Layout>
 
-  /* ⚠️ ここに元の hug-gioco.html の CSS の中身を丸ごと貼り付けてください */
+<style>
+    /* 💡 ツール起動ボタンを単体でも完璧なデザインで表示するための専用スタイル */
+    .btn-gioco-launch-large {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        color: #ffffff;
+        padding: 20px 38px;
+        text-decoration: none;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        background: linear-gradient(135deg, #1B3A8C 0%, #152E70 100%);
+        box-shadow: 0 6px 20px rgba(27, 58, 140, 0.2);
+        border: 1px solid rgba(74, 169, 224, 0.3);
+        cursor: pointer;
+    }
+    .btn-gioco-launch-large:hover {
+        transform: translate3d(0, -4px, 0);
+        box-shadow: 0 12px 30px rgba(27, 58, 140, 0.4);
+        border-color: #4AA9E0;
+    }
 </style>
-</head>
-
-<HugGiocoBody />
-
-<script is:inline>
-  /* ⚠️ ここに元の hug-gioco.html の JavaScriptロジックを丸ごと貼り付けてください */
-</script>
-</html>
