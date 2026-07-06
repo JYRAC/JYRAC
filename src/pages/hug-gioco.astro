@@ -1,3 +1,38 @@
+---
+// ==========================================
+// 1. DATA LAYER (Astroのフロントマターでデータを一元管理)
+// ==========================================
+const CARDS = [
+  { id: 1, c: 'dis', txt: '避難所に指定された学校の体育館。外は激しい雨と風。', e: '⛈️' },
+  { id: 2, c: 'dis', txt: '夜間に大きな地震が発生。周辺一帯が停電している。', e: '🌑' },
+  { id: 3, c: 'dis', txt: '真冬の寒波のなか地震が発生。暖房が効かない。', e: '❄️' },
+  { id: 4, c: 'dis', txt: '台風による大雨で、近くの河川の水位が警戒レベルに。', e: '🌊' },
+  { id: 5, c: 'time', txt: '発災から「3時間後」。最初の避難者が次々と押し寄せる。', e: '⏳' },
+  { id: 6, c: 'time', txt: '発災から「24時間後（1日目）」。仮設トイレが届く。', e: '🌅' },
+  { id: 7, c: 'time', txt: '発災から「3日後（72時間）」。救援物資の第一陣が到着。', e: '📅' },
+  { id: 8, c: 'fac', txt: '体育館のほか、教室3室と多目的ホールが使用可能。', e: '🏫' },
+  { id: 9, c: 'fac', txt: '学校の受水槽が生きており、水は出るが流せない。', e: '🚰' },
+  { id: 10, c: 'fac', txt: '備蓄倉庫からアルファ米300食と毛布50枚を発見。', e: '📦' },
+  { id: 11, c: 'peo', txt: '乳幼児を連れた母親。授乳スペースを求めている。', e: '👶' },
+  { id: 12, c: 'peo', txt: '車椅子の高齢者と、そのお世話をする家族。', e: '👨‍🦽' },
+  { id: 13, c: 'peo', txt: '日本語が苦手な外国人の家族（大人2人、子ども1人）。', e: '🗣️' },
+  { id: 14, c: 'peo', txt: 'ペット（大型犬）を連れて避難してきた飼い主。', e: '🐕' },
+  { id: 15, c: 'peo', txt: '修学旅行中の高校生グループ30名が避難を求めてきた。', e: '🎒' }
+];
+
+const DISCUSSIONS = {
+  t: ['マンホールトイレや仮設トイレをどこに設置するか？', '誰を優先して使ってもらうルールにするか？', 'トイレの清掃やゴミ出しの担当をどう決めるか？'],
+  k: ['炊き出しや物資の配布場所をどこに設けるか？', 'アレルギーや宗教上の配慮が必要な人への対応は？', '貴重な水や燃料をどう管理・節約するか？'],
+  b: ['通路を確保しつつ、プライベート空間をどう作るか？', '高齢者や要配慮者のベッド位置をどこにするか？', '体育館の床の冷たさや硬さを防ぐ工夫は？']
+};
+
+const CH_CARDS = [
+  { id: 'ch1', c: 'con', txt: '避難所内の連絡・情報共有をどう行うか？', e: '📢' },
+  { id: 'ch2', c: 'con', txt: '外部（役場や救急）との通信手段の確保は？', e: '📱' },
+  { id: 'ch3', c: 'sup', txt: '届いた物資の仕分け・管理の担当者をどうするか？', e: '🤝' },
+  { id: 'ch4', c: 'sup', txt: '避難者同士のトラブル（騒音・ペット等）の対応は？', e: '⚡' }
+];
+---
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -7,38 +42,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+
 <style is:global>
   :root {
-    /* --- ロゴ由来のカラー --- */
-    --navy: #1B3A8C;        /* HUGの青 */
-    --navy-deep: #152E70;
-    --green: #2E9E4F;       /* イタリア緑 */
-    --green-deep: #1f7d3c;
-    --red: #E01E2B;         /* イタリア赤 */
-    --red-deep: #b8161f;
-    --white: #FFFFFF;
-    /* --- 子供向けアクセント --- */
-    --sky: #4AA9E0;
-    --sky-soft: #DDEEFA;
-    --sun: #FFD23F;
-    --sun-soft: #FFF3C9;
-    --cream: #FDFBF5;
-    --cream-2: #F5F0E4;
-    --ink: #233047;
-    --ink-soft: #5b6779;
-    --line: #E7E0D0;
-    --shadow: 0 10px 24px rgba(27, 58, 140, 0.12);
-    --shadow-lg: 0 18px 44px rgba(27, 58, 140, 0.18);
-    --radius: 22px;
-    --radius-sm: 14px;
+    --navy: #1B3A8C; --navy-deep: #152E70; --green: #2E9E4F; --green-deep: #1f7d3c; --red: #E01E2B; --red-deep: #b8161f;
+    --white: #FFFFFF; --sky: #4AA9E0; --sky-soft: #DDEEFA; --sun: #FFD23F; --sun-soft: #FFF3C9; --cream: #FDFBF5; --cream-2: #F5F0E4;
+    --ink: #233047; --ink-soft: #5b6779; --line: #E7E0D0; --shadow: 0 10px 24px rgba(27, 58, 140, 0.12); --shadow-lg: 0 18px 44px rgba(27, 58, 140, 0.18);
+    --radius: 22px; --radius-sm: 14px;
+    --primary: #009aa6;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin: 0; padding: 0; }
   body {
-    font-family: 'Zen Maru Gothic', 'Baloo 2', system-ui, sans-serif;
-    background: var(--cream);
-    color: var(--ink);
-    line-height: 1.7;
+    font-family: 'Zen Maru Gothic', 'Baloo 2', system-ui, sans-serif; background: var(--cream); color: var(--ink); line-height: 1.7;
     background-image: 
       radial-gradient(circle at 12% 8%, rgba(74,169,224,0.10) 0 22px, transparent 23px),
       radial-gradient(circle at 88% 14%, rgba(46,158,79,0.08) 0 26px, transparent 27px),
@@ -50,13 +66,10 @@
 
   /* ---------- ヘッダー ---------- */
   header.site {
-    position: sticky; top: 0; z-index: 50;
-    background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(8px);
-    border-bottom: 3px solid var(--navy);
-    padding: 10px 18px; display: flex; align-items: center; gap: 12px;
+    position: sticky; top: 0; z-index: 50; background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(8px);
+    border-bottom: 3px solid var(--navy); padding: 10px 18px; display: flex; align-items: center; gap: 12px;
     box-shadow: 0 4px 14px rgba(27, 58, 140, 0.08);
   }
-  header.site .logo-mini { height: 46px; width: auto; flex: 0 0 auto; }
   header.site .titles { display: flex; flex-direction: column; line-height: 1.15; }
   header.site .titles b { font-family: 'Baloo 2'; font-weight: 800; font-size: 1.18rem; color: var(--navy); letter-spacing: 0.5px; }
   header.site .titles span { font-size: 0.72rem; color: var(--ink-soft); font-weight: 700; }
@@ -65,27 +78,25 @@
   .step-dots i { width: 11px; height: 11px; border-radius: 50%; background: var(--line); display: block; transition: 0.25s; }
   .step-dots i.on { background: var(--navy); transform: scale(1.25); }
   .step-dots i.done { background: var(--green); }
+  
+  .btn-back-to-site { font-weight:700; font-size:.85rem; color: var(--navy); text-decoration:none; background:#fff; border:2px solid var(--navy); padding:6px 16px; border-radius:999px; transition:.2s; display:inline-flex; align-items:center; gap:6px; margin-right: 15px; }
+  .btn-back-to-site:hover { background:var(--navy); color:#fff; }
 
   main { max-width: 1080px; margin: 0 auto; padding: 22px 16px 90px; }
 
   /* ---------- 共通パーツ ---------- */
   .btn {
-    font-family: 'Baloo 2', 'Zen Maru Gothic'; font-weight: 800;
-    border: none; cursor: pointer; border-radius: 999px;
+    font-family: 'Baloo 2', 'Zen Maru Gothic'; font-weight: 800; border: none; cursor: pointer; border-radius: 999px;
     padding: 16px 30px; font-size: 1.12rem; color: #fff; background: var(--navy);
     box-shadow: 0 6px 0 var(--navy-deep), 0 12px 22px rgba(27, 58, 140, 0.28);
-    transition: transform 0.08s ease, box-shadow 0.08s ease;
-    display: inline-flex; align-items: center; gap: 10px; justify-content: center;
+    transition: transform 0.08s ease, box-shadow 0.08s ease; display: inline-flex; align-items: center; gap: 10px; justify-content: center;
   }
   .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--navy-deep), 0 6px 12px rgba(27, 58, 140, 0.24); }
   .btn.green { background: var(--green); box-shadow: 0 6px 0 var(--green-deep), 0 12px 22px rgba(46, 158, 79, 0.28); }
   .btn.red { background: var(--red); box-shadow: 0 6px 0 var(--red-deep), 0 12px 22px rgba(224, 30, 43, 0.26); }
   .btn.sky { background: var(--sky); box-shadow: 0 6px 0 #2b87bd, 0 12px 22px rgba(74, 169, 224, 0.28); }
-  .btn.sky:active { box-shadow: 0 2px 0 #2b87bd; }
   .btn.sun { background: var(--sun); color: var(--navy); box-shadow: 0 6px 0 #e0b325, 0 12px 22px rgba(255, 210, 63, 0.4); }
-  .btn.sun:active { box-shadow: 0 2px 0 #e0b325; }
   .btn.ghost { background: #fff; color: var(--navy); border: 2.5px solid var(--navy); box-shadow: 0 6px 0 rgba(27, 58, 140, 0.16); }
-  .btn.ghost:active { box-shadow: 0 2px 0 rgba(27, 58, 140, 0.16); }
   .btn.small { padding: 11px 20px; font-size: 0.95rem; }
   .btn.big { padding: 20px 44px; font-size: 1.35rem; }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -97,37 +108,21 @@
 
   /* ---------- トップ画面 ---------- */
   .hero { text-align: center; padding: 12px 0 6px; }
-  .hero .logo-main {
-    display: inline-flex; align-items: center; gap: 12px; margin-bottom: 10px;
-    font-family: 'Baloo 2', sans-serif;
-    filter: drop-shadow(0 8px 16px rgba(27,58,140,0.12));
-  }
-  .hero .logo-h, .hero .logo-u, .hero .logo-g {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 52px; height: 52px; font-size: 32px; font-weight: 800; border-radius: 14px;
-    position: relative;
-    box-shadow: inset 0 -4px 0 rgba(0,0,0,0.15), 0 4px 10px rgba(0,0,0,0.08);
-    text-shadow: 0 2px 4px rgba(0,0,0,0.15);
-    line-height: 1;
-    color: #ffffff;
-  }
-  .hero .logo-h::before, .hero .logo-u::before, .hero .logo-g::before {
-    content: ''; position: absolute; top: -12px; left: 0; right: 0; margin: auto;
-    width: 0; height: 0; border-left: 26px solid transparent; border-right: 26px solid transparent;
-  }
-  .hero .logo-h { background: linear-gradient(135deg, #44C76C 0%, var(--green) 100%); transform: rotate(-4deg); margin-top: 10px; }
-  .hero .logo-h::before { border-bottom: 12px solid #44C76C; }
-  .hero .logo-u { background: linear-gradient(135deg, #ffffff 0%, #EDF2F7 100%); color: var(--navy); transform: rotate(2deg); box-shadow: inset 0 -4px 0 rgba(0,0,0,0.08), 0 4px 10px rgba(0,0,0,0.08); text-shadow: none; }
-  .hero .logo-u::before { border-bottom: 12px solid #ffffff; }
-  .hero .logo-g { background: linear-gradient(135deg, #FF4D58 0%, var(--red) 100%); transform: rotate(-2deg); margin-top: 6px; }
-  .hero .logo-g::before { border-bottom: 12px solid #FF4D58; }
-  .hero .logo-txt { font-size: 46px; font-weight: 800; color: var(--navy); margin-left: 6px; letter-spacing: -0.01em; transform: rotate(1deg); display: inline-block; }
+  
+  /* 💡 【元のHTMLロゴデザインCSSを完全移植して再現】 */
+  .logo-main { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 15px; font-family: 'Baloo 2', sans-serif; filter: drop-shadow(0 8px 16px rgba(27,58,140,0.12)); }
+  .logo-h, .logo-u, .logo-g2 { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; font-size: 32px; font-weight: 800; border-radius: 14px; position: relative; box-shadow: inset 0 -4px 0 rgba(0,0,0,0.15), 0 4px 10px rgba(0,0,0,0.08); text-shadow: 0 2px 4px rgba(0,0,0,0.15); line-height: 1; color:#fff; }
+  .logo-h::before, .logo-u::before, .logo-g2::before { content: ''; position: absolute; top: -12px; left: 0; right: 0; margin: auto; width: 0; height: 0; border-left: 26px solid transparent; border-right: 26px solid transparent; }
+  .logo-h { background: linear-gradient(135deg, #44C76C 0%, var(--green) 100%); transform: rotate(-4deg); margin-top: 10px; }
+  .logo-h::before { border-bottom: 12px solid #44C76C; }
+  .logo-u { background: linear-gradient(135deg, #ffffff 0%, #EDF2F7 100%); color: var(--navy); transform: rotate(2deg); box-shadow: inset 0 -4px 0 rgba(0,0,0,0.08), 0 4px 10px rgba(0,0,0,0.08); text-shadow: none; }
+  .logo-u::before { border-bottom: 12px solid #ffffff; }
+  .logo-g2 { background: linear-gradient(135deg, #FF4D58 0%, var(--red) 100%); transform: rotate(-2deg); margin-top: 6px; }
+  .logo-g2::before { border-bottom: 12px solid #FF4D58; }
+  .logo-text-gioco { font-size: 46px; font-weight: 800; color: var(--navy); margin-left: 6px; letter-spacing: -0.01em; transform: rotate(1deg); display: inline-block; }
 
-  .hero h1 { font-family: 'Baloo 2'; font-size: clamp(2.2rem, 7vw, 3.4rem); color: var(--navy); font-weight: 900; margin: 0 0 10px 0; letter-spacing: -0.5px; line-height: 1.1; }
-  .hero .sub { color: var(--green); font-size: clamp(1rem, 3vw, 1.25rem); font-weight: 800; letter-spacing: 1px; margin-bottom: 25px; text-transform: uppercase; }
+  .hero .sub { color: var(--green); font-size: clamp(1rem, 3vw, 1.25rem); font-weight: 800; letter-spacing: 1px; margin-bottom: 25px; text-transform: uppercase; display: block; text-align: center; }
   .hero p.desc { max-width: 620px; margin: 0 auto 30px; font-size: 1.05rem; color: var(--ink-soft); font-weight: 500; }
-
-  .card-box { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 30px 24px; box-shadow: var(--shadow); margin-bottom: 35px; }
 
   .tkb-badge-row { display: flex; justify-content: center; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
   .tkb-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 18px; border-radius: 999px; font-size: 0.95rem; font-weight: 800; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
@@ -136,12 +131,12 @@
   .cards { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); }
   .gcard {
     position: relative; background: #fff; border-radius: var(--radius-sm); padding: 20px 16px;
-    box-shadow: var(--shadow); border-left: 7px solid var(--navy);
-    animation: cardIn 0.4s ease both; overflow: hidden;
+    box-shadow: var(--shadow); border-left: 7px solid var(--navy); overflow: hidden; text-align: left;
   }
   .gcard .cat { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-  .gcard .txt { font-weight: 700; font-size: 1.02rem; line-height: 1.45; }
+  .gcard .txt { font-weight: 700; font-size: 1.02rem; line-height: 1.45; color: var(--ink); }
   .gcard .emoji { position: absolute; right: 8px; top: 8px; font-size: 1.4rem; opacity: 0.9; }
+  
   .c-dis { border-left-color: var(--red); } .c-dis .cat { color: var(--red-deep); }
   .c-time { border-left-color: var(--sky); } .c-time .cat { color: #2b7fb0; }
   .c-fac { border-left-color: var(--navy); } .c-fac .cat { color: var(--navy-deep); }
@@ -168,7 +163,7 @@
   .q-card.a { border-top-color: var(--red); } .q-card.b { border-top-color: var(--green); } .q-card.c { border-top-color: var(--sun); }
   .q-card h4 { font-family: 'Baloo 2'; color: var(--navy); margin: 0.1em 0 0.6em; font-size: 1.08rem; font-weight: 800; display: flex; align-items: center; gap: 8px; }
   .q-card ul { margin: 0; padding-left: 0; list-style: none; }
-  .q-card li { position: relative; padding: 7px 0 7px 26px; font-size: 0.95rem; border-bottom: 1px dashed var(--line); color: var(--ink); font-weight: 700; }
+  .q-card li { position: relative; padding: 7px 0 7px 26px; font-size: 0.95rem; border-bottom: 1px dashed var(--line); color: var(--ink); font-weight: 700; text-align: left; }
   .q-card li:last-child { border-bottom: none; }
   .q-card li::before { content: "？"; position: absolute; left: 0; top: 6px; width: 18px; height: 18px; background: var(--sky-soft); color: var(--navy); border-radius: 50%; font-size: 0.72rem; font-weight: 800; display: flex; align-items: center; justify-content: center; }
   .q-card.a li::before { background: #fde8e8; color: var(--red); } .q-card.b li::before { background: #eafaf1; color: var(--green); } .q-card.c li::before { background: var(--sun-soft); color: #a67c00; }
@@ -178,7 +173,7 @@
 
   .memo-grid { display: grid; gap: 14px; grid-template-columns: 1fr; margin-bottom: 24px; }
   @media(min-width: 720px) { .memo-grid { grid-template-columns: 1fr 1fr; } }
-  .memo { background: #fff; border-radius: var(--radius); padding: 16px 16px 14px; box-shadow: var(--shadow); border-left: 8px solid var(--navy); }
+  .memo { background: #fff; border-radius: var(--radius); padding: 16px 16px 14px; box-shadow: var(--shadow); border-left: 8px solid var(--navy); text-align: left; }
   .memo.m1 { border-left-color: var(--red); } .memo.m2 { border-left-color: var(--sun); }
   .memo.m3 { border-left-color: var(--sky); } .memo.m4 { border-left-color: var(--green); }
   .memo.m5 { border-left-color: #7a5cc0; }
@@ -188,7 +183,7 @@
   .save-hint { font-size: 0.8rem; color: var(--green-deep); font-weight: 700; display: flex; align-items: center; gap: 6px; margin-top: 14px; justify-content: center; }
 
   /* ---------- STEP4 振り返りシート ---------- */
-  .review-box { background: #fff; border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow-lg); border: 3px solid var(--navy); }
+  .review-box { background: #fff; border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow-lg); border: 3px solid var(--navy); text-align: left; }
   .r-item { border-bottom: 2px dashed var(--line); padding: 14px 0; }
   .r-item:first-child { padding-top: 0; }
   .r-item:last-child { border-bottom: none; padding-bottom: 0; }
@@ -196,9 +191,7 @@
   .r-item .content { white-space: pre-wrap; color: var(--ink); font-size: 0.98rem; min-height: 1.2em; font-weight: 500; }
   .r-item .empty { color: #b7bdc7; font-style: italic; }
 
-  .deck-actions, .final-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: center; margin-top: 24px; }
-  .deck-actions { margin-top: 0; margin-bottom: 20px; }
-
+  .final-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: center; margin-top: 24px; }
   .footer-note { text-align: center; color: var(--ink-soft); font-size: 0.85rem; margin-top: 30px; padding: 18px; background: rgba(255,255,255,0.5); border-radius: 16px; border: 1px dashed var(--line); }
   .footer-note b { color: var(--navy); }
 
@@ -212,9 +205,8 @@
     .btn.big { padding: 14px 28px; font-size: 1.15rem; }
   }
 
-  /* ---------- 印刷設定 ---------- */
   @media print {
-    header.site, .deck-actions, .final-actions, .step-dots, .btn, .footer-note, .save-hint, .note-line { display: none !important; }
+    header.site, .final-actions, .step-dots, .btn, .footer-note, .save-hint, .note-line { display: none !important; }
     body { background: #fff; background-image: none !important; }
     main { padding: 0; }
     .view { display: none !important; }
@@ -232,6 +224,7 @@
     <span>TKB型避難所運営ディスカッションゲーム</span>
   </div>
   <div class="nav-spacer"></div>
+  <a href="/gioco" class="btn-back-to-site">JYRACサイトに戻る ➔</a>
   <div class="step-dots">
     <i id="dot-1" class="on"></i>
     <i id="dot-2"></i>
@@ -252,14 +245,14 @@
       <span class="sub">シミュレーション設定ジェネレーター</span>
     </div>
 
-    <p class="lead">
-      避難所運営で最も重要とされる<b>TKB（トイレ・キッチン·ベッド）</b>の視点から、避難所の課題をシミュレーションするワークツールです。下のボタンからランダムに設定カードを引きましょう。
+    <p class="desc" style="text-align: center;">
+      避難所運営で最も重要とされる<b>TKB（トイレ・キッチン・ベッド）</b>の視点から、避難所の課題をシミュレーションするワークツールです。下のボタンからランダムに設定カードを引きましょう。
     </p>
 
     <div class="tkb-badge-row">
       <span class="tkb-badge t">🚾 T: Toilet (トイレ対策)</span>
-      <span class="tkb-badge k">🍳 K: Kitchen (食事·炊き出し)</span>
-      <span class="tkb-badge b">🛏️ B: Bed (快適な睡眠·居住)</span>
+      <span class="tkb-badge k">🍳 K: Kitchen (食事・炊き出し)</span>
+      <span class="tkb-badge b">🛏️ B: Bed (快適な睡眠・居住)</span>
     </div>
 
     <div style="text-align: center; margin: 28px 0 20px;">
@@ -286,7 +279,7 @@
     </div>
 
     <div class="note-line">
-      💡 下記の<b>T·K·Bそれぞれの問い</b>について、グループで「何が問題になるか」「どう対応するか」を話し合ってみましょう。
+      💡 下記の<b>T・K・Bそれぞれの問い</b>について、グループで「何が問題になるか」「どう対応するか」を話し合ってみましょう。
     </div>
 
     <div id="q-cards-box" class="q-groups">
@@ -315,12 +308,12 @@
 
   <div id="view-3" class="view">
     <div class="screen-head">
-      <h2>STEP 3: 突然のアクシデント・運営課題</h2>
+      <h2>STEP 3: 突然のアクシデセン・運営課題</h2>
       <span class="tag" style="background:#fde3e5; color:var(--red);">トラブル対応</span>
     </div>
 
     <div class="note-line" style="background:#fde3e5; border-color:var(--red); color:var(--red-deep);">
-      ⚠️ <b>追加チャレンジ発生！</b> 運営ディカッションを進める中、さらに以下のアクシデントや追加の運営問題が発生しました。どう乗り越えますか？
+      ⚠️ <b>追加チャレンジ発生！</b> 運営ディスカッションを進める中、さらに以下のアクシデントや追加の運営問題が発生しました。どう乗り越えますか？
     </div>
 
     <div id="ch-cards-box" class="cards">
@@ -345,7 +338,7 @@
 
   <div id="view-4" class="view">
     <div class="screen-head">
-      <h2>HUG Gioco ふりかえりシート</h2>
+      <h2>HUG Gioco ワーク記録シート</h2>
       <span class="tag" style="background:var(--green); color:#fff;">完成</span>
     </div>
 
@@ -395,12 +388,9 @@
 <div id="toast" class="toast"></div>
 
 <script is:inline define:vars={{ CARDS, DISCUSSIONS, CH_CARDS }}>
-  /* ========== ゲームデータ定義 ========== */
-  // データは Astro.props (フロントマター) から100%正確に引き継がれています。
-  let DECK = [];
+  let DECK = [...CARDS];
   let CURRENT = null;
 
-  /* ========== ユーティリティ ========== */
   const $ = sel => document.querySelector(sel);
   const $$ = sel => document.querySelectorAll(sel);
 
@@ -439,7 +429,6 @@
     return arr[Math.floor(Math.random()*arr.length)];
   }
 
-  /* ========== ゲームロジック ========== */
   function startTool(){
     DECK = [...CARDS];
     CURRENT = null;
@@ -475,9 +464,7 @@
 
     CURRENT = { dis:c1, time:c2, fac:c3, p1:c4, p2:c5 };
 
-    const box = $('#sit-cards');
-    box.innerHTML = makeCardHtml(c1) + makeCardHtml(c2) + makeCardHtml(c3) + makeCardHtml(c4) + makeCardHtml(c5);
-
+    $('#sit-cards').innerHTML = makeCardHtml(c1) + makeCardHtml(c2) + makeCardHtml(c3) + makeCardHtml(c4) + makeCardHtml(c5);
     $('#btn-next-step1').disabled = false;
   }
 
@@ -496,26 +483,20 @@
       避難者の様子：<b>${CURRENT.p1.txt}</b> ／ <b>${CURRENT.p2.txt}</b>
     `;
 
-    const tQ = sample(DISCUSSIONS.t);
-    const kQ = sample(DISCUSSIONS.k);
-    const bQ = sample(DISCUSSIONS.b);
-
-    const qBox = $('#q-cards-box');
-    qBox.innerHTML = `
+    $('#q-cards-box').innerHTML = `
       <div class="q-card a">
         <h4><span class="tag-tkb">T</span> トイレの課題</h4>
-        <ul><li>${tQ}</li></ul>
+        <ul><li>${sample(DISCUSSIONS.t)}</li></ul>
       </div>
       <div class="q-card b">
         <h4><span class="tag-tkb">K</span> キッチンの課題</h4>
-        <ul><li>${kQ}</li></ul>
+        <ul><li>${sample(DISCUSSIONS.k)}</li></ul>
       </div>
       <div class="q-card c">
         <h4><span class="tag-tkb">B</span> ベッドの課題</h4>
-        <ul><li>${bQ}</li></ul>
+        <ul><li>${sample(DISCUSSIONS.b)}</li></ul>
       </div>
     `;
-    
     showView(2);
   }
 
@@ -525,13 +506,7 @@
     while(idx1 === idx2){
       idx2 = Math.floor(Math.random()*CH_CARDS.length);
     }
-    
-    const ch1 = CH_CARDS[idx1];
-    const ch2 = CH_CARDS[idx2];
-
-    const chBox = $('#ch-cards-box');
-    chBox.innerHTML = makeCardHtml(ch1) + makeCardHtml(ch2);
-
+    $('#ch-cards-box').innerHTML = makeCardHtml(CH_CARDS[idx1]) + makeCardHtml(CH_CARDS[idx2]);
     showView(3);
   }
 
@@ -542,7 +517,7 @@
   }
 
   function buildReview(){
-    $('#rSit').textContent = CURRENT ? situationText(CURRENT) : 'まだシチュエーションが作られていません。「カードを引く」からはじめてね。';
+    $('#rSit').textContent = CURRENT ? situationText(CURRENT) : 'まだシチュエーションが作られていません。「カードを引く」からはてね。';
     const d = collectMemo();
     $$('.content[data-r]').forEach(el => {
       const v = d[el.dataset.r];
@@ -555,31 +530,26 @@
     const d = collectMemo();
     const sit = CURRENT ? situationText(CURRENT) : '（シチュエーション未作成）';
     const lines = [
-      '【HUG Gioco ふりかえりシート】', '',
+      '【HUG Gioco ワーク記録シート】', '',
       '■ 今回のシチュエーション', sit, '',
-      '■ 見つかった課題', d.issues || '-', '',
+      '■ 想定される課題', d.issues || '-', '',
       '■ 特に配慮が必要な人', d.care || '-', '',
       '■ 今すぐ必要な対応', d.now || '-', '',
-      '■ 事前に準備すべきこと', d.prep || '-', '',
-      '■ 学校・自治体・地域への提案', d.propose || '-', '',
+      '■ 事前に準備しておくべきこと', d.prep || '-', '',
+      '■ 学校・自治体・地域社会へのアイデアや提言', d.propose || '-', '',
       '— HUG Gioco / TKB型避難所運営ディスカッションゲーム —'
     ];
     const text = lines.join('\n');
     navigator.clipboard.writeText(text).then(() => {
-      showToast('クリップボードにコピーしました！');
+      const t = $('#toast');
+      t.textContent = 'クリップボードにコピーしました！';
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
     }).catch(() => {
-      alert('コピーに失敗しました。お手数ですが手動で選択してコピーしてください。');
+      alert('コピーに失敗しました。手動で選択してコピーしてください。');
     });
   }
 
-  function showToast(msg){
-    const t = $('#toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2000);
-  }
-
-  // ページロード時初期化
   window.addEventListener('DOMContentLoaded', () => {
     $('#btn-draw').addEventListener('click', drawSituation);
     $('#btn-next-step1').addEventListener('click', buildStep2);
