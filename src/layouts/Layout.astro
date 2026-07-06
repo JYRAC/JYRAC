@@ -1,5 +1,4 @@
 ---
-// src/layouts/Layout.astro
 interface Props {
   title: string;
   currentTab: 'news' | 'about' | 'services' | 'governance' | 'sns' | 'contact' | 'gioco'; 
@@ -7,7 +6,6 @@ interface Props {
 
 const { title, currentTab } = Astro.props;
 ---
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -237,7 +235,6 @@ const { title, currentTab } = Astro.props;
             z-index: 20;
         }
 
-        /* HUG Gioco用起動ボタン */
         .btn-gioco-launch {
             display: inline-flex;
             justify-content: center;
@@ -319,7 +316,21 @@ const { title, currentTab } = Astro.props;
     </aside>
 
     <main id="main-panel">
-        <slot /> 
+        {currentTab === 'gioco' ? (
+            <div class="content-panel">
+                <h2>HUG Gioco — TKB型避難所運営ディスカッションゲーム</h2>
+                <div class="info-card-box">
+                    <p>「HUG Gioco（グロッコ）」は、TKB（トイレ・キッチン・ベッド）型避難所運営をテーマにした、子どもから大人まで直感的に学べる防災シミュレーションゲームです。</p>
+                    <div style="text-align: center; margin: 40px 0;">
+                        <a href="/hug-gioco" class="btn-gioco-launch">
+                            ゲームを起動する ➔
+                        </a>
+                    </div>
+                </div>
+            </div>
+        ) : (
+            <slot /> 
+        )}
     </main>
 </div>
 
