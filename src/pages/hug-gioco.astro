@@ -21,7 +21,7 @@ const CARDS = [
 const DISCUSSIONS = {
   t: ['マンホールトイレや仮設トイレをどこに設置するか？', '誰を優先して使ってもらうルールにするか？', 'トイレの清掃やゴミ出しの担当をどう決めるか？'],
   k: ['炊き出しや物資の配布場所をどこに設けるか？', 'アレルギーや宗教上の配慮が必要な人への対応は？', '貴重な水や燃料をどう管理・節約するか？'],
-  b: ['通路を確保しつつ、プライベート空間をどう作るか？', '高齢者や要配慮者のベッド位置をどこにするか？', '体育館の床の冷たさや硬さを防工夫は？']
+  b: ['通路を確保しつつ、プライベート空間をどう作るか？', '高齢者や要配慮者のベッド位置をどこにするか？', '体育館の床の冷たさや硬さを防ぐ工夫は？']
 };
 
 const CH_CARDS = [
@@ -30,15 +30,6 @@ const CH_CARDS = [
   { id: 'ch3', c: 'sup', txt: '届いた物資の仕分け・管理の担当者をどうするか？', e: '🤝' },
   { id: 'ch4', c: 'sup', txt: '避難者同士のトラブル（騒音・ペット等）の対応は？', e: '⚡' }
 ];
-
-// カテゴリ名を解決するヘルパー関数
-const getCatName = (c: string) => {
-  const maps: Record<string, string> = {
-    dis: '災害・状況', time: '経過時間', fac: '施設・物資', peo: '避難者',
-    t: 'トイレ対策', k: 'キッチン・食', b: 'ベッド・居住', con: '運営・情報', sup: '支援・対話'
-  };
-  return maps[c] || c;
-};
 ---
 <!DOCTYPE html>
 <html lang="ja">
@@ -67,8 +58,15 @@ const getCatName = (c: string) => {
     background-attachment:fixed; margin:0; padding:0;
   }
   header.site{ position:sticky; top:0; z-index:50; background:rgba(255,255,255,.92); backdrop-filter:blur(8px); border-bottom:3px solid var(--navy); padding:10px 18px; display:flex; align-items:center; gap:12px; box-shadow:0 4px 14px rgba(27,58,140,.08); }
-  header.site .logo-mini{ height:46px; width:auto; }
+  header.site .titles { display:flex; flex-direction:column; line-height:1.15; }
   header.site .titles b{ font-family:'Baloo 2'; font-weight:800; font-size:1.18rem; color:var(--navy); }
+  header.site .titles span{ font-size:.72rem; color:var(--ink-soft); font-weight:700; }
+  header.site .nav-spacer{ flex:1; }
+  
+  /* サイトへ戻るボタンのスタイル */
+  .btn-back-to-site { font-family:'Zen Maru Gothic'; font-weight:700; font-size:.85rem; color:var(--navy); text-decoration:none; background:#fff; border:2px solid var(--navy); padding:6px 16px; border-radius:999px; transition:.2s; display:inline-flex; align-items:center; gap:6px; }
+  .btn-back-to-site:hover { background:var(--navy); color:#fff; }
+
   main{ max-width:1080px; margin:0 auto; padding:22px 16px 90px; }
   .btn{ font-family:'Baloo 2','Zen Maru Gothic'; font-weight:800; border:none; cursor:pointer; border-radius:999px; padding:16px 30px; font-size:1.12rem; color:#fff; background:var(--navy); box-shadow:0 6px 0 var(--navy-deep),0 12px 22px rgba(27,58,140,.28); transition:transform .08s ease, box-shadow .08s ease; display:inline-flex; align-items:center; gap:10px; justify-content:center; }
   .btn:active{ transform:translateY(4px); box-shadow:0 2px 0 var(--navy-deep),0 6px 12px rgba(27,58,140,.24); }
@@ -137,7 +135,7 @@ const getCatName = (c: string) => {
   .footer-note{ text-align:center; color:var(--ink-soft); font-size:.85rem; margin-top:30px; padding:18px; background:#fff; border-radius:16px; box-shadow:var(--shadow); }
   .toast{ position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(30px); background:var(--navy); color:#fff; padding:13px 26px; border-radius:999px; font-weight:800; opacity:0; pointer-events:none; transition:.3s; z-index:200; }
   .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
-  @media(max-width:520px){ .tkb-grid{ grid-template-columns:1fr; } }
+  @media(max-width:520px){ .tkb-grid{ grid-template-columns:1fr; } .btn-back-to-site { font-size: .75rem; padding: 4px 10px; } }
   @media print{ .final-actions, .btn, .footer-note, header.site { display:none !important; } .view{ display:none !important; } .view#view-4{ display:block !important; } }
 </style>
 </head>
@@ -145,6 +143,8 @@ const getCatName = (c: string) => {
 
 <header class="site">
   <div class="titles"><b>HUG Gioco</b><span>ふりかえりシートツール</span></div>
+  <div class="nav-spacer"></div>
+  <a href="/gioco" class="btn-back-to-site">JYRACサイトに戻る ➔</a>
 </header>
 
 <main>
@@ -245,7 +245,6 @@ const getCatName = (c: string) => {
 <div id="toast" class="toast"></div>
 
 <script is:inline define:vars={{ CARDS, DISCUSSIONS, CH_CARDS }}>
-  // Astroのフロントマターから渡されたデータをJS変数として展開
   let DECK = [...CARDS];
   let CURRENT = null;
 
@@ -258,7 +257,6 @@ const getCatName = (c: string) => {
     window.scrollTo(0,0);
   }
 
-  // クライアント側でHTMLカードを生成する共通ヘルパー
   function makeCardHtml(c){
     const catMaps = {dis:'災害・状況',time:'経過時間',fac:'施設・物資',peo:'避難者',con:'運営・情報',sup:'支援・対話'};
     const catName = catMaps[c.c] || c.c;
