@@ -1,0 +1,42 @@
+---
+// src/pages/hug-gioco.astro
+import HugGiocoBody from '../components/HugGiocoBody.astro';
+---
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HUG Gioco — TKB型避難所運営ディスカッションゲーム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+
+<style is:global>
+  :root {
+    --navy: #1B3A8C;        
+    --navy-deep: #152E70;
+    --green: #2E9E4F;       
+    --green-deep: #1f7d3c;
+    --red: #E01E2B;         
+    --red-deep: #b8161f;
+    --white: #FFFFFF;
+    --sky: #4AA9E0;
+    --sky-soft: #DDEEFA;
+    --sun: #FFD23F;
+    --sun-soft: #FFF3C9;
+    --cream: #FDFBF5;
+    --cream-2: #F5F0E4;
+    --ink: #222222;
+  }
+  /* ...（その他のゲーム専用CSSをここに集約）... */
+</style>
+</head>
+
+<HugGiocoBody />
+
+<script is:inline>
+  /* 💡 ここに元の hug-gioco.html の <script> 〜 </script> の中身（JavaScriptロジック）を貼り付けます */
+  // collectMemo, buildReview, copyReview, clearReview などの関数群
+</script>
+</html>
