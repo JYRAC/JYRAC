@@ -1,6 +1,6 @@
 ---
 // ==========================================
-// 1. DATA LAYER (Astroのフロントマターでデータを一元管理)
+// 1. DATA LAYER (Astroフロントマターでデータを一元管理)
 // サーバー側でここを編集するだけで、画面のHTMLとJSのデータの両方が自動更新されます。
 // ==========================================
 const CARDS = [
@@ -15,7 +15,7 @@ const CARDS = [
   { id: 9, c: 'fac', txt: '学校の受水槽が生きており、水は出るが流せない。', e: '🚰' },
   { id: 10, c: 'fac', txt: '備蓄倉庫からアルファ米300食と毛布50枚を発見。', e: '📦' },
   { id: 11, c: 'peo', txt: '乳幼児を連れた母親。授乳スペースを求めている。', e: '👶' },
-  { id: 12, c: 'peo', txt: '車椅子の高齢者と、そのお世話をする家族。', e: '👨‍🦽' },
+  { id: 12, c: 'peo', txt: '車椅子の高齢者と, そのお世話をする家族。', e: '👨‍🦽' },
   { id: 13, c: 'peo', txt: '日本語が苦手な外国人の家族（大人2人、子ども1人）。', e: '🗣️' },
   { id: 14, c: 'peo', txt: 'ペット（大型犬）を連れて避難してきた飼い主。', e: '🐕' },
   { id: 15, c: 'peo', txt: '修学旅行中の高校生グループ30名が避難を求めてきた。', e: '🎒' }
@@ -30,7 +30,7 @@ const DISCUSSIONS = {
 const CH_CARDS = [
   { id: 'ch1', c: 'con', txt: '避難所内の連絡・情報共有をどう行うか？', e: '📢' },
   { id: 'ch2', c: 'con', txt: '外部（役場や救急）との通信手段の確保は？', e: '📱' },
-  { id: 'ch3', c: 'sup', txt: '届いた物資の仕分け・管理の担当者をどうするか？', e: '🤝' },
+  { id: 'ch3', c: 'sup', txt: '届いた物資の仕分け·管理の担当者をどうするか？', e: '🤝' },
   { id: 'ch4', c: 'sup', txt: '避難者同士のトラブル（騒音・ペット等）の対応は？', e: '⚡' }
 ];
 ---
@@ -80,7 +80,7 @@ const CH_CARDS = [
   .step-dots i.on { background: var(--navy); transform: scale(1.25); }
   .step-dots i.done { background: var(--green); }
   
-  .btn-back-to-site { font-weight:700; font-size:.85rem; color: var(--navy); text-decoration:none; background:#fff; border:2px solid var(--navy); padding:6px 16px; border-radius:999px; transition:.2s; display:inline-flex; align-items:center; gap:6px; }
+  .btn-back-to-site { font-weight:700; font-size:.85rem; color: var(--navy); text-decoration:none; background:#fff; border:2px solid var(--navy); padding:6px 16px; border-radius:999px; transition:.2s; display:inline-flex; align-items:center; gap:6px; margin-right: 15px; }
   .btn-back-to-site:hover { background:var(--navy); color:#fff; }
 
   main { max-width: 1080px; margin: 0 auto; padding: 22px 16px 90px; }
@@ -148,7 +148,7 @@ const CH_CARDS = [
   .screen-head h2 { font-family: 'Baloo 2'; color: var(--navy); font-size: clamp(1.3rem, 4vw, 1.8rem); margin: 0; font-weight: 800; }
   .screen-head .tag { background: var(--sky-soft); color: var(--navy); font-weight: 700; padding: 5px 14px; border-radius: 999px; font-size: 0.8rem; }
 
-  .situation { background: linear-gradient(135deg, var(--navy), #2a52b0); color: #fff; border-radius: var(--radius-sm); padding: 18px 20px; margin: 6px 0 25px; box-shadow: var(--shadow); }
+  .situation { background: linear-gradient(135deg, var(--navy), #2a52b0); color: #fff; border-radius: var(--radius-sm); padding: 18px 20px; margin-bottom: 20px; box-shadow: var(--shadow); }
   .situation .lbl { font-weight: 800; font-size: 0.85rem; opacity: 0.85; }
   .situation p { font-size: 1.1rem; font-weight: 700; margin: 6px 0 0; line-height: 1.7; }
 
@@ -167,26 +167,23 @@ const CH_CARDS = [
 
   .memo-grid { display: grid; gap: 16px; grid-template-columns: 1fr; margin-bottom: 25px; }
   @media(min-width: 720px) { .memo-grid { grid-template-columns: 1fr 1fr; } }
-  .memo { background: #fff; border-radius: var(--radius-sm); padding: 16px; box-shadow: var(--shadow); border-left: 6px solid var(--navy); }
-  .memo.m1 { border-left-color: var(--red); } .memo.m2 { border-left-color: var(--sun); }
-  .memo.m3 { border-left-color: var(--sky); } .memo.m4 { border-left-color: var(--green); }
-  .memo.m5 { border-left-color: #7a5cc0; }
-  .memo label { font-weight: 800; color: var(--navy); display: block; margin-bottom: 8px; font-size: 0.95rem; }
+  .memo { background:#fff; border-radius:var(--radius-sm); padding:16px; box-shadow:var(--shadow); border: 1px solid rgba(0, 154, 166, 0.04); border-left:8px solid var(--navy); }
+  .memo.m1 { border-left-color:var(--red); } .memo.m2 { border-left-color:var(--sun); }
+  .memo.m3 { border-left-color:var(--sky); } .memo.m4 { border-left-color:var(--green); }
+  .memo.m5 { border-left-color:#7a5cc0; }
+  .memo label { font-weight:800; color:var(--navy); display:block; margin-bottom:12px; font-size: .95rem; }
   .memo textarea { width: 100%; border: 2px solid var(--line); border-radius: 12px; padding: 10px; font-family: inherit; font-size: 0.95rem; resize: vertical; min-height: 85px; background: #fafafa; color: var(--ink); font-weight: 500; }
-  .memo textarea:focus { outline: none; border-color: var(--sky); background: #fff; }
+  .memo textarea:focus { outline: none; border-color: var(--primary); background: #fff; }
 
-  .review-box { background: #fff; border-radius: var(--radius-sm); padding: 20px; box-shadow: var(--shadow); border: 2px solid var(--navy); }
-  .r-item { border-bottom: 2px dashed var(--line); padding: 12px 0; }
+  .review-box { background: #fff; border-radius: var(--radius-sm); padding: 30px; box-shadow: 0 15px 40px rgba(0,43,84,0.08); border: 2px solid var(--navy); text-align: left; }
+  .r-item { border-bottom: 2px dashed rgba(0,0,0,0.06); padding: 18px 0; }
   .r-item:first-child { padding-top: 0; } .r-item:last-child { border-bottom: none; padding-bottom: 0; }
-  .r-item h5 { color: var(--navy); margin: 0 0 6px 0; font-size: 0.98rem; font-weight: 800; }
-  .r-item .content { white-space: pre-wrap; color: var(--ink); font-size: 0.95rem; font-weight: 500; }
+  .r-item h5 { font-family: 'Baloo 2', 'Zen Maru Gothic'; font-weight: 800; color: var(--navy); margin: 0 0 8px; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
+  .r-item .content { white-space: pre-wrap; color: var(--ink); font-size: 1rem; min-height: 1.2em; font-weight: 500; }
   .r-item .empty { color: #b7bdc7; font-style: italic; }
 
-  .final-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 25px; }
+  .final-actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 25px; }
   .footer-note { text-align: center; color: var(--ink-soft); font-size: 0.8rem; margin-top: 40px; padding: 15px; background: rgba(255,255,255,0.5); border-radius: 12px; border: 1px dashed var(--line); }
-
-  .game-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(30px); background: var(--navy); color: #fff; padding: 12px 24px; border-radius: 999px; font-weight: 800; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 200; box-shadow: var(--shadow); }
-  .game-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
   @media print {
     header.site, .final-actions, .step-dots, .btn, .footer-note, .note-line, aside, header { display: none !important; }
@@ -197,6 +194,8 @@ const CH_CARDS = [
     .memo.m5 textarea { border: none; background: transparent; padding: 0; }
   }
 </style>
+</head>
+<body>
 
 <header class="site">
   <div class="titles">
@@ -213,7 +212,7 @@ const CH_CARDS = [
   </div>
 </header>
 
-<main>
+<main id="game-scope-wrapper">
   <div id="view-1" class="view active">
     <div class="hero">
       <div class="logo-main">
@@ -226,7 +225,7 @@ const CH_CARDS = [
     </div>
 
     <p class="desc" style="text-align: center;">
-      避難所運営の命題となる<strong>TKB（トイレ・キッチン・ベッド）</strong>をテーマに、直感的なグループワークを行えるシミュレーションゲームです。<br><br>
+      避難所運営の命題となる<strong>TKB（トイレ·キッチン·ベッド）</strong>をテーマに、直感的なグループワークを行えるシミュレーションゲームです。<br><br>
       「🎲 カードを引く」ボタンを押すと、現在の災害シナリオ、経過時間、施設の物資条件、特別な要配慮者を含む避難者のシチュエーションが自動生成されます。
     </p>
 
@@ -306,7 +305,7 @@ const CH_CARDS = [
         <textarea data-memo="now" placeholder="例：修学旅行中の元気な高校生たちに物資搬入やゴミ集積の手伝いチームを結成してもらう、など"></textarea>
       </div>
       <div class="memo m4">
-        <label>④ 普段の備えとして「事前に準備しておくべきこと」は？</label>
+        <label>④ 普段の生活から「事前に準備すべきこと」は？</label>
         <textarea data-memo="prep" placeholder="例：学校の備蓄品見直し、防災訓練の実施など"></textarea>
       </div>
     </div>
@@ -455,3 +454,5 @@ const CH_CARDS = [
     $('#btn-restart').addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} if(confirm('新しくゲームをはじめますか？')) startTool(); });
   });
 </script>
+</body>
+</html>
