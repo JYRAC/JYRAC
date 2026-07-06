@@ -45,7 +45,7 @@ const CH_CARDS = [
   :root {
     --primary: #009aa6; --primary-light: #00d2e0; --navy: #002b54; --navy-light: #0a3d6d;
     --green: #2E9E4F; --green-deep: #1f7d3c; --red: #E01E2B; --red-deep: #b8161f; --sky: #4AA9E0; --sky-soft: #DDEEFA; --sun: #FFD23F;
-    --ink: #233047; --ink-soft: #5b6779; --line: rgba(0, 154, 166, 0.2); --shadow: 0 10px 24px rgba(27,58,140,.06); --radius: 24px;
+    --ink: #233047; --ink-soft: #5b6779; --line: rgba(0, 154, 166, 0.15); --shadow: 0 10px 24px rgba(27,58,140,.06); --radius: 24px;
     --panel-bg: rgba(255, 255, 255, 0.90);
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -58,12 +58,12 @@ const CH_CARDS = [
   header.site .titles span{ font-size:.72rem; color:var(--primary); font-weight:700; letter-spacing: 0.05em; }
   header.site .nav-spacer{ flex:1; }
   
+  /* サイトへ戻るボタン（target="_blank"を使わない同一タブ仕様） */
   .btn-back-to-site { font-weight:700; font-size:.85rem; color:var(--primary); text-decoration:none; background:#fff; border:2px solid var(--primary); padding:6px 16px; border-radius:999px; transition:.2s; display:inline-flex; align-items:center; gap:6px; }
   .btn-back-to-site:hover { background:var(--primary); color:#fff; }
 
   main{ max-width:1000px; margin:0 auto; padding:30px 20px 90px; }
   
-  /* ボタンの新しいトーン＆マナー（ネイビーグラデーション） */
   .btn{ font-weight:800; border:none; cursor:pointer; border-radius:999px; padding:16px 36px; font-size:1.1rem; color:#fff; background:linear-gradient(135deg, var(--navy-light) 0%, var(--navy) 100%); box-shadow:0 6px 0 #00152b, 0 12px 24px rgba(0,43,84,.25); transition:transform .08s ease, box-shadow .08s ease; display:inline-flex; align-items:center; gap:10px; justify-content:center; }
   .btn:active{ transform:translateY(4px); box-shadow:0 2px 0 #00152b, 0 6px 12px rgba(0,43,84,.2); }
   .btn.green{ background:linear-gradient(135deg, var(--green) 0%, var(--green-deep) 100%); box-shadow:0 6px 0 #135226,0 12px 22px rgba(46,158,79,.25); }
@@ -79,11 +79,10 @@ const CH_CARDS = [
   .view.active{ display:block; }
   @keyframes pop{ from{opacity:0; transform:translateY(12px);} to{opacity:1; transform:none;} }
   
-  /* ミニマル化された美しいスタート画面レイアウト */
-  .start-card { background: var(--panel-bg); border-radius: var(--radius); border: 2px solid var(--line); padding: 45px 30px; box-shadow: var(--shadow); backdrop-filter: blur(10px); text-align: center; max-width: 720px; margin: 40px auto; }
-  .start-card h1 { font-size: clamp(2rem, 6vw, 2.75rem); color: var(--navy); font-weight: 900; margin: 0 0 10px 0; }
-  .start-card .subtitle { color: var(--primary); font-size: clamp(1rem, 3vw, 1.2rem); font-weight: 700; letter-spacing: 0.05em; margin-bottom: 25px; }
-  .start-card .description { font-size: 1rem; color: var(--ink-soft); max-width: 540px; margin: 0 auto 40px; line-height: 1.8; text-align: left; background: #ffffff; padding: 20px 24px; border-radius: 16px; border: 1px solid rgba(0,0,0,0.05); }
+  .start-card { background: var(--panel-bg); border-radius: var(--radius); border: 2px solid var(--line); padding: 50px 40px; box-shadow: var(--shadow); backdrop-filter: blur(10px); text-align: center; max-width: 720px; margin: 40px auto; }
+  .start-card h1 { font-family: 'Baloo 2', sans-serif; font-size: clamp(2.5rem, 7vw, 3.5rem); color: var(--navy); font-weight: 900; margin: 0 0 5px 0; letter-spacing: -0.02em; }
+  .start-card .subtitle { color: var(--primary); font-size: clamp(1rem, 3vw, 1.15rem); font-weight: 800; letter-spacing: 0.08em; margin-bottom: 35px; }
+  .start-card .description { font-size: 1rem; color: var(--ink-soft); max-width: 560px; margin: 0 auto 40px; line-height: 1.8; text-align: left; background: #ffffff; padding: 22px 26px; border-radius: 18px; border: 1px solid rgba(0,0,0,0.03); }
 
   .screen-head h2 { font-size: 1.6rem; color: var(--navy); font-weight: 900; margin-top: 0; margin-bottom: 20px; border-left: 6px solid var(--primary); padding-left: 12px; }
   .situation{ background: linear-gradient(135deg, var(--navy-light) 0%, var(--navy) 100%); color:#fff; border-radius:var(--radius); padding:24px 26px; margin:6px 0 20px; box-shadow:0 12px 30px rgba(0,43,84,.15); }
@@ -91,7 +90,7 @@ const CH_CARDS = [
   .situation p{ font-size:clamp(1.05rem, 3vw, 1.25rem); font-weight:700; margin:.6em 0 0; line-height: 1.6; }
 
   .cards{ display:grid; gap:16px; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); margin: 25px 0; }
-  .gcard{ position:relative; background:#fff; border-radius:20px; padding:20px 18px; box-shadow:var(--shadow); border: 1px solid rgba(0,0,0,0.04); border-top:8px solid var(--primary); overflow:hidden; transition: transform .2s ease; }
+  .gcard{ position:relative; background:#fff; border-radius:20px; padding:20px 18px; box-shadow:var(--shadow); border: 1px solid rgba(0,0,0,0.04); border-top:8px solid var(--primary); overflow:hidden; }
   .gcard .cat{ font-size:.75rem; font-weight:800; opacity:.85; letter-spacing: 0.05em; margin-bottom: 6px; }
   .gcard .txt{ font-weight:700; font-size:1.05rem; line-height: 1.5; color: var(--navy); }
   .gcard .emoji{ font-size:1.8rem; display: block; margin-bottom: 12px; }
@@ -132,17 +131,17 @@ const CH_CARDS = [
 
   .final-actions{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-top:35px; }
   .footer-note{ text-align:center; color:var(--ink-soft); font-size:.85rem; margin-top:50px; padding:20px; background:rgba(255,255,255,0.6); border-radius:16px; border: 1px solid rgba(0,0,0,0.03); }
-  .toast{ position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(30px); background:var(--navy); color:#fff; padding:13px 28px; border-radius:999px; font-weight:800; opacity:0; pointer-events:none; transition:.3s; z-index:200; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+  .toast{ position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(30px); background:var(--navy); color:#fff; padding:13px 26px; border-radius:999px; font-weight:800; opacity:0; pointer-events:none; transition:.3s; z-index:200; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
   .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
 
-  @media(max-width:520px){ .btn-back-to-site { font-size: .75rem; padding: 4px 12px; } .start-card { padding: 30px 16px; } .btn.big { padding: 18px 32px; font-size: 1.15rem; } }
+  @media(max-width:520px){ .btn-back-to-site { font-size: .75rem; padding: 4px 12px; } .start-card { padding: 35px 20px; } .btn.big { padding: 18px 32px; font-size: 1.15rem; } }
   @media print{ .final-actions, .btn, .footer-note, header.site { display:none !important; } .view{ display:none !important; } .view#view-4{ display:block !important; } .review-box { border: none; padding: 0; box-shadow: none; } }
 </style>
 </head>
 <body>
 
 <header class="site">
-  <div class="titles"><b>HUG Gioco</b><span>TKB-STYLE EVACUATION SHELTER DISCUSSION GAME</span></div>
+  <div class="titles"><b>HUG Gioco</b><span>TKB型避難所運営ディスカッションゲーム</span></div>
   <div class="nav-spacer"></div>
   <a href="/gioco" class="btn-back-to-site">JYRACサイトに戻る ➔</a>
 </header>
@@ -151,11 +150,11 @@ const CH_CARDS = [
   <div id="view-1" class="view active">
     <div class="start-card">
       <h1>HUG Gioco</h1>
-      <div class="subtitle">ふりかえりシート作成ツール</div>
+      <div class="subtitle">TKB型避難所運営ディスカッションゲーム</div>
       
       <div class="description">
-        避難所運営で重要となる<strong>TKB（トイレ・キッチン・ベッド）</strong>に焦点を当てたディスカッション用状況生成ツールです。<br><br>
-        「🎲 カードを引く」ボタンを押すと、災害状況、経過時間、施設の設備、そして特別な配慮が必要な避難者のシチュエーションが自動で組み合わされます。
+        避難所運営の命題となる<strong>TKB（トイレ・キッチン・ベッド）</strong>をテーマに、直感的なグループワークを行えるシミュレーションゲームです。<br><br>
+        「🎲 カードを引く」ボタンを押すと、現在の災害シナリオ、経過時間、施設の物資条件、特別な要配慮者を含む避難者のシチュエーションが自動生成されます。
       </div>
 
       <div style="margin:20px 0;">
@@ -214,7 +213,7 @@ const CH_CARDS = [
   </div>
 
   <div id="view-4" class="view">
-    <div class="screen-head"><h2>HUG Gioco ふりかえりシート</h2></div>
+    <div class="screen-head"><h2>HUG Gioco ワーク記録シート</h2></div>
     <div class="review-box">
       <div class="r-item"><h5>シチュエーション（設定条件）</h5><div id="rSit" class="content"></div></div>
       <div class="r-item"><h5>Q1. 今回の状況で「見つかった課題」</h5><div class="content" data-r="issues"></div></div>
@@ -280,7 +279,6 @@ const CH_CARDS = [
     $('#sit-cards').innerHTML = makeCardHtml(c1) + makeCardHtml(c2) + makeCardHtml(c3) + makeCardHtml(p1) + makeCardHtml(p2);
     $('#btn-next-step1').disabled = false;
     
-    // カード描画時に少しスクロール
     setTimeout(() => {
       $('#sit-cards').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }, 100);
@@ -322,7 +320,7 @@ const CH_CARDS = [
 
   function copyReview(){
     const d = collectMemo();
-    const text = `【HUG Gioco ふりかえりシート】\n\n■状況\n${CURRENT?situationText(CURRENT):''}\n\n■課題\n${d.issues||'-'}\n\n■配慮\n${d.care||'-'}\n\n■対応\n${d.now||'-'}\n\n■準備\n${d.prep||'-'}\n\n■提案\n${d.propose||'-'}`;
+    const text = `【HUG Gioco ワーク記録シート】\n\n■状況\n${CURRENT?situationText(CURRENT):''}\n\n■課題\n${d.issues||'-'}\n\n■配慮\n${d.care||'-'}\n\n■対応\n${d.now||'-'}\n\n■準備\n${d.prep||'-'}\n\n■提案\n${d.propose||'-'}`;
     navigator.clipboard.writeText(text).then(() => {
       const t = $('#toast'); t.textContent = 'コピーしました！'; t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 2000);
