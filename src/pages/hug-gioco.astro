@@ -1,7 +1,9 @@
 ---
 // ==========================================
-// 1. DATA LAYER (Astroのフロントマターでデータを一元管理)
+// 1. Astroレイアウトのインポートとデータ層の一元管理
 // ==========================================
+import Layout from '../layouts/Layout.astro';
+
 const CARDS = [
   { id: 1, c: 'dis', txt: '避難所に指定された学校の体育館。外は激しい雨と風。', e: '⛈️' },
   { id: 2, c: 'dis', txt: '夜間に大きな地震が発生。周辺一帯が停電している。', e: '🌑' },
@@ -33,83 +35,180 @@ const CH_CARDS = [
   { id: 'ch4', c: 'sup', txt: '避難者同士のトラブル（騒音・ペット等）の対応は？', e: '⚡' }
 ];
 ---
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HUG Gioco — TKB型避難所運営ディスカッションゲーム</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
 
+{/* 💡 JYRACのサイドメニュー・クリスタル装飾・GSAP枠の中にゲームを完全統合 */}
+<Layout title="HUG Gioco — TKB型避難所運営ディスカッションゲーム" currentTab="gioco">
+  
+  {/* --- 2. GAME MAIN AREA (生HTMLタグを一切排除し、メインパネルに収まる構造に最適化) --- */}
+  <div class="game-container">
+    
+    {/* ゲーム専用インラインヘッダーバー (元のHTMLのデザイン・文言を完全再現) */}
+    <div class="game-header-bar">
+      <div class="game-header-titles">
+        <b>HUG Gioco</b>
+        <span>TKB型避難所運営ディスカッションゲーム</span>
+      </div>
+    </div>
+
+    <div id="view-1" class="view active">
+      <div class="hero-zone">
+        <div class="logo-main">
+          <div class="logo-h">H</div>
+          <div class="logo-u">U</div>
+          <div class="logo-g2">G</div>
+          <div class="logo-text-gioco">Gioco</div>
+        </div>
+        <span class="game-sub-title">TKB型避難所運営ディスカッションゲーム</span>
+      </div>
+
+      <p class="desc">
+        避難所運営の命題となる<strong>TKB（トイレ・キッチン・ベッド）</strong>をテーマに、直感的なグループワークを行えるシミュレーションゲームです。<br><br>
+        「🎲 カードを引く」ボタンを押すと、現在の災害シナリオ、経過時間、施設の物資条件、特別な要配慮者を含む避難者のシチュエーションが自動生成されます。
+      </p>
+
+      <div class="tkb-badge-row">
+        <span class="tkb-badge t">🚾 T: Toilet (トイレ対策)</span>
+        <span class="tkb-badge k">🍳 K: Kitchen (食事・炊き出し)</span>
+        <span class="tkb-badge b">🛏️ B: Bed (快適な睡眠・居住)</span>
+      </div>
+
+      <div style="text-align: center; margin: 28px 0 20px;">
+        <button id="btn-draw" class="btn big">🎲 カードを引いて状況を作る</button>
+      </div>
+
+      <div id="sit-cards" class="cards">
+        </div>
+
+      <div style="text-align: center; margin-top: 40px;">
+        <button id="btn-next-step1" class="btn green" disabled>次へ進む（課題検討） ➔</button>
+      </div>
+    </div>
+
+    <div id="view-2" class="view">
+      <div class="screen-head">
+        <h2>STEP 2: TKBの課題に向き合う</h2>
+        <span class="tag">グループワーク</span>
+      </div>
+
+      <div class="situation">
+        <div class="lbl">現在のシチュエーション設定</div>
+        <p id="step2-sit-text"></p>
+      </div>
+
+      <div class="note-line">
+        💡 下記の<b>T・K・Bそれぞれの問い</b>について、グループで「何が問題になるか」「どう対応するか」を話し合ってみましょう。
+      </div>
+
+      <div id="q-cards-box" class="q-groups">
+        </div>
+
+      <div class="section-label">
+        <span class="pill">記録メモ</span> ワーク中の気づきや意見をメモしよう
+      </div>
+
+      <div class="memo-grid">
+        <div class="memo m1">
+          <label>① 今回の状況で「想定される課題」は？</label>
+          <textarea data-memo="issues" placeholder="例：停電しているので夜間のトイレが非常に危険、物資の毛布50枚に対して避難者が多すぎる、など"></textarea>
+        </div>
+        <div class="memo m2">
+          <label>② 「特に配慮が必要な人」への対応は？</label>
+          <textarea data-memo="care" placeholder="例：日本語が不慣れな外国人家族への案内掲示、乳幼児の泣き声や授乳のための個室教室の割り当て、など"></textarea>
+        </div>
+      </div>
+
+      <div class="final-actions">
+        <button id="btn-back-step2" class="btn ghost small">🔀 状況を引き直す</button>
+        <button id="btn-next-step2" class="btn green">次へ進む（アクシデント発生） ➔</button>
+      </div>
+    </div>
+
+    <div id="view-3" class="view">
+      <div class="screen-head">
+        <h2>STEP 3: 突然のアクシデント・運営課題</h2>
+        <span class="tag" style="background:#fde3e5; color:var(--red);">トラブル対応</span>
+      </div>
+
+      <div class="note-line" style="background:#fde3e5; border-color:var(--red); color:var(--red-deep);">
+        ⚠️ <b>追加チャレンジ発生！</b> 運営ディスカッションを進める中、さらに以下のアクシデントや追加の運営問題が発生しました。どう乗り越えますか？
+      </div>
+
+      <div id="ch-cards-box" class="cards">
+        </div>
+
+      <div class="memo-grid">
+        <div class="memo m3">
+          <label>③ 混乱を防ぐために「今すぐ必要な対応」は？</label>
+          <textarea data-memo="now" placeholder="例：修学旅行中の元気な高校生たちに物資搬入やゴミ集積の手伝いチームを結成してもらう、など"></textarea>
+        </div>
+        <div class="memo m4">
+          <label>④ 普段の備えとして「事前に準備しておくべきこと」は？</label>
+          <textarea data-memo="prep" placeholder="例：学校の備蓄品見直し、防災訓練の実施など"></textarea>
+        </div>
+      </div>
+
+      <div class="final-actions">
+        <button id="btn-back-step3" class="btn ghost small">⬅ 戻る</button>
+        <button id="btn-next-step3" class="btn green">シートをまとめて完成！ ➔</button>
+      </div>
+    </div>
+
+    <div id="view-4" class="view">
+      <div class="screen-head"><h2>HUG Gioco ワーク記録シート</h2></div>
+      <div class="review-box">
+        <div class="r-item"><h5>設定シチュエーション</h5><div id="rSit" class="content"></div></div>
+        <div class="r-item"><h5>Q1. 今回の状況で「想定される課題」</h5><div class="content" data-r="issues"></div></div>
+        <div class="r-item"><h5>Q2. 「特に配慮が必要な人」への気づき</h5><div class="content" data-r="care"></div></div>
+        <div class="r-item"><h5>Q3. トラブルを防ぐために「今すぐ必要な対応」</h5><div class="content" data-r="now"></div></div>
+        <div class="r-item"><h5>Q4. 防災のために「事前に準備・備蓄すべきこと」</h5><div class="content" data-r="prep"></div></div>
+        <div class="r-item">
+          <h5>Q5. 学校・自治体・地域への提案・アイデア</h5>
+          <div class="memo m5" style="border:none; padding:0; box-shadow:none;"><textarea data-memo="propose" placeholder="例：地域の防災訓練に子どもを巻き込むアイデアなど" style="min-height:100px; margin-top:8px;"></textarea></div>
+        </div>
+      </div>
+      <div class="final-actions">
+        <button id="btn-back-step4" class="btn ghost small">⬅ 修正する</button>
+        <button id="btn-copy" class="btn sun">📋 テキストをコピーする</button>
+        <button id="btn-print" class="btn sky">🖨️ A4用紙に印刷する</button>
+        <button id="btn-restart" class="btn red">🔄 最初からやり直す</button>
+      </div>
+      <div class="footer-note"><b>HUG Gioco (グロッコ)</b> — TKB型避難所運営ディスカッションゲーム<br>協力：日本若者防災復興協会（JYRAC）</div>
+    </div>
+  </div>
+
+  <div id="game-toast" class="game-toast"></div>
+</Layout>
+
+{/* --- 3. STYLE LAYER (JYRACダッシュボード枠を汚染しないよう、スコープをゲーム内に限定) --- */}
 <style is:global>
-  :root {
+  /* ゲームエリア専用のパレットと、元のHTMLの背景グラデーションをJYRACのパネルにドッキング */
+  .game-container {
     --navy: #1B3A8C; --navy-deep: #152E70; --green: #2E9E4F; --green-deep: #1f7d3c; --red: #E01E2B; --red-deep: #b8161f;
-    --white: #FFFFFF; --sky: #4AA9E0; --sky-soft: #DDEEFA; --sun: #FFD23F; --sun-soft: #FFF3C9; --cream: #FDFBF5; --cream-2: #F5F0E4;
+    --sky: #4AA9E0; --sky-soft: #DDEEFA; --sun: #FFD23F; --sun-soft: #FFF3C9;
     --ink: #233047; --ink-soft: #5b6779; --line: #E7E0D0; --shadow: 0 10px 24px rgba(27, 58, 140, 0.12); --shadow-lg: 0 18px 44px rgba(27, 58, 140, 0.18);
     --radius: 22px; --radius-sm: 14px;
-    --primary: #009aa6;
-  }
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html, body { margin: 0; padding: 0; }
-  body {
-    font-family: 'Zen Maru Gothic', 'Baloo 2', system-ui, sans-serif; background: var(--cream); color: var(--ink); line-height: 1.7;
+    
+    padding: 10px; min-height: 600px;
     background-image: 
-      radial-gradient(circle at 12% 8%, rgba(74,169,224,0.10) 0 22px, transparent 23px),
-      radial-gradient(circle at 88% 14%, rgba(46,158,79,0.08) 0 26px, transparent 27px),
-      radial-gradient(circle at 78% 82%, rgba(224,30,43,0.06) 0 24px, transparent 25px),
-      radial-gradient(circle at 20% 90%, rgba(255,210,63,0.14) 0 30px, transparent 31px);
-    background-attachment: fixed;
+      radial-gradient(circle at 12% 8%, rgba(74,169,224,0.06) 0 22px, transparent 23px),
+      radial-gradient(circle at 88% 14%, rgba(46,158,79,0.05) 0 26px, transparent 27px),
+      radial-gradient(circle at 78% 82%, rgba(224,30,43,0.04) 0 24px, transparent 25px),
+      radial-gradient(circle at 20% 90%, rgba(255,210,63,0.08) 0 30px, transparent 31px);
+    background-color: #FDFBF5; border-radius: var(--radius); border: 1px solid var(--line);
   }
-  .display { font-family: 'Baloo 2', 'Zen Maru Gothic', sans-serif; }
 
-  /* ---------- ヘッダー ---------- */
-  header.site {
-    position: sticky; top: 0; z-index: 50; background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(8px);
-    border-bottom: 3px solid var(--navy); padding: 10px 18px; display: flex; align-items: center; gap: 12px;
-    box-shadow: 0 4px 14px rgba(27, 58, 140, 0.08);
+  /* ゲーム内ミニヘッダーバー */
+  .game-header-bar {
+    border-bottom: 2px solid var(--navy); padding: 0 0 12px 0; display: flex; align-items: center; margin-bottom: 25px;
   }
-  header.site .titles { display: flex; flex-direction: column; line-height: 1.15; }
-  header.site .titles b { font-family: 'Baloo 2'; font-weight: 800; font-size: 1.18rem; color: var(--navy); letter-spacing: 0.5px; }
-  header.site .titles span { font-size: 0.72rem; color: var(--ink-soft); font-weight: 700; }
-  header.site .nav-spacer { flex: 1; }
-  .step-dots { display: flex; gap: 7px; align-items: center; }
-  .step-dots i { width: 11px; height: 11px; border-radius: 50%; background: var(--line); display: block; transition: 0.25s; }
-  .step-dots i.on { background: var(--navy); transform: scale(1.25); }
-  .step-dots i.done { background: var(--green); }
-  
-  .btn-back-to-site { font-weight:700; font-size:.85rem; color: var(--navy); text-decoration:none; background:#fff; border:2px solid var(--navy); padding:6px 16px; border-radius:999px; transition:.2s; display:inline-flex; align-items:center; gap:6px; margin-right: 15px; }
-  .btn-back-to-site:hover { background:var(--navy); color:#fff; }
-
-  main { max-width: 1080px; margin: 0 auto; padding: 22px 16px 90px; }
-
-  /* ---------- 共通パーツ ---------- */
-  .btn {
-    font-family: 'Baloo 2', 'Zen Maru Gothic'; font-weight: 800; border: none; cursor: pointer; border-radius: 999px;
-    padding: 16px 30px; font-size: 1.12rem; color: #fff; background: var(--navy);
-    box-shadow: 0 6px 0 var(--navy-deep), 0 12px 22px rgba(27, 58, 140, 0.28);
-    transition: transform 0.08s ease, box-shadow 0.08s ease; display: inline-flex; align-items: center; gap: 10px; justify-content: center;
-  }
-  .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--navy-deep), 0 6px 12px rgba(27, 58, 140, 0.24); }
-  .btn.green { background: var(--green); box-shadow: 0 6px 0 var(--green-deep), 0 12px 22px rgba(46, 158, 79, 0.28); }
-  .btn.red { background: var(--red); box-shadow: 0 6px 0 var(--red-deep), 0 12px 22px rgba(224, 30, 43, 0.26); }
-  .btn.sky { background: var(--sky); box-shadow: 0 6px 0 #2b87bd, 0 12px 22px rgba(74, 169, 224, 0.28); }
-  .btn.sun { background: var(--sun); color: var(--navy); box-shadow: 0 6px 0 #e0b325, 0 12px 22px rgba(255, 210, 63, 0.4); }
-  .btn.ghost { background: #fff; color: var(--navy); border: 2.5px solid var(--navy); box-shadow: 0 6px 0 rgba(27, 58, 140, 0.16); }
-  .btn.small { padding: 11px 20px; font-size: 0.95rem; }
-  .btn.big { padding: 20px 44px; font-size: 1.35rem; }
-  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .game-header-titles b { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 1.15rem; color: var(--navy); }
+  .game-header-titles span { font-size: 0.72rem; color: var(--ink-soft); font-weight: 700; display: block; }
 
   .view { display: none; animation: pop 0.4s ease; }
   .view.active { display: block; }
-  @keyframes pop { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
-  @keyframes cardIn { from { opacity: 0; transform: translateY(18px) scale(0.94); } to { opacity: 1; transform: none; } }
 
-  /* ---------- トップ画面 ---------- */
-  .hero { text-align: center; padding: 12px 0 6px; }
-  
-  /* 💡 【元のHTMLロゴデザインCSSを完全移植して再現】 */
+  /* 元のHTMLロゴマークを完全再現 */
+  .hero-zone { text-align: center; padding: 12px 0 6px; }
   .logo-main { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 15px; font-family: 'Baloo 2', sans-serif; filter: drop-shadow(0 8px 16px rgba(27,58,140,0.12)); }
   .logo-h, .logo-u, .logo-g2 { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; font-size: 32px; font-weight: 800; border-radius: 14px; position: relative; box-shadow: inset 0 -4px 0 rgba(0,0,0,0.15), 0 4px 10px rgba(0,0,0,0.08); text-shadow: 0 2px 4px rgba(0,0,0,0.15); line-height: 1; color:#fff; }
   .logo-h::before, .logo-u::before, .logo-g2::before { content: ''; position: absolute; top: -12px; left: 0; right: 0; margin: auto; width: 0; height: 0; border-left: 26px solid transparent; border-right: 26px solid transparent; }
@@ -120,273 +219,91 @@ const CH_CARDS = [
   .logo-g2 { background: linear-gradient(135deg, #FF4D58 0%, var(--red) 100%); transform: rotate(-2deg); margin-top: 6px; }
   .logo-g2::before { border-bottom: 12px solid #FF4D58; }
   .logo-text-gioco { font-size: 46px; font-weight: 800; color: var(--navy); margin-left: 6px; letter-spacing: -0.01em; transform: rotate(1deg); display: inline-block; }
+  .game-sub-title { color: var(--green); font-size: 1.15rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 25px; text-transform: uppercase; display: block; text-align: center; }
 
-  .hero .sub { color: var(--green); font-size: clamp(1rem, 3vw, 1.25rem); font-weight: 800; letter-spacing: 1px; margin-bottom: 25px; text-transform: uppercase; display: block; text-align: center; }
-  .hero p.desc { max-width: 620px; margin: 0 auto 30px; font-size: 1.05rem; color: var(--ink-soft); font-weight: 500; }
+  .game-container p.desc { max-width: 580px; margin: 0 auto 30px; font-size: 1rem; color: var(--ink-soft); line-height: 1.8; text-align: left; }
 
-  .tkb-badge-row { display: flex; justify-content: center; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
-  .tkb-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 18px; border-radius: 999px; font-size: 0.95rem; font-weight: 800; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+  /* 共通パーツのスタイル */
+  .game-container .btn {
+    font-family: 'Baloo 2', 'Zen Maru Gothic'; font-weight: 800; border: none; cursor: pointer; border-radius: 999px;
+    padding: 15px 32px; font-size: 1.05rem; color: #fff; background: var(--navy);
+    box-shadow: 0 6px 0 var(--navy-deep), 0 12px 22px rgba(27, 58, 140, 0.22);
+    transition: transform 0.08s ease, box-shadow 0.08s ease; display: inline-flex; align-items: center; gap: 10px; justify-content: center;
+  }
+  .game-container .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--navy-deep), 0 6px 12px rgba(27, 58, 140, 0.18); }
+  .game-container .btn.green { background: var(--green); box-shadow: 0 6px 0 var(--green-deep), 0 12px 22px rgba(46, 158, 79, 0.2); }
+  .game-container .btn.red { background: var(--red); box-shadow: 0 6px 0 var(--red-deep), 0 12px 22px rgba(224, 30, 43, 0.2); }
+  .game-container .btn.sun { background: var(--sun); color: var(--navy); box-shadow: 0 6px 0 #e0b325, 0 12px 22px rgba(255, 210, 63, 0.25); }
+  .game-container .btn.ghost { background: #fff; color: var(--navy); border: 2px solid var(--navy); box-shadow: 0 6px 0 rgba(27, 58, 140, 0.1); }
+  .game-container .btn.small { padding: 10px 20px; font-size: 0.92rem; }
+  .game-container .btn.big { padding: 18px 40px; font-size: 1.25rem; }
+
+  .tkb-badge-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+  .tkb-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 999px; font-size: 0.88rem; font-weight: 800; color: #fff; }
   .tkb-badge.t { background: var(--green); } .tkb-badge.k { background: var(--red); } .tkb-badge.b { background: var(--navy); }
 
-  .cards { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); }
-  .gcard {
-    position: relative; background: #fff; border-radius: var(--radius-sm); padding: 20px 16px;
-    box-shadow: var(--shadow); border-left: 7px solid var(--navy); overflow: hidden; text-align: left;
-  }
-  .gcard .cat { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-  .gcard .txt { font-weight: 700; font-size: 1.02rem; line-height: 1.45; color: var(--ink); }
-  .gcard .emoji { position: absolute; right: 8px; top: 8px; font-size: 1.4rem; opacity: 0.9; }
-  
-  .c-dis { border-left-color: var(--red); } .c-dis .cat { color: var(--red-deep); }
-  .c-time { border-left-color: var(--sky); } .c-time .cat { color: #2b7fb0; }
-  .c-fac { border-left-color: var(--navy); } .c-fac .cat { color: var(--navy-deep); }
-  .c-peo { border-left-color: var(--sun); background: linear-gradient(180deg, #fffdf4 0%, #fff 100%); } .c-peo .cat { color: #b58900; }
-  .c-con { border-left-color: #7a5cc0; background: linear-gradient(180deg, #f7f4ff 0%, #fff 100%); } .c-con .cat { color: #5c3fa0; }
-  .c-sup { border-left-color: var(--green); background: linear-gradient(180deg, #f2fbf5 0%, #fff 100%); } .c-sup .cat { color: var(--green-deep); }
+  /* カードと問いのデザイン */
+  .cards { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); margin-top: 20px; }
+  .gcard { position: relative; background: #fff; border-radius: var(--radius-sm); padding: 18px 14px; box-shadow: var(--shadow); border-left: 6px solid var(--navy); overflow: hidden; text-align: left; }
+  .gcard .cat { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 4px; }
+  .gcard .txt { font-weight: 700; font-size: 0.95rem; line-height: 1.45; color: var(--ink); }
+  .gcard .emoji { position: absolute; right: 6px; top: 6px; font-size: 1.3rem; opacity: 0.85; }
 
-  /* ---------- ステップ共通 ---------- */
-  .screen-head { display: flex; align-items: center; gap: 14px; margin: 6px 0 20px; flex-wrap: wrap; }
-  .screen-head h2 { font-family: 'Baloo 2'; color: var(--navy); font-size: clamp(1.3rem, 4vw, 1.8rem); margin: 0; font-weight: 800; }
-  .screen-head .tag { background: var(--sky-soft); color: var(--navy); font-weight: 700; padding: 5px 14px; border-radius: 999px; font-size: 0.8rem; }
+  .screen-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .screen-head h2 { color: var(--navy); font-size: 1.45rem; margin: 0; font-weight: 800; }
+  .screen-head .tag { background: var(--sky-soft); color: var(--navy); font-weight: 700; padding: 4px 12px; border-radius: 999px; font-size: 0.78rem; }
 
-  .situation { background: linear-gradient(135deg, var(--navy), #2a52b0); color: #fff; border-radius: var(--radius); padding: 22px 24px; margin: 6px 0 25px; box-shadow: var(--shadow-lg); position: relative; }
-  .situation .lbl { font-family: 'Baloo 2'; font-weight: 800; font-size: 0.9rem; letter-spacing: 1px; opacity: 0.9; display: flex; align-items: center; gap: 8px; }
-  .situation p { font-size: clamp(1.05rem, 3vw, 1.32rem); font-weight: 700; margin: 0.5em 0 0; line-height: 1.85; }
-  .situation .tag-tkb { display: inline-block; background: rgba(255, 255, 255, 0.22); border-radius: 8px; padding: 1px 8px; margin: 0 2px; font-weight: 800; }
+  .situation { background: linear-gradient(135deg, var(--navy), #2a52b0); color: #fff; border-radius: var(--radius-sm); padding: 18px 20px; margin-bottom: 20px; box-shadow: var(--shadow); }
+  .situation .lbl { font-weight: 800; font-size: 0.85rem; opacity: 0.85; }
+  .situation p { font-size: 1.1rem; font-weight: 700; margin: 6px 0 0; line-height: 1.7; }
 
-  .note-line { max-width: 680px; margin: 0 auto 24px; background: var(--sun-soft); border: 2px dashed var(--sun); border-radius: 16px; padding: 14px 18px; color: #8a6d00; font-weight: 700; font-size: 0.95rem; text-align: center; }
-
-  /* ---------- STEP2 ディスカッション ---------- */
-  .q-groups { display: grid; gap: 16px; grid-template-columns: 1fr; margin-bottom: 24px; }
+  .q-groups { display: grid; gap: 14px; grid-template-columns: 1fr; margin-bottom: 20px; }
   @media(min-width: 760px) { .q-groups { grid-template-columns: 1fr 1fr 1fr; } }
-  .q-card { background: #fff; border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); border-top: 7px solid var(--sky); border-left: 1px solid rgba(0,0,0,0.02); border-right: 1px solid rgba(0,0,0,0.02); }
+  .q-card { background: #fff; border-radius: var(--radius-sm); padding: 16px; box-shadow: var(--shadow); border-top: 6px solid var(--sky); }
   .q-card.a { border-top-color: var(--red); } .q-card.b { border-top-color: var(--green); } .q-card.c { border-top-color: var(--sun); }
-  .q-card h4 { font-family: 'Baloo 2'; color: var(--navy); margin: 0.1em 0 0.6em; font-size: 1.08rem; font-weight: 800; display: flex; align-items: center; gap: 8px; }
-  .q-card ul { margin: 0; padding-left: 0; list-style: none; }
-  .q-card li { position: relative; padding: 7px 0 7px 26px; font-size: 0.95rem; border-bottom: 1px dashed var(--line); color: var(--ink); font-weight: 700; text-align: left; }
-  .q-card li:last-child { border-bottom: none; }
-  .q-card li::before { content: "？"; position: absolute; left: 0; top: 6px; width: 18px; height: 18px; background: var(--sky-soft); color: var(--navy); border-radius: 50%; font-size: 0.72rem; font-weight: 800; display: flex; align-items: center; justify-content: center; }
+  .q-card h4 { color: var(--navy); margin: 0 0 10px 0; font-size: 1rem; font-weight: 800; }
+  .q-card ul { margin: 0; padding: 0; list-style: none; }
+  .q-card li { position: relative; padding: 5px 0 5px 22px; font-size: 0.9rem; border-bottom: 1px dashed var(--line); color: var(--ink); font-weight: 700; }
+  .q-card li::before { content: "？"; position: absolute; left: 0; top: 4px; width: 16px; height: 16px; background: var(--sky-soft); color: var(--navy); border-radius: 50%; font-size: 0.65rem; font-weight: 800; display: inline-flex; align-items: center; justify-content: center; }
   .q-card.a li::before { background: #fde8e8; color: var(--red); } .q-card.b li::before { background: #eafaf1; color: var(--green); } .q-card.c li::before { background: var(--sun-soft); color: #a67c00; }
 
-  .section-label { display: flex; align-items: center; gap: 8px; font-family: 'Baloo 2'; font-weight: 800; color: var(--navy); font-size: 1.05rem; margin: 22px 0 10px; }
-  .section-label .pill { background: var(--navy); color: #fff; border-radius: 8px; font-size: 0.72rem; padding: 3px 9px; letter-spacing: 0.5px; }
+  .section-label { display: flex; align-items: center; gap: 6px; font-weight: 800; color: var(--navy); font-size: 1rem; margin: 20px 0 10px; }
+  .section-label .pill { background: var(--navy); color: #fff; border-radius: 6px; font-size: 0.7rem; padding: 2px 8px; }
 
-  .memo-grid { display: grid; gap: 14px; grid-template-columns: 1fr; margin-bottom: 24px; }
+  .memo-grid { display: grid; gap: 16px; grid-template-columns: 1fr; margin-bottom: 25px; }
   @media(min-width: 720px) { .memo-grid { grid-template-columns: 1fr 1fr; } }
-  .memo { background: #fff; border-radius: var(--radius); padding: 16px 16px 14px; box-shadow: var(--shadow); border-left: 8px solid var(--navy); text-align: left; }
+  .memo { background: #fff; border-radius: var(--radius-sm); padding: 16px; box-shadow: var(--shadow); border-left: 6px solid var(--navy); }
   .memo.m1 { border-left-color: var(--red); } .memo.m2 { border-left-color: var(--sun); }
   .memo.m3 { border-left-color: var(--sky); } .memo.m4 { border-left-color: var(--green); }
   .memo.m5 { border-left-color: #7a5cc0; }
-  .memo label { font-family: 'Baloo 2', 'Zen Maru Gothic'; font-weight: 800; color: var(--navy); display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 1.02rem; }
-  .memo textarea { width: 100%; border: 2px solid var(--line); border-radius: 14px; padding: 12px; font-family: inherit; font-size: 1rem; resize: vertical; min-height: 88px; background: var(--cream); color: var(--ink); transition: border-color 0.15s, background-color 0.15s; font-weight: 500; }
-  .memo textarea:focus { outline: none; border-color: var(--sky); background: #fff; box-shadow: 0 0 0 4px var(--sky-soft); }
-  .save-hint { font-size: 0.8rem; color: var(--green-deep); font-weight: 700; display: flex; align-items: center; gap: 6px; margin-top: 14px; justify-content: center; }
+  .memo label { font-weight: 800; color: var(--navy); display: block; margin-bottom: 8px; font-size: 0.95rem; }
+  .memo textarea { width: 100%; border: 2px solid var(--line); border-radius: 12px; padding: 10px; font-family: inherit; font-size: 0.95rem; resize: vertical; min-height: 85px; background: #fafafa; color: var(--ink); font-weight: 500; }
+  .memo textarea:focus { outline: none; border-color: var(--sky); background: #fff; }
 
-  /* ---------- STEP4 振り返りシート ---------- */
-  .review-box { background: #fff; border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow-lg); border: 3px solid var(--navy); text-align: left; }
-  .r-item { border-bottom: 2px dashed var(--line); padding: 14px 0; }
-  .r-item:first-child { padding-top: 0; }
-  .r-item:last-child { border-bottom: none; padding-bottom: 0; }
-  .r-item h5 { font-family: 'Baloo 2', 'Zen Maru Gothic'; font-weight: 800; color: var(--navy); margin: 0 0 6px; font-size: 1.05rem; display: flex; align-items: center; gap: 8px; }
-  .r-item .content { white-space: pre-wrap; color: var(--ink); font-size: 0.98rem; min-height: 1.2em; font-weight: 500; }
+  .review-box { background: #fff; border-radius: var(--radius-sm); padding: 20px; box-shadow: var(--shadow); border: 2px solid var(--navy); }
+  .r-item { border-bottom: 2px dashed var(--line); padding: 12px 0; }
+  .r-item:first-child { padding-top: 0; } .r-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .r-item h5 { color: var(--navy); margin: 0 0 6px 0; font-size: 0.98rem; font-weight: 800; }
+  .r-item .content { white-space: pre-wrap; color: var(--ink); font-size: 0.95rem; font-weight: 500; }
   .r-item .empty { color: #b7bdc7; font-style: italic; }
 
-  .final-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: center; margin-top: 24px; }
-  .footer-note { text-align: center; color: var(--ink-soft); font-size: 0.85rem; margin-top: 30px; padding: 18px; background: rgba(255,255,255,0.5); border-radius: 16px; border: 1px dashed var(--line); }
-  .footer-note b { color: var(--navy); }
+  .final-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 25px; }
+  .footer-note { text-align: center; color: var(--ink-soft); font-size: 0.8rem; margin-top: 40px; padding: 15px; background: rgba(255,255,255,0.5); border-radius: 12px; border: 1px dashed var(--line); }
 
-  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(30px); background: var(--navy); color: #fff; padding: 13px 26px; border-radius: 999px; font-weight: 800; box-shadow: var(--shadow-lg); opacity: 0; pointer-events: none; transition: 0.3s; z-index: 200; }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-  @media(max-width: 520px){
-    .tkb-badge-row { gap: 8px; }
-    .cards { grid-template-columns: 1fr; }
-    header.site .titles span { display: none; }
-    .btn.big { padding: 14px 28px; font-size: 1.15rem; }
-  }
+  .game-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(30px); background: var(--navy); color: #fff; padding: 12px 24px; border-radius: 999px; font-weight: 800; opacity: 0; pointer-events: none; transition: 0.3s; z-index: 200; box-shadow: var(--shadow); }
+  .game-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
   @media print {
-    header.site, .final-actions, .step-dots, .btn, .footer-note, .save-hint, .note-line { display: none !important; }
-    body { background: #fff; background-image: none !important; }
-    main { padding: 0; }
+    header.site, .final-actions, .step-dots, .btn, .footer-note, .note-line, aside, header { display: none !important; }
+    body, .game-container { background: #fff !important; background-image: none !important; border: none; padding: 0; }
     .view { display: none !important; }
     .view#view-4 { display: block !important; }
-    .review-box { box-shadow: none; border: 2px solid #000; padding: 10px; }
+    .review-box { box-shadow: none; border: 2px solid #000; }
     .memo.m5 textarea { border: none; background: transparent; padding: 0; }
   }
 </style>
-</head>
-<body>
 
-<header class="site">
-  <div class="titles">
-    <b>HUG Gioco</b>
-    <span>TKB型避難所運営ディスカッションゲーム</span>
-  </div>
-  <div class="nav-spacer"></div>
-  <a href="/gioco" class="btn-back-to-site">JYRACサイトに戻る ➔</a>
-  <div class="step-dots">
-    <i id="dot-1" class="on"></i>
-    <i id="dot-2"></i>
-    <i id="dot-3"></i>
-    <i id="dot-4"></i>
-  </div>
-</header>
-
-<main>
-  <div id="view-1" class="view active">
-    <div class="hero">
-      <div class="logo-main">
-        <div class="logo-h">H</div>
-        <div class="logo-u">U</div>
-        <div class="logo-g2">G</div>
-        <div class="logo-text-gioco">Gioco</div>
-      </div>
-      <span class="sub">シミュレーション設定ジェネレーター</span>
-    </div>
-
-    <p class="desc" style="text-align: center;">
-      避難所運営で最も重要とされる<b>TKB（トイレ・キッチン・ベッド）</b>の視点から、避難所の課題をシミュレーションするワークツールです。下のボタンからランダムに設定カードを引きましょう。
-    </p>
-
-    <div class="tkb-badge-row">
-      <span class="tkb-badge t">🚾 T: Toilet (トイレ対策)</span>
-      <span class="tkb-badge k">🍳 K: Kitchen (食事・炊き出し)</span>
-      <span class="tkb-badge b">🛏️ B: Bed (快適な睡眠・居住)</span>
-    </div>
-
-    <div style="text-align: center; margin: 28px 0 20px;">
-      <button id="btn-draw" class="btn big">🎲 カードを引いて状況を作る</button>
-    </div>
-
-    <div id="sit-cards" class="cards">
-      </div>
-
-    <div style="text-align: center; margin-top: 40px;">
-      <button id="btn-next-step1" class="btn green" disabled>次へ進む（課題検討） ➔</button>
-    </div>
-  </div>
-
-  <div id="view-2" class="view">
-    <div class="screen-head">
-      <h2>STEP 2: TKBの課題に向き合う</h2>
-      <span class="tag">グループワーク</span>
-    </div>
-
-    <div class="situation">
-      <div class="lbl">現在のシチュエーション設定</div>
-      <p id="step2-sit-text"></p>
-    </div>
-
-    <div class="note-line">
-      💡 下記の<b>T・K・Bそれぞれの問い</b>について、グループで「何が問題になるか」「どう対応するか」を話し合ってみましょう。
-    </div>
-
-    <div id="q-cards-box" class="q-groups">
-      </div>
-
-    <div class="section-label">
-      <span class="pill">記録メモ</span> ワーク中の気づきや意見をメモしよう
-    </div>
-
-    <div class="memo-grid">
-      <div class="memo m1">
-        <label>① 今回の状況で「想定される課題」は？</label>
-        <textarea data-memo="issues" placeholder="例：停電しているので夜間のトイレが非常に危険、物資の毛布50枚に対して避難者が多すぎる、など"></textarea>
-      </div>
-      <div class="memo m2">
-        <label>② 「特に配慮が必要な人」への対応は？</label>
-        <textarea data-memo="care" placeholder="例：日本語が不慣れな外国人家族への案内掲示、乳幼児の泣き声や授乳のための個室教室の割り当て、など"></textarea>
-      </div>
-    </div>
-
-    <div class="final-actions">
-      <button id="btn-back-step2" class="btn ghost small">🔀 状況を引き直す</button>
-      <button id="btn-next-step2" class="btn green">次へ進む（アクシデント発生） ➔</button>
-    </div>
-  </div>
-
-  <div id="view-3" class="view">
-    <div class="screen-head">
-      <h2>STEP 3: 突然のアクシデセン・運営課題</h2>
-      <span class="tag" style="background:#fde3e5; color:var(--red);">トラブル対応</span>
-    </div>
-
-    <div class="note-line" style="background:#fde3e5; border-color:var(--red); color:var(--red-deep);">
-      ⚠️ <b>追加チャレンジ発生！</b> 運営ディスカッションを進める中、さらに以下のアクシデントや追加の運営問題が発生しました。どう乗り越えますか？
-    </div>
-
-    <div id="ch-cards-box" class="cards">
-      </div>
-
-    <div class="memo-grid">
-      <div class="memo m3">
-        <label>③ 混乱を防ぐために「今すぐ必要な対応」は？</label>
-        <textarea data-memo="now" placeholder="例：修学旅行中の元気な高校生たちに物資搬入やゴミ集積の手伝いチームを結成してもらう、など"></textarea>
-      </div>
-      <div class="memo m4">
-        <label>④ 普段の備えとして「事前に準備しておくべきこと」は？</label>
-        <textarea data-memo="prep" placeholder="例：ペット同伴の避難ルールを地域であらかじめ決めておく、多言語の案内カードを倉庫に常備する、など"></textarea>
-      </div>
-    </div>
-
-    <div class="final-actions">
-      <button id="btn-back-step3" class="btn ghost small">⬅ 戻る</button>
-      <button id="btn-next-step3" class="btn green">シートをまとめて完成！ ➔</button>
-    </div>
-  </div>
-
-  <div id="view-4" class="view">
-    <div class="screen-head">
-      <h2>HUG Gioco ワーク記録シート</h2>
-      <span class="tag" style="background:var(--green); color:#fff;">完成</span>
-    </div>
-
-    <div class="review-box">
-      <div class="r-item">
-        <h5>設定シチュエーション</h5>
-        <div id="rSit" class="content"></div>
-      </div>
-      <div class="r-item">
-        <h5>Q1. 今回の状況で「想定される課題」</h5>
-        <div class="content" data-r="issues"></div>
-      </div>
-      <div class="r-item">
-        <h5>Q2. 「特に配慮が必要な人」への対応</h5>
-        <div class="content" data-r="care"></div>
-      </div>
-      <div class="r-item">
-        <h5>Q3. トラブルを防ぐために「今すぐ必要な対応」</h5>
-        <div class="content" data-r="now"></div>
-      </div>
-      <div class="r-item">
-        <h5>Q4. 普段の備えとして「事前に準備しておくべきこと」</h5>
-        <div class="content" data-r="prep"></div>
-      </div>
-      <div class="r-item">
-        <h5>Q5. 学校・自治体・地域社会へのアイデアや提言（自由記述）</h5>
-        <div class="memo m5" style="border:none; padding:0; box-shadow:none;">
-          <textarea data-memo="propose" placeholder="例：大人の避難訓練だけでなく、学校の授業で子どもたちが避難所をデザインするワークショップを定期開催すべき、など" style="min-height:100px; margin-top:8px;"></textarea>
-        </div>
-      </div>
-    </div>
-
-    <div class="final-actions">
-      <button id="btn-back-step4" class="btn ghost small">⬅ 修正する</button>
-      <button id="btn-copy" class="btn sun">📋 テキストをコピーする</button>
-      <button id="btn-print" class="btn sky">🖨️ A4用紙に印刷する</button>
-      <button id="btn-restart" class="btn red">🔄 最初からやり直す</button>
-    </div>
-
-    <div class="footer-note">
-      ディスカッション教材：<b>HUG Gioco (グロッコ)</b> — TKB型避難所運営ディスカッションゲーム<br>
-      運営協力：<b>日本若者防災復興協会（JYRAC）</b>
-    </div>
-  </div>
-</main>
-
-<div id="toast" class="toast"></div>
-
+{/* --- 4. SCRIPT LAYER (Astroから引き渡したデータ配列を使ってブラウザ側でパパッと動かす安全な仕組み) --- */}
 <script is:inline define:vars={{ CARDS, DISCUSSIONS, CH_CARDS }}>
   let DECK = [...CARDS];
   let CURRENT = null;
@@ -407,31 +324,15 @@ const CH_CARDS = [
   }
 
   function makeCardHtml(c){
-    return `
-      <div class="gcard c-${c.c}">
-        <span class="emoji">${c.e}</span>
-        <div class="cat">${getCatName(c.c)}</div>
-        <div class="txt">${c.txt}</div>
-      </div>
-    `;
+    const catMaps = {dis:'災害・状況',time:'経過時間',fac:'施設・物資',peo:'避難者',con:'運営・情報',sup:'支援・対話'};
+    const catName = catMaps[c.c] || c.c;
+    return `<div class="gcard c-${c.c}"><span class="emoji">${c.e}</span><div class="cat">${catName}</div><div class="txt">${c.txt}</div></div>`;
   }
 
-  function getCatName(c){
-    const maps = {
-      dis:'災害・状況', time:'経過時間', fac:'施設・物資', peo:'避難者',
-      t:'トイレ対策', k:'キッチン・食', b:'ベッド・居住',
-      con:'運営・情報', sup:'支援・対話'
-    };
-    return maps[c] || c;
-  }
-
-  function sample(arr){
-    return arr[Math.floor(Math.random()*arr.length)];
-  }
+  function sample(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
 
   function startTool(){
-    DECK = [...CARDS];
-    CURRENT = null;
+    DECK = [...CARDS]; CURRENT = null;
     $$('textarea[data-memo]').forEach(t => t.value = '');
     $('#rSit').textContent = '';
     $('#sit-cards').innerHTML = '';
@@ -440,31 +341,13 @@ const CH_CARDS = [
   }
 
   function drawSituation(){
-    const dis = DECK.filter(c => c.c === 'dis');
-    const time = DECK.filter(c => c.c === 'time');
-    const fac = DECK.filter(c => c.c === 'fac');
-    const peo = DECK.filter(c => c.c === 'peo');
+    const dis = DECK.filter(c => c.c === 'dis'), time = DECK.filter(c => c.c === 'time'), fac = DECK.filter(c => c.c === 'fac'), peo = DECK.filter(c => c.c === 'peo');
+    const c1 = sample(dis), c2 = sample(time), c3 = sample(fac);
+    let p1 = sample(peo), p2 = sample(peo);
+    while(p1.id === p2.id) p2 = sample(peo);
+    CURRENT = { dis:c1, time:c2, fac:c3, p1, p2 };
 
-    if(!dis.length || !time.length || !fac.length || peo.length < 2){
-      alert('カードが足りません。最初からやり直してください。');
-      return;
-    }
-
-    const c1 = sample(dis);
-    const c2 = sample(time);
-    const c3 = sample(fac);
-    
-    let pIdx1 = Math.floor(Math.random()*peo.length);
-    let pIdx2 = Math.floor(Math.random()*peo.length);
-    while(pIdx1 === pIdx2 && peo.length > 1){
-      pIdx2 = Math.floor(Math.random()*peo.length);
-    }
-    const c4 = peo[pIdx1];
-    const c5 = peo[pIdx2];
-
-    CURRENT = { dis:c1, time:c2, fac:c3, p1:c4, p2:c5 };
-
-    $('#sit-cards').innerHTML = makeCardHtml(c1) + makeCardHtml(c2) + makeCardHtml(c3) + makeCardHtml(c4) + makeCardHtml(c5);
+    $('#sit-cards').innerHTML = makeCardHtml(c1) + makeCardHtml(c2) + makeCardHtml(c3) + makeCardHtml(p1) + makeCardHtml(p2);
     $('#btn-next-step1').disabled = false;
   }
 
@@ -475,78 +358,43 @@ const CH_CARDS = [
 
   function buildStep2(){
     if(!CURRENT) return;
-    
-    $('#step2-sit-text').innerHTML = `
-      外の状況：<b>${CURRENT.dis.txt}</b><br>
-      時間の経過：<b>${CURRENT.time.txt}</b><br>
-      使えるもの：<b>${CURRENT.fac.txt}</b><br>
-      避難者の様子：<b>${CURRENT.p1.txt}</b> ／ <b>${CURRENT.p2.txt}</b>
-    `;
-
+    $('#step2-sit-text').innerHTML = `外の状況：<b>${CURRENT.dis.txt}</b><br>時間の経過：<b>${CURRENT.time.txt}</b><br>使えるもの：<b>${CURRENT.fac.txt}</b><br>避難者の様子：<b>${CURRENT.p1.txt}</b> ／ <b>${CURRENT.p2.txt}</b>`;
     $('#q-cards-box').innerHTML = `
-      <div class="q-card a">
-        <h4><span class="tag-tkb">T</span> トイレの課題</h4>
-        <ul><li>${sample(DISCUSSIONS.t)}</li></ul>
-      </div>
-      <div class="q-card b">
-        <h4><span class="tag-tkb">K</span> キッチンの課題</h4>
-        <ul><li>${sample(DISCUSSIONS.k)}</li></ul>
-      </div>
-      <div class="q-card c">
-        <h4><span class="tag-tkb">B</span> ベッドの課題</h4>
-        <ul><li>${sample(DISCUSSIONS.b)}</li></ul>
-      </div>
-    `;
+      <div class="q-card a"><h4>🚾 T トイレの課題</h4><ul><li>${sample(DISCUSSIONS.t)}</li></ul></div>
+      <div class="q-card b"><h4>🍳 K キッチンの課題</h4><ul><li>${sample(DISCUSSIONS.k)}</li></ul></div>
+      <div class="q-card c"><h4>🛏️ B ベッドの課題</h4><ul><li>${sample(DISCUSSIONS.b)}</li></ul></div>`;
     showView(2);
   }
 
   function buildStep3(){
     let idx1 = Math.floor(Math.random()*CH_CARDS.length);
     let idx2 = Math.floor(Math.random()*CH_CARDS.length);
-    while(idx1 === idx2){
-      idx2 = Math.floor(Math.random()*CH_CARDS.length);
-    }
+    while(idx1 === idx2){ idx2 = Math.floor(Math.random()*CH_CARDS.length); }
     $('#ch-cards-box').innerHTML = makeCardHtml(CH_CARDS[idx1]) + makeCardHtml(CH_CARDS[idx2]);
     showView(3);
   }
 
   function collectMemo(){
-    const d = {};
-    $$('textarea[data-memo]').forEach(t => d[t.dataset.memo] = t.value.trim());
-    return d;
+    const d = {}; $$('textarea[data-memo]').forEach(t => d[t.dataset.memo] = t.value.trim()); return d;
   }
 
   function buildReview(){
-    $('#rSit').textContent = CURRENT ? situationText(CURRENT) : 'まだシチュエーションが作られていません。「カードを引く」からはてね。';
+    $('#rSit').textContent = CURRENT ? situationText(CURRENT) : '';
     const d = collectMemo();
     $$('.content[data-r]').forEach(el => {
       const v = d[el.dataset.r];
-      if(v){ el.textContent = v; el.classList.remove('empty'); }
-      else { el.textContent = '（まだ入力されていません）'; el.classList.add('empty'); }
+      el.textContent = v || '（未入力）';
+      if(!v) el.classList.add('empty'); else el.classList.remove('empty');
     });
   }
 
   function copyReview(){
     const d = collectMemo();
     const sit = CURRENT ? situationText(CURRENT) : '（シチュエーション未作成）';
-    const lines = [
-      '【HUG Gioco ワーク記録シート】', '',
-      '■ 今回のシチュエーション', sit, '',
-      '■ 想定される課題', d.issues || '-', '',
-      '■ 特に配慮が必要な人', d.care || '-', '',
-      '■ 今すぐ必要な対応', d.now || '-', '',
-      '■ 事前に準備しておくべきこと', d.prep || '-', '',
-      '■ 学校・自治体・地域社会へのアイデアや提言', d.propose || '-', '',
-      '— HUG Gioco / TKB型避難所運営ディスカッションゲーム —'
-    ];
-    const text = lines.join('\n');
+    const text = `【HUG Gioco ワーク記録シート】\n\n■状況\n${sit}\n\n■課題\n${d.issues||'-'}\n\n■配慮\n${d.care||'-'}\n\n■対応\n${d.now||'-'}\n\n■準備\n${d.prep||'-'}\n\n■提案\n${d.propose||'-'}`;
     navigator.clipboard.writeText(text).then(() => {
-      const t = $('#toast');
-      t.textContent = 'クリップボードにコピーしました！';
-      t.classList.add('show');
+      const t = $('#game-toast'); t.textContent = 'クリップボードにコピーしました！'; t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 2000);
-    }).catch(() => {
-      alert('コピーに失敗しました。手動で選択してコピーしてください。');
     });
   }
 
@@ -555,15 +403,11 @@ const CH_CARDS = [
     $('#btn-next-step1').addEventListener('click', buildStep2);
     $('#btn-next-step2').addEventListener('click', buildStep3);
     $('#btn-next-step3').addEventListener('click', () => { buildReview(); showView(4); });
-    
     $('#btn-back-step2').addEventListener('click', () => showView(1));
     $('#btn-back-step3').addEventListener('click', () => showView(2));
     $('#btn-back-step4').addEventListener('click', () => showView(3));
-    
     $('#btn-copy').addEventListener('click', copyReview);
     $('#btn-print').addEventListener('click', () => window.print());
-    $('#btn-restart').addEventListener('click', () => { if(confirm('現在の入力は消去されます。新しくゲームをはじめますか？')) startTool(); });
+    $('#btn-restart').addEventListener('click', () => { if(confirm('新しくゲームをはじめますか？')) startTool(); });
   });
 </script>
-</body>
-</html>
