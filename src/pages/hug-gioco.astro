@@ -187,7 +187,7 @@ const CH_CARDS = [
 </Layout>
 
 {/* ==========================================
-// 3. SCOPED STYLE LAYER (Astro標準：他ページ干渉を完全遮断)
+// 3. SCOPED STYLE LAYER (Astro標準：他ページ干責を完全遮断)
 // ========================================== */}
 <style>
   .gioco-local-wrapper {
@@ -242,7 +242,7 @@ const CH_CARDS = [
   .btn.small { padding: 11px 20px; font-size: 0.95rem; }
   .btn.big { padding: 20px 44px; font-size: 1.35rem; }
 
-  /* 💡 クラスのバインディング（[data-astro-cid-xxxx]）に絶対上書き負けしないため、最上位ラッパー経由でスタイルを強制適用 */
+  /* 💡 Astroのスコープバインディングを突き破るよう、ラッパー経由で!important指定 */
   #jyrac-gioco-root .view { display: none !important; }
   #jyrac-gioco-root .view.active { display: block !important; animation: pop 0.4s ease forwards; }
   @keyframes pop { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
@@ -261,12 +261,12 @@ const CH_CARDS = [
   .sub { color: var(--green); font-size: clamp(1rem, 3vw, 1.25rem); font-weight: 800; letter-spacing: 1px; margin-bottom: 25px; text-transform: uppercase; display: block; text-align: center; }
 
   .gioco-local-wrapper p.desc { max-width: 620px; margin: 0 auto 30px; font-size: 1.05rem; color: var(--ink-soft); font-weight: 500; text-align: center; }
+  .highlight-text { color: var(--red); font-weight: 900; border-bottom: 3px solid var(--sun); padding-bottom: 1px; }
 
   .tkb-badge-row { display: flex; justify-content: center; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
   .tkb-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 18px; border-radius: 999px; font-size: 0.95rem; font-weight: 800; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
   .tkb-badge.t { background: var(--green); } .tkb-badge.k { background: var(--red); } .tkb-badge.b { background: var(--navy); }
 
-  /* ---------- カード構成 ---------- */
   .cards { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); }
   .gcard {
     position: relative; background: #fff; border-radius: var(--radius-sm); padding: 20px 16px;
@@ -308,7 +308,7 @@ const CH_CARDS = [
   .memo.m5 { border-left-color: #7a5cc0; }
   .memo label { font-weight: 800; color: var(--navy); display: block; margin-bottom: 8px; font-size: 0.95rem; }
   .memo textarea { width: 100%; border: 2px solid var(--line); border-radius: 12px; padding: 10px; font-family: inherit; font-size: 0.95rem; resize: vertical; min-height: 85px; background: #fafafa; color: var(--ink); font-weight: 500; }
-  .memo textarea:focus { outline: none; border-color: var(--primary); background: #fff; }
+  .memo textarea:focus { outline: none; border-color: var(--sky); background: #fff; }
 
   .review-box { background: #fff; border-radius: var(--radius-sm); padding: 20px; box-shadow: var(--shadow); border: 2px solid var(--navy); text-align: left; }
   .r-item { border-bottom: 2px dashed var(--line); padding: 12px 0; }
@@ -326,28 +326,32 @@ const CH_CARDS = [
   @media print {
     .game-inner-header, .final-actions, .step-dots, .btn, .footer-note, .note-line { display: none !important; }
     .gioco-local-wrapper { background: #fff !important; background-image: none !important; padding: 0; }
-    #jyrac-gioco-root .view { display: none !important; }
-    #jyrac-gioco-root .view#view-4 { display: block !important; }
+    .view { display: none !important; }
+    .view#view-4 { display: block !important; }
     .review-box { box-shadow: none; border: 2px solid #000; }
-    .memo.m5 textarea { border: none; background: transparent; padding: 0; }
   }
 </style>
 
 {/* ==========================================
-// 4. SCRIPT LAYER (独立稼働・画面遷移制御)
+// 4. SCRIPT LAYER (SPAルーターイベント対応：ページ切り替えを完全に感知するJSロジック)
 // ========================================== */}
 <script is:inline define:vars={{ CARDS, DISCUSSIONS, CH_CARDS }}>
   let DECK = [...CARDS];
   let CURRENT = null;
 
+  // ルート要素からの相対指定に限定して強制終了・競合を防御
   const $ = sel => document.querySelector(`#jyrac-gioco-root ${sel}`);
   const $$ = sel => document.querySelectorAll(`#jyrac-gioco-root ${sel}`);
 
   function showView(id){
-    document.querySelectorAll('#jyrac-gioco-root .view').forEach(v => v.classList.remove('active'));
-    document.querySelector(`#jyrac-gioco-root #view-${id}`).classList.add('active');
+    const root = document.querySelector('#jyrac-gioco-root');
+    if(!root) return;
+    root.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     
-    document.querySelectorAll('.step-dots i').forEach((dot, idx) => {
+    const targetView = root.querySelector(`#view-${id}`);
+    if(targetView) targetView.classList.add('active');
+    
+    root.querySelectorAll('.step-dots i').forEach((dot, idx) => {
       dot.className = '';
       if(idx === id - 1) dot.className = 'on';
       else if(idx < id - 1) dot.className = 'done';
@@ -365,10 +369,12 @@ const CH_CARDS = [
 
   function startTool(){
     DECK = [...CARDS]; CURRENT = null;
-    $$('textarea[data-memo]').forEach(t => t.value = '');
-    $('#rSit').textContent = '';
-    $('#sit-cards').innerHTML = '';
-    $('#btn-next-step1').disabled = true;
+    const root = document.querySelector('#jyrac-gioco-root');
+    if(!root) return;
+    root.querySelectorAll('textarea[data-memo]').forEach(t => t.value = '');
+    root.querySelector('#rSit').textContent = '';
+    root.querySelector('#sit-cards').innerHTML = '';
+    root.querySelector('#btn-next-step1').disabled = true;
     showView(1);
   }
 
@@ -434,20 +440,42 @@ const CH_CARDS = [
     });
   }
 
-  window.addEventListener('DOMContentLoaded', () => {
-    showView(1); // 読み込み完了直後に100%確実にview-1を表示する
+  // 💡 SPAルーターの再ロード（ページ遷移時）と、通常アクセス（F5更新）の両方でイベントを紐付け直す関数
+  function initGiocoGame() {
+    const root = document.querySelector('#jyrac-gioco-root');
+    if (!root) return; // 別のページにいるときは何もしない
+    
+    showView(1); // 確実に初期画面を立ち上げる
 
-    $('#btn-draw').addEventListener('click', drawSituation);
-    $('#btn-next-step1').addEventListener('click', buildStep2);
-    $('#btn-next-step2').addEventListener('click', buildStep3);
-    $('#btn-next-step3').addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} buildReview(); showView(4); });
+    const btnDraw = root.querySelector('#btn-draw');
+    const btnNext1 = root.querySelector('#btn-next-step1');
+    const btnNext2 = root.querySelector('#btn-next-step2');
+    const btnNext3 = root.querySelector('#btn-next-step3');
     
-    $('#btn-back-step2').addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} showView(1); });
-    $('#btn-back-step3').addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} showView(2); });
-    $('#btn-back-step4').addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} showView(3); });
+    const btnBack2 = root.querySelector('#btn-back-step2');
+    const btnBack3 = root.querySelector('#btn-back-step3');
+    const btnBack4 = root.querySelector('#btn-back-step4');
     
-    $('#btn-copy').addEventListener('click', copyReview);
-    $('#btn-print').addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} window.print(); });
-    $('#btn-restart').addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} if(confirm('新しくゲームをはじめますか？')) startTool(); });
-  });
+    const btnCopy = root.querySelector('#btn-copy');
+    const btnPrint = root.querySelector('#btn-print');
+    const btnRestart = root.querySelector('#btn-restart');
+
+    if (btnDraw) btnDraw.addEventListener('click', drawSituation);
+    if (btnNext1) btnNext1.addEventListener('click', buildStep2);
+    if (btnNext2) btnNext2.addEventListener('click', buildStep3);
+    if (btnNext3) btnNext3.addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} buildReview(); showView(4); });
+    
+    if (btnBack2) btnBack2.addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} showView(1); });
+    if (btnBack3) btnBack3.addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} showView(2); });
+    if (btnBack4) btnBack4.addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} showView(3); });
+    
+    if (btnCopy) btnCopy.addEventListener('click', copyReview);
+    if (btnPrint) btnPrint.addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} window.print(); });
+    if (btnRestart) btnRestart.addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} if(confirm('新しくゲームをはじめますか？')) startTool(); });
+  }
+
+  // 1. 通常の読み込み（F5リロードなど）に対応
+  document.addEventListener('DOMContentLoaded', initGiocoGame);
+  // 2. AstroのSPAルーター（他ページからの非同期遷移）に対応
+  document.addEventListener('astro:page-load', initGiocoGame);
 </script>
