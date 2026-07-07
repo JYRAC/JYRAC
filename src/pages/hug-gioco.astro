@@ -1,7 +1,6 @@
 ---
 // ==========================================
 // 1. DATA LAYER (Astroフロントマターでデータを一元管理)
-// サーバー側でここを編集するだけで、画面のHTMLとJSのデータの両方が自動更新されます。
 // ==========================================
 import Layout from '../layouts/Layout.astro';
 
@@ -39,7 +38,6 @@ const CH_CARDS = [
 
 <Layout title="HUG Gioco — TKB型避難所運営ディスカッションゲーム" currentTab="gioco">
   
-  {/* 💡 gioco-local-wrapper クラスで全体を縛り、Astro標準のコンポーネント用CSSスコープで他ページを徹底ガード */}
   <div class="gioco-local-wrapper" id="jyrac-gioco-root">
     
     <header class="game-inner-header">
@@ -70,8 +68,8 @@ const CH_CARDS = [
         </div>
 
         <p class="desc">
-          避難所運営の命題となる<strong>TKB（トイレ・キッチン・ベッド）</strong>をテーマに、直感的なグループワークを行えるシミュレーションゲームです。<br><br>
-          「🎲 カードを引く」ボタンを押すと、現在の災害シナリオ、経過時間、施設の物資条件、特別な要配慮者を含む避難者のシチュエーションが自動生成されます。
+          カードを引いて、避難所の<span class="highlight-text">「困った」</span>をみんなで考えよう。<br><br>
+          HUG Giocoは、勝ち負けのないオンライン話し合いゲームです。ランダムに出てくる避難所のシーンを見て、「何が大変？」「だれが困る？」「どう準備する？」をみんなで話します。正解を当てるのではなく、考えるべき問いを見つけるためのゲームです。
         </p>
 
         <div class="tkb-badge-row">
@@ -189,7 +187,7 @@ const CH_CARDS = [
 </Layout>
 
 {/* ==========================================
-// 3. SCOPED STYLE LAYER (Astro標準の通常式スタイル: 他ページへの干渉を100%防止)
+// 3. SCOPED STYLE LAYER (Astro標準：他ページ干渉を完全遮断)
 // ========================================== */}
 <style>
   .gioco-local-wrapper {
@@ -212,7 +210,6 @@ const CH_CARDS = [
 
   .game-views-container { padding: 10px 0; }
 
-  /* ---------- ヘッダー ---------- */
   .game-inner-header {
     border-bottom: 3px solid var(--navy);
     padding: 10px 0 15px; display: flex; align-items: center; gap: 12px;
@@ -230,7 +227,6 @@ const CH_CARDS = [
   .btn-back-to-site { font-weight:700; font-size:.85rem; color: var(--navy); text-decoration:none; background:#fff; border:2px solid var(--navy); padding:6px 16px; border-radius:999px; transition:.2s; display:inline-flex; align-items:center; gap:6px; margin-right: 15px; }
   .btn-back-to-site:hover { background:var(--navy); color:#fff; }
 
-  /* ---------- ボタン（通常指定でカプセル化） ---------- */
   .btn {
     font-family: 'Baloo 2', 'Zen Maru Gothic', sans-serif; font-weight: 800; border: none; cursor: pointer; border-radius: 999px;
     padding: 16px 30px; font-size: 1.12rem; color: #fff; background: var(--navy);
@@ -246,10 +242,10 @@ const CH_CARDS = [
   .btn.small { padding: 11px 20px; font-size: 0.95rem; }
   .btn.big { padding: 20px 44px; font-size: 1.35rem; }
 
-  .view { display: none; animation: pop 0.4s ease; }
-  .view.active { display: block; }
+  .view { display: none; }
+  .view.active { display: block; animation: pop 0.4s ease; }
+  @keyframes pop { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 
-  /* ---------- ロゴマーク完全再現 ---------- */
   .hero { text-align: center; padding: 12px 0 6px; }
   .logo-main { display: inline-flex; align-items: center; gap: 12px; margin-bottom: 15px; font-family: 'Baloo 2', sans-serif; filter: drop-shadow(0 8px 16px rgba(27,58,140,0.12)); }
   .logo-h, .logo-u, .logo-g2 { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; font-size: 32px; font-weight: 800; border-radius: 14px; position: relative; box-shadow: inset 0 -4px 0 rgba(0,0,0,0.15), 0 4px 10px rgba(0,0,0,0.08); text-shadow: 0 2px 4px rgba(0,0,0,0.15); line-height: 1; color:#fff; }
@@ -263,13 +259,13 @@ const CH_CARDS = [
   .logo-text-gioco { font-size: 46px; font-weight: 800; color: var(--navy); margin-left: 6px; letter-spacing: -0.01em; transform: rotate(1deg); display: inline-block; }
   .sub { color: var(--green); font-size: clamp(1rem, 3vw, 1.25rem); font-weight: 800; letter-spacing: 1px; margin-bottom: 25px; text-transform: uppercase; display: block; text-align: center; }
 
-  .gioco-local-wrapper p.desc { max-width: 620px; margin: 0 auto 30px; font-size: 1.05rem; color: var(--ink-soft); font-weight: 500; text-align: center; }
+  .gioco-local-wrapper p.desc { max-width: 620px; margin: 0 auto 30px; font-size: 1.05rem; color: var(--ink-soft); font-weight: 500; text-align: center; line-height: 1.8; }
+  .highlight-text { color: var(--red); font-weight: 900; border-bottom: 3px solid var(--sun); padding-bottom: 1px; }
 
   .tkb-badge-row { display: flex; justify-content: center; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
   .tkb-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 18px; border-radius: 999px; font-size: 0.95rem; font-weight: 800; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
   .tkb-badge.t { background: var(--green); } .tkb-badge.k { background: var(--red); } .tkb-badge.b { background: var(--navy); }
 
-  /* ---------- カードアセット ---------- */
   .cards { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); }
   .gcard {
     position: relative; background: #fff; border-radius: var(--radius-sm); padding: 20px 16px;
@@ -311,7 +307,7 @@ const CH_CARDS = [
   .memo.m5 { border-left-color: #7a5cc0; }
   .memo label { font-weight: 800; color: var(--navy); display: block; margin-bottom: 8px; font-size: 0.95rem; }
   .memo textarea { width: 100%; border: 2px solid var(--line); border-radius: 12px; padding: 10px; font-family: inherit; font-size: 0.95rem; resize: vertical; min-height: 85px; background: #fafafa; color: var(--ink); font-weight: 500; }
-  .memo textarea:focus { outline: none; border-color: var(--sky); background: #fff; }
+  .memo textarea:focus { outline: none; border-color: var(--primary); background: #fff; }
 
   .review-box { background: #fff; border-radius: var(--radius-sm); padding: 20px; box-shadow: var(--shadow); border: 2px solid var(--navy); text-align: left; }
   .r-item { border-bottom: 2px dashed var(--line); padding: 12px 0; }
@@ -332,17 +328,17 @@ const CH_CARDS = [
     .view { display: none !important; }
     .view#view-4 { display: block !important; }
     .review-box { box-shadow: none; border: 2px solid #000; }
+    .memo.m5 textarea { border: none; background: transparent; padding: 0; }
   }
 </style>
 
 {/* ==========================================
-// 4. SCRIPT LAYER (外部干渉を完全に防ぐ、安全な独立進行ロジック)
+// 4. SCRIPT LAYER (外部干渉を完璧にブロックする、画面独立進行ロジック)
 // ========================================== */}
 <script is:inline define:vars={{ CARDS, DISCUSSIONS, CH_CARDS }}>
   let DECK = [...CARDS];
   let CURRENT = null;
 
-  // ルート要素からの相対指定に限定して、外部のルーターやフォーム送信干渉を完全にブロック
   const $ = sel => document.querySelector(`#jyrac-gioco-root ${sel}`);
   const $$ = sel => document.querySelectorAll(`#jyrac-gioco-root ${sel}`);
 
@@ -437,7 +433,10 @@ const CH_CARDS = [
     });
   }
 
+  // DOM構築が完了した時点で、強制的にview-1（スタート画面）を初期アクティブ化
   window.addEventListener('DOMContentLoaded', () => {
+    showView(1); // 初期表示バグを完全に叩き潰す
+
     $('#btn-draw').addEventListener('click', drawSituation);
     $('#btn-next-step1').addEventListener('click', buildStep2);
     $('#btn-next-step2').addEventListener('click', buildStep3);
