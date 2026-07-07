@@ -5,7 +5,8 @@ import Layout from '../layouts/Layout.astro';
 <Layout title="主な事業・活動内容 | 日本若者防災復興協会" currentTab="services">
     <div class="content-panel">
         <h2>主な事業・活動内容</h2>
-        <p>当団体は、若者たちの主体かつ創造的な防災・復興活動を全面的にサポートするため、以下の基盤事業を展開・支援してまいります。</p>
+        <p class="lead-text">当団体は、若者たちの主体かつ創造的な防災・復興活動を全面的にサポートするため、以下の基盤事業を展開・支援してまいります。</p>
+        
         <div class="project-grid">
             <div class="project-card">
                 <h4><span class="project-badge">支援基盤事業</span>学生主体プロジェクト「NSF PROJECTs」</h4>
@@ -20,3 +21,124 @@ import Layout from '../layouts/Layout.astro';
         </div>
     </div>
 </Layout>
+
+<style>
+  /* 💡 services.astro 専用のクリーンなカプセル化スタイル */
+  .content-panel {
+    padding: 10px 0;
+  }
+  
+  h2 {
+    color: #002b54;
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-left: 5px solid #009aa6;
+    padding-left: 15px;
+  }
+
+  .lead-text {
+    color: #4f5e71;
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 35px;
+  }
+
+  /* グリッドレイアウト */
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  @media (min-width: 768px) {
+    .project-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* カードデザイン */
+  .project-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 154, 166, 0.15);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 6px 20px rgba(0, 43, 84, 0.02);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 154, 166, 0.1);
+  }
+  .project-card.orange-card {
+    border-color: rgba(230, 126, 34, 0.2);
+  }
+
+  .project-card h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 800;
+    color: #002b54;
+    line-height: 1.5;
+  }
+
+  /* バッジ */
+  .project-badge {
+    display: block;
+    width: fit-content;
+    font-size: 10px;
+    font-weight: 800;
+    color: #fff;
+    background: #009aa6;
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+  .project-badge.summit {
+    background: #e67e22;
+  }
+
+  .project-card p {
+    margin: 0;
+    color: #5b6779;
+    font-size: 14px;
+    line-height: 1.7;
+    flex-grow: 1;
+  }
+
+  /* 💡 本来のきれいで立体的なボタンリンクデザインを完全に復元 */
+  .btn-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    padding: 12px 28px;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    background: linear-gradient(135deg, #009aa6 0%, #00d2e0 100%);
+    box-shadow: 0 4px 14px rgba(0, 154, 166, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    margin-top: auto;
+  }
+  .btn-link:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 6px rgba(0, 154, 166, 0.2);
+  }
+
+  .btn-summit {
+    background: linear-gradient(135deg, #e67e22 0%, #f39c12 100%);
+    box-shadow: 0 4px 14px rgba(230, 126, 34, 0.25);
+  }
+  .btn-summit:active {
+    box-shadow: 0 2px 6px rgba(230, 126, 34, 0.2);
+  }
+</style>
