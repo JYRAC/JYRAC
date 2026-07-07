@@ -1,5 +1,4 @@
 ---
-// src/pages/index.astro
 import Layout from '../layouts/Layout.astro';
 
 // CMSがない状態でも安全に動作する初期データ
@@ -45,3 +44,69 @@ const externalNews = cmsNews || [
         )}
     </div>
 </Layout>
+
+<style>
+  /* 💡 index.astro 専用のクリーンなスタイル指定 */
+  .content-panel {
+    padding: 10px 0;
+  }
+  h2 {
+    color: #002b54;
+    font-size: 20px;
+    font-weight: 800;
+    margin-top: 0;
+    margin-bottom: 30px;
+    border-left: 5px solid #009aa6;
+    padding-left: 15px;
+  }
+  .news-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .news-item {
+    background: #ffffff;
+    border: 1px solid rgba(0, 154, 166, 0.15);
+    border-radius: 14px;
+    padding: 20px 24px;
+    box-shadow: 0 4px 15px rgba(0, 43, 84, 0.02);
+  }
+  .news-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .news-date {
+    font-size: 14px;
+    color: #5b6779;
+    font-weight: 700;
+  }
+  .news-label {
+    font-size: 11px;
+    font-weight: 800;
+    color: #fff;
+    background: #009aa6;
+    padding: 2px 10px;
+    border-radius: 6px;
+  }
+  .news-item:nth-child(2) .news-label {
+    background: #e67e22; /* ２つ目の「重要」ラベルの色分け */
+  }
+  .news-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #002b54;
+  }
+  .news-body {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed #e7e0d0;
+    color: #4f5e71;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+</style>
