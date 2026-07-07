@@ -223,7 +223,7 @@ const { title, currentTab } = Astro.props;
             pointer-events: none;
         }
 
-        /* 💡 【神対応：ゲーム画面が呼ばれた時だけLayoutのパネル背景や余白を相殺する】 */
+        /* 💡 【他ページ崩れ＆二重枠防止】ゲーム画面（/hug-gioco）が直接呼ばれた場合は、外側の白いパネルスタイルを完全無効化 */
         .layout-gioco-mode {
             background: transparent !important;
             border: none !important;
@@ -250,21 +250,23 @@ const { title, currentTab } = Astro.props;
             display: inline-flex;
             justify-content: center;
             align-items: center;
-            color: #ffffff;
-            padding: 18px 40px;
+            gap: 10px;
+            font-family: 'Zen Maru Gothic', sans-serif;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            border-radius: 999px;
+            padding: 14px 40px;
+            font-size: 1.1rem;
+            color: #fff;
+            background: #2e9e4f;
+            box-shadow: 0 6px 0 #1f7d3c, 0 12px 20px rgba(46, 158, 79, 0.25);
             text-decoration: none;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            background: linear-gradient(135deg, #1B3A8C 0%, #152E70 100%);
-            box-shadow: 0 6px 20px rgba(27, 58, 140, 0.2);
-            border: 1px solid rgba(74, 169, 224, 0.3);
+            transition: transform 0.1s, box-shadow 0.1s;
         }
-        .btn-gioco-launch:hover {
-            transform: translate3d(0, -4px, 0);
-            box-shadow: 0 12px 30px rgba(27, 58, 140, 0.4);
-            border-color: #4AA9E0;
+        .btn-gioco-launch:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #1f7d3c, 0 6px 10px rgba(46, 158, 79, 0.2);
         }
 
         .info-card-box {
@@ -326,16 +328,16 @@ const { title, currentTab } = Astro.props;
         </ul>
     </aside>
 
-    {/* 💡 currentTab が gioco の場合は、ゲーム画面側で最外枠パネルを制御するため、余計な白い箱クラス（layout-gioco-mode）を当てて打ち消します */}
-    <main id="main-panel" class={currentTab === 'gioco' ? 'layout-gioco-mode' : ''}>
-        {currentTab === 'gioco' ? (
+    {/* 💡 【超重要修正】現在のパス（Astro.url.pathname）がゲーム画面「/hug-gioco」に直接一致している場合は、被さっている説明文パネル（currentTab === 'gioco' の中身）をスキップさせて、ゲームの中身（<slot />）を通します */}
+    <main id="main-panel" class={Astro.url.pathname.includes('hug-gioco') ? 'layout-gioco-mode' : ''}>
+        {currentTab === 'gioco' && !Astro.url.pathname.includes('hug-gioco') ? (
             <div class="content-panel">
                 <h2>HUG Gioco — TKB型避難所運営ディスカッションゲーム</h2>
                 <div class="info-card-box">
                     <p>「HUG Gioco（グロッコ）」は、TKB（トイレ・キッチン・ベッド）型避難所運営をテーマにした、子どもから大人まで直感的に学べる防災シミュレーションゲームです。</p>
                     <div style="text-align: center; margin: 40px 0;">
                         <a href="/hug-gioco" class="btn-gioco-launch">
-                            ゲームを起動する ➔
+                            🚀 ゲームを起動する ➔
                         </a>
                     </div>
                 </div>
@@ -369,7 +371,6 @@ const { title, currentTab } = Astro.props;
         }
     }
 
-    // 通常ロード時とAstroルーターイベント時の両フックに対応
     document.addEventListener("DOMContentLoaded", runJyracGsapAnimation);
     document.addEventListener("astro:page-load", runJyracGsapAnimation);
 </script>
