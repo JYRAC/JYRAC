@@ -223,6 +223,17 @@ const { title, currentTab } = Astro.props;
             pointer-events: none;
         }
 
+        /* 💡 【神対応：ゲーム画面が呼ばれた時だけLayoutのパネル背景や余白を相殺する】 */
+        .layout-gioco-mode {
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            box-shadow: none !important;
+        }
+        .layout-gioco-mode::before {
+            display: none !important;
+        }
+
         footer {
             text-align: center;
             padding: 45px 20px;
@@ -315,7 +326,8 @@ const { title, currentTab } = Astro.props;
         </ul>
     </aside>
 
-    <main id="main-panel">
+    {/* 💡 currentTab が gioco の場合は、ゲーム画面側で最外枠パネルを制御するため、余計な白い箱クラス（layout-gioco-mode）を当てて打ち消します */}
+    <main id="main-panel" class={currentTab === 'gioco' ? 'layout-gioco-mode' : ''}>
         {currentTab === 'gioco' ? (
             <div class="content-panel">
                 <h2>HUG Gioco — TKB型避難所運営ディスカッションゲーム</h2>
@@ -339,10 +351,11 @@ const { title, currentTab } = Astro.props;
 </footer>
 
 <script is:inline>
-    document.addEventListener("DOMContentLoaded", () => {
+    function runJyracGsapAnimation() {
         if (typeof gsap === "undefined") return;
 
         if (window.innerWidth > 850) {
+            gsap.killTweensOf(".crystal");
             gsap.to(".cr-1", { y: -25, rotation: 360, duration: 12, repeat: -1, yoyo: true, ease: "power1.inOut" });
             gsap.to(".cr-2", { y: 20, rotation: -360, duration: 15, repeat: -1, yoyo: true, ease: "power1.inOut" });
             gsap.to(".cr-3", { y: -30, rotation: 180, duration: 10, repeat: -1, yoyo: true, ease: "power1.inOut" });
@@ -354,7 +367,11 @@ const { title, currentTab } = Astro.props;
                 btn.addEventListener('mouseleave', () => gsap.to(btn, { scale: 1, duration: 0.3, ease: "power2.inOut" }));
             });
         }
-    });
+    }
+
+    // 通常ロード時とAstroルーターイベント時の両フックに対応
+    document.addEventListener("DOMContentLoaded", runJyracGsapAnimation);
+    document.addEventListener("astro:page-load", runJyracGsapAnimation);
 </script>
 </body>
 </html>
