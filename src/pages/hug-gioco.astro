@@ -39,11 +39,11 @@ const CH_CARDS = [
 
 <Layout title="HUG Gioco — TKB型避難所運営ディスカッションゲーム" currentTab="gioco">
   
-  {/* 💡 他のページを崩さないよう、すべてのスタイルとJSの対象を「.gioco-container-scoped」内に限定遮断します */}
-  <div class="gioco-container-scoped" id="game-scope-root">
+  {/* 💡 gioco-local-wrapper クラスで全体を縛り、Astro標準のコンポーネント用CSSスコープで他ページを徹底ガード */}
+  <div class="gioco-local-wrapper" id="jyrac-gioco-root">
     
-    <header class="game-top-bar">
-      <div class="game-titles">
+    <header class="game-inner-header">
+      <div class="titles-area">
         <b>HUG Gioco</b>
         <span>TKB型避難所運営ディスカッションゲーム</span>
       </div>
@@ -57,7 +57,7 @@ const CH_CARDS = [
       </div>
     </header>
 
-    <div class="game-wrapper-inner">
+    <div class="game-views-container">
       <div id="view-1" class="view active">
         <div class="hero">
           <div class="logo-main">
@@ -69,7 +69,7 @@ const CH_CARDS = [
           <span class="sub">TKB型避難所運営ディスカッションゲーム</span>
         </div>
 
-        <p class="desc" style="text-align: center;">
+        <p class="desc">
           避難所運営の命題となる<strong>TKB（トイレ・キッチン・ベッド）</strong>をテーマに、直感的なグループワークを行えるシミュレーションゲームです。<br><br>
           「🎲 カードを引く」ボタンを押すと、現在の災害シナリオ、経過時間、施設の物資条件、特別な要配慮者を含む避難者のシチュエーションが自動生成されます。
         </p>
@@ -185,15 +185,14 @@ const CH_CARDS = [
     </div>
   </div>
 
-  <div id="toast" class="toast"></div>
+  <div id="game-scoped-toast" class="game-scoped-toast"></div>
 </Layout>
 
 {/* ==========================================
-// 3. SCOPED STYLE LAYER (is:globalを外し、カプセル化で他ページを100%守る)
+// 3. SCOPED STYLE LAYER (Astro標準の通常式スタイル: 他ページへの干渉を100%防止)
 // ========================================== */}
 <style>
-  /* 全て「.gioco-container-scoped」の子要素としてCSSを縛り、公式サイト側（トップの新着など）を完全に隔離・保護します */
-  .gioco-container-scoped {
+  .gioco-local-wrapper {
     --navy: #1B3A8C; --navy-deep: #152E70; --green: #2E9E4F; --green-deep: #1f7d3c; --red: #E01E2B; --red-deep: #b8161f;
     --white: #FFFFFF; --sky: #4AA9E0; --sky-soft: #DDEEFA; --sun: #FFD23F; --sun-soft: #FFF3C9; --cream: #FDFBF5; --cream-2: #F5F0E4;
     --ink: #233047; --ink-soft: #5b6779; --line: #E7E0D0; --shadow: 0 10px 24px rgba(27, 58, 140, 0.12); --shadow-lg: 0 18px 44px rgba(27, 58, 140, 0.18);
@@ -211,18 +210,18 @@ const CH_CARDS = [
       radial-gradient(circle at 20% 90%, rgba(255,210,63,0.14) 0 30px, transparent 31px);
   }
 
-  .game-wrapper-inner { padding: 10px 0; }
+  .game-views-container { padding: 10px 0; }
 
   /* ---------- ヘッダー ---------- */
-  .game-top-bar {
+  .game-inner-header {
     border-bottom: 3px solid var(--navy);
     padding: 10px 0 15px; display: flex; align-items: center; gap: 12px;
     margin-bottom: 25px;
   }
-  .game-top-bar .game-titles { display: flex; flex-direction: column; line-height: 1.15; }
-  .game-top-bar .game-titles b { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 1.18rem; color: var(--navy); letter-spacing: 0.5px; }
-  .game-top-bar .game-titles span { font-size: 0.72rem; color: var(--ink-soft); font-weight: 700; }
-  .game-top-bar .nav-spacer { flex: 1; }
+  .game-inner-header .titles-area { display: flex; flex-direction: column; line-height: 1.15; }
+  .game-inner-header .titles-area b { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 1.18rem; color: var(--navy); letter-spacing: 0.5px; }
+  .game-inner-header .titles-area span { font-size: 0.72rem; color: var(--ink-soft); font-weight: 700; }
+  .game-inner-header .nav-spacer { flex: 1; }
   .step-dots { display: flex; gap: 7px; align-items: center; }
   .step-dots i { width: 11px; height: 11px; border-radius: 50%; background: var(--line); display: block; transition: 0.25s; }
   .step-dots i.on { background: var(--navy); transform: scale(1.25); }
@@ -231,7 +230,7 @@ const CH_CARDS = [
   .btn-back-to-site { font-weight:700; font-size:.85rem; color: var(--navy); text-decoration:none; background:#fff; border:2px solid var(--navy); padding:6px 16px; border-radius:999px; transition:.2s; display:inline-flex; align-items:center; gap:6px; margin-right: 15px; }
   .btn-back-to-site:hover { background:var(--navy); color:#fff; }
 
-  /* ---------- ボタン（スコープ限定） ---------- */
+  /* ---------- ボタン（通常指定でカプセル化） ---------- */
   .btn {
     font-family: 'Baloo 2', 'Zen Maru Gothic', sans-serif; font-weight: 800; border: none; cursor: pointer; border-radius: 999px;
     padding: 16px 30px; font-size: 1.12rem; color: #fff; background: var(--navy);
@@ -264,13 +263,13 @@ const CH_CARDS = [
   .logo-text-gioco { font-size: 46px; font-weight: 800; color: var(--navy); margin-left: 6px; letter-spacing: -0.01em; transform: rotate(1deg); display: inline-block; }
   .sub { color: var(--green); font-size: clamp(1rem, 3vw, 1.25rem); font-weight: 800; letter-spacing: 1px; margin-bottom: 25px; text-transform: uppercase; display: block; text-align: center; }
 
-  .gioco-container-scoped p.desc { max-width: 620px; margin: 0 auto 30px; font-size: 1.05rem; color: var(--ink-soft); font-weight: 500; text-align: center; }
+  .gioco-local-wrapper p.desc { max-width: 620px; margin: 0 auto 30px; font-size: 1.05rem; color: var(--ink-soft); font-weight: 500; text-align: center; }
 
   .tkb-badge-row { display: flex; justify-content: center; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
   .tkb-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 18px; border-radius: 999px; font-size: 0.95rem; font-weight: 800; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
   .tkb-badge.t { background: var(--green); } .tkb-badge.k { background: var(--red); } .tkb-badge.b { background: var(--navy); }
 
-  /* ---------- カード構成 ---------- */
+  /* ---------- カードアセット ---------- */
   .cards { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); }
   .gcard {
     position: relative; background: #fff; border-radius: var(--radius-sm); padding: 20px 16px;
@@ -286,10 +285,6 @@ const CH_CARDS = [
   .c-peo { border-left-color: var(--sun); background: linear-gradient(180deg, #fffdf4 0%, #fff 100%); } .c-peo .cat { color: #b58900; }
   .c-con { border-left-color: #7a5cc0; background: linear-gradient(180deg, #f7f4ff 0%, #fff 100%); } .c-con .cat { color: #5c3fa0; }
   .c-sup { border-left-color: var(--green); background: linear-gradient(180deg, #f2fbf5 0%, #fff 100%); } .c-sup .cat { color: var(--green-deep); }
-
-  .screen-head { display: flex; align-items: center; gap: 14px; margin: 6px 0 20px; flex-wrap: wrap; }
-  .screen-head h2 { font-family: 'Baloo 2'; color: var(--navy); font-size: clamp(1.3rem, 4vw, 1.8rem); margin: 0; font-weight: 800; }
-  .screen-head .tag { background: var(--sky-soft); color: var(--navy); font-weight: 700; padding: 5px 14px; border-radius: 999px; font-size: 0.8rem; }
 
   .situation { background: linear-gradient(135deg, var(--navy), #2a52b0); color: #fff; border-radius: var(--radius-sm); padding: 18px 20px; margin-bottom: 20px; box-shadow: var(--shadow); text-align: left; }
   .situation .lbl { font-weight: 800; font-size: 0.85rem; opacity: 0.85; }
@@ -328,12 +323,12 @@ const CH_CARDS = [
   .final-actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 25px; }
   .footer-note { text-align: center; color: var(--ink-soft); font-size: 0.8rem; margin-top: 40px; padding: 15px; background: rgba(255,255,255,0.5); border-radius: 12px; border: 1px dashed var(--line); }
 
-  .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(30px); background: var(--navy); color: #fff; padding: 13px 26px; border-radius: 999px; font-weight: 800; box-shadow: var(--shadow-lg); opacity: 0; pointer-events: none; transition: 0.3s; z-index: 200; }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .game-scoped-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(30px); background: var(--navy); color: #fff; padding: 13px 26px; border-radius: 999px; font-weight: 800; box-shadow: var(--shadow-lg); opacity: 0; pointer-events: none; transition: 0.3s; z-index: 200; }
+  .game-scoped-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
   @media print {
-    .site-header, .final-actions, .step-dots, .btn, .footer-note, .note-line { display: none !important; }
-    .gioco-container-scoped { background: #fff !important; background-image: none !important; padding: 0; }
+    .game-inner-header, .final-actions, .step-dots, .btn, .footer-note, .note-line { display: none !important; }
+    .gioco-local-wrapper { background: #fff !important; background-image: none !important; padding: 0; }
     .view { display: none !important; }
     .view#view-4 { display: block !important; }
     .review-box { box-shadow: none; border: 2px solid #000; }
@@ -341,19 +336,19 @@ const CH_CARDS = [
 </style>
 
 {/* ==========================================
-// 4. SCRIPT LAYER (安全なJS画面遷移ロジック)
+// 4. SCRIPT LAYER (外部干渉を完全に防ぐ、安全な独立進行ロジック)
 // ========================================== */}
 <script is:inline define:vars={{ CARDS, DISCUSSIONS, CH_CARDS }}>
   let DECK = [...CARDS];
   let CURRENT = null;
 
-  // ルート要素からの相対指定に限定して競合と強制遷移を完全に防御
-  const $ = sel => document.querySelector(`#game-scope-root ${sel}`);
-  const $$ = sel => document.querySelectorAll(`#game-scope-root ${sel}`);
+  // ルート要素からの相対指定に限定して、外部のルーターやフォーム送信干渉を完全にブロック
+  const $ = sel => document.querySelector(`#jyrac-gioco-root ${sel}`);
+  const $$ = sel => document.querySelectorAll(`#jyrac-gioco-root ${sel}`);
 
   function showView(id){
-    document.querySelectorAll('#game-scope-root .view').forEach(v => v.classList.remove('active'));
-    document.querySelector(`#game-scope-root #view-${id}`).classList.add('active');
+    document.querySelectorAll('#jyrac-gioco-root .view').forEach(v => v.classList.remove('active'));
+    document.querySelector(`#jyrac-gioco-root #view-${id}`).classList.add('active');
     
     document.querySelectorAll('.step-dots i').forEach((dot, idx) => {
       dot.className = '';
@@ -418,13 +413,13 @@ const CH_CARDS = [
   }
 
   function collectMemo(){
-    const d = {}; document.querySelectorAll('#game-scope-root textarea[data-memo]').forEach(t => d[t.dataset.memo] = t.value.trim()); return d;
+    const d = {}; document.querySelectorAll('#jyrac-gioco-root textarea[data-memo]').forEach(t => d[t.dataset.memo] = t.value.trim()); return d;
   }
 
   function buildReview(){
     $('#rSit').textContent = CURRENT ? situationText(CURRENT) : '';
     const d = collectMemo();
-    document.querySelectorAll('#game-scope-root .content[data-r]').forEach(el => {
+    document.querySelectorAll('#jyrac-gioco-root .content[data-r]').forEach(el => {
       const v = d[el.dataset.r];
       el.textContent = v || '（未入力）';
       if(!v) el.classList.add('empty'); else el.classList.remove('empty');
@@ -437,7 +432,7 @@ const CH_CARDS = [
     const sit = CURRENT ? situationText(CURRENT) : '（シチュエーション未作成）';
     const text = `【HUG Gioco ワーク記録シート】\n\n■状況\n${sit}\n\n■課題\n${d.issues||'-'}\n\n■配慮\n${d.care||'-'}\n\n■対応\n${d.now||'-'}\n\n■準備\n${d.prep||'-'}\n\n■提案\n${d.propose||'-'}`;
     navigator.clipboard.writeText(text).then(() => {
-      const t = $('#toast'); t.textContent = 'コピーしました！'; t.classList.add('show');
+      const t = $('#game-scoped-toast'); t.textContent = 'クリップボードにコピーしました！'; t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 2000);
     });
   }
