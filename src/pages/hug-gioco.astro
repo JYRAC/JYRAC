@@ -1,6 +1,7 @@
 ---
 // ==========================================
 // 1. DATA LAYER (Astroフロントマターでデータを一元管理)
+// サーバー側でここを編集するだけで、画面のHTMLとJSのデータの両方が自動更新されます。
 // ==========================================
 import Layout from '../layouts/Layout.astro';
 
@@ -23,7 +24,7 @@ const CARDS = [
 ];
 
 const DISCUSSIONS = {
-  t: ['マンホールトイレや仮設トイレをどこに設置するか？', '誰を優先して使ってもらうルールにするか？', 'トイレの清掃やゴミ出しの担当をどう決めるか？'],
+  t: ['マンホールトイレや仮設トイレをどこに設置するか？', '誰を優先して使ってもらうルールにするか？', 'トイレの清鎖やゴミ出しの担当をどう決めるか？'],
   k: ['炊き出しや物資の配布場所をどこに設けるか？', 'アレルギーや宗教上の配慮が必要な人への対応は？', '貴重な水や燃料をどう管理・節約するか？'],
   b: ['通路を確保しつつ、プライベート空間をどう作るか？', '高齢者や要配慮者のベッド位置をどこにするか？', '体育館の床の冷たさや硬さを防ぐ工夫は？']
 };
@@ -79,14 +80,14 @@ const CH_CARDS = [
         </div>
 
         <div style="text-align: center; margin: 28px 0 20px;">
-          <button id="btn-draw" class="btn big" type="button">🎲 カードを引いて状況を作る</button>
+          <button id="btn-draw" class="game-btn big" type="button">🎲 カードを引いて状況を作る</button>
         </div>
 
         <div id="sit-cards" class="cards">
           </div>
 
         <div style="text-align: center; margin-top: 40px;">
-          <button id="btn-next-step1" class="btn green" type="button" disabled>次へ進む（課題検討） ➔</button>
+          <button id="btn-next-step1" class="game-btn green" type="button" disabled>次へ進む（課題検討） ➔</button>
         </div>
       </div>
 
@@ -124,8 +125,8 @@ const CH_CARDS = [
         </div>
 
         <div class="final-actions">
-          <button id="btn-back-step2" class="btn ghost small" type="button">🔀 状況を引き直す</button>
-          <button id="btn-next-step2" class="btn green" type="button">次へ進む（アクシデント発生） ➔</button>
+          <button id="btn-back-step2" class="game-btn ghost small" type="button">🔀 状況を引き直す</button>
+          <button id="btn-next-step2" class="game-btn green" type="button">次へ進む（アクシデント発生） ➔</button>
         </div>
       </div>
 
@@ -154,8 +155,8 @@ const CH_CARDS = [
         </div>
 
         <div class="final-actions">
-          <button id="btn-back-step3" class="btn ghost small" type="button">⬅ 戻る</button>
-          <button id="btn-next-step3" class="btn green" type="button">シートをまとめて完成！ ➔</button>
+          <button id="btn-back-step3" class="game-btn ghost small" type="button">⬅ 戻る</button>
+          <button id="btn-next-step3" class="game-btn green" type="button">シートをまとめて完成！ ➔</button>
         </div>
       </div>
 
@@ -173,10 +174,10 @@ const CH_CARDS = [
           </div>
         </div>
         <div class="final-actions">
-          <button id="btn-back-step4" class="btn ghost small" type="button">⬅ 修正する</button>
-          <button id="btn-copy" class="btn sun" type="button">📋 テキストをコピーする</button>
-          <button id="btn-print" class="btn sky" type="button">🖨️ A4用紙に印刷する</button>
-          <button id="btn-restart" class="btn red" type="button">🔄 最初からやり直す</button>
+          <button id="btn-back-step4" class="game-btn ghost small" type="button">⬅ 修正する</button>
+          <button id="btn-copy" class="game-btn sun" type="button">📋 テキストをコピーする</button>
+          <button id="btn-print" class="game-btn sky" type="button">🖨️ A4用紙に印刷する</button>
+          <button id="btn-restart" class="game-btn red" type="button">🔄 最初からやり直す</button>
         </div>
         <div class="footer-note"><b>HUG Gioco (グロッコ)</b> — TKB型避難所運営ディスカッションゲーム<br>協力：日本若者防災復興協会（JYRAC）</div>
       </div>
@@ -187,7 +188,7 @@ const CH_CARDS = [
 </Layout>
 
 {/* ==========================================
-// 3. SCOPED STYLE LAYER (Astro標準：他ページ干責を完全遮断)
+// 3. SCOPED STYLE LAYER (Astro標準：他ページ干渉を完全遮断)
 // ========================================== */}
 <style>
   .gioco-local-wrapper {
@@ -227,22 +228,23 @@ const CH_CARDS = [
   .btn-back-to-site { font-weight:700; font-size:.85rem; color: var(--navy); text-decoration:none; background:#fff; border:2px solid var(--navy); padding:6px 16px; border-radius:999px; transition:.2s; display:inline-flex; align-items:center; gap:6px; margin-right: 15px; }
   .btn-back-to-site:hover { background:var(--navy); color:#fff; }
 
-  .btn {
+  /* 💡 クラス名を一般的な .btn からゲーム専用の .game-btn に変更し、他ページ（servicesの.btn-link等）への干渉を完全遮断 */
+  .game-btn {
     font-family: 'Baloo 2', 'Zen Maru Gothic', sans-serif; font-weight: 800; border: none; cursor: pointer; border-radius: 999px;
     padding: 16px 30px; font-size: 1.12rem; color: #fff; background: var(--navy);
     box-shadow: 0 6px 0 var(--navy-deep), 0 12px 22px rgba(27, 58, 140, 0.28);
     transition: transform 0.08s ease, box-shadow 0.08s ease; display: inline-flex; align-items: center; gap: 10px; justify-content: center;
   }
-  .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--navy-deep), 0 6px 12px rgba(27, 58, 140, 0.24); }
-  .btn.green { background: var(--green); box-shadow: 0 6px 0 var(--green-deep), 0 12px 22px rgba(46, 158, 79, 0.28); }
-  .btn.red { background: var(--red); box-shadow: 0 6px 0 var(--red-deep), 0 12px 22px rgba(224, 30, 43, 0.26); }
-  .btn.sky { background: var(--sky); box-shadow: 0 6px 0 #2b87bd, 0 12px 22px rgba(74, 169, 224, 0.28); }
-  .btn.sun { background: var(--sun); color: var(--navy); box-shadow: 0 6px 0 #e0b325, 0 12px 22px rgba(255, 210, 63, 0.4); }
-  .btn.ghost { background: #fff; color: var(--navy); border: 2.5px solid var(--navy); box-shadow: 0 6px 0 rgba(27, 58, 140, 0.16); }
-  .btn.small { padding: 11px 20px; font-size: 0.95rem; }
-  .btn.big { padding: 20px 44px; font-size: 1.35rem; }
+  .game-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--navy-deep), 0 6px 12px rgba(27, 58, 140, 0.24); }
+  .game-btn.green { background: var(--green); box-shadow: 0 6px 0 var(--green-deep), 0 12px 22px rgba(46, 158, 79, 0.28); }
+  .game-btn.red { background: var(--red); box-shadow: 0 6px 0 var(--red-deep), 0 12px 22px rgba(224, 30, 43, 0.26); }
+  .game-btn.sky { background: var(--sky); box-shadow: 0 6px 0 #2b87bd, 0 12px 22px rgba(74, 169, 224, 0.28); }
+  .game-btn.sun { background: var(--sun); color: var(--navy); box-shadow: 0 6px 0 #e0b325, 0 12px 22px rgba(255, 210, 63, 0.4); }
+  .game-btn.ghost { background: #fff; color: var(--navy); border: 2.5px solid var(--navy); box-shadow: 0 6px 0 rgba(27, 58, 140, 0.16); }
+  .game-btn.small { padding: 11px 20px; font-size: 0.95rem; }
+  .game-btn.big { padding: 20px 44px; font-size: 1.35rem; }
+  .game-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-  /* 💡 Astroのスコープバインディングを突き破るよう、ラッパー経由で!important指定 */
   #jyrac-gioco-root .view { display: none !important; }
   #jyrac-gioco-root .view.active { display: block !important; animation: pop 0.4s ease forwards; }
   @keyframes pop { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
@@ -308,7 +310,7 @@ const CH_CARDS = [
   .memo.m5 { border-left-color: #7a5cc0; }
   .memo label { font-weight: 800; color: var(--navy); display: block; margin-bottom: 8px; font-size: 0.95rem; }
   .memo textarea { width: 100%; border: 2px solid var(--line); border-radius: 12px; padding: 10px; font-family: inherit; font-size: 0.95rem; resize: vertical; min-height: 85px; background: #fafafa; color: var(--ink); font-weight: 500; }
-  .memo textarea:focus { outline: none; border-color: var(--sky); background: #fff; }
+  .memo textarea:focus { outline: none; border-color: var(--primary); background: #fff; }
 
   .review-box { background: #fff; border-radius: var(--radius-sm); padding: 20px; box-shadow: var(--shadow); border: 2px solid var(--navy); text-align: left; }
   .r-item { border-bottom: 2px dashed var(--line); padding: 12px 0; }
@@ -326,156 +328,141 @@ const CH_CARDS = [
   @media print {
     .game-inner-header, .final-actions, .step-dots, .btn, .footer-note, .note-line { display: none !important; }
     .gioco-local-wrapper { background: #fff !important; background-image: none !important; padding: 0; }
-    .view { display: none !important; }
-    .view#view-4 { display: block !important; }
+    #jyrac-gioco-root .view { display: none !important; }
+    #jyrac-gioco-root .view#view-4 { display: block !important; }
     .review-box { box-shadow: none; border: 2px solid #000; }
+    .memo.m5 textarea { border: none; background: transparent; padding: 0; }
   }
 </style>
 
 {/* ==========================================
-// 4. SCRIPT LAYER (SPAルーターイベント対応：ページ切り替えを完全に感知するJSロジック)
+// 4. SCRIPT LAYER (SPA非同期ルーター対応：スコープ保護抽選進行ロジック)
 // ========================================== */}
 <script is:inline define:vars={{ CARDS, DISCUSSIONS, CH_CARDS }}>
-  let DECK = [...CARDS];
-  let CURRENT = null;
+  function setupGiocoEngine() {
+    const root = document.getElementById('jyrac-gioco-root');
+    if (!root) return; // ゲーム画面外にいるときは処理を安全にスキップ
 
-  // ルート要素からの相対指定に限定して強制終了・競合を防御
-  const $ = sel => document.querySelector(`#jyrac-gioco-root ${sel}`);
-  const $$ = sel => document.querySelectorAll(`#jyrac-gioco-root ${sel}`);
+    let DECK = [...CARDS];
+    let CURRENT = null;
 
-  function showView(id){
-    const root = document.querySelector('#jyrac-gioco-root');
-    if(!root) return;
-    root.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    // ボタンの取得をすべて .game-btn クラスに厳密限定し、他ページへのイベント登録ミスを完全防止
+    const $ = sel => root.querySelector(sel);
+    const $$ = sel => root.querySelectorAll(sel);
+
+    function showView(id) {
+      $$( '.view').forEach(v => v.classList.remove('active'));
+      const target = $(`#view-${id}`);
+      if(target) target.classList.add('active');
+      
+      root.querySelectorAll('.step-dots i').forEach((dot, idx) => {
+        dot.className = '';
+        if(idx === id - 1) dot.className = 'on';
+        else if(idx < id - 1) dot.className = 'done';
+      });
+      window.scrollTo(0,0);
+    }
+
+    function makeCardHtml(c){
+      const catMaps = {dis:'災害・状況',time:'経過時間',fac:'施設・物資',peo:'避難者',con:'運営・情報',sup:'支援・対話'};
+      const catName = catMaps[c.c] || c.c;
+      return `<div class="gcard c-${c.c}"><span class="emoji">${c.e}</span><div class="cat">${catName}</div><div class="txt">${c.txt}</div></div>`;
+    }
+
+    function sample(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+    function startTool(){
+      DECK = [...CARDS]; CURRENT = null;
+      root.querySelectorAll('textarea[data-memo]').forEach(t => t.value = '');
+      $('#rSit').textContent = '';
+      $('#sit-cards').innerHTML = '';
+      $('#btn-next-step1').disabled = true;
+      showView(1);
+    }
+
+    function drawSituation(e){
+      if(e) { e.preventDefault(); e.stopPropagation(); }
+      const dis = DECK.filter(c => c.c === 'dis'), time = DECK.filter(c => c.c === 'time'), fac = DECK.filter(c => c.c === 'fac'), peo = DECK.filter(c => c.c === 'peo');
+      const c1 = sample(dis), c2 = sample(time), c3 = sample(fac);
+      let p1 = sample(peo), p2 = sample(peo);
+      while(p1.id === p2.id) p2 = sample(peo);
+      CURRENT = { dis:c1, time:c2, fac:c3, p1, p2 };
+
+      $('#sit-cards').innerHTML = makeCardHtml(c1) + makeCardHtml(c2) + makeCardHtml(c3) + makeCardHtml(p1) + makeCardHtml(p2);
+      $('#btn-next-step1').disabled = false;
+    }
+
+    function situationText(cur){
+      if(!cur) return '';
+      return `【${cur.dis.txt}】のなか、発災から【${cur.time.txt}】が経過。避難所環境は【${cur.fac.txt}】という条件です。そこへ【${cur.p1.txt}】や【${cur.p2.txt}】が避難しています。`;
+    }
+
+    function buildStep2(e){
+      if(e) { e.preventDefault(); e.stopPropagation(); }
+      if(!CURRENT) return;
+      $('#step2-sit-text').innerHTML = `外の状況：<b>${CURRENT.dis.txt}</b><br>時間の経過：<b>${CURRENT.time.txt}</b><br>使えるもの：<b>${CURRENT.fac.txt}</b><br>避難者の様子：<b>${CURRENT.p1.txt}</b> ／ <b>${CURRENT.p2.txt}</b>`;
+      $('#q-cards-box').innerHTML = `
+        <div class="q-card a"><h4>🚾 T トイレの課題</h4><ul><li>${sample(DISCUSSIONS.t)}</li></ul></div>
+        <div class="q-card b"><h4>🍳 K キッチンの課題</h4><ul><li>${sample(DISCUSSIONS.k)}</li></ul></div>
+        <div class="q-card c"><h4>🛏️ B ベッドの課題</h4><ul><li>${sample(DISCUSSIONS.b)}</li></ul></div>`;
+      showView(2);
+    }
+
+    function buildStep3(e){
+      if(e) { e.preventDefault(); e.stopPropagation(); }
+      let idx1 = Math.floor(Math.random()*CH_CARDS.length);
+      let idx2 = Math.floor(Math.random()*CH_CARDS.length);
+      while(idx1 === idx2){ idx2 = Math.floor(Math.random()*CH_CARDS.length); }
+      $('#ch-cards-box').innerHTML = makeCardHtml(CH_CARDS[idx1]) + makeCardHtml(CH_CARDS[idx2]);
+      showView(3);
+    }
+
+    function collectMemo(){
+      const d = {}; root.querySelectorAll('textarea[data-memo]').forEach(t => d[t.dataset.memo] = t.value.trim()); return d;
+    }
+
+    function buildReview(){
+      $('#rSit').textContent = CURRENT ? situationText(CURRENT) : '';
+      const d = collectMemo();
+      root.querySelectorAll('.content[data-r]').forEach(el => {
+        const v = d[el.dataset.r];
+        el.textContent = v || '（未入力）';
+        if(!v) el.classList.add('empty'); else el.classList.remove('empty');
+      });
+    }
+
+    function copyReview(e){
+      if(e) { e.preventDefault(); e.stopPropagation(); }
+      const d = collectMemo();
+      const sit = CURRENT ? situationText(CURRENT) : '（シチュエーション未作成）';
+      const text = `【HUG Gioco ワーク記録シート】\n\n■状況\n${sit}\n\n■課題\n${d.issues||'-'}\n\n■配慮\n${d.care||'-'}\n\n■対応\n${d.now||'-'}\n\n■準備\n${d.prep||'-'}\n\n■提案\n${d.propose||'-'}`;
+      navigator.clipboard.writeText(text).then(() => {
+        const t = $('#game-scoped-toast'); t.textContent = 'クリップボードにコピーしました！'; t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 2000);
+      });
+    }
+
+    const bDraw = $('#btn-draw'), bNext1 = $('#btn-next-step1'), bNext2 = $('#btn-next-step2'), bNext3 = $('#btn-next-step3');
+    const bBack2 = $('#btn-back-step2'), bBack3 = $('#btn-back-step3'), bBack4 = $('#btn-back-step4');
+    const bCopy = $('#btn-copy'), bPrint = $('#btn-print'), bRestart = $('#btn-restart');
+
+    if(bDraw) bDraw.onclick = drawSituation;
+    if(bNext1) bNext1.onclick = buildStep2;
+    if(bNext2) bNext2.onclick = buildStep3;
+    if(bNext3) bNext3.onclick = (e) => { if(e){e.preventDefault(); e.stopPropagation();} buildReview(); showView(4); };
     
-    const targetView = root.querySelector(`#view-${id}`);
-    if(targetView) targetView.classList.add('active');
+    if(bBack2) bBack2.onclick = (e) => { if(e){e.preventDefault(); e.stopPropagation();} showView(1); };
+    if(bBack3) bBack3.onclick = (e) => { if(e){e.preventDefault(); e.stopPropagation();} showView(2); };
+    if(bBack4) bBack4.onclick = (e) => { if(e){e.preventDefault(); e.stopPropagation();} showView(3); };
     
-    root.querySelectorAll('.step-dots i').forEach((dot, idx) => {
-      dot.className = '';
-      if(idx === id - 1) dot.className = 'on';
-      else if(idx < id - 1) dot.className = 'done';
-    });
-    window.scrollTo(0,0);
-  }
+    if(bCopy) bCopy.onclick = copyReview;
+    if(bPrint) bPrint.onclick = (e) => { if(e){e.preventDefault(); e.stopPropagation();} window.print(); };
+    if(bRestart) bRestart.onclick = (e) => { if(e){e.preventDefault(); e.stopPropagation();} if(confirm('新しくゲームをはじめますか？')) startTool(); };
 
-  function makeCardHtml(c){
-    const catMaps = {dis:'災害・状況',time:'経過時間',fac:'施設・物資',peo:'避難者',con:'運営・情報',sup:'支援・対話'};
-    const catName = catMaps[c.c] || c.c;
-    return `<div class="gcard c-${c.c}"><span class="emoji">${c.e}</span><div class="cat">${catName}</div><div class="txt">${c.txt}</div></div>`;
-  }
-
-  function sample(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-
-  function startTool(){
-    DECK = [...CARDS]; CURRENT = null;
-    const root = document.querySelector('#jyrac-gioco-root');
-    if(!root) return;
-    root.querySelectorAll('textarea[data-memo]').forEach(t => t.value = '');
-    root.querySelector('#rSit').textContent = '';
-    root.querySelector('#sit-cards').innerHTML = '';
-    root.querySelector('#btn-next-step1').disabled = true;
     showView(1);
   }
 
-  function drawSituation(e){
-    if(e) { e.preventDefault(); e.stopPropagation(); }
-    const dis = DECK.filter(c => c.c === 'dis'), time = DECK.filter(c => c.c === 'time'), fac = DECK.filter(c => c.c === 'fac'), peo = DECK.filter(c => c.c === 'peo');
-    const c1 = sample(dis), c2 = sample(time), c3 = sample(fac);
-    let p1 = sample(peo), p2 = sample(peo);
-    while(p1.id === p2.id) p2 = sample(peo);
-    CURRENT = { dis:c1, time:c2, fac:c3, p1, p2 };
-
-    $('#sit-cards').innerHTML = makeCardHtml(c1) + makeCardHtml(c2) + makeCardHtml(c3) + makeCardHtml(p1) + makeCardHtml(p2);
-    $('#btn-next-step1').disabled = false;
-  }
-
-  function situationText(cur){
-    if(!cur) return '';
-    return `【${cur.dis.txt}】のなか、発災から【${cur.time.txt}】が経過。避難所環境は【${cur.fac.txt}】という条件です。そこへ【${cur.p1.txt}】や【${cur.p2.txt}】が避難しています。`;
-  }
-
-  function buildStep2(e){
-    if(e) { e.preventDefault(); e.stopPropagation(); }
-    if(!CURRENT) return;
-    $('#step2-sit-text').innerHTML = `外の状況：<b>${CURRENT.dis.txt}</b><br>時間の経過：<b>${CURRENT.time.txt}</b><br>使えるもの：<b>${CURRENT.fac.txt}</b><br>避難者の様子：<b>${CURRENT.p1.txt}</b> ／ <b>${CURRENT.p2.txt}</b>`;
-    $('#q-cards-box').innerHTML = `
-      <div class="q-card a"><h4>🚾 T トイレの課題</h4><ul><li>${sample(DISCUSSIONS.t)}</li></ul></div>
-      <div class="q-card b"><h4>🍳 K キッチンの課題</h4><ul><li>${sample(DISCUSSIONS.k)}</li></ul></div>
-      <div class="q-card c"><h4>🛏️ B ベッドの課題</h4><ul><li>${sample(DISCUSSIONS.b)}</li></ul></div>`;
-    showView(2);
-  }
-
-  function buildStep3(e){
-    if(e) { e.preventDefault(); e.stopPropagation(); }
-    let idx1 = Math.floor(Math.random()*CH_CARDS.length);
-    let idx2 = Math.floor(Math.random()*CH_CARDS.length);
-    while(idx1 === idx2){ idx2 = Math.floor(Math.random()*CH_CARDS.length); }
-    $('#ch-cards-box').innerHTML = makeCardHtml(CH_CARDS[idx1]) + makeCardHtml(CH_CARDS[idx2]);
-    showView(3);
-  }
-
-  function collectMemo(){
-    const d = {}; document.querySelectorAll('#jyrac-gioco-root textarea[data-memo]').forEach(t => d[t.dataset.memo] = t.value.trim()); return d;
-  }
-
-  function buildReview(){
-    $('#rSit').textContent = CURRENT ? situationText(CURRENT) : '';
-    const d = collectMemo();
-    document.querySelectorAll('#jyrac-gioco-root .content[data-r]').forEach(el => {
-      const v = d[el.dataset.r];
-      el.textContent = v || '（未入力）';
-      if(!v) el.classList.add('empty'); else el.classList.remove('empty');
-    });
-  }
-
-  function copyReview(e){
-    if(e) { e.preventDefault(); e.stopPropagation(); }
-    const d = collectMemo();
-    const sit = CURRENT ? situationText(CURRENT) : '（シチュエーション未作成）';
-    const text = `【HUG Gioco ワーク記録シート】\n\n■状況\n${sit}\n\n■課題\n${d.issues||'-'}\n\n■配慮\n${d.care||'-'}\n\n■対応\n${d.now||'-'}\n\n■準備\n${d.prep||'-'}\n\n■提案\n${d.propose||'-'}`;
-    navigator.clipboard.writeText(text).then(() => {
-      const t = $('#game-scoped-toast'); t.textContent = 'クリップボードにコピーしました！'; t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2000);
-    });
-  }
-
-  // 💡 SPAルーターの再ロード（ページ遷移時）と、通常アクセス（F5更新）の両方でイベントを紐付け直す関数
-  function initGiocoGame() {
-    const root = document.querySelector('#jyrac-gioco-root');
-    if (!root) return; // 別のページにいるときは何もしない
-    
-    showView(1); // 確実に初期画面を立ち上げる
-
-    const btnDraw = root.querySelector('#btn-draw');
-    const btnNext1 = root.querySelector('#btn-next-step1');
-    const btnNext2 = root.querySelector('#btn-next-step2');
-    const btnNext3 = root.querySelector('#btn-next-step3');
-    
-    const btnBack2 = root.querySelector('#btn-back-step2');
-    const btnBack3 = root.querySelector('#btn-back-step3');
-    const btnBack4 = root.querySelector('#btn-back-step4');
-    
-    const btnCopy = root.querySelector('#btn-copy');
-    const btnPrint = root.querySelector('#btn-print');
-    const btnRestart = root.querySelector('#btn-restart');
-
-    if (btnDraw) btnDraw.addEventListener('click', drawSituation);
-    if (btnNext1) btnNext1.addEventListener('click', buildStep2);
-    if (btnNext2) btnNext2.addEventListener('click', buildStep3);
-    if (btnNext3) btnNext3.addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} buildReview(); showView(4); });
-    
-    if (btnBack2) btnBack2.addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} showView(1); });
-    if (btnBack3) btnBack3.addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} showView(2); });
-    if (btnBack4) btnBack4.addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} showView(3); });
-    
-    if (btnCopy) btnCopy.addEventListener('click', copyReview);
-    if (btnPrint) btnPrint.addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} window.print(); });
-    if (btnRestart) btnRestart.addEventListener('click', (e) => { if(e){e.preventDefault(); e.stopPropagation();} if(confirm('新しくゲームをはじめますか？')) startTool(); });
-  }
-
-  // 1. 通常の読み込み（F5リロードなど）に対応
-  document.addEventListener('DOMContentLoaded', initGiocoGame);
-  // 2. AstroのSPAルーター（他ページからの非同期遷移）に対応
-  document.addEventListener('astro:page-load', initGiocoGame);
+  document.addEventListener('DOMContentLoaded', setupGiocoEngine);
+  document.addEventListener('astro:page-load', setupGiocoEngine);
+  setupGiocoEngine();
 </script>
