@@ -6,16 +6,22 @@ const cmsNews = null;
 
 const externalNews = cmsNews || [
   {
+    date: "2026.07.15",
+    label: "重要",
+    title: "【設立登記完了】特定非営利活動法人日本若者防災復興協会として正式に成立いたしました。",
+    content: "本日、東京法務局における設立登記手続きが無事に完了いたしました。これにより、当団体は令和8年6月21日を成立日とし、法人格を有する「特定非営利活動法人 日本若者防災復興協会（JYRAC）」として正式にスタートいたしました。若者が主体となる防災・復興活動のさらなるアップデートに向け、より一層尽力してまいります。"
+  },
+  {
     date: "2026.06.17",
     label: "お知らせ",
     title: "東京都よりNPO法人の設立認証を受け、登記申請手続きを開始しました。",
-    content: "東京都知事より特定非営利活動法人（NPO法人）の設立認証を正式に受けました。現在は東京法務局にて設立登記の申請手続きを進めております。"
+    content: "東京都知事より特定非営利活動法人（NPO法人）の設立認証を正式に受けました。東京法務局にて設立登記の申請手続きを進めております。"
   },
   {
     date: "2026.04.10",
     label: "重要",
     title: "東京都へ特定非営利活動法人（NPO法人）の設立認証申請を行いました。",
-    content: "本日、所轄庁である東京都へ特定非営利活動法人の認証申請書類一式を正式に提出いたしました。"
+    content: "所轄庁である東京都へ特定非営利活動法人の認証申請書類一式を正式に提出いたしました。"
   }
 ];
 ---
@@ -25,11 +31,11 @@ const externalNews = cmsNews || [
         <h2>新着情報・お知らせ一覧</h2>
         {externalNews && externalNews.length > 0 ? (
             <ul class="news-list">
-                {externalNews.map((item) => (
+                {externalNews.map((item, index) => (
                     <li class="news-item">
                         <div class="news-header">
                             <span class="news-date">{item.date}</span>
-                            <span class="news-label">{item.label}</span>
+                            <span class="news-label" style={item.label === '重要' ? 'background: #e67e22;' : 'background: #009aa6;'}>{item.label}</span>
                             <span class="news-title">{item.title}</span>
                             <span class="news-icon"></span>
                         </div>
@@ -89,12 +95,8 @@ const externalNews = cmsNews || [
     font-size: 11px;
     font-weight: 800;
     color: #fff;
-    background: #009aa6;
     padding: 2px 10px;
     border-radius: 6px;
-  }
-  .news-item:nth-child(2) .news-label {
-    background: #e67e22; /* ２つ目の「重要」ラベルの色分け */
   }
   .news-title {
     font-size: 15px;
