@@ -4,18 +4,205 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="HUG Gioco (教材) | 日本若者防災復興協会" currentTab="gioco">
+  <div class="gioco-intro-wrapper">
     <div class="content-panel">
-        <h2>HUG Gioco — 避難所運営ディスカッションゲーム</h2>
-        
-        <div class="info-card-box">
-            <p>
-                <strong>【JYRAC独自開発・デジタルふりかえりシートツール】</strong><br><br>
-                「HUG Gioco（グロッコ）」は、TKB（トイレ・キッチン・ベッド）型避難所運営をテーマにした、子どもから大人まで直感的に学べる防災シミュレーションディスカッションゲームです。<br><br>
-                従来の避難所運営ゲームの枠を超え、ゲームを通じて見つかった地域のリアルな課題や、配慮が必要な避難者への対応策をその場でスマホ・タブレットから入力・集約し、学校や自治体へ提出できる「次世代のデジタルふりかえりシート」をJYRACが完全独自開発しました。
-            </p>
-            <a href="/hug-gioco.html" class="btn-gioco-launch" target="_blank" rel="noopener">
-                ツールを起動する ➔
-            </a>
+      
+      <div class="title-badge">JYRAC独自開発デジタル教材</div>
+      <h2>HUG Gioco <span class="sub-title">— TKB型避難所運営ディスカッションゲーム</span></h2>
+      
+      <div class="info-card-box">
+        <div class="intro-text">
+          <p class="main-lead">
+            <strong>カードが織りなす「もしも」の避難所環境。<br>問いを見つけ、みんなで話し合い、地域を動かす次世代の防災ゲーム。</strong>
+          </p>
+          <p class="desc">
+            「HUG Gioco（ジョッコ）」は、避難所の環境において極めて重要とされる<strong>TKB（トイレ・キッチン・ベッド）</strong>をテーマに、子どもから大人まで直感的に学べるオンライン対話型シミュレーションゲームです。<br><br>
+            ランダムに生成される災害状況や避難者のニーズに対して「何が大変？」「どう対応する？」をグループでディスカッション。正解を当てるのではなく、みんなで考えるべき『問い』を発見していく勝ち負けのないゲームです。
+          </p>
         </div>
+
+        <div class="feature-grid">
+          <div class="feature-item">
+            <span class="f-emoji">🎮</span>
+            <div>
+              <strong>人数・難易度選択</strong>
+              <p>個人ワークから大人数の研修、初心者向けから修羅場の上級モードまで対応。</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="f-emoji">🚨</span>
+            <div>
+              <strong>不定期アクシデント</strong>
+              <p>話し合いの途中で突発的なトラブルが発生。難易度に応じたリアルな運営判断を体験。</p>
+            </div>
+          </div>
+          <div class="feature-item">
+            <span class="f-emoji">☁️</span>
+            <div>
+              <strong>デジタルふりかえり</strong>
+              <p>導き出したアイデアはその場で送信され、広報局の管理シートへ瞬時にデータ集約。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="launch-zone">
+          <a href="/hug-gioco.html" class="btn-gioco-launch" target="_blank" rel="noopener">
+            🎲 HUG Gioco を起動する ➔
+          </a>
+          <p class="launch-note">※別ウィンドウでゲームが起動します。PC・スマホ・タブレットのいずれでもプレイ可能です。</p>
+        </div>
+
+      </div>
     </div>
+  </div>
 </Layout>
+
+<style>
+  /* 💡 サイト全体のデザインに馴染みつつ、Gioco本体の世界観と繋ぐ専用スタイリング */
+  .gioco-intro-wrapper {
+    --navy: #1B3A8C;
+    --navy-deep: #152E70;
+    --green: #2E9E4F;
+    --green-deep: #1f7d3c;
+    --red: #E01E2B;
+    --sun: #FFD23F;
+    --ink: #233047;
+    --ink-soft: #5b6779;
+    --line: #E7E0D0;
+    --shadow: 0 10px 24px rgba(27, 58, 140, 0.08);
+    --radius-sm: 14px;
+
+    color: var(--ink);
+    padding: 20px 0;
+  }
+
+  .content-panel {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .title-badge {
+    display: inline-block;
+    background: var(--navy);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    letter-spacing: 0.5px;
+  }
+
+  .content-panel h2 {
+    font-family: 'Baloo 2', 'Zen Maru Gothic', sans-serif;
+    color: var(--navy);
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 0 0 25px 0;
+    line-height: 1.2;
+  }
+
+  .sub-title {
+    display: block;
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    font-weight: 700;
+    margin-top: 5px;
+  }
+
+  .info-card-box {
+    background: #fff;
+    border: 2px solid var(--line);
+    border-radius: 22px;
+    padding: 35px;
+    box-shadow: var(--shadow);
+  }
+
+  .main-lead {
+    font-size: 1.15rem;
+    color: var(--navy);
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .desc {
+    font-size: 0.98rem;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    margin-bottom: 30px;
+  }
+
+  /* 特徴グリッド表示 */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 35px;
+    border-top: 2px dashed var(--line);
+    border-bottom: 2px dashed var(--line);
+    padding: 25px 0;
+  }
+
+  .feature-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .f-emoji {
+    font-size: 1.5rem;
+    background: #f0f4ff;
+    padding: 8px;
+    border-radius: 12px;
+    line-height: 1;
+  }
+
+  .feature-item strong {
+    color: var(--navy);
+    font-size: 0.95rem;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .feature-item p {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  /* ランチゾーン */
+  .launch-zone {
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  .btn-gioco-launch {
+    font-family: 'Baloo 2', 'Zen Maru Gothic', sans-serif;
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: var(--navy);
+    background: var(--sun);
+    text-decoration: none;
+    border-radius: 999px;
+    padding: 18px 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 0 #e0b325, 0 12px 22px rgba(255, 210, 63, 0.35);
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+  }
+
+  .btn-gioco-launch:hover {
+    transform: translateY(2px);
+    box-shadow: 0 4px 0 #e0b325, 0 8px 14px rgba(255, 210, 63, 0.3);
+  }
+
+  .btn-gioco-launch:active {
+    transform: translateY(6px);
+    box-shadow: 0 0px 0 #e0b325, 0 4px 8px rgba(255, 210, 63, 0.2);
+  }
+
+  .launch-note {
+    font-size: 0.8rem;
