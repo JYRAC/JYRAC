@@ -23,7 +23,7 @@ const CARDS = [
 ];
 
 const DISCUSSIONS = {
-  t: ['マンホールトイレや仮設トイレをどこに設置するか？', '誰を優先して使ってもらうルールにするか？', 'トイレの清掃やゴミ出しの担当をどう決めるか？'],
+  t: ['マンホールトイレや仮設トイレをどこに設置するか？', '誰を優先して使ってもらうルールにするか？', 'トイレの清鎖やゴミ出しの担当をどう決めるか？'],
   k: ['炊き出しや物資の配布場所をどこに設けるか？', 'アレルギーや宗教上の配慮が必要な人への対応は？', '貴重な水や燃料をどう管理・節約するか？'],
   b: ['通路を確保しつつ、プライベート空間をどう作るか？', '高齢者や要配慮者のベッド位置をどこにするか？', '体育館の床の冷たさや硬さを防ぐ工夫は？']
 };
@@ -53,6 +53,7 @@ const CH_CARDS = [
         <i id="dot-2"></i>
         <i id="dot-3"></i>
         <i id="dot-4"></i>
+        <i id="dot-5"></i>
       </div>
     </header>
 
@@ -235,6 +236,27 @@ const CH_CARDS = [
         </div>
         <div class="footer-note"><b>HUG Gioco (ジョッコ)</b> — TKB型避難所運営ディスカッションゲーム<br>協力：日本若者防災復興協会（JYRAC）</div>
       </div>
+
+      <div id="view-5" class="view">
+        <div class="success-screen">
+          <div class="success-icon">✨</div>
+          <h2>ワークシート送信完了！</h2>
+          <p class="success-msg">データは広報局の管理スプレッドシートに正常に記録されました。<br>貴重なご意見・ディスカッションの記録をありがとうございます！</p>
+          
+          <div class="submitted-summary-box">
+            <h4>📥 送信内容のサマリー</h4>
+            <div class="summary-item"><strong>モード / 難易度:</strong> <span id="s-meta"></span></div>
+            <div class="summary-item"><strong>シチュエーション:</strong> <div id="s-sit" class="sum-content"></div></div>
+            <div class="summary-item"><strong>感想・提案:</strong> <div id="s-prop" class="sum-content"></div></div>
+          </div>
+
+          <div style="text-align: center; margin-top: 35px;">
+            <button id="btn-finish-restart" class="game-btn big sun" type="button">🔄 もう一度新しくゲームを遊ぶ</button>
+          </div>
+        </div>
+        <div class="footer-note"><b>HUG Gioco (ジョッコ)</b> — TKB型避難所運営ディスカッションゲーム<br>協力：日本若者防災復興協会（JYRAC）</div>
+      </div>
+
     </div>
   </div>
 
@@ -296,6 +318,19 @@ const CH_CARDS = [
   .radio-tile input:checked + .diff-text.easy { border-color: var(--green); background: #eafaf1; color: var(--green-deep); }
   .radio-tile input:checked + .diff-text.normal { border-color: var(--sun); background: var(--sun-soft); color: #8a6d00; }
   .radio-tile input:checked + .diff-text.hard { border-color: var(--red); background: #fde8e8; color: var(--red-deep); }
+
+  /* 💡 新設：送信完了画面スタイル */
+  .success-screen { background: #white; padding: 40px 20px; text-align: center; max-width: 650px; margin: 0 auto; }
+  .success-icon { font-size: 4rem; margin-bottom: 15px; animation: float 2s ease-in-out infinite; }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  .success-screen h2 { color: var(--green); font-weight: 900; font-size: 1.8rem; margin-bottom: 12px; }
+  .success-msg { color: var(--ink-soft); font-weight: 500; font-size: 1.05rem; line-height: 1.6; margin-bottom: 30px; }
+  .submitted-summary-box { background: var(--white); border: 2px solid var(--line); border-radius: var(--radius-sm); padding: 20px; box-shadow: var(--shadow); text-align: left; }
+  .submitted-summary-box h4 { color: var(--navy); font-weight: 800; margin: 0 0 15px 0; border-bottom: 2px dashed var(--line); padding-bottom: 8px; }
+  .summary-item { margin-bottom: 12px; font-size: 0.95rem; }
+  .summary-item:last-child { margin-bottom: 0; }
+  .summary-item strong { color: var(--navy); display: block; margin-bottom: 4px; }
+  .sum-content { background: #fafafa; border-radius: 8px; padding: 10px; font-weight: 500; border: 1px solid var(--line); white-space: pre-wrap; font-size: 0.9rem; }
 
   .game-btn {
     font-family: 'Baloo 2', 'Zen Maru Gothic', sans-serif; font-weight: 800; border: none; cursor: pointer; border-radius: 999px;
@@ -572,6 +607,27 @@ const CH_CARDS = [
       return d;
     }
 
+    function buildStep2(e){
+      if(e) e.preventDefault();
+      if(!CURRENT) return;
+      
+      const pText = CURRENT.people.map(p => p.txt).join(' ／ ');
+      const step2SitText = $('#step2-sit-text');
+      const qCardsBox = $('#q-cards-box');
+      
+      if(step2SitText) {
+        step2SitText.innerHTML = `外の状況：<b>${CURRENT.dis.txt}</b><br>時間の経過：<b>${CURRENT.time.txt}</b><br>使えるもの：<b>${CURRENT.fac.txt}</b><br>避難者の様子：<b>${pText}</b>`;
+      }
+      
+      if(qCardsBox) {
+        qCardsBox.innerHTML = `
+          <div class="q-card a"><h4>🚾 T トイレの課題</h4><ul><li>${sample(DISCUSSIONS.t)}</li></ul></div>
+          <div class="q-card b"><h4>🍳 K キッチンの課題</h4><ul><li>${sample(DISCUSSIONS.k)}</li></ul></div>
+          <div class="q-card c"><h4>🛏️ B ベッドの課題</h4><ul><li>${sample(DISCUSSIONS.b)}</li></ul></div>`;
+      }
+      showView(2);
+    }
+
     function buildReview(){
       const rSit = $('#rSit');
       if(rSit) rSit.textContent = CURRENT ? situationText(CURRENT) : '';
@@ -592,6 +648,18 @@ const CH_CARDS = [
       navigator.clipboard.writeText(text).then(() => {
         showToast('📋 クリップボードにコピーしました！');
       });
+    }
+
+    // 💡 画面を切り替えて送信結果を表示するサマリー構築関数
+    function buildSuccessScreen() {
+      const d = collectMemo();
+      const sMeta = $('#s-meta');
+      const sSit = $('#s-sit');
+      const sProp = $('#s-prop');
+
+      if(sMeta) sMeta.textContent = `${GAME_SETTINGS.players} ／ 難易度: ${GAME_SETTINGS.difficulty}`;
+      if(sSit) sSit.textContent = CURRENT ? situationText(CURRENT) : '';
+      if(sProp) sProp.textContent = d.propose || '（未入力）';
     }
 
     function submitToSpreadsheet(e) {
@@ -618,7 +686,8 @@ const CH_CARDS = [
       if(WEBHOOK_URL.includes("XXXXXXXXXXXXXXXXXXXXXX")) {
         setTimeout(() => {
           showToast('💡 URLが未設定のためダミー送信に成功しました！');
-          console.log("スプレッドシート送信データ:", payload);
+          buildSuccessScreen();
+          showView(5);
         }, 1200);
         return;
       }
@@ -630,7 +699,10 @@ const CH_CARDS = [
         body: JSON.stringify(payload)
       })
       .then(() => {
+        // 💡 送信完了時にトーストを出しつつ、送信結果画面 (view-5) へシフト
         showToast('✅ 管理スプレッドシートに記録されました！');
+        buildSuccessScreen();
+        showView(5);
       })
       .catch(err => {
         console.error(err);
@@ -654,8 +726,7 @@ const CH_CARDS = [
       }, 2500);
     }
 
-    // 💡 【完全防御】イベント委譲（Event Delegation）によるルーティング
-    // 個別の要素にハンドラを直に貼らないため、SPA遷移によるHTMLの再構築が起きても完全に追従します。
+    // 【完全防御】イベント委譲（Event Delegation）によるルーティング
     root.onclick = function(e) {
       const target = e.target.closest('button, a');
       if (!target || !target.id) return;
@@ -671,17 +742,17 @@ const CH_CARDS = [
         case 'btn-back-step3': e.preventDefault(); showView(2); break;
         case 'btn-back-step4': e.preventDefault(); showView(3); break;
         
-        case 'btn-copy':         copyReview(e); break;
-        case 'btn-print':        e.preventDefault(); window.print(); break;
-        case 'btn-submit-sheet': submitToSpreadsheet(e); break;
-        case 'btn-restart':      e.preventDefault(); if(confirm('新しくゲームをはじめますか？')) startTool(); break;
+        case 'btn-copy':           copyReview(e); break;
+        case 'btn-print':          e.preventDefault(); window.print(); break;
+        case 'btn-submit-sheet':   submitToSpreadsheet(e); break;
+        case 'btn-restart':
+        case 'btn-finish-restart': e.preventDefault(); if(confirm('新しくゲームをはじめますか？')) startTool(); break;
       }
     };
 
     showView(0);
   }
 
-  // 初回ロード時・Astro非同期展開時の両方に完全追従させる
   document.addEventListener('DOMContentLoaded', setupGiocoEngine);
   document.addEventListener('astro:page-load', setupGiocoEngine);
   setupGiocoEngine();
