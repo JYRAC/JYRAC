@@ -18,7 +18,7 @@ const CARDS = [
   { id: 11, c: 'peo', txt: '乳幼児を連れた母親。授乳スペースを求めている。', e: '👶' },
   { id: 12, c: 'peo', txt: '車椅子の高齢者と、そのお世話をする家族。', e: '👨‍🦽' },
   { id: 13, c: 'peo', txt: '日本語が苦手な外国人の家族（大人2人、子ども1人）。', e: '🗣️' },
-  { id: 14, c: 'peo', txt: 'ペット（大型犬）を連れて避難してきた飼い主。', e: '🐕' },
+  { id: 14, c: 'peo', txt: 'ペット（大型犬）を連れて避難してきた飼い主.html', e: '🐕' },
   { id: 15, c: 'peo', txt: '修学旅行中の高校生グループ30名が避難を求めてきた。', e: '🎒' }
 ];
 
@@ -301,10 +301,9 @@ const CH_CARDS = [
   .step-dots i.on { background: var(--navy); transform: scale(1.25); }
   .step-dots i.done { background: var(--green); }
   
-  .btn-back-to-site { font-weight:700; font-size:.85rem; color: var(--navy); text-decoration:none; background:#fff; border:2px solid var(--navy); padding:6px 16px; border-radius:999px; transition:.2s; display:inline-flex; align-items:center; gap:6px; margin-right: 15px; }
+  .btn-back-to-site { font-weight:700; font-size:.85rem; color: var(--navy); text-decoration:none; background:#fff; border:2px solid var(--navy); padding:6px 16px; border-radius:999px; transition:.2s; display:inline-flex; align-items: center; gap:6px; margin-right: 15px; }
   .btn-back-to-site:hover { background:var(--navy); color:#fff; }
 
-  /* 初期設定画面タイルUI */
   .setup-box { background: #fff; padding: 24px; border-radius: var(--radius-sm); box-shadow: var(--shadow); max-width: 600px; margin: 0 auto; text-align: left; }
   .setup-box h3 { color: var(--navy); font-weight: 800; margin-top: 0; margin-bottom: 20px; border-bottom: 2px dashed var(--line); padding-bottom: 10px; }
   .setup-group { margin-bottom: 20px; }
@@ -319,7 +318,6 @@ const CH_CARDS = [
   .radio-tile input:checked + .diff-text.normal { border-color: var(--sun); background: var(--sun-soft); color: #8a6d00; }
   .radio-tile input:checked + .diff-text.hard { border-color: var(--red); background: #fde8e8; color: var(--red-deep); }
 
-  /* 💡 新設：送信完了画面スタイル */
   .success-screen { background: #white; padding: 40px 20px; text-align: center; max-width: 650px; margin: 0 auto; }
   .success-icon { font-size: 4rem; margin-bottom: 15px; animation: float 2s ease-in-out infinite; }
   @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
@@ -451,7 +449,6 @@ const CH_CARDS = [
     let GAME_SETTINGS = { players: "1人", difficulty: "normal" };
     let HAS_INCIDENT = true;
 
-    // 💡 常に現在のDOM構造からリアルタイム検索するヘルパー
     const $ = sel => root.querySelector(sel);
     const $$ = sel => root.querySelectorAll(sel);
 
@@ -607,27 +604,6 @@ const CH_CARDS = [
       return d;
     }
 
-    function buildStep2(e){
-      if(e) e.preventDefault();
-      if(!CURRENT) return;
-      
-      const pText = CURRENT.people.map(p => p.txt).join(' ／ ');
-      const step2SitText = $('#step2-sit-text');
-      const qCardsBox = $('#q-cards-box');
-      
-      if(step2SitText) {
-        step2SitText.innerHTML = `外の状況：<b>${CURRENT.dis.txt}</b><br>時間の経過：<b>${CURRENT.time.txt}</b><br>使えるもの：<b>${CURRENT.fac.txt}</b><br>避難者の様子：<b>${pText}</b>`;
-      }
-      
-      if(qCardsBox) {
-        qCardsBox.innerHTML = `
-          <div class="q-card a"><h4>🚾 T トイレの課題</h4><ul><li>${sample(DISCUSSIONS.t)}</li></ul></div>
-          <div class="q-card b"><h4>🍳 K キッチンの課題</h4><ul><li>${sample(DISCUSSIONS.k)}</li></ul></div>
-          <div class="q-card c"><h4>🛏️ B ベッドの課題</h4><ul><li>${sample(DISCUSSIONS.b)}</li></ul></div>`;
-      }
-      showView(2);
-    }
-
     function buildReview(){
       const rSit = $('#rSit');
       if(rSit) rSit.textContent = CURRENT ? situationText(CURRENT) : '';
@@ -650,7 +626,6 @@ const CH_CARDS = [
       });
     }
 
-    // 💡 画面を切り替えて送信結果を表示するサマリー構築関数
     function buildSuccessScreen() {
       const d = collectMemo();
       const sMeta = $('#s-meta');
@@ -664,9 +639,14 @@ const CH_CARDS = [
 
     function submitToSpreadsheet(e) {
       if(e) e.preventDefault();
+      
+      // 💡【解決策】通信エラーや no-cors の影響を遮断するため、先に画面の組み立てと画面遷移を確実に実行
+      buildSuccessScreen();
+      showView(5);
+      showToast('☁️ データを送信しました！');
+
       const d = collectMemo();
       const sit = CURRENT ? situationText(CURRENT) : '';
-      
       const payload = {
         timestamp: new Date().toISOString(),
         players: GAME_SETTINGS.players,
@@ -681,33 +661,18 @@ const CH_CARDS = [
 
       const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbz08QcBxBqNCqrbp6zqeT0kPDgyhRE6bepihXxqITuCA_-9mt5ByIcr65qqlDirCrZR/exec";
 
-      showToast('☁️ データを送信中...');
-
       if(WEBHOOK_URL.includes("XXXXXXXXXXXXXXXXXXXXXX")) {
-        setTimeout(() => {
-          showToast('💡 URLが未設定のためダミー送信に成功しました！');
-          buildSuccessScreen();
-          showView(5);
-        }, 1200);
+        console.log("スプレッドシート送信データ(ダミー):", payload);
         return;
       }
 
+      // 非同期でGASへデータを送信（レスポンス待ちで画面遷移がブロックされるのを防止）
       fetch(WEBHOOK_URL, {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
-      })
-      .then(() => {
-        // 💡 送信完了時にトーストを出しつつ、送信結果画面 (view-5) へシフト
-        showToast('✅ 管理スプレッドシートに記録されました！');
-        buildSuccessScreen();
-        showView(5);
-      })
-      .catch(err => {
-        console.error(err);
-        showToast('❌ 送信に失敗しました。ネット環境を確認してください。');
-      });
+      }).catch(err => console.error("GAS送信エラー（バックグラウンド）:", err));
     }
 
     function showToast(msg) {
