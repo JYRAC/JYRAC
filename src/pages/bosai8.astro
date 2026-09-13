@@ -728,19 +728,12 @@
   }
 </style>
 
-<script lang="ts">
-  interface FormDataPayload {
-    age?: string;
-    gender?: string;
-    email?: string;
-    resultCode?: string;
-    resultName?: string;
-  }
+<script>
 
   /* ====== GAS連携設定 ====== */
   const GAS_WEB_APP_URL = "YOUR_GAS_WEB_APP_URL_HERE";
 
-  function sendDataToGAS(data: FormDataPayload) {
+  function sendDataToGAS(data) {
     if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL === "YOUR_GAS_WEB_APP_URL_HERE") {
       console.warn("GAS_WEB_APP_URL が設定されていません。");
       return;
@@ -783,8 +776,8 @@
     const resultBtn = document.getElementById("resultBtn");
     if (resultBtn) {
       resultBtn.addEventListener("click", () => {
-        const ageVal = (document.getElementById("age") as HTMLSelectElement)?.value || "";
-        const mailVal = (document.getElementById("mail") as HTMLInputElement)?.value || "";
+        const ageVal = (document.getElementById("age"))?.value || "";
+        const mailVal = (document.getElementById("mail"))?.value || "";
 
         const dataToSave = {
           age: ageVal,
