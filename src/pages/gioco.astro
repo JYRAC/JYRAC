@@ -14,120 +14,133 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
 ---
 
 <Layout 
-  title={currentLang === 'en' ? 'HUG Gioco (Learning Tool) | JYRAC' : 'HUG Gioco (教材) | 日本若者防災復興協会'} 
+  title={currentLang === 'en' ? 'Educational Tools & Diagnosis | JYRAC' : 'オリジナル教材・診断ツール | 日本若者防災復興協会'} 
   currentTab="gioco"
 >
-  <div class="gioco-intro-wrapper">
+  <div class="portal-wrapper">
     <div class="content-panel">
       
-      <div class="title-badge">
-        {currentLang === 'en' ? 'JYRAC Original Digital Educational Tool' : 'JYRAC独自開発デジタル教材'}
+      <!-- ヘッダーエリア -->
+      <div class="portal-header">
+        <div class="title-badge">
+          {currentLang === 'en' ? 'JYRAC Original Digital Tools' : 'JYRAC独自開発デジタル教材・ツール'}
+        </div>
+        <h2>
+          {currentLang === 'en' ? 'Educational Tools & Diagnosis' : 'オリジナル教材・診断ツール'}
+        </h2>
+        <p class="portal-desc">
+          {currentLang === 'en' ? (
+            <>Experience youth-led disaster prevention through our interactive shelter game and mutual aid personality diagnosis tool.</>
+          ) : (
+            <>子どもから大人まで直感的に学べる避難所運営ゲームや、自分の助け方の強みを知る共助診断ツールを体験できます。</>
+          )}
+        </p>
       </div>
 
-      <h2>
-        HUG Gioco 
-        <span class="sub-title">
-          {currentLang === 'en' 
-            ? '— TKB-Type Evacuation Shelter Management Discussion Game' 
-            : '— TKB型避難所運営ディスカッションゲーム'}
-        </span>
-      </h2>
-      
-      <div class="info-card-box">
-        <div class="intro-text">
-          <p class="main-lead">
-            {currentLang === 'en' ? (
-              <strong>Card-driven "What if" shelter environments.<br>Discover questions, discuss together, and drive local action in a next-gen disaster prevention game.</strong>
-            ) : (
-              <strong>カードが織りなす「もしも」の避難所環境。<br>問いを見つけ、みんなで話し合い、地域を動かす次世代の防災ゲーム。</strong>
-            )}
-          </p>
-          <p class="desc">
-            {currentLang === 'en' ? (
-              <>"HUG Gioco" is an online interactive simulation game that enables players from children to adults to intuitively learn about <strong>TKB (Toilets, Kitchens, Beds)</strong>—elements critical for evacuation shelter management.<br><br>Group members discuss randomly generated disaster situations and evacuees' needs ("What is difficult?", "How should we respond?"). Rather than guessing the right answer, this is a non-competitive game where players discover "questions" that everyone should think through together.</>
-            ) : (
-              <>「HUG Gioco（ジョーコ）」は、避難所の環境において極めて重要とされる<strong>TKB（トイレ・キッチン・ベッド）</strong>をテーマに、子どもから大人まで直感的に学べるオンライン対話型シミュレーションゲームです。<br><br>ランダムに生成される災害状況や避難者のニーズに対して「何が大変？」「どう対応する？」をグループでディスカッション。正解を当てるのではなく、みんなで考えるべき『問い』を発見していく勝ち負けのないゲームです。</>
-            )}
-          </p>
-        </div>
+      <!-- ツール選択グリッド -->
+      <div class="tools-grid">
 
-        <div class="feature-grid">
-          <div class="feature-item">
-            <span class="f-emoji">🎮</span>
-            <div>
-              <strong>{currentLang === 'en' ? 'Select Group Size & Difficulty' : '人数・難易度選択'}</strong>
-              <p>
-                {currentLang === 'en' 
-                  ? 'Supports individual work, large workshops, beginner modes, and intense advanced scenarios.' 
-                  : '個人ワークから大人数の研修、初心者向けから修羅場の上級モードまで対応。'}
-              </p>
-            </div>
+        <!-- カード 1: HUG Gioco -->
+        <div class="tool-card card-gioco">
+          <div class="card-top">
+            <span class="category-badge badge-sun">🎮 {currentLang === 'en' ? 'Simulation Game' : '防災ゲーム'}</span>
+            <h3>HUG Gioco</h3>
+            <span class="sub-title">
+              {currentLang === 'en' 
+                ? '— TKB Evacuation Shelter Discussion Game' 
+                : '— TKB型避難所運営ディスカッションゲーム'}
+            </span>
+            <p class="card-desc">
+              {currentLang === 'en' ? (
+                <>Card-driven "What if" shelter environments. Discuss TKB (Toilets, Kitchens, Beds) challenges and discover questions together in a next-gen disaster simulation.</>
+              ) : (
+                <>カードが織りなす「もしも」の避難所環境。避難所で極めて重要なTKB（トイレ・キッチン・ベッド）をテーマに、話し合いで課題解決を考える対話型シミュレーションゲームです。</>
+              )}
+            </p>
+            <ul class="feature-list">
+              <li>👥 {currentLang === 'en' ? '1 to 5+ Players (Solo or Groups)' : '1人ワーク〜5人以上のグループ・研修対応'}</li>
+              <li>🚨 {currentLang === 'en' ? 'Random emergencies & realistic incidents' : '突発トラブルやランダムアクシデント発生'}</li>
+              <li>☁️ {currentLang === 'en' ? 'Digital reflection & automatic sheet submit' : 'ワークシートの自動集約・送信機能つき'}</li>
+            </ul>
           </div>
-
-          <div class="feature-item">
-            <span class="f-emoji">🚨</span>
-            <div>
-              <strong>{currentLang === 'en' ? 'Random Accidents' : '不定期アクシデント'}</strong>
-              <p>
-                {currentLang === 'en' 
-                  ? 'Sudden troubles occur during discussions. Experience realistic management decisions matched to the difficulty.' 
-                  : '話し合いの途中で突発的なトラブルが発生。難易度に応じたリアルな運営判断を体験。'}
-              </p>
-            </div>
-          </div>
-
-          <div class="feature-item">
-            <span class="f-emoji">☁️</span>
-            <div>
-              <strong>{currentLang === 'en' ? 'Digital Reflection' : 'デジタルふりかえり'}</strong>
-              <p>
-                {currentLang === 'en' 
-                  ? 'Derived ideas are submitted instantly on the spot, automatically aggregated into management sheets.' 
-                  : '導き出したアイデアはその場で送信され、広報局の管理シートへ瞬時にデータ集約。'}
-              </p>
-            </div>
+          <div class="card-bottom">
+            <a href={`/hug-gioco.html${langParam}`} class="btn-launch btn-gioco" target="_blank" rel="noopener">
+              {currentLang === 'en' ? '🎲 Launch HUG Gioco ➔' : '🎲 HUG Gioco を起動する ➔'}
+            </a>
+            <span class="btn-note">
+              {currentLang === 'en' ? '*Opens in a new window (PC, Tablet, Smartphone)' : '※別ウィンドウで起動（PC・スマホ対応）'}
+            </span>
           </div>
         </div>
 
-        <div class="launch-zone">
-          <a href={`/hug-gioco.html${langParam}`} class="btn-gioco-launch" target="_blank" rel="noopener">
-            {currentLang === 'en' ? '🎲 Launch HUG Gioco ➔' : '🎲 HUG Gioco を起動する ➔'}
-          </a>
-          <p class="launch-note">
-            {currentLang === 'en' 
-              ? '*The game will launch in a new window. Playable on PC, smartphone, or tablet.' 
-              : '※別ウィンドウでゲームが起動します。PC・スマホ・タブレットのいずれでもプレイ可能です。'}
-          </p>
+        <!-- カード 2: ぼうさい8 -->
+        <div class="tool-card card-bosai8">
+          <div class="card-top">
+            <span class="category-badge badge-coral">🐾 {currentLang === 'en' ? 'Type Diagnosis' : '共助診断'}</span>
+            <h3>ぼうさい8</h3>
+            <span class="sub-title">
+              {currentLang === 'en' 
+                ? '— Disaster Mutual Aid Type Diagnosis' 
+                : '— 防災共助タイプ診断'}
+            </span>
+            <p class="card-desc">
+              {currentLang === 'en' ? (
+                <>How would you help in a disaster? Answer 20 scenario-based questions to discover which of the 8 animal helper types matches your unique strengths.</>
+              ) : (
+                <>災害のとき、人の助け方はひとつじゃない。場面ごとの直感的な選択から、あなたの助け方に近い「8匹の動物タイプ」を見つけ出す自己発見ツールです。</>
+              )}
+            </p>
+            <ul class="feature-list">
+              <li>⏱️ {currentLang === 'en' ? 'Quick test: 2-3 mins (15+5 questions)' : '所要時間 約2〜3分（15問＋5問）'}</li>
+              <li>📊 {currentLang === 'en' ? 'Analyzed across 3 operational axes' : '支援機能・行動様式・支援射程の3軸分析'}</li>
+              <li>🤝 {currentLang === 'en' ? 'Discover your buddy and opposite types' : '避難所での持ち場・相棒タイプがわかる'}</li>
+            </ul>
+          </div>
+          <div class="card-bottom">
+            <a href={`/bosai8${langParam}`} class="btn-launch btn-bosai8">
+              {currentLang === 'en' ? '🐾 Start Bosai 8 ➔' : '🐾 ぼうさい8 をはじめる ➔'}
+            </a>
+            <span class="btn-note">
+              {currentLang === 'en' ? '*Results sent directly to your email' : '※結果をメールで保存可能'}
+            </span>
+          </div>
         </div>
 
       </div>
+
     </div>
   </div>
 </Layout>
 
 <style>
-  /* 💡 サイト全体のデザインに馴染みつつ、Gioco本体の世界観と繋ぐ専用スタイリング */
-  .gioco-intro-wrapper {
+  .portal-wrapper {
     --navy: #1B3A8C;
     --navy-deep: #152E70;
     --green: #2E9E4F;
-    --green-deep: #1f7d3c;
     --red: #E01E2B;
     --sun: #FFD23F;
+    --coral: #EF5A48;
     --ink: #233047;
     --ink-soft: #5b6779;
     --line: #E7E0D0;
-    --shadow: 0 10px 24px rgba(27, 58, 140, 0.08);
-    --radius-sm: 14px;
+    --shadow: 0 8px 24px rgba(27, 58, 140, 0.08);
 
     color: var(--ink);
-    padding: 20px 0;
+    padding: 10px 0 30px;
   }
 
   .content-panel {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
     text-align: left;
+  }
+
+  /* ポータルヘッダー */
+  .portal-header {
+    text-align: center;
+    margin-bottom: 35px;
+    border-bottom: 2px solid rgba(0, 154, 166, 0.15);
+    padding-bottom: 20px;
   }
 
   .title-badge {
@@ -138,124 +151,190 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     font-weight: 800;
     padding: 4px 12px;
     border-radius: 6px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     letter-spacing: 0.5px;
   }
 
-  .content-panel h2 {
+  .portal-header h2 {
     font-family: 'Baloo 2', 'Zen Maru Gothic', sans-serif;
     color: var(--navy);
     font-size: 2rem;
     font-weight: 900;
-    margin: 0 0 25px 0;
+    margin: 0 0 10px 0;
+    line-height: 1.2;
+  }
+
+  .portal-desc {
+    font-size: 0.98rem;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    margin: 0 auto;
+    max-width: 650px;
+  }
+
+  /* 2カラム・グリッド */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  @media (min-width: 768px) {
+    .tools-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* ツールカード共通スタイル */
+  .tool-card {
+    background: #fff;
+    border: 2px solid var(--line);
+    border-radius: 22px;
+    padding: 32px 26px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .tool-card:hover {
+    transform: translateY(-4px);
+  }
+
+  /* カード個別アクセント */
+  .card-gioco {
+    border-color: #ffe599;
+  }
+  .card-gioco:hover {
+    box-shadow: 0 12px 30px rgba(255, 210, 63, 0.25);
+  }
+
+  .card-bosai8 {
+    border-color: #ffd2c7;
+  }
+  .card-bosai8:hover {
+    box-shadow: 0 12px 30px rgba(239, 90, 72, 0.22);
+  }
+
+  /* カテゴリバッジ */
+  .category-badge {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+  .badge-sun { background: #fff4cc; color: #8a6d00; }
+  .badge-coral { background: #ffe9e4; color: #c0392b; }
+
+  .tool-card h3 {
+    font-family: 'Baloo 2', 'Zen Maru Gothic', sans-serif;
+    color: var(--navy);
+    font-size: 1.7rem;
+    font-weight: 900;
+    margin: 0;
     line-height: 1.2;
   }
 
   .sub-title {
     display: block;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     color: var(--ink-soft);
     font-weight: 700;
-    margin-top: 5px;
+    margin-top: 4px;
+    margin-bottom: 16px;
   }
 
-  .info-card-box {
-    background: #fff;
-    border: 2px solid var(--line);
-    border-radius: 22px;
-    padding: 35px;
-    box-shadow: var(--shadow);
-  }
-
-  .main-lead {
-    font-size: 1.15rem;
-    color: var(--navy);
-    line-height: 1.5;
+  .card-desc {
+    font-size: 0.92rem;
+    color: var(--ink);
+    line-height: 1.65;
     margin-bottom: 20px;
   }
 
-  .desc {
-    font-size: 0.98rem;
-    color: var(--ink-soft);
-    line-height: 1.7;
-    margin-bottom: 30px;
+  /* 特徴リスト */
+  .feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px 0;
+    border-top: 1px dashed var(--line);
+    padding-top: 14px;
   }
 
-  /* 特徴グリッド表示 */
-  .feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 16px;
-    margin-bottom: 35px;
-    border-top: 2px dashed var(--line);
-    border-bottom: 2px dashed var(--line);
-    padding: 25px 0;
-  }
-
-  .feature-item {
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-  }
-
-  .f-emoji {
-    font-size: 1.5rem;
-    background: #f0f4ff;
-    padding: 8px;
-    border-radius: 12px;
-    line-height: 1;
-  }
-
-  .feature-item strong {
-    color: var(--navy);
-    font-size: 0.95rem;
-    display: block;
-    margin-bottom: 4px;
-  }
-
-  .feature-item p {
+  .feature-list li {
     font-size: 0.85rem;
+    font-weight: 700;
     color: var(--ink-soft);
-    margin: 0;
+    margin-bottom: 8px;
     line-height: 1.4;
   }
-
-  /* ランチゾーン */
-  .launch-zone {
-    text-align: center;
-    padding: 10px 0;
+  .feature-list li:last-child {
+    margin-bottom: 0;
   }
 
-  .btn-gioco-launch {
+  /* ボタンエリア */
+  .card-bottom {
+    text-align: center;
+    margin-top: auto;
+  }
+
+  .btn-launch {
     font-family: 'Baloo 2', 'Zen Maru Gothic', sans-serif;
     font-weight: 800;
-    font-size: 1.2rem;
-    color: var(--navy);
-    background: var(--sun);
+    font-size: 1.1rem;
     text-decoration: none;
     border-radius: 999px;
-    padding: 18px 44px;
-    display: inline-flex;
+    padding: 15px 24px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 6px 0 #e0b325, 0 12px 22px rgba(255, 210, 63, 0.35);
     transition: transform 0.08s ease, box-shadow 0.08s ease;
   }
 
-  .btn-gioco-launch:hover {
+  .btn-gioco {
+    color: var(--navy);
+    background: var(--sun);
+    box-shadow: 0 5px 0 #e0b325, 0 10px 18px rgba(255, 210, 63, 0.35);
+  }
+  .btn-gioco:hover {
     transform: translateY(2px);
-    box-shadow: 0 4px 0 #e0b325, 0 8px 14px rgba(255, 210, 63, 0.3);
+    box-shadow: 0 3px 0 #e0b325, 0 6px 12px rgba(255, 210, 63, 0.3);
+  }
+  .btn-gioco:active {
+    transform: translateY(5px);
+    box-shadow: 0 0 0 #e0b325;
   }
 
-  .btn-gioco-launch:active {
-    transform: translateY(6px);
-    box-shadow: 0 0px 0 #e0b325, 0 4px 8px rgba(255, 210, 63, 0.2);
+  .btn-bosai8 {
+    color: #fff;
+    background: var(--coral);
+    box-shadow: 0 5px 0 #c73c2b, 0 10px 18px rgba(239, 90, 72, 0.35);
+  }
+  .btn-bosai8:hover {
+    transform: translateY(2px);
+    box-shadow: 0 3px 0 #c73c2b, 0 6px 12px rgba(239, 90, 72, 0.3);
+  }
+  .btn-bosai8:active {
+    transform: translateY(5px);
+    box-shadow: 0 0 0 #c73c2b;
   }
 
-  .launch-note {
-    font-size: 0.8rem;
+  .btn-note {
+    display: block;
+    font-size: 0.75rem;
     color: var(--ink-soft);
-    margin-top: 14px;
+    margin-top: 10px;
     font-weight: 600;
+  }
+
+  @media (max-width: 640px) {
+    .portal-header h2 {
+      font-size: 1.6rem;
+    }
+    .tool-card {
+      padding: 24px 20px;
+    }
   }
 </style>
