@@ -77,7 +77,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     <!-- ===== 結果画面 ===== -->
     <section id="s-result" class="b8-hidden">
       <div class="b8-sheet b8-hero" id="b8-card">
-        <div class="b8-heroimg"><img id="rImg" alt="" /></div>
+        <div class="b8-heroimg"><div id="rImgContainer"></div></div>
         <p class="b8-code" id="rCode"></p>
         <h2 class="b8-tname" id="rName"></h2>
         <p class="b8-catch" id="rCatch"></p>
@@ -96,8 +96,8 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
         <div class="b8-block">
           <h3>相棒と、正反対</h3>
           <div class="b8-duo">
-            <div><em>相棒</em><img id="rBuddyImg" alt=""><b id="rBuddy"></b></div>
-            <div><em>正反対</em><img id="rOppImg" alt=""><b id="rOpp"></b></div>
+            <div><em>相棒</em><div id="rBuddyImgContainer"></div><b id="rBuddy"></b></div>
+            <div><em>正反対</em><div id="rOppImgContainer"></div><b id="rOpp"></b></div>
           </div>
           <p class="b8-muted" style="margin-top:10px" id="rPairNote"></p>
         </div>
@@ -134,6 +134,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     margin: 0 auto;
     padding: 0 0 30px;
     color: var(--ink);
+    box-sizing: border-box;
   }
 
   .b8-sheet {
@@ -209,31 +210,90 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
   }
   .b8-choice:hover .mark { background: #009aa6; color: #fff; }
 
-  /* 8匹のサークルアイコン一覧 */
+  /* 8匹の丸型アイコンレイアウト（はみ出し防止） */
   .b8-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 12px;
     margin: 20px 0;
+    width: 100%;
+    box-sizing: border-box;
   }
+
   .b8-grid-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
-  .b8-grid-item img {
+
+  .b8-circle-icon {
     width: 68px;
     height: 68px;
-    display: block;
-    filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12));
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 11px;
+    line-height: 1.25;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     margin-bottom: 6px;
+    user-select: none;
+    box-sizing: border-box;
+    padding: 4px;
   }
-  .b8-grid-item span {
+
+  .b8-circle-icon span {
+    display: block;
+    word-break: keep-all;
+    white-space: nowrap;
+  }
+
+  .b8-grid-item span.label {
     font-size: 11px;
     font-weight: 800;
     color: var(--primary);
     line-height: 1.3;
+    display: block;
+  }
+
+  /* 結果画面のメイン丸型アイコン */
+  .b8-hero-circle {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: 900;
+    font-size: 16px;
+    line-height: 1.3;
+    margin: 10px auto;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    user-select: none;
+  }
+
+  /* 相棒・正反対の小型丸型アイコン */
+  .b8-sub-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 10px;
+    line-height: 1.2;
+    margin: 4px auto 6px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+    user-select: none;
   }
 
   .b8-axbox { background: #F8FAFC; border-radius: 16px; padding: 16px; margin: 16px 0; border: 1px solid var(--line); }
@@ -263,8 +323,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
   /* 結果カードスタイル */
   #s-result .b8-sheet { border-top: 6px solid var(--c); }
   .b8-hero { text-align: center; }
-  .b8-heroimg { position: relative; padding: 10px 0; }
-  .b8-heroimg img { position: relative; width: 160px; max-width: 60%; display: block; margin: 0 auto; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.15)); }
+  .b8-heroimg { display: flex; justify-content: center; padding: 10px 0; }
   .b8-code { font-weight: 900; font-size: 12px; letter-spacing: 0.25em; color: var(--c); margin: 10px 0 4px; }
   .b8-tname { font-size: clamp(24px, 6vw, 32px); font-weight: 900; margin: 0 0 6px; line-height: 1.25; color: var(--c); }
   .b8-catch { font-size: 14px; color: var(--ink2); margin: 0 0 10px; font-weight: 700; }
@@ -289,7 +348,6 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
 
   .b8-duo { display: flex; gap: 8px; margin-top: 6px; }
   .b8-duo div { flex: 1; text-align: center; background: #F8FAFC; border-radius: 12px; padding: 10px 6px; }
-  .b8-duo img { width: 64px; max-width: 100%; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
   .b8-duo b { display: block; font-size: 12px; margin-top: 4px; }
   .b8-duo em { display: block; font-style: normal; font-size: 10px; color: var(--mute); font-weight: 800; }
 
@@ -304,8 +362,8 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
 
   @media (max-width: 640px) {
     .b8-grid { gap: 8px; }
-    .b8-grid-item img { width: 54px; height: 54px; }
-    .b8-grid-item span { font-size: 10px; }
+    .b8-circle-icon { width: 52px; height: 52px; font-size: 9.5px; }
+    .b8-grid-item span.label { font-size: 10px; }
   }
 </style>
 
@@ -316,19 +374,16 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
 
     const GAS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyuMhptc9qq1HxYVpOhwrO1GA5E1Zec8Wt67i7KsLZ8dv7HSwPGlq0Z1wtumpHclBk/exec";
 
-    // SVGサークルアイコン生成
-    const makeIcon = (color, label1, label2) => 
-      `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="${encodeURIComponent(color)}" /><text x="50%" y="44%" font-size="13" font-weight="bold" fill="%23fff" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif">${encodeURIComponent(label1)}</text><text x="50%" y="62%" font-size="13" font-weight="bold" fill="%23fff" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif">${encodeURIComponent(label2)}</text></svg>`;
-
-    const IMG = {
-      hamster:  makeIcon('#EF5A48', 'てきぱき', 'ハムスター'),
-      ant:      makeIcon('#F06A18', 'だんどり', 'アリ'),
-      squirrel: makeIcon('#E8AF1E', 'こうさく', 'リス'),
-      beaver:   makeIcon('#14875C', 'しくみ', 'ビーバー'),
-      owl:      makeIcon('#8B44A8', 'みまもり', 'フクロウ'),
-      penguin:  makeIcon('#123A96', 'なごませ', 'ペンギン'),
-      otter:    makeIcon('#1BBFC6', 'あそび', 'カワウソ'),
-      dolphin:  makeIcon('#EE6A9E', 'つなぎ', 'イルカ')
+    // 8匹の表示情報定義（CSS円形レンダリング用）
+    const ANIMAL_ICONS = {
+      hamster:  { col: "#EF5A48", line1: "てきぱき", line2: "ハムスター", name: "てきぱきハムスター" },
+      ant:      { col: "#F06A18", line1: "だんどり", line2: "アリ",       name: "だんどりアリ" },
+      squirrel: { col: "#E8AF1E", line1: "こうさく", line2: "リス",       name: "こうさくリス" },
+      beaver:   { col: "#14875C", line1: "しくみ",   line2: "ビーバー",   name: "しくみビーバー" },
+      owl:      { col: "#8B44A8", line1: "みまもり", line2: "フクロウ",   name: "みまもりフクロウ" },
+      penguin:  { col: "#123A96", line1: "なごませ", line2: "ペンギン",   name: "なごませペンギン" },
+      otter:    { col: "#1BBFC6", line1: "あそび",   line2: "カワウソ",   name: "あそびカワウソ" },
+      dolphin:  { col: "#EE6A9E", line1: "つなぎ",   line2: "イルカ",     name: "つなぎイルカ" }
     };
 
     const TYPES = {
@@ -417,27 +472,23 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    // 表紙の8匹アイコン描画
+    // 表紙の8匹アイコン描画（HTML要素で生成するため壊れません）
     function renderIntro() {
-      const order = [
-        { key: "hamster",  label: "てきぱきハムスター" },
-        { key: "ant",      label: "だんどりアリ" },
-        { key: "squirrel", label: "こうさくリス" },
-        { key: "beaver",   label: "しくみビーバー" },
-        { key: "owl",      label: "みまもりフクロウ" },
-        { key: "penguin",  label: "なごませペンギン" },
-        { key: "otter",    label: "あそびカワウソ" },
-        { key: "dolphin",  label: "つなぎイルカ" }
-      ];
-
+      const order = ["hamster", "ant", "squirrel", "beaver", "owl", "penguin", "otter", "dolphin"];
       const grid = $("introGrid");
       if (grid) {
-        grid.innerHTML = order.map(item => 
-          `<div class="b8-grid-item">
-            <img src="${IMG[item.key]}" alt="${item.label}" />
-            <span>${item.label}</span>
-          </div>`
-        ).join("");
+        grid.innerHTML = order.map(k => {
+          const item = ANIMAL_ICONS[k];
+          return `
+            <div class="b8-grid-item">
+              <div class="b8-circle-icon" style="background:${item.col}">
+                <span>${item.line1}</span>
+                <span>${item.line2}</span>
+              </div>
+              <span class="label">${item.name}</span>
+            </div>
+          `;
+        }).join("");
       }
 
       const axList = $("axList");
@@ -554,12 +605,18 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     function renderResult() {
       if (!result) return;
       const t = result.type;
+      const ch = ANIMAL_ICONS[t.key];
       root.style.setProperty("--c", t.col);
 
-      const rImg = $("rImg");
-      if (rImg) {
-        rImg.src = IMG[t.key];
-        rImg.alt = t.name;
+      // メインヒーローアイコン
+      const rImgContainer = $("rImgContainer");
+      if (rImgContainer) {
+        rImgContainer.innerHTML = `
+          <div class="b8-hero-circle" style="background:${t.col}">
+            <span>${ch.line1}</span>
+            <span>${ch.line2}</span>
+          </div>
+        `;
       }
 
       if ($("rCode")) $("rCode").textContent = result.code;
@@ -593,11 +650,30 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
       if ($("rStep")) $("rStep").textContent = t.step;
       if ($("rTheme")) $("rTheme").textContent = t.theme;
 
+      // 相棒・正反対アイコン
       const bud = TYPES[t.buddy], opp = TYPES[t.opp];
-      if ($("rBuddyImg")) $("rBuddyImg").src = IMG[bud.key];
+      const budCh = ANIMAL_ICONS[bud.key], oppCh = ANIMAL_ICONS[opp.key];
+
+      const rBuddyImgContainer = $("rBuddyImgContainer");
+      if (rBuddyImgContainer) {
+        rBuddyImgContainer.innerHTML = `
+          <div class="b8-sub-circle" style="background:${bud.col}">
+            <span>${budCh.line1}</span>
+            <span>${budCh.line2}</span>
+          </div>
+        `;
+      }
       if ($("rBuddy")) $("rBuddy").textContent = bud.name;
 
-      if ($("rOppImg")) $("rOppImg").src = IMG[opp.key];
+      const rOppImgContainer = $("rOppImgContainer");
+      if (rOppImgContainer) {
+        rOppImgContainer.innerHTML = `
+          <div class="b8-sub-circle" style="background:${opp.col}">
+            <span>${oppCh.line1}</span>
+            <span>${oppCh.line2}</span>
+          </div>
+        `;
+      }
       if ($("rOpp")) $("rOpp").textContent = opp.name;
 
       if ($("rPairNote")) {
