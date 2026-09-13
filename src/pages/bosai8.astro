@@ -731,7 +731,7 @@
 <script>
 
   /* ====== GAS連携設定 ====== */
-  const GAS_WEB_APP_URL = "YOUR_GAS_WEB_APP_URL_HERE";
+  const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyuMhptc9qq1HxYVpOhwrO1GA5E1Zec8Wt67i7KsLZ8dv7HSwPGlq0Z1wtumpHclBk/exec";
 
   function sendDataToGAS(data) {
     if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL === "YOUR_GAS_WEB_APP_URL_HERE") {
@@ -741,11 +741,11 @@
 
     const payload = {
       timestamp: new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" }),
-      age: data.age || "未回答",
-      gender: data.gender || "未回答",
-      email: data.email || "未回答",
-      resultCode: data.resultCode || "",
-      resultName: data.resultName || "",
+      age: (data.age ?? "") === "" ? "未回答" : String(data.age),
+      gender: data.sex || data.gender || "未回答",
+      email: data.mail || data.email || "未回答",
+      resultCode: data.code || data.resultCode || "",
+      resultName: data.typeName || data.resultName || "",
     };
 
     fetch(GAS_WEB_APP_URL, {
@@ -780,11 +780,15 @@
         const mailVal = (document.getElementById("mail"))?.value || "";
 
         const dataToSave = {
-          age: ageVal,
-          gender: selectedGender,
-          email: mailVal,
-          resultCode: document.getElementById("rCode")?.textContent || "",
-          resultName: document.getElementById("rName")?.textContent || "",
+          timestamp: new Date().toISOString(),
+          age: String(ageVal || ""),
+          sex: selectedGender || "",
+          mail: mailVal || "",
+          code: document.getElementById("rCode")?.textContent?.trim() || "",
+          typeName: document.getElementById("rName")?.textContent?.trim() || "",
+          // 診断ロジック側で取得できる場合は scores / answers を追加してください。
+          scores: null,
+          answers: null,
         };
 
         sendDataToGAS(dataToSave);
