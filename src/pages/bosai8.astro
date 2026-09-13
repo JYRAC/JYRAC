@@ -14,7 +14,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
   title={currentLang === 'en' ? 'Bosai 8 Type Diagnosis | JYRAC' : 'ぼうさい8 防災共助タイプ診断 | 日本若者防災復興協会'} 
   currentTab="gioco"
 >
-  <!-- Google Fontsの読み込み（もとのHTML準拠） -->
+  <!-- Google Fontsの読み込み -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
@@ -27,7 +27,6 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
       <h1>ぼうさい8</h1>
       <p>災害のとき、人の助け方はひとつじゃない。<br>20の場面であなたが選んだ行動から、8匹のうちどの助け方に近いかを見つけます。</p>
       
-      <!-- 8匹の動物アイコン表示グリッド -->
       <div class="grid" id="introGrid"></div>
       
       <div class="axbox">
@@ -37,27 +36,27 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
       </div>
       
       <p class="muted">15問＋5問／2〜3分。正解はありません。<br>設問は各軸10問の中から5問ずつ選ばれるので、やるたびに出題は変わります。<br>これは心理検査ではなく、助け方にはいろいろあることを知るための学びのきっかけです。</p>
-      <button class="btn" id="startBtn" type="button">はじめる</button>
+      <button type="button" class="btn" id="startBtn">はじめる</button>
     </section>
 
     <!-- ===== 設問 ===== -->
-    <section id="s-quiz" class="sheet b8-hidden">
+    <section id="s-quiz" class="sheet hidden">
       <p class="count" id="count"></p>
       <div class="prog" id="prog"></div>
       <span class="scene" id="scene"></span>
       <p class="qtext" id="qtext"></p>
       <div id="choices"></div>
-      <button class="btn ghost" id="backBtn" type="button">← ひとつ前にもどる</button>
+      <button type="button" class="btn ghost" id="backBtn">← ひとつ前にもどる</button>
     </section>
 
-    <!-- ===== 属性入力（メールアドレス必須） ===== -->
-    <section id="s-profile" class="sheet b8-hidden">
+    <!-- ===== 属性（メール必須対応） ===== -->
+    <section id="s-profile" class="sheet hidden">
       <p class="eyebrow">あと少し</p>
       <h2>あなたについて教えてください</h2>
       <p class="muted">JYRAC が防災教育の研究に使う統計データです。氏名は収集しません。</p>
 
-      <label class="f" for="b8-age">年齢</label>
-      <select id="b8-age">
+      <label class="f" for="age">年齢</label>
+      <select id="age">
         <option value="">選ばない</option>
         <option>12歳以下</option><option>13〜15歳</option><option>16〜18歳</option>
         <option>19〜22歳</option><option>23〜29歳</option><option>30〜39歳</option>
@@ -72,16 +71,16 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
         <button type="button" data-v="答えない" aria-pressed="false">答えない</button>
       </div>
 
-      <label class="f" for="b8-mail">結果を送るメールアドレス <span class="req-badge">必須</span></label>
-      <input id="b8-mail" type="email" inputmode="email" placeholder="you@example.com" autocomplete="email" required />
-      <p class="muted" style="margin-top:6px;">診断結果の確認および集計用にメールアドレスを入力してください。</p>
+      <label class="f" for="mail">結果を送るメールアドレス <span class="req-badge">必須</span></label>
+      <input id="mail" type="email" inputmode="email" placeholder="you@example.com" autocomplete="email" required>
+      <p class="muted" style="margin-top:8px">入力すると、結果画面から自分あてのメールを作成できます。集計にも使用します。</p>
       <p id="mail-error" class="err-msg">※ 有効なメールアドレスを入力してください。</p>
 
-      <button class="btn" id="resultBtn" type="button" style="margin-top:22px;">結果を見る</button>
+      <button type="button" class="btn" id="resultBtn" style="margin-top:22px">結果を見る</button>
     </section>
 
-    <!-- ===== 結果画面 ===== -->
-    <section id="s-result" class="b8-hidden">
+    <!-- ===== 結果 ===== -->
+    <section id="s-result" class="hidden">
       <div class="sheet hero" id="card">
         <div class="heroimg"><div id="rImgContainer"></div></div>
         <p class="code" id="rCode"></p>
@@ -117,9 +116,9 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
       <div class="sheet noprint" style="margin-top: 20px;">
         <h2>結果を残す</h2>
         <p class="muted" id="mailNote"></p>
-        <button class="btn sign" id="mailBtn" type="button">メールを作成する</button>
-        <button class="btn ghost" id="printBtn" type="button">このカードを印刷 / PDFで保存</button>
-        <button class="btn ghost" id="againBtn" type="button">もう一度やる</button>
+        <button type="button" class="btn sign" id="mailBtn">メールを作成する</button>
+        <button type="button" class="btn ghost" id="printBtn">このカードを印刷 / PDFで保存</button>
+        <button type="button" class="btn ghost" id="againBtn">もう一度やる</button>
       </div>
     </section>
 
@@ -200,42 +199,15 @@ p{line-height:1.85;margin:0 0 14px;font-size:15px}
 }
 .choice:hover .mark{background:var(--accent);color:#fff}
 
-/* 丸形アイコン一覧表示（元デザインに合わせつつ綺麗に収まる設計） */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin: 18px 0 10px;
-  width: 100%;
+/* 8匹の丸形アイコン一覧グリッド */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:18px 0 12px;width:100%}
+.animal-badge {
+  aspect-ratio: 1; border-radius: 50%; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; color: #fff; font-family: var(--disp);
+  font-weight: 800; font-size: 10px; line-height: 1.25; text-align: center;
+  box-shadow: 0 4px 10px rgba(35,41,54,.12); box-sizing: border-box; padding: 4px;
 }
-.b8-grid-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-.b8-circle-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-family: var(--disp);
-  font-weight: 700;
-  font-size: 10.5px;
-  line-height: 1.25;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
-  margin-bottom: 5px;
-  box-sizing: border-box;
-  padding: 4px;
-}
-.b8-circle-icon span { display: block; white-space: nowrap; }
-.b8-grid-item span.label {
-  font-family: var(--disp); font-size: 11px; font-weight: 700; color: var(--primary);
-}
+.animal-badge span { display: block; white-space: nowrap; }
 
 .axbox{background:#F6F8FC;border-radius:18px;padding:15px 16px 13px;margin:16px 0 14px}
 .axttl{font-family:var(--disp);font-weight:800;font-size:14px;margin:0 0 11px}
@@ -305,7 +277,7 @@ input:focus,select:focus{border-color:var(--accent);outline:none}
 .duo{display:flex;gap:10px;margin-top:4px}
 .duo div{flex:1;text-align:center;background:#F7F9FC;border-radius:16px;padding:10px 6px 12px}
 
-/* 相棒・正反対の小型アイコン */
+/* 相棒・正反対の小型丸形アイコン */
 .sub-circle {
   width: 52px; height: 52px; border-radius: 50%; margin: 0 auto 6px; display: flex;
   flex-direction: column; align-items: center; justify-content: center; color: #fff;
@@ -326,11 +298,6 @@ input:focus,select:focus{border-color:var(--accent);outline:none}
   .noprint{display:none!important}
   .sheet{box-shadow:none;border:1px solid #ddd}
 }
-@media (max-width: 640px) {
-  .grid { gap: 6px; }
-  .b8-circle-icon { width: 54px; height: 54px; font-size: 9px; }
-  .b8-grid-item span.label { font-size: 10px; }
-}
 </style>
 
 <script is:inline>
@@ -341,7 +308,7 @@ input:focus,select:focus{border-color:var(--accent);outline:none}
     // スプレッドシート記録用GASエンドポイント
     const GAS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyuMhptc9qq1HxYVpOhwrO1GA5E1Zec8Wt67i7KsLZ8dv7HSwPGlq0Z1wtumpHclBk/exec";
 
-    // 8匹の動物の定義（CSS丸型で綺麗に表現）
+    // 8匹の動物データ（CSS丸型アイコンで綺麗に描写）
     const ANIMAL_ICONS = {
       hamster:  { col: "#EF5A48", line1: "てきぱき", line2: "ハムスター", name: "てきぱきハムスター" },
       ant:      { col: "#F06A18", line1: "だんどり", line2: "アリ",       name: "だんどりアリ" },
@@ -357,7 +324,7 @@ input:focus,select:focus{border-color:var(--accent);outline:none}
       PSB:{col:"#EF5A48",key:"hamster",name:"てきぱきハムスター",catch:"決まったやり方で、目の前の一人をすぐ助ける",
         good:"やることが決まっている場面での速さが持ち味。手順を守れるので、任せたことが確実に終わります。慌てている人の隣で、淡々と手を動かせる強さがあります。",
         post:"応急手当、荷物運び、体調の確認。人手が要る作業を抜けなく回す役。",
-        blind:"手順にないことが起きると足が止まりがち。ひとりで抱え込んで、助けを呼びそびれることも。",
+        blind:"手順にないことが起きると足が止まりがち。ひとりで抱え込み、助けを呼びそびれることも。",
         step:"救命講習（普通救命講習Ⅰなど）を受けてみる。手順を1つ増やすと、動ける場面が増えます。",
         buddy:"MSN", opp:"MIN", theme:"災害時の応急対応と手順化（standard operating procedure と災害対応）"},
       PSN:{col:"#F06A18",key:"ant",name:"だんどりアリ",catch:"全体の仕事と物を、きちんと回す",
@@ -499,7 +466,7 @@ input:focus,select:focus{border-color:var(--accent);outline:none}
           const item = ANIMAL_ICONS[k];
           return `
             <div class="b8-grid-item">
-              <div class="b8-circle-icon" style="background:${item.col}">
+              <div class="animal-badge" style="background:${item.col}">
                 <span>${item.line1}</span>
                 <span>${item.line2}</span>
               </div>
@@ -580,9 +547,9 @@ input:focus,select:focus{border-color:var(--accent);outline:none}
     function submitToSpreadsheet() {
       if (!GAS_WEBHOOK_URL || GAS_WEBHOOK_URL.indexOf("AKfycb") === -1) return;
 
-      const ageSelect = $("b8-age");
+      const ageSelect = $("age");
       const ageVal = ageSelect ? ageSelect.value : "";
-      const mailVal = $("b8-mail") ? $("b8-mail").value.trim() : "";
+      const mailVal = $("mail") ? $("mail").value.trim() : "";
 
       const payload = {
         timestamp: new Date().toISOString(),
@@ -618,7 +585,7 @@ input:focus,select:focus{border-color:var(--accent);outline:none}
       const sResult = $("s-result");
       if (sResult) sResult.style.setProperty("--c", t.col);
 
-      // メインヒーローアイコン（丸型CSSレンダリング）
+      // メインヒーローアイコン
       const rImgContainer = $("rImgContainer");
       if (rImgContainer) {
         rImgContainer.innerHTML = `
@@ -688,7 +655,7 @@ input:focus,select:focus{border-color:var(--accent);outline:none}
       }
       if ($("rTheme")) $("rTheme").textContent = t.theme;
 
-      const mail = $("b8-mail").value.trim();
+      const mail = $("mail").value.trim();
       if ($("mailNote")) {
         $("mailNote").textContent = mail
           ? `${mail} あてのメールを作成します。送信ボタンを押すのはメールアプリ側です。`
@@ -698,7 +665,7 @@ input:focus,select:focus{border-color:var(--accent);outline:none}
       const mailBtn = $("mailBtn");
       if (mailBtn) {
         mailBtn.onclick = () => {
-          const to = $("b8-mail").value.trim();
+          const to = $("mail").value.trim();
           if(!to) return;
           const bodyText = [
             `■ 防災共助タイプ診断「ぼうさい8」結果`, ``,
@@ -717,8 +684,8 @@ input:focus,select:focus{border-color:var(--accent);outline:none}
       if ($("againBtn")) {
         $("againBtn").onclick = () => {
           sex = "";
-          $("b8-mail").value = "";
-          $("b8-age").value = "";
+          $("mail").value = "";
+          $("age").value = "";
           if(sexPill) [...sexPill.children].forEach(x=>x.setAttribute("aria-pressed","false"));
           show("s-intro");
         };
@@ -755,7 +722,7 @@ input:focus,select:focus{border-color:var(--accent);outline:none}
     const resultBtn = $("resultBtn");
     if (resultBtn) {
       resultBtn.onclick = () => {
-        const mailInput = $("b8-mail");
+        const mailInput = $("mail");
         const mailVal = mailInput ? mailInput.value.trim() : "";
         const mailErr = $("mail-error");
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
