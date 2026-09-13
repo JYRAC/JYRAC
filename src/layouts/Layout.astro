@@ -1,19 +1,22 @@
 ---
-import { getLangFromUrl, useTranslations } from '../lib/i18n';
+import { translations, type Lang } from '../lib/i18n';
 
 interface Props {
   title: string;
-  currentTab: 'news' | 'about' | 'services' | 'recruitment' | 'governance' | 'sns' | 'contact' | 'gioco' | 'bosai8'; 
+  currentTab: 'news' | 'about' | 'services' | 'recruitment' | 'governance' | 'sns' | 'contact' | 'gioco'; 
 }
 
 const { title, currentTab } = Astro.props;
 
-const currentLang = getLangFromUrl(Astro.url);
-const t = useTranslations(currentLang);
+// URLから言語パラメーターを取得 (プロトコルをhttpsに整形して安全に取得)
+const requestUrl = Astro.request.url.replace(/^http:/, 'https:');
+const url = new URL(requestUrl);
+const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
+const t = translations[currentLang];
 const langParam = currentLang === 'en' ? '?lang=en' : '';
 
 // 現在のページのパスを取得
-const currentPath = Astro.url.pathname;
+const currentPath = url.pathname;
 ---
 <!DOCTYPE html>
 <html lang={currentLang}>
