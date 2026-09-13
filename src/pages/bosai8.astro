@@ -41,7 +41,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     </section>
 
     <!-- ===== 設問 ===== -->
-    <section id="s-quiz" class="sheet hidden">
+    <section id="s-quiz" class="sheet b8-hidden">
       <p class="count" id="count"></p>
       <div class="prog" id="prog"></div>
       <span class="scene" id="scene"></span>
@@ -51,7 +51,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     </section>
 
     <!-- ===== 属性入力（メールアドレス必須） ===== -->
-    <section id="s-profile" class="sheet hidden">
+    <section id="s-profile" class="sheet b8-hidden">
       <p class="eyebrow">あと少し</p>
       <h2>あなたについて教えてください</h2>
       <p class="muted">JYRAC が防災教育の研究に使う統計データです。氏名は収集しません。</p>
@@ -81,9 +81,9 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     </section>
 
     <!-- ===== 結果画面 ===== -->
-    <section id="s-result" class="hidden">
+    <section id="s-result" class="b8-hidden">
       <div class="sheet hero" id="card">
-        <div class="heroimg"><img id="rImg" alt="" /></div>
+        <div class="heroimg"><div id="rImgContainer"></div></div>
         <p class="code" id="rCode"></p>
         <h2 class="tname" id="rName"></h2>
         <p class="catch" id="rCatch"></p>
@@ -102,8 +102,8 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
         <div class="block">
           <h3>相棒と、正反対</h3>
           <div class="duo">
-            <div><em>相棒</em><img id="rBuddyImg" alt=""><b id="rBuddy"></b></div>
-            <div><em>正反対</em><img id="rOppImg" alt=""><b id="rOpp"></b></div>
+            <div><em>相棒</em><div id="rBuddyImgContainer"></div><b id="rBuddy"></b></div>
+            <div><em>正反対</em><div id="rOppImgContainer"></div><b id="rOpp"></b></div>
           </div>
           <p class="muted" style="margin-top:10px" id="rPairNote"></p>
         </div>
@@ -139,7 +139,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
   --disp:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN",sans-serif;
   --body:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",sans-serif;
 }
-.b8-wrap{
+.wrap{
   font-family:var(--body); color:var(--ink);
   max-width:600px; margin:0 auto; padding:0 0 44px;
   box-sizing: border-box;
@@ -200,7 +200,7 @@ p{line-height:1.85;margin:0 0 14px;font-size:15px}
 }
 .choice:hover .mark{background:var(--accent);color:#fff}
 
-/* 丸形アイコン一覧表示（はみ出しを確実に防止） */
+/* 丸形アイコン一覧表示（元デザインに合わせつつ綺麗に収まる設計） */
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -341,7 +341,7 @@ input:focus,select:focus{border-color:var(--accent);outline:none}
     // スプレッドシート記録用GASエンドポイント
     const GAS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyuMhptc9qq1HxYVpOhwrO1GA5E1Zec8Wt67i7KsLZ8dv7HSwPGlq0Z1wtumpHclBk/exec";
 
-    // 8匹の動物の定義（CSS丸型で確実に綺麗に表現）
+    // 8匹の動物の定義（CSS丸型で綺麗に表現）
     const ANIMAL_ICONS = {
       hamster:  { col: "#EF5A48", line1: "てきぱき", line2: "ハムスター", name: "てきぱきハムスター" },
       ant:      { col: "#F06A18", line1: "だんどり", line2: "アリ",       name: "だんどりアリ" },
@@ -356,8 +356,8 @@ input:focus,select:focus{border-color:var(--accent);outline:none}
     const TYPES = {
       PSB:{col:"#EF5A48",key:"hamster",name:"てきぱきハムスター",catch:"決まったやり方で、目の前の一人をすぐ助ける",
         good:"やることが決まっている場面での速さが持ち味。手順を守れるので、任せたことが確実に終わります。慌てている人の隣で、淡々と手を動かせる強さがあります。",
-        post:"応急手当、荷物運び、体調の確認。人手が要る作業を、抜けなく回す役。",
-        blind:"手順にないことが起きると足が止まりがち。ひとりで抱え込んで、助け를 呼びそびれることも。",
+        post:"応急手当、荷物運び、体調の確認。人手が要る作業を抜けなく回す役。",
+        blind:"手順にないことが起きると足が止まりがち。ひとりで抱え込んで、助けを呼びそびれることも。",
         step:"救命講習（普通救命講習Ⅰなど）を受けてみる。手順を1つ増やすと、動ける場面が増えます。",
         buddy:"MSN", opp:"MIN", theme:"災害時の応急対応と手順化（standard operating procedure と災害対応）"},
       PSN:{col:"#F06A18",key:"ant",name:"だんどりアリ",catch:"全体の仕事と物を、きちんと回す",
@@ -367,7 +367,7 @@ input:focus,select:focus{border-color:var(--accent);outline:none}
         step:"自分の学校や地域の避難所運営マニュアルを一度読み、足りない項目を3つ書き出す。",
         buddy:"MSB", opp:"MIB", theme:"避難所運営と組織対応（DRC typology：既存組織はどう災害対応に入るか）"},
       PIB:{col:"#E8AF1E",key:"squirrel",name:"こうさくリス",catch:"ありもので、目の前の困りごとを解決する",
-        good:"道具がなくても、そこにある物で何とかしてしまう手先の強さ。「これで代用できる」の発想が早く、現場のつまずきをその場で消せます。",
+        good:"道具がなくても、そこにある物で何とかしてしまう手先の強さ。「こうすれば代用できる」の発想が早く、現場のつまずきをその場で消せます。",
         post:"段ボールベッド、簡易トイレ、間仕切り作り。生活の不便を1つずつ潰す役。",
         blind:"勢いで安全のルールを飛び越えてしまうことがある。作ったものが壊れたときの責任まで考えたい。",
         step:"段ボールベッドか簡易トイレを、実際に一度作ってみる。作ってみないと弱点は見えません。",
@@ -438,22 +438,14 @@ input:focus,select:focus{border-color:var(--accent);outline:none}
       {ax:"S",scene:"集合場所が使えない",text:"避難訓練の最中、決められた集合場所が使えないことが分かった。",o:[{t:"訓練でもう一つ決めてあった第二集合場所へ、自分が誘導する",p:"S"},{t:"その場で安全な広場を見つけて、そこに集めると決める",p:"I"}]},
       {ax:"S",scene:"分厚いマニュアル",text:"学校が避難所になった。運営マニュアルは一冊あるが、分厚くて誰も読んでいない。",o:[{t:"中身を読み込み、今日使うページを抜き出してみんなに回す",p:"S"},{t:"マニュアルは置いておき、今の状況に合う手順をその場で決める",p:"I"}]},
       {ax:"S",scene:"校内放送が使えない",text:"停電で校内放送が使えない。全校に同じ情報を伝えなければならない。",o:[{t:"クラスごとの伝達係という決まった仕組みを、順番どおりに動かす",p:"S"},{t:"ハンドマイクと手書きの紙で、その場でやり方を組み立てる",p:"I"}]},
-      {ax:"S",scene:"炊き出しの列",text:"炊き出しの列。予定していた配り方では、時間内に終わらないと分かった。",
-       o:[{t:"決めた手順は変えず、人手を増やして回転を上げる",p:"S"},{t:"配り方そのものを変えて、並ばずに受け取れる形にする",p:"I"}]},
-      {ax:"S",scene:"防災倉庫",text:"防災倉庫を開けたら、備品の置き場所が去年と変わっていた。",
-       o:[{t:"備品リストと照らし合わせて、リストの順に確認していく",p:"S"},{t:"リストは後回しにして、見た目で必要そうなものから取り出す",p:"I"}]},
-      {ax:"B",scene:"防災イベントの参加対象",text:"生徒会で防災イベントを企画している。使える時間も人手も限られていて、どちらかを選ぶことになった。",
-       o:[{t:"まず数人と深く準備して、中身の濃いものにする",p:"B"},{t:"まず全校に呼びかけて、来る人数を増やすことを優先する",p:"N"}]},
-      {ax:"B",scene:"防災委員会の立ち上げ",text:"生徒会内で防災委員会を作る案が出た。始め方について意見が分かれている。",
-       o:[{t:"確実に動ける数人で始め、できる範囲を積み上げる",p:"B"},{t:"最初から学校全体に広げ、多くの人が関わる形にする",p:"N"}]},
-      {ax:"B",scene:"困りごとの把握",text:"避難所を運営している大人から、「何が足りないのか分からない」と相談された。",
-       o:[{t:"気になる人のところを一人ずつ回って、直接聞いてくる",p:"B"},{t:"避難所の全員に呼びかけて、困りごとを出してもらう場をつくる",p:"N"}]},
-      {ax:"B",scene:"支援物資の配布",text:"避難所に支援物資が届いた。数には限りがあり、配り方を決めなければならない。",
-       o:[{t:"取りに来られない人がいないか、先に確かめて直接届ける",p:"B"},{t:"配る時間と場所をそろえ、全員に同じ知らせが届くようにする",p:"N"}]},
-      {ax:"B",scene:"手が空いた30分",text:"避難所で少し手が空いた。自分にできることを探している。",
-       o:[{t:"ずっと気になっていた一人のところへ行き、じっくり話を聴く",p:"B"},{t:"まだ話せていない人に、ひととおり声をかけて回る",p:"N"}]},
-      {ax:"B",scene:"眠れない夜",text:"避難所の夜。眠れていない人が何人かいるらしい。",
-       o:[{t:"特に気になる一人のところへ行き、時間をかけて話を聴く",p:"B"},{t:"眠れていない人に順に声をかけて、様子を確かめて回る",p:"N"}]},
+      {ax:"S",scene:"炊き出しの列",text:"炊き出しの列。予定していた配り方では、時間内に終わらないと分かった。",o:[{t:"決めた手順は変えず、人手を増やして回転を上げる",p:"S"},{t:"配り方そのものを変えて、並ばずに受け取れる形にする",p:"I"}]},
+      {ax:"S",scene:"防災倉庫",text:"防災倉庫を開けたら、備品の置き場所が去年と変わっていた。",o:[{t:"備品リストと照らし合わせて、リストの順に確認していく",p:"S"},{t:"リストは後回しにして、見た目で必要そうなものから取り出す",p:"I"}]},
+      {ax:"B",scene:"防災イベントの参加対象",text:"生徒会で防災イベントを企画している。使える時間も人手も限られていて、どちらかを選ぶことになった。",o:[{t:"まず数人と深く準備して、中身の濃いものにする",p:"B"},{t:"まず全校に呼びかけて、来る人数を増やすことを優先する",p:"N"}]},
+      {ax:"B",scene:"防災委員会の立ち上げ",text:"生徒会内で防災委員会を作る案が出た。始め方について意見が分かれている。",o:[{t:"確実に動ける数人で始め、できる範囲を積み上げる",p:"B"},{t:"最初から学校全体に広げ、多くの人が関わる形にする",p:"N"}]},
+      {ax:"B",scene:"困りごとの把握",text:"避難所を運営している大人から、「何が足りないのか分からない」と相談された。",o:[{t:"気になる人のところを一人ずつ回って、直接聞いてくる",p:"B"},{t:"避難所の全員に呼びかけて、困りごとを出してもらう場をつくる",p:"N"}]},
+      {ax:"B",scene:"支援物資の配布",text:"避難所に支援物資が届いた。数には限りがあり、配り方を決めなければならない。",o:[{t:"取りに来られない人がいないか、先に確かめて直接届ける",p:"B"},{t:"配る時間と場所をそろえ、全員に同じ知らせが届くようにする",p:"N"}]},
+      {ax:"B",scene:"手が空いた30分",text:"避難所で少し手が空いた。自分にできることを探している。",o:[{t:"ずっと気になっていた一人のところへ行き、じっくり話を聴く",p:"B"},{t:"まだ話せていない人に、ひととおり声をかけて回る",p:"N"}]},
+      {ax:"B",scene:"眠れない夜",text:"避難所の夜。眠れていない人が何人かいるらしい。",o:[{t:"特に気になる一人のところへ行き、時間をかけて話を聴く",p:"B"},{t:"眠れていない人に順に声をかけて、様子を確かめて回る",p:"N"}]},
       {ax:"B",scene:"15分の発表",text:"学校で防災の話をする機会をもらった。使える時間は15分しかない。",
        o:[{t:"一人の被災体験を時間をかけて深く伝える",p:"B"},{t:"全員に関わる基本を、もれなく伝える",p:"N"}]},
       {ax:"B",scene:"地域の防災訓練",text:"地域の防災訓練に参加した。まわりは知らない人ばかりだ。",
