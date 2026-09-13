@@ -1,5 +1,5 @@
 ---
-import { translations, type Lang } from '../lib/i18n';
+import { useTranslations, type Lang } from '../lib/i18n';
 
 interface Props {
   title: string;
@@ -8,15 +8,13 @@ interface Props {
 
 const { title, currentTab } = Astro.props;
 
-// URLから言語パラメーターを取得 (httpsに整形して安全に処理)
-const requestUrl = Astro.request.url.replace(/^http:/, 'https:');
-const url = new URL(requestUrl);
-const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
-const t = translations[currentLang];
-const langParam = currentLang === 'en' ? '?lang=en' : '';
+// getLangFromUrl を使わず、ここで直接 URL パラメーターから判定
+const currentLang: Lang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
 
-// 現在のページのパスを取得
-const currentPath = url.pathname;
+// 元のエクスポート関数 useTranslations を使用
+const t = (typeof useTranslations === 'function' ? useTranslations(currentLang) : {}) as any;
+const langParam = currentLang === 'en' ? '?lang=en' : '';
+const currentPath = Astro.url.pathname;
 ---
 <!DOCTYPE html>
 <html lang={currentLang}>
@@ -313,7 +311,6 @@ const currentPath = url.pathname;
             overflow-wrap: break-word;
         }
 
-        /* スマホ用レスポンシブ修正 */
         @media (max-width: 850px) {
             header { 
                 padding: 16px; 
@@ -323,7 +320,6 @@ const currentPath = url.pathname;
                 gap: 12px; 
                 text-align: center; 
             }
-            
             .brand-zone {
                 align-items: center !important;
                 text-align: center !important;
@@ -337,7 +333,6 @@ const currentPath = url.pathname;
             .subtitle {
                 text-align: center !important;
             }
-
             .dashboard-container { 
                 flex-direction: column; 
                 margin: 20px auto; 
@@ -384,11 +379,13 @@ const currentPath = url.pathname;
 <header>
     <div class="header-container">
         <div class="brand-zone">
-            <h1>{t.brand.name}<span>{t.brand.tag}</span></h1>
-            <div class="subtitle">{t.brand.sub}</div>
+            <h1>
+                {t?.brand?.name ?? (currentLang === 'en' ? 'JYRAC' : '日本若者防災復興協会')}
+                <span>{t?.brand?.tag ?? (currentLang === 'en' ? 'NPO' : '特定非営利活動法人')}</span>
+            </h1>
+            <div class="subtitle">{t?.brand?.sub ?? 'JAPAN YOUTH RESILIENCE ACTION CONSORTIUM'}</div>
         </div>
         <div class="lang-switch">
-            <!-- 現在のパスを維持したまま言語を切替 -->
             <a href={`${currentPath}?lang=ja`} class={`lang-btn ${currentLang === 'ja' ? 'active' : ''}`}>日本語</a>
             <a href={`${currentPath}?lang=en`} class={`lang-btn ${currentLang === 'en' ? 'active' : ''}`}>English</a>
         </div>
@@ -398,18 +395,18 @@ const currentPath = url.pathname;
 <div class="dashboard-container">
     <aside>
         <ul class="side-menu">
-            <li><a href={`/${langParam}`} class={`menu-btn ${currentTab === 'news' ? 'active' : ''}`}>{t.nav.news}</a></li>
-            <li><a href={`/about${langParam}`} class={`menu-btn ${currentTab === 'about' ? 'active' : ''}`}>{t.nav.about}</a></li>
-            <li><a href={`/services${langParam}`} class={`menu-btn ${currentTab === 'services' ? 'active' : ''}`}>{t.nav.services}</a></li>
-            <li><a href={`/recruitment${langParam}`} class={`menu-btn ${currentTab === 'recruitment' ? 'active' : ''}`}>{t.nav.recruitment}</a></li>
+            <li><a href={`/${langParam}`} class={`menu-btn ${currentTab === 'news' ? 'active' : ''}`}>{t?.nav?.news ?? 'お知らせ'}</a></li>
+            <li><a href={`/about${langParam}`} class={`menu-btn ${currentTab === 'about' ? 'active' : ''}`}>{t?.nav?.about ?? '当団体について'}</a></li>
+            <li><a href={`/services${langParam}`} class={`menu-btn ${currentTab === 'services' ? 'active' : ''}`}>{t?.nav?.services ?? '事業内容'}</a></li>
+            <li><a href={`/recruitment${langParam}`} class={`menu-btn ${currentTab === 'recruitment' ? 'active' : ''}`}>{t?.nav?.recruitment ?? 'メンバー募集'}</a></li>
             <li>
                 <a href={`/gioco${langParam}`} class={`menu-btn ${currentTab === 'gioco' ? 'active' : ''}`}>
                     {currentLang === 'en' ? 'Tools & Diagnosis' : '教材・診断ツール'}
                 </a>
             </li>
-            <li><a href={`/governance${langParam}`} class={`menu-btn ${currentTab === 'governance' ? 'active' : ''}`}>{t.nav.governance}</a></li>
-            <li><a href={`/sns${langParam}`} class={`menu-btn ${currentTab === 'sns' ? 'active' : ''}`}>{t.nav.sns}</a></li>
-            <li><a href={`/contact${langParam}`} class={`menu-btn ${currentTab === 'contact' ? 'active' : ''}`}>{t.nav.contact}</a></li>
+            <li><a href={`/governance${langParam}`} class={`menu-btn ${currentTab === 'governance' ? 'active' : ''}`}>{t?.nav?.governance ?? '情報公開'}</a></li>
+            <li><a href={`/sns${langParam}`} class={`menu-btn ${currentTab === 'sns' ? 'active' : ''}`}>{t?.nav?.sns ?? '公式SNS'}</a></li>
+            <li><a href={`/contact${langParam}`} class={`menu-btn ${currentTab === 'contact' ? 'active' : ''}`}>{t?.nav?.contact ?? 'お問い合わせ'}</a></li>
         </ul>
     </aside>
 
@@ -419,7 +416,7 @@ const currentPath = url.pathname;
 </div>
 
 <footer>
-    <p>{t.footer.copyright}</p>
+    <p>{t?.footer?.copyright ?? '© 特定非営利活動法人 日本若者防災復興協会 (JYRAC) All Rights Reserved.'}</p>
 </footer>
 
 <script is:inline>
@@ -441,14 +438,12 @@ const currentPath = url.pathname;
         }
     }
 
-    // 内部リンクに自動で ?lang=en を付与する処理
     function applyI18nLinks() {
         const urlParams = new URLSearchParams(window.location.search);
         const currentLang = urlParams.get('lang');
         if (currentLang === 'en') {
             document.querySelectorAll('a[href]').forEach(link => {
                 const href = link.getAttribute('href');
-                // 内部絶対パスかつlang設定が含まれていないリンクのみ対象
                 if (href && href.startsWith('/') && !href.includes('lang=')) {
                     const separator = href.includes('?') ? '&' : '?';
                     link.setAttribute('href', href + separator + 'lang=en');
