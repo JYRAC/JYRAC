@@ -3,7 +3,7 @@ import { getLangFromUrl, useTranslations } from '../lib/i18n';
 
 interface Props {
   title: string;
-  currentTab: 'news' | 'about' | 'services' | 'recruitment' | 'governance' | 'sns' | 'contact' | 'gioco'; 
+  currentTab: 'news' | 'about' | 'services' | 'recruitment' | 'governance' | 'sns' | 'contact' | 'gioco' | 'bosai8'; 
 }
 
 const { title, currentTab } = Astro.props;
@@ -403,8 +403,8 @@ const currentPath = Astro.url.pathname;
                 padding: 12px 6px; 
                 font-size: 12px;
             }
-            .menu-btn:hover {
-                padding-left: 6px;
+            .menu-btn:hover { 
+                padding-left: 6px; 
             }
             main { 
                 padding: 20px 16px; 
@@ -450,13 +450,14 @@ const currentPath = Astro.url.pathname;
             <li><a href={`/services${langParam}`} class={`menu-btn ${currentTab === 'services' ? 'active' : ''}`}>{t.nav.services}</a></li>
             <li><a href={`/recruitment${langParam}`} class={`menu-btn ${currentTab === 'recruitment' ? 'active' : ''}`}>{t.nav.recruitment}</a></li>
             <li><a href={`/gioco${langParam}`} class={`menu-btn ${currentTab === 'gioco' ? 'active' : ''}`}>{t.nav.gioco}</a></li>
+            <li><a href={`/bosai8${langParam}`} class={`menu-btn ${currentTab === 'bosai8' ? 'active' : ''}`}>{currentLang === 'en' ? 'Bosai 8 (Diagnosis)' : 'ぼうさい8 (診断)'}</a></li>
             <li><a href={`/governance${langParam}`} class={`menu-btn ${currentTab === 'governance' ? 'active' : ''}`}>{t.nav.governance}</a></li>
             <li><a href={`/sns${langParam}`} class={`menu-btn ${currentTab === 'sns' ? 'active' : ''}`}>{t.nav.sns}</a></li>
             <li><a href={`/contact${langParam}`} class={`menu-btn ${currentTab === 'contact' ? 'active' : ''}`}>{t.nav.contact}</a></li>
         </ul>
     </aside>
 
-    <main id="main-panel" class={Astro.url.pathname.includes('hug-gioco') ? 'layout-gioco-mode' : ''}>
+    <main id="main-panel" class={Astro.url.pathname.includes('hug-gioco') || Astro.url.pathname.includes('bosai8') ? 'layout-gioco-mode' : ''}>
         {currentTab === 'gioco' && !Astro.url.pathname.includes('hug-gioco') ? (
             <div class="content-panel">
                 <h2>{t.gioco.title}</h2>
