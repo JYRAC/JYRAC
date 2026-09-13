@@ -1,346 +1,796 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ぼうさい8 ｜ 防災共助タイプ診断</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
-<style is:global>
-:root{
-  --bg1:#F2F7FF; --bg2:#FFF8F0;
-  --card:#ffffff;
-  --ink:#232936; --ink2:#6E7684; --mute:#9AA1AC;
-  --line:#E6E9F0;
-  --accent:#FF9F1C;
-  --primary:#232936;
-  --c:#232936;              /* キャラ色（結果画面で差し替え） */
-  --r:24px;
-  --disp:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN",sans-serif;
-  --body:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",sans-serif;
-}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{
-  font-family:var(--body); color:var(--ink);
-  background:
-    radial-gradient(46vw 34vw at 8% 4%, rgba(48,224,224,.16), transparent 70%),
-    radial-gradient(42vw 32vw at 96% 22%, rgba(240,112,160,.15), transparent 70%),
-    radial-gradient(46vw 36vw at 40% 100%, rgba(240,192,48,.16), transparent 70%),
-    linear-gradient(170deg, var(--bg1), var(--bg2));
-  background-attachment:fixed;
-  min-height:100vh; -webkit-font-smoothing:antialiased;
-}
-.wrap{max-width:600px;margin:0 auto;padding:20px 16px 60px}
+---
+// 必要に応じてコンポーネントのインポートや型定義を記述します
+---
 
-/* ---------- カード ---------- */
-.sheet{
-  position:relative; background:var(--card); border-radius:var(--r);
-  box-shadow:0 1px 2px rgba(35,41,54,.05), 0 12px 30px rgba(35,41,54,.08);
-  padding:26px 22px 24px;
-  overflow:hidden;
-}
-.sheet + .sheet{margin-top:16px}
-
-/* ---------- 文字 ---------- */
-h1{font-family:var(--disp);font-weight:800;font-size:clamp(32px,9vw,46px);line-height:1.12;margin:0 0 8px;letter-spacing:.01em}
-h2{font-family:var(--disp);font-weight:800;font-size:20px;margin:0 0 10px;line-height:1.4}
-.eyebrow{font-family:var(--disp);font-weight:700;font-size:11.5px;letter-spacing:.2em;color:var(--accent);margin:0 0 10px}
-p{line-height:1.85;margin:0 0 14px;font-size:15px}
-.muted{color:var(--ink2);font-size:12.5px;line-height:1.8}
-
-/* ---------- ボタン ---------- */
-.btn{
-  display:block;width:100%;border:none;cursor:pointer;
-  font-family:var(--disp);font-weight:700;font-size:17px;
-  background:var(--primary);color:#fff;padding:17px;border-radius:999px;
-  box-shadow:0 6px 16px rgba(35,41,54,.24);
-  transition:transform .13s ease, box-shadow .13s ease, opacity .13s;
-}
-.btn:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(35,41,54,.28)}
-.btn:active{transform:translateY(1px);box-shadow:0 3px 10px rgba(35,41,54,.22)}
-.btn.sign{background:var(--accent);color:#3A2400;box-shadow:0 6px 16px rgba(255,159,28,.4)}
-.btn.ghost{background:transparent;color:var(--ink2);box-shadow:none;font-family:var(--body);font-size:14px;font-weight:500;padding:11px}
-.btn.ghost:hover{transform:none;color:var(--ink);box-shadow:none}
-:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
-
-/* ---------- 進捗 ---------- */
-.prog{display:flex;gap:3px;margin:0 0 18px}
-.prog i{flex:1;height:7px;background:#EDF0F5;border-radius:999px;transition:background .25s, transform .25s}
-.prog i.on{background:var(--dot)}
-.prog i.cur{background:var(--dot);transform:scaleY(1.9)}
-.count{font-family:var(--disp);font-weight:700;font-size:12px;color:var(--mute);letter-spacing:.06em;margin:0 0 8px}
-
-/* ---------- 選択肢 ---------- */
-.scene{font-family:var(--disp);font-weight:700;font-size:12.5px;color:#fff;
-  background:var(--primary);display:inline-block;padding:5px 13px;border-radius:999px;margin-bottom:12px}
-.qtext{font-size:16px;line-height:1.9;margin:0 0 20px}
-.choice{
-  display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;cursor:pointer;
-  background:#fff;border:2px solid var(--line);border-radius:18px;
-  padding:15px 16px;font-family:var(--body);font-size:15.5px;line-height:1.7;color:var(--ink);
-  margin-bottom:11px;transition:border-color .14s, box-shadow .14s, transform .14s;
-}
-.choice:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(255,159,28,.18);transform:translateY(-1px)}
-.choice .mark{
-  font-family:var(--disp);font-weight:800;font-size:13px;color:var(--ink2);
-  background:#F1F4F9;border-radius:50%;width:24px;height:24px;flex:none;
-  display:flex;align-items:center;justify-content:center;margin-top:2px}
-.choice:hover .mark{background:var(--accent);color:#fff}
-
-/* ---------- キャラ一覧 ---------- */
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:18px 0 4px}
-.grid img{width:100%;min-width:0;max-width:100%;height:auto;display:block;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(35,41,54,.14))}
-
-/* ---------- 軸の説明 ---------- */
-.axbox{background:#F6F8FC;border-radius:18px;padding:15px 16px 13px;margin:16px 0 14px}
-.axttl{font-family:var(--disp);font-weight:800;font-size:14px;margin:0 0 11px}
-.axrow{display:flex;align-items:center;gap:7px;margin-bottom:8px}
-.axrow .nm{font-family:var(--disp);font-weight:700;font-size:11.5px;color:var(--mute);width:54px;flex:none}
-.ltr{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1.5px solid var(--line);
-  border-radius:999px;padding:5px 11px;font-size:12.5px}
-.ltr b{font-family:var(--disp);font-weight:800;color:var(--ink);font-size:14px}
-.axrow .sl{color:var(--mute);font-size:11.5px}
-.axnote{font-size:11.5px;color:var(--ink2);margin:6px 0 0;line-height:1.7}
-
-/* ---------- フォーム ---------- */
-label.f{display:block;font-family:var(--disp);font-weight:700;font-size:14px;margin:18px 0 8px}
-input,select{width:100%;font-family:var(--body);font-size:16px;padding:14px;
-  border:2px solid var(--line);border-radius:14px;background:#fff;color:var(--ink)}
-input:focus,select:focus{border-color:var(--accent);outline:none}
-.pill{display:flex;gap:7px;flex-wrap:wrap}
-.pill button{flex:1 1 auto;min-width:84px;cursor:pointer;font-family:var(--disp);font-weight:700;font-size:14.5px;
-  padding:12px 10px;border:2px solid var(--line);background:#fff;border-radius:999px;color:var(--ink2)}
-.pill button[aria-pressed="true"]{background:var(--primary);border-color:var(--primary);color:#fff}
-
-/* ---------- 結果 ---------- */
-#s-result .sheet{border-top:5px solid var(--c)}
-.hero{text-align:center;padding-top:6px}
-.heroimg{position:relative;padding:6px 0 2px}
-.heroimg::before{content:"";position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);
-  width:230px;height:230px;border-radius:50%;background:var(--c);opacity:.13;filter:blur(6px)}
-.heroimg img{position:relative;width:230px;max-width:70%;display:block;margin:0 auto;
-  filter:drop-shadow(0 10px 16px rgba(35,41,54,.2))}
-.code{font-family:var(--disp);font-weight:800;font-size:12px;letter-spacing:.3em;color:var(--c);margin:12px 0 3px}
-.tname{font-family:var(--disp);font-weight:800;font-size:clamp(27px,8vw,36px);margin:0 0 8px;line-height:1.25;color:var(--c)}
-.catch{font-size:14.5px;color:var(--ink2);margin:0 0 4px}
-
-.bars{margin:24px 0 4px}
-.bar{margin-bottom:14px}
-.bar .lab{display:flex;justify-content:space-between;font-family:var(--disp);font-weight:700;font-size:12px;color:var(--mute);margin-bottom:5px}
-.bar .lab b{color:var(--ink)}
-.track{height:11px;background:#EDF0F5;border-radius:999px;overflow:hidden;display:flex}
-.track span{display:block;height:100%;background:var(--c)}
-.track span.r{background:#C9CFDA;margin-left:auto}
-
-.block{border-top:1px solid var(--line);padding-top:16px;margin-top:16px;text-align:left}
-.block h3{font-family:var(--disp);font-weight:800;font-size:13.5px;margin:0 0 8px;color:var(--c);letter-spacing:.02em}
-.block.warn h3{color:#D2691E}
-.block p{margin:0;font-size:14.5px;line-height:1.85}
-
-.codebox{margin-top:2px}
-.cline{display:flex;gap:12px;align-items:flex-start;background:#F7F9FC;border-radius:16px;padding:12px 14px;margin-bottom:8px}
-.cbig{font-family:var(--disp);font-weight:800;font-size:26px;color:var(--c);line-height:1;width:26px;flex:none;padding-top:2px}
-.cmeta{flex:1}
-.cmeta .t1{font-family:var(--disp);font-weight:700;font-size:14px;margin:0 0 2px}
-.cmeta .t2{font-size:12.5px;color:var(--ink2);margin:0 0 4px;line-height:1.6}
-.cmeta .t3{font-size:11px;color:var(--mute);margin:0;line-height:1.6}
-.cmeta .t3 span{color:var(--ink2);font-weight:600}
-
-.duo{display:flex;gap:10px;margin-top:4px}
-.duo div{flex:1;text-align:center;background:#F7F9FC;border-radius:16px;padding:10px 6px 12px}
-.duo img{width:100%;max-width:78px;filter:drop-shadow(0 4px 6px rgba(35,41,54,.16))}
-.duo b{display:block;font-family:var(--disp);font-size:12.5px;margin-top:4px;line-height:1.4}
-.duo em{display:block;font-style:normal;font-size:10.5px;color:var(--mute);margin-bottom:2px;font-weight:700;letter-spacing:.08em}
-
-.note{background:#F6F8FC;border-radius:16px;padding:14px 16px;margin-top:18px;text-align:left}
-.note p{margin:0;font-size:12px;line-height:1.8;color:var(--ink2)}
-
-.hidden{display:none}
-@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
-@media print{
-  body{background:#fff}
-  .noprint{display:none!important}
-  .sheet{box-shadow:none;border:1px solid #ddd}
-}
-</style>
-</head>
-<body>
 <div class="wrap">
+  <!-- ===== 表紙 ===== -->
+  <section id="s-intro" class="sheet">
+    <p class="eyebrow">JYRAC 防災共助タイプ診断</p>
+    <h1>ぼうさい8</h1>
+    <p>
+      災害のとき、人の助け方はひとつじゃない。<br />
+      20の場面であなたが選んだ行動から、8匹のうちどの助け方に近いかを見つけます。
+    </p>
+    <div class="grid" id="introGrid"></div>
+    <div class="axbox">
+      <p class="axttl">3つの軸で、8タイプに分かれます</p>
+      <div id="axList"></div>
+      <p class="axnote">
+        3文字の組み合わせ（例：P・S・N）が、あなたのタイプコードになります。
+      </p>
+    </div>
+    <p class="muted">
+      15問＋5問／2〜3分。正解はありません。<br />
+      設問は各軸10問の中から5問ずつ選ばれるので、やるたびに出題は変わります。<br />
+      これは心理検査ではなく、助け方にはいろいろあることを知るための学びのきっかけです。
+    </p>
+    <button type="button" class="btn" id="startBtn">はじめる</button>
+  </section>
 
-<!-- ===== 表紙 ===== -->
-<section id="s-intro" class="sheet">
-  <p class="eyebrow">JYRAC 防災共助タイプ診断</p>
-  <h1>ぼうさい8</h1>
-  <p>災害のとき、人の助け方はひとつじゃない。<br>20の場面であなたが選んだ行動から、8匹のうちどの助け方に近いかを見つけます。</p>
-  <div class="grid" id="introGrid"></div>
-  <div class="axbox">
-    <p class="axttl">3つの軸で、8タイプに分かれます</p>
-    <div id="axList"></div>
-    <p class="axnote">3文字の組み合わせ（例：P・S・N）が、あなたのタイプコードになります。</p>
-  </div>
-  <p class="muted">15問＋5問／2〜3分。正解はありません。<br>設問は各軸10問の中から5問ずつ選ばれるので、やるたびに出題は変わります。<br>これは心理検査ではなく、助け方にはいろいろあることを知るための学びのきっかけです。</p>
-  <button type="button" class="btn" id="startBtn">はじめる</button>
-</section>
+  <!-- ===== 設問 ===== -->
+  <section id="s-quiz" class="sheet hidden">
+    <p class="count" id="count"></p>
+    <div class="prog" id="prog"></div>
+    <span class="scene" id="scene"></span>
+    <p class="qtext" id="qtext"></p>
+    <div id="choices"></div>
+    <button type="button" class="btn ghost" id="backBtn">← ひとつ前にもどる</button>
+  </section>
 
-<!-- ===== 設問 ===== -->
-<section id="s-quiz" class="sheet hidden">
-  <p class="count" id="count"></p>
-  <div class="prog" id="prog"></div>
-  <span class="scene" id="scene"></span>
-  <p class="qtext" id="qtext"></p>
-  <div id="choices"></div>
-  <button type="button" class="btn ghost" id="backBtn">← ひとつ前にもどる</button>
-</section>
+  <!-- ===== 属性 ===== -->
+  <section id="s-profile" class="sheet hidden">
+    <p class="eyebrow">あと少し</p>
+    <h2>あなたについて教えてください</h2>
+    <p class="muted">
+      JYRAC が防災教育の研究に使う統計データです。氏名は集めません。答えたくない項目は空欄のままで進めます。
+    </p>
 
-<!-- ===== 属性 ===== -->
-<section id="s-profile" class="sheet hidden">
-  <p class="eyebrow">あと少し</p>
-  <h2>あなたについて教えてください</h2>
-  <p class="muted">JYRAC が防災教育の研究に使う統計データです。氏名は集めません。答えたくない項目は空欄のままで進めます。</p>
+    <label class="f" for="age">年齢</label>
+    <select id="age">
+      <option value="">選ばない</option>
+      <option>12歳以下</option><option>13〜15歳</option><option>16〜18歳</option>
+      <option>19〜22歳</option><option>23〜29歳</option><option>30〜39歳</option>
+      <option>40〜49歳</option><option>50〜59歳</option><option>60歳以上</option>
+    </select>
 
-  <label class="f" for="age">年齢</label>
-  <select id="age">
-    <option value="">選ばない</option>
-    <option>12歳以下</option><option>13〜15歳</option><option>16〜18歳</option>
-    <option>19〜22歳</option><option>23〜29歳</option><option>30〜39歳</option>
-    <option>40〜49歳</option><option>50〜59歳</option><option>60歳以上</option>
-  </select>
-
-  <label class="f">性別</label>
-  <div class="pill" id="sexPill">
-    <button type="button" data-v="女性" aria-pressed="false">女性</button>
-    <button type="button" data-v="男性" aria-pressed="false">男性</button>
-    <button type="button" data-v="その他" aria-pressed="false">その他</button>
-    <button type="button" data-v="答えない" aria-pressed="false">答えない</button>
-  </div>
-
-  <label class="f" for="mail">結果を送るメールアドレス（任意）</label>
-  <input id="mail" type="email" inputmode="email" placeholder="you@example.com" autocomplete="email">
-  <p class="muted" style="margin-top:8px">入力すると、結果画面から自分あてのメールを作成できます。空欄でも結果は見られます。</p>
-
-  <button type="button" class="btn" id="resultBtn" style="margin-top:22px">結果を見る</button>
-</section>
-
-<!-- ===== 結果 ===== -->
-<section id="s-result" class="hidden">
-  <div class="sheet hero" id="card">
-    <div class="heroimg"><img id="rImg" alt=""></div>
-    <p class="code" id="rCode"></p>
-    <h2 class="tname" id="rName"></h2>
-    <p class="catch" id="rCatch"></p>
-
-    <div class="bars" id="rBars"></div>
-
-    <div class="block">
-      <h3>コードの意味</h3>
-      <div class="codebox" id="rCode3"></div>
+    <label class="f">性別</label>
+    <div class="pill" id="sexPill">
+      <button type="button" data-v="女性" aria-pressed="false">女性</button>
+      <button type="button" data-v="男性" aria-pressed="false">男性</button>
+      <button type="button" data-v="その他" aria-pressed="false">その他</button>
+      <button type="button" data-v="答えない" aria-pressed="false">答えない</button>
     </div>
 
-    <div class="block"><h3>きみの得意</h3><p id="rGood"></p></div>
-    <div class="block"><h3>避難所での持ち場</h3><p id="rPost"></p></div>
-    <div class="block warn"><h3>気をつけたいこと</h3><p id="rBlind"></p></div>
-    <div class="block"><h3>今日からの一歩</h3><p id="rStep"></p></div>
-    <div class="block">
-      <h3>相棒と、正反対</h3>
-      <div class="duo">
-        <div><em>相棒</em><img id="rBuddyImg" alt=""><b id="rBuddy"></b></div>
-        <div><em>正反対</em><img id="rOppImg" alt=""><b id="rOpp"></b></div>
+    <label class="f" for="mail">結果を送るメールアドレス（任意）</label>
+    <input
+      id="mail"
+      type="email"
+      inputmode="email"
+      placeholder="you@example.com"
+      autocomplete="email"
+    />
+    <p class="muted" style="margin-top:8px">
+      入力すると、結果画面から自分あてのメールを作成できます。空欄でも結果は見られます。
+    </p>
+
+    <button type="button" class="btn" id="resultBtn" style="margin-top:22px">
+      結果を見る
+    </button>
+  </section>
+
+  <!-- ===== 結果 ===== -->
+  <section id="s-result" class="hidden">
+    <div class="sheet hero" id="card">
+      <div class="heroimg"><img id="rImg" alt="" /></div>
+      <p class="code" id="rCode"></p>
+      <h2 class="tname" id="rName"></h2>
+      <p class="catch" id="rCatch"></p>
+
+      <div class="bars" id="rBars"></div>
+
+      <div class="block">
+        <h3>コードの意味</h3>
+        <div class="codebox" id="rCode3"></div>
       </div>
-      <p class="muted" style="margin-top:10px" id="rPairNote"></p>
+
+      <div class="block"><h3>きみの得意</h3><p id="rGood"></p></div>
+      <div class="block"><h3>避難所での持ち場</h3><p id="rPost"></p></div>
+      <div class="block warn"><h3>気をつけたいこと</h3><p id="rBlind"></p></div>
+      <div class="block"><h3>今日からの一歩</h3><p id="rStep"></p></div>
+      <div class="block">
+        <h3>相棒と、正反対</h3>
+        <div class="duo">
+          <div><em>相棒</em><img id="rBuddyImg" alt="" /><b id="rBuddy"></b></div>
+          <div><em>正反対</em><img id="rOppImg" alt="" /><b id="rOpp"></b></div>
+        </div>
+        <p class="muted" style="margin-top:10px" id="rPairNote"></p>
+      </div>
+      <div class="block"><h3>もっと知りたい人へ</h3><p id="rTheme"></p></div>
+
+      <div class="note">
+        <p>
+          あなたの動物は、置かれた場所や役割で変わります。災害時の行動を最も強く決めるのは性格ではなく、そのときの状況です。結果を「自分はこういう人だ」と決めつけるためではなく、ほかの助け方を知るために使ってください。
+        </p>
+      </div>
     </div>
-    <div class="block"><h3>もっと知りたい人へ</h3><p id="rTheme"></p></div>
 
-    <div class="note">
-      <p>あなたの動物は、置かれた場所や役割で変わります。災害時の行動を最も強く決めるのは性格ではなく、そのときの状況です。結果を「自分はこういう人だ」と決めつけるためではなく、ほかの助け方を知るために使ってください。</p>
+    <div class="sheet noprint">
+      <h2>結果を残す</h2>
+      <p class="muted" id="mailNote"></p>
+      <button type="button" class="btn sign" id="mailBtn">メールを作成する</button>
+      <button type="button" class="btn ghost" id="printBtn">
+        このカードを印刷 / PDFで保存
+      </button>
+      <button type="button" class="btn ghost" id="againBtn">もう一度やる</button>
     </div>
-  </div>
-
-  <div class="sheet noprint">
-    <h2>結果を残す</h2>
-    <p class="muted" id="mailNote"></p>
-    <button type="button" class="btn sign" id="mailBtn">メールを作成する</button>
-    <button type="button" class="btn ghost" id="printBtn">このカードを印刷 / PDFで保存</button>
-    <button type="button" class="btn ghost" id="againBtn">もう一度やる</button>
-  </div>
-</section>
-
+  </section>
 </div>
 
-<script is:inline>
-/* ====== GAS連携設定 ====== */
-// ★デプロイしたGASのウェブアプリURLをここに設定してください
-const GAS_WEB_APP_URL = "YOUR_GAS_WEB_APP_URL_HERE";
+<style is:global>
+  :root {
+    --bg1: #f2f7ff;
+    --bg2: #fff8f0;
+    --card: #ffffff;
+    --ink: #232936;
+    --ink2: #6e7684;
+    --mute: #9aa1ac;
+    --line: #e6e9f0;
+    --accent: #ff9f1c;
+    --primary: #232936;
+    --c: #232936;
+    --r: 24px;
+    --disp: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", sans-serif;
+    --body: "Zen Kaku Gothic New", "Hiragino Sans", "Noto Sans JP", sans-serif;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: var(--body);
+    color: var(--ink);
+    background:
+      radial-gradient(46vw 34vw at 8% 4%, rgba(48, 224, 224, 0.16), transparent 70%),
+      radial-gradient(42vw 32vw at 96% 22%, rgba(240, 112, 160, 0.15), transparent 70%),
+      radial-gradient(46vw 36vw at 40% 100%, rgba(240, 192, 48, 0.16), transparent 70%),
+      linear-gradient(170deg, var(--bg1), var(--bg2));
+    background-attachment: fixed;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+  }
 
-// GASへデータを送信する関数
-function sendDataToGAS(data) {
+  /* ---------- カード ---------- */
+  .sheet {
+    position: relative;
+    background: var(--card);
+    border-radius: var(--r);
+    box-shadow:
+      0 1px 2px rgba(35, 41, 54, 0.05),
+      0 12px 30px rgba(35, 41, 54, 0.08);
+    padding: 26px 22px 24px;
+    overflow: hidden;
+  }
+  .sheet + .sheet {
+    margin-top: 16px;
+  }
+
+  /* ---------- 文字 ---------- */
+  h1 {
+    font-family: var(--disp);
+    font-weight: 800;
+    font-size: clamp(32px, 9vw, 46px);
+    line-height: 1.12;
+    margin: 0 0 8px;
+    letter-spacing: 0.01em;
+  }
+  h2 {
+    font-family: var(--disp);
+    font-weight: 800;
+    font-size: 20px;
+    margin: 0 0 10px;
+    line-height: 1.4;
+  }
+  .eyebrow {
+    font-family: var(--disp);
+    font-weight: 700;
+    font-size: 11.5px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+  p {
+    line-height: 1.85;
+    margin: 0 0 14px;
+    font-size: 15px;
+  }
+  .muted {
+    color: var(--ink2);
+    font-size: 12.5px;
+    line-height: 1.8;
+  }
+
+  /* ---------- ボタン ---------- */
+  .btn {
+    display: block;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    font-family: var(--disp);
+    font-weight: 700;
+    font-size: 17px;
+    background: var(--primary);
+    color: #fff;
+    padding: 17px;
+    border-radius: 999px;
+    box-shadow: 0 6px 16px rgba(35, 41, 54, 0.24);
+    transition:
+      transform 0.13s ease,
+      box-shadow 0.13s ease,
+      opacity 0.13s;
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px rgba(35, 41, 54, 0.28);
+  }
+  .btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 3px 10px rgba(35, 41, 54, 0.22);
+  }
+  .btn.sign {
+    background: var(--accent);
+    color: #3a2400;
+    box-shadow: 0 6px 16px rgba(255, 159, 28, 0.4);
+  }
+  .btn.ghost {
+    background: transparent;
+    color: var(--ink2);
+    box-shadow: none;
+    font-family: var(--body);
+    font-size: 14px;
+    font-weight: 500;
+    padding: 11px;
+  }
+  .btn.ghost:hover {
+    transform: none;
+    color: var(--ink);
+    box-shadow: none;
+  }
+  :focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  /* ---------- 進捗 ---------- */
+  .prog {
+    display: flex;
+    gap: 3px;
+    margin: 0 0 18px;
+  }
+  .prog i {
+    flex: 1;
+    height: 7px;
+    background: #edf0f5;
+    border-radius: 999px;
+    transition:
+      background 0.25s,
+      transform 0.25s;
+  }
+  .prog i.on {
+    background: var(--dot);
+  }
+  .prog i.cur {
+    background: var(--dot);
+    transform: scaleY(1.9);
+  }
+  .count {
+    font-family: var(--disp);
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--mute);
+    letter-spacing: 0.06em;
+    margin: 0 0 8px;
+  }
+
+  /* ---------- 選択肢 ---------- */
+  .scene {
+    font-family: var(--disp);
+    font-weight: 700;
+    font-size: 12.5px;
+    color: #fff;
+    background: var(--primary);
+    display: inline-block;
+    padding: 5px 13px;
+    border-radius: 999px;
+    margin-bottom: 12px;
+  }
+  .qtext {
+    font-size: 16px;
+    line-height: 1.9;
+    margin: 0 0 20px;
+  }
+  .choice {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    background: #fff;
+    border: 2px solid var(--line);
+    border-radius: 18px;
+    padding: 15px 16px;
+    font-family: var(--body);
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: var(--ink);
+    margin-bottom: 11px;
+    transition:
+      border-color 0.14s,
+      box-shadow 0.14s,
+      transform 0.14s;
+  }
+  .choice:hover {
+    border-color: var(--accent);
+    box-shadow: 0 6px 18px rgba(255, 159, 28, 0.18);
+    transform: translateY(-1px);
+  }
+  .choice .mark {
+    font-family: var(--disp);
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--ink2);
+    background: #f1f4f9;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+  }
+  .choice:hover .mark {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  /* ---------- キャラ一覧 ---------- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    margin: 18px 0 4px;
+  }
+  .grid img {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 6px rgba(35, 41, 54, 0.14));
+  }
+
+  /* ---------- 軸の説明 ---------- */
+  .axbox {
+    background: #f6f8fc;
+    border-radius: 18px;
+    padding: 15px 16px 13px;
+    margin: 16px 0 14px;
+  }
+  .axttl {
+    font-family: var(--disp);
+    font-weight: 800;
+    font-size: 14px;
+    margin: 0 0 11px;
+  }
+  .axrow {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 8px;
+  }
+  .axrow .nm {
+    font-family: var(--disp);
+    font-weight: 700;
+    font-size: 11.5px;
+    color: var(--mute);
+    width: 54px;
+    flex: none;
+  }
+  .ltr {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #fff;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    padding: 5px 11px;
+    font-size: 12.5px;
+  }
+  .ltr b {
+    font-family: var(--disp);
+    font-weight: 800;
+    color: var(--ink);
+    font-size: 14px;
+  }
+  .axrow .sl {
+    color: var(--mute);
+    font-size: 11.5px;
+  }
+  .axnote {
+    font-size: 11.5px;
+    color: var(--ink2);
+    margin: 6px 0 0;
+    line-height: 1.7;
+  }
+
+  /* ---------- フォーム ---------- */
+  label.f {
+    display: block;
+    font-family: var(--disp);
+    font-weight: 700;
+    font-size: 14px;
+    margin: 18px 0 8px;
+  }
+  input,
+  select {
+    width: 100%;
+    font-family: var(--body);
+    font-size: 16px;
+    padding: 14px;
+    border: 2px solid var(--line);
+    border-radius: 14px;
+    background: #fff;
+    color: var(--ink);
+  }
+  input:focus,
+  select:focus {
+    border-color: var(--accent);
+    outline: none;
+  }
+  .pill {
+    display: flex;
+    gap: 7px;
+    flex-wrap: wrap;
+  }
+  .pill button {
+    flex: 1 1 auto;
+    min-width: 84px;
+    cursor: pointer;
+    font-family: var(--disp);
+    font-weight: 700;
+    font-size: 14.5px;
+    padding: 12px 10px;
+    border: 2px solid var(--line);
+    background: #fff;
+    border-radius: 999px;
+    color: var(--ink2);
+  }
+  .pill button[aria-pressed="true"] {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+
+  /* ---------- 結果 ---------- */
+  #s-result .sheet {
+    border-top: 5px solid var(--c);
+  }
+  .hero {
+    text-align: center;
+    padding-top: 6px;
+  }
+  .heroimg {
+    position: relative;
+    padding: 6px 0 2px;
+  }
+  .heroimg::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 52%;
+    transform: translate(-50%, -50%);
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    background: var(--c);
+    opacity: 0.13;
+    filter: blur(6px);
+  }
+  .heroimg img {
+    position: relative;
+    width: 230px;
+    max-width: 70%;
+    display: block;
+    margin: 0 auto;
+    filter: drop-shadow(0 10px 16px rgba(35, 41, 54, 0.2));
+  }
+  .code {
+    font-family: var(--disp);
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: var(--c);
+    margin: 12px 0 3px;
+  }
+  .tname {
+    font-family: var(--disp);
+    font-weight: 800;
+    font-size: clamp(27px, 8vw, 36px);
+    margin: 0 0 8px;
+    line-height: 1.25;
+    color: var(--c);
+  }
+  .catch {
+    font-size: 14.5px;
+    color: var(--ink2);
+    margin: 0 0 4px;
+  }
+
+  .bars {
+    margin: 24px 0 4px;
+  }
+  .bar {
+    margin-bottom: 14px;
+  }
+  .bar .lab {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--disp);
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--mute);
+    margin-bottom: 5px;
+  }
+  .bar .lab b {
+    color: var(--ink);
+  }
+  .track {
+    height: 11px;
+    background: #edf0f5;
+    border-radius: 999px;
+    overflow: hidden;
+    display: flex;
+  }
+  .track span {
+    display: block;
+    height: 100%;
+    background: var(--c);
+  }
+  .track span.r {
+    background: #c9cfda;
+    margin-left: auto;
+  }
+
+  .block {
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+    margin-top: 16px;
+    text-align: left;
+  }
+  .block h3 {
+    font-family: var(--disp);
+    font-weight: 800;
+    font-size: 13.5px;
+    margin: 0 0 8px;
+    color: var(--c);
+    letter-spacing: 0.02em;
+  }
+  .block.warn h3 {
+    color: #d2691e;
+  }
+  .block p {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.85;
+  }
+
+  .codebox {
+    margin-top: 2px;
+  }
+  .cline {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: #f7f9fc;
+    border-radius: 16px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+  }
+  .cbig {
+    font-family: var(--disp);
+    font-weight: 800;
+    font-size: 26px;
+    color: var(--c);
+    line-height: 1;
+    width: 26px;
+    flex: none;
+    padding-top: 2px;
+  }
+  .cmeta {
+    flex: 1;
+  }
+  .cmeta .t1 {
+    font-family: var(--disp);
+    font-weight: 700;
+    font-size: 14px;
+    margin: 0 0 2px;
+  }
+  .cmeta .t2 {
+    font-size: 12.5px;
+    color: var(--ink2);
+    margin: 0 0 4px;
+    line-height: 1.6;
+  }
+  .cmeta .t3 {
+    font-size: 11px;
+    color: var(--mute);
+    margin: 0;
+    line-height: 1.6;
+  }
+  .cmeta .t3 span {
+    color: var(--ink2);
+    font-weight: 600;
+  }
+
+  .duo {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .duo div {
+    flex: 1;
+    text-align: center;
+    background: #f7f9fc;
+    border-radius: 16px;
+    padding: 10px 6px 12px;
+  }
+  .duo img {
+    width: 100%;
+    max-width: 78px;
+    filter: drop-shadow(0 4px 6px rgba(35, 41, 54, 0.16));
+  }
+  .duo b {
+    display: block;
+    font-family: var(--disp);
+    font-size: 12.5px;
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+  .duo em {
+    display: block;
+    font-style: normal;
+    font-size: 10.5px;
+    color: var(--mute);
+    margin-bottom: 2px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .note {
+    background: #f6f8fc;
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-top: 18px;
+    text-align: left;
+  }
+  .note p {
+    margin: 0;
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--ink2);
+  }
+
+  .hidden {
+    display: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+  @media print {
+    body {
+      background: #fff;
+    }
+    .noprint {
+      display: none !important;
+    }
+    .sheet {
+      box-shadow: none;
+      border: 1px solid #ddd;
+    }
+  }
+</style>
+
+<script>
+  interface FormDataPayload {
+    age?: string;
+    gender?: string;
+    email?: string;
+    resultCode?: string;
+    resultName?: string;
+  }
+
+  /* ====== GAS連携設定 ====== */
+  const GAS_WEB_APP_URL = "YOUR_GAS_WEB_APP_URL_HERE";
+
+  function sendDataToGAS(data: FormDataPayload) {
     if (!GAS_WEB_APP_URL || GAS_WEB_APP_URL === "YOUR_GAS_WEB_APP_URL_HERE") {
-        console.warn("GAS_WEB_APP_URL が設定されていません。");
-        return;
+      console.warn("GAS_WEB_APP_URL が設定されていません。");
+      return;
     }
 
     const payload = {
-        timestamp: new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" }),
-        age: data.age || "未回答",
-        gender: data.gender || "未回答",
-        email: data.email || "未回答",
-        resultCode: data.resultCode || "",
-        resultName: data.resultName || ""
+      timestamp: new Date().toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" }),
+      age: data.age || "未回答",
+      gender: data.gender || "未回答",
+      email: data.email || "未回答",
+      resultCode: data.resultCode || "",
+      resultName: data.resultName || "",
     };
 
     fetch(GAS_WEB_APP_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
     })
-    .then(() => console.log("GASへデータを送信しました。"))
-    .catch((error) => console.error("GAS送信エラー:", error));
-}
+      .then(() => console.log("GASへデータを送信しました。"))
+      .catch((error) => console.error("GAS送信エラー:", error));
+  }
 
-/* ====== 性別ボタン（Pill）制御 ====== */
-let selectedGender = "";
-document.addEventListener("DOMContentLoaded", () => {
-  const sexButtons = document.querySelectorAll("#sexPill button");
-  sexButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      sexButtons.forEach(b => b.setAttribute("aria-pressed", "false"));
-      btn.setAttribute("aria-pressed", "true");
-      selectedGender = btn.getAttribute("data-v");
+  /* ====== 性別ボタン（Pill）制御 ====== */
+  let selectedGender = "";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const sexButtons = document.querySelectorAll("#sexPill button");
+    sexButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        sexButtons.forEach((b) => b.setAttribute("aria-pressed", "false"));
+        btn.setAttribute("aria-pressed", "true");
+        selectedGender = btn.getAttribute("data-v") || "";
+      });
     });
+
+    const resultBtn = document.getElementById("resultBtn");
+    if (resultBtn) {
+      resultBtn.addEventListener("click", () => {
+        const ageVal = (document.getElementById("age") as HTMLSelectElement)?.value || "";
+        const mailVal = (document.getElementById("mail") as HTMLInputElement)?.value || "";
+
+        const dataToSave = {
+          age: ageVal,
+          gender: selectedGender,
+          email: mailVal,
+          resultCode: document.getElementById("rCode")?.textContent || "",
+          resultName: document.getElementById("rName")?.textContent || "",
+        };
+
+        sendDataToGAS(dataToSave);
+
+        document.getElementById("s-profile")?.classList.add("hidden");
+        document.getElementById("s-result")?.classList.remove("hidden");
+      });
+    }
   });
 
-  // 「結果を見る」ボタン押下時にGASへ送る例
-  const resultBtn = document.getElementById("resultBtn");
-  if (resultBtn) {
-    resultBtn.addEventListener("click", () => {
-      const ageVal = document.getElementById("age").value;
-      const mailVal = document.getElementById("mail").value;
-      
-      // 診断結果データ取得（既存ロジックに合わせて変数を指定）
-      const dataToSave = {
-        age: ageVal,
-        gender: selectedGender,
-        email: mailVal,
-        resultCode: document.getElementById("rCode")?.textContent || "",
-        resultName: document.getElementById("rName")?.textContent || ""
-      };
-
-      // GASへのデータ送信実行
-      sendDataToGAS(dataToSave);
-
-      // 画面切り替え処理など
-      document.getElementById("s-profile").classList.add("hidden");
-      document.getElementById("s-result").classList.remove("hidden");
-    });
-  }
-});
-
-/* ====== 画像 ====== */
-const IMG = {"hamster": "data:image/webp;base64,UklGRtiVAABXRUJQVlA4WAoAAAAQAAAAjwEAjwEAQUxQSPFKAAABDMhtI0mSQvLf67oie3b/ETEBqUI455PcqsxwzEZxnWBV5XJDD1SOrrgfcN35WMMjvs8V+RfSo0ctA1ILPekBLQnt9CRtHGiPSLq88Aknf6I7Q4oaJti+AFjn/OIkBPUFJwHccjvkhTcMiYVMXZJLaFDgOuzvmndHh8k7fg0cz5vzfAdY4EMiaIojGCjgJOn+QpiQDr/gH5MWE7Rm+QTKBTM8L5RVpKmQ5qEaSBsgn6VFbZshSfr/P6LY7h7btq21bZvdM3O3tm3btm3b9jbWbFRm5H9OVa83vorLiIAFyW7b5gwSAigwvQjot/sN35WMMjvs8V+RfSo0ctA1ILPekBLQnt9CRtHGiPSLq88Aknf6I7Q4oaJti+AFjn/OIkBPUFJwHccjvkhTcMiYVMXZJLaFDgOuzvmndHh8k7fg0cz5vzfAdY4EMiaIojGCjgJOn+QpiQDr/gH5MWE7Rm+QTKBTM8L5RVpKmQ5qEaSBsgn6VFbZshSfr/P6LY7h7btq21bZvdM3O3tm3btm3b9jbWbFRm5H9OVa83vorLiIAFyW7b5gwSAigwvQjo..."};
+  /* ====== 画像 ====== */
+  const IMG = {
+    hamster:
+      "data:image/webp;base64,UklGRtiVAABXRUJQVlA4WAoAAAAQAAAAjwEAjwEAQUxQSPFKAAABDMhtI0mSQvLf67oie3b/ETEBqUI455PcqsxwzEZxnWBV5XJDD1SOrrgfcN35WMMjvs8V+RfSo0ctA1ILPekBLQnt9CRtHGiPSLq88Aknf6I7Q4oaJti+AFjn/OIkBPUFJwHccjvkhTcMiYVMXZJLaFDgOuzvmndHh8k7fg0cz5vzfAdY4EMiaIojGCjgJOn+QpiQDr/gH5MWE7Rm+QTKBTM8L5RVpKmQ5qEaSBsgn6VFbZshSfr/P6LY7h7btq21bZvdM3O3tm3btm3b9jbWbFRm5H9OVa83vorLiIAFyW7b5gwSAigwvQjo...",
+  };
 </script>
-</body>
-</html>
