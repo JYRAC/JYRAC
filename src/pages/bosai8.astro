@@ -89,8 +89,8 @@ p{line-height:1.85;margin:0 0 14px;font-size:15px}
 .choice:hover .mark{background:var(--accent);color:#fff}
 
 /* ---------- キャラ一覧 ---------- */
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:18px 0 4px}
-.grid img{width:100%;display:block;filter:drop-shadow(0 4px 6px rgba(35,41,54,.14))}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:18px 0 4px;width:100%;min-width:0}
+.grid img{width:100%;max-width:100%;min-width:0;height:auto;display:block;filter:drop-shadow(0 4px 6px rgba(35,41,54,.14))}
 
 /* ---------- 軸の説明 ---------- */
 .axbox{background:#F6F8FC;border-radius:18px;padding:15px 16px 13px;margin:16px 0 14px}
