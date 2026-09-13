@@ -2,6 +2,14 @@
 // 必要に応じてコンポーネントのインポートや型定義を記述します
 ---
 
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ぼうさい8｜JYRAC</title>
+  </head>
+  <body>
     <div class="wrap">
   <!-- ===== 表紙 ===== -->
   <section id="s-intro" class="sheet">
@@ -720,7 +728,7 @@
   }
 </style>
 
-<script>
+<script lang="ts">
   interface FormDataPayload {
     age?: string;
     gender?: string;
@@ -800,3 +808,6 @@
     hamster: "/images/hamster.webp",
   };
 </script>
+    </div>
+  </body>
+</html>
