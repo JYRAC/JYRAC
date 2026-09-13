@@ -1,20 +1,22 @@
 ---
-import { useTranslations, type Lang } from '../lib/i18n';
+import { translations, type Lang } from '../lib/i18n';
 
 interface Props {
   title: string;
-  currentTab: 'news' | 'about' | 'services' | 'recruitment' | 'governance' | 'sns' | 'contact' | 'gioco' | 'bosai8'; 
+  currentTab: string;
 }
 
 const { title, currentTab } = Astro.props;
 
-// getLangFromUrl を使わず、ここで直接 URL パラメーターから判定
-const currentLang: Lang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
+// URLパラメーターから言語を取得（httpsプロトコルへ補正）
+const requestUrl = Astro.request.url.replace(/^http:/, 'https:');
+const url = new URL(requestUrl);
+const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
 
-// 元のエクスポート関数 useTranslations を使用
-const t = (typeof useTranslations === 'function' ? useTranslations(currentLang) : {}) as any;
+// translations オブジェクトから取得（未定義時もフォールバック）
+const t = translations?.[currentLang] || translations?.['ja'] || {} as any;
 const langParam = currentLang === 'en' ? '?lang=en' : '';
-const currentPath = Astro.url.pathname;
+const currentPath = url.pathname;
 ---
 <!DOCTYPE html>
 <html lang={currentLang}>
