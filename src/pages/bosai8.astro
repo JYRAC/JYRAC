@@ -20,7 +20,7 @@
       </p>
     </div>
     <p class="muted">
-      15問＋5問／2〜3分。正解はありません。<br />
+      15問＋5問／2～3分。正解はありません。<br />
       設問は各軸10問の中から5問ずつ選ばれるので、やるたびに出題は変わります。<br />
       これは心理検査ではなく、助け方にはいろいろあることを知るための学びのきっかけです。
     </p>
@@ -34,7 +34,7 @@
     <span class="scene" id="scene"></span>
     <p class="qtext" id="qtext"></p>
     <div id="choices"></div>
-    <button type="button" class="btn ghost" id="backBtn">← ひとつ前にもどる</button>
+    <button type="button" class="btn ghost" id="backBtn">&larr; ひとつ前にもどる</button>
   </section>
 
   <!-- ===== 属性 ===== -->
@@ -48,9 +48,15 @@
     <label class="f" for="age">年齢</label>
     <select id="age">
       <option value="">選ばない</option>
-      <option>12歳以下</option><option>13〜15歳</option><option>16〜18歳</option>
-      <option>19〜22歳</option><option>23〜29歳</option><option>30〜39歳</option>
-      <option>40〜49歳</option><option>50〜59歳</option><option>60歳以上</option>
+      <option>12歳以下</option>
+      <option>13～15歳</option>
+      <option>16～18歳</option>
+      <option>19～22歳</option>
+      <option>23～29歳</option>
+      <option>30～39歳</option>
+      <option>40～49歳</option>
+      <option>50～59歳</option>
+      <option>60歳以上</option>
     </select>
 
     <label class="f">性別</label>
@@ -788,9 +794,9 @@
     }
   });
 
-  /* ====== 画像 ====== */
+  /* ====== 画像パスの設定例 ====== */
   const IMG = {
-    hamster:
-      "data:image/webp;base64,UklGRtiVAABXRUJQVlA4WAoAAAAQAAAAjwEAjwEAQUxQSPFKAAABDMhtI0mSQvLf67oie3b/ETEBqUI455PcqsxwzEZxnWBV5XJDD1SOrrgfcN35WMMjvs8V+RfSo0ctA1ILPekBLQnt9CRtHGiPSLq88Aknf6I7Q4oaJti+AFjn/OIkBPUFJwHccjvkhTcMiYVMXZJLaFDgOuzvmndHh8k7fg0cz5vzfAdY4EMiaIojGCjgJOn+QpiQDr/gH5MWE7Rm+QTKBTM8L5RVpKmQ5qEaSBsgn6VFbZshSfr/P6LY7h7btq21bZvdM3O3tm3btm3b9jbWbFRm5H9OVa83vorLiIAFyW7b5gwSAigwvQjo...",
+    // 画像はパス指定か正確なBase64形式で記述してください
+    hamster: "/images/hamster.webp",
   };
 </script>
