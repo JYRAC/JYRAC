@@ -599,6 +599,12 @@ function send(){
     typeName:type ? type.name : "",
     scores:result.c,
     answers:answers,
+    // 選択した回答文をQ1〜Q20としてそのまま保存できるよう送信
+    answerTexts:answers.map((a,i)=>{
+      const q=deck[i];
+      const selected=q && Array.isArray(q.o) ? q.o.find(o=>o.p===a.p) : null;
+      return selected ? selected.t : "";
+    }),
 
     // 既存の送信データも保持（他の処理との互換性のため）
     at:new Date().toISOString(),
