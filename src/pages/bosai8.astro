@@ -14,106 +14,112 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
   title={currentLang === 'en' ? 'Bosai 8 Type Diagnosis | JYRAC' : 'ぼうさい8 防災共助タイプ診断 | 日本若者防災復興協会'} 
   currentTab="gioco"
 >
-  <div class="b8-wrapper" id="b8-root">
+  <!-- Google Fontsの読み込み（もとのHTML準拠） -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <div class="wrap" id="b8-root">
     
     <!-- ===== 表紙 ===== -->
-    <section id="s-intro" class="b8-sheet">
-      <p class="b8-eyebrow">JYRAC 防災共助タイプ診断</p>
-      <h1 class="b8-title">ぼうさい8</h1>
-      <p class="b8-p">災害のとき、人の助け方はひとつじゃない。<br>20の場面であなたが選んだ行動から、8匹のうちどの助け方に近いかを見つけます。</p>
+    <section id="s-intro" class="sheet">
+      <p class="eyebrow">JYRAC 防災共助タイプ診断</p>
+      <h1>ぼうさい8</h1>
+      <p>災害のとき、人の助け方はひとつじゃない。<br>20の場面であなたが選んだ行動から、8匹のうちどの助け方に近いかを見つけます。</p>
       
-      <div class="b8-grid" id="introGrid"></div>
+      <!-- 8匹の動物アイコン表示グリッド -->
+      <div class="grid" id="introGrid"></div>
       
-      <div class="b8-axbox">
-        <p class="b8-axttl">3つの軸で、8タイプに分かれます</p>
+      <div class="axbox">
+        <p class="axttl">3つの軸で、8タイプに分かれます</p>
         <div id="axList"></div>
-        <p class="b8-axnote">3文字の組み合わせ（例：P・S・N）が、あなたのタイプコードになります。</p>
+        <p class="axnote">3文字の組み合わせ（例：P・S・N）が、あなたのタイプコードになります。</p>
       </div>
       
-      <p class="b8-muted">15問＋5問／所要時間 約2〜3分。正解はありません。<br>設問は各軸10問の中から5問ずつ選ばれるため、受けるたびに出題が変わります。<br>これは心理検査ではなく、助け方の多様性を知るための学びのきっかけです。</p>
-      <button class="b8-btn" id="startBtn" type="button">はじめる</button>
+      <p class="muted">15問＋5問／2〜3分。正解はありません。<br>設問は各軸10問の中から5問ずつ選ばれるので、やるたびに出題は変わります。<br>これは心理検査ではなく、助け方にはいろいろあることを知るための学びのきっかけです。</p>
+      <button class="btn" id="startBtn" type="button">はじめる</button>
     </section>
 
     <!-- ===== 設問 ===== -->
-    <section id="s-quiz" class="b8-sheet b8-hidden">
-      <p class="b8-count" id="count"></p>
-      <div class="b8-prog" id="prog"></div>
-      <span class="b8-scene" id="scene"></span>
-      <p class="b8-qtext" id="qtext"></p>
+    <section id="s-quiz" class="sheet hidden">
+      <p class="count" id="count"></p>
+      <div class="prog" id="prog"></div>
+      <span class="scene" id="scene"></span>
+      <p class="qtext" id="qtext"></p>
       <div id="choices"></div>
-      <button class="b8-btn b8-ghost" id="backBtn" type="button">← ひとつ前にもどる</button>
+      <button class="btn ghost" id="backBtn" type="button">← ひとつ前にもどる</button>
     </section>
 
     <!-- ===== 属性入力（メールアドレス必須） ===== -->
-    <section id="s-profile" class="b8-sheet b8-hidden">
-      <p class="b8-eyebrow">あと少し</p>
-      <h2 class="b8-h2">あなたについて教えてください</h2>
-      <p class="b8-muted">JYRAC が防災教育の研究に使う統計データです。氏名は収集しません。</p>
+    <section id="s-profile" class="sheet hidden">
+      <p class="eyebrow">あと少し</p>
+      <h2>あなたについて教えてください</h2>
+      <p class="muted">JYRAC が防災教育の研究に使う統計データです。氏名は収集しません。</p>
 
-      <label class="b8-f-label" for="b8-age">年齢</label>
-      <select id="b8-age" class="b8-select">
+      <label class="f" for="b8-age">年齢</label>
+      <select id="b8-age">
         <option value="">選ばない</option>
         <option>12歳以下</option><option>13〜15歳</option><option>16〜18歳</option>
         <option>19〜22歳</option><option>23〜29歳</option><option>30〜39歳</option>
         <option>40〜49歳</option><option>50〜59歳</option><option>60歳以上</option>
       </select>
 
-      <label class="b8-f-label">性別</label>
-      <div class="b8-pill" id="sexPill">
+      <label class="f">性別</label>
+      <div class="pill" id="sexPill">
         <button type="button" data-v="女性" aria-pressed="false">女性</button>
         <button type="button" data-v="男性" aria-pressed="false">男性</button>
         <button type="button" data-v="その他" aria-pressed="false">その他</button>
         <button type="button" data-v="答えない" aria-pressed="false">答えない</button>
       </div>
 
-      <label class="b8-f-label" for="b8-mail">結果を送るメールアドレス <span class="b8-req-badge">必須</span></label>
-      <input id="b8-mail" type="email" class="b8-input" inputmode="email" placeholder="you@example.com" autocomplete="email" required />
-      <p class="b8-muted" style="margin-top:6px;">診断結果の確認および集計用にメールアドレスを入力してください。</p>
-      <p id="mail-error" class="b8-err-msg">※ 有効なメールアドレスを入力してください。</p>
+      <label class="f" for="b8-mail">結果を送るメールアドレス <span class="req-badge">必須</span></label>
+      <input id="b8-mail" type="email" inputmode="email" placeholder="you@example.com" autocomplete="email" required />
+      <p class="muted" style="margin-top:6px;">診断結果の確認および集計用にメールアドレスを入力してください。</p>
+      <p id="mail-error" class="err-msg">※ 有効なメールアドレスを入力してください。</p>
 
-      <button class="b8-btn" id="resultBtn" type="button" style="margin-top:24px;">結果を見る</button>
+      <button class="btn" id="resultBtn" type="button" style="margin-top:22px;">結果を見る</button>
     </section>
 
     <!-- ===== 結果画面 ===== -->
-    <section id="s-result" class="b8-hidden">
-      <div class="b8-sheet b8-hero" id="b8-card">
-        <div class="b8-heroimg"><div id="rImgContainer"></div></div>
-        <p class="b8-code" id="rCode"></p>
-        <h2 class="b8-tname" id="rName"></h2>
-        <p class="b8-catch" id="rCatch"></p>
+    <section id="s-result" class="hidden">
+      <div class="sheet hero" id="card">
+        <div class="heroimg"><img id="rImg" alt="" /></div>
+        <p class="code" id="rCode"></p>
+        <h2 class="tname" id="rName"></h2>
+        <p class="catch" id="rCatch"></p>
 
-        <div class="b8-bars" id="rBars"></div>
+        <div class="bars" id="rBars"></div>
 
-        <div class="b8-block">
+        <div class="block">
           <h3>コードの意味</h3>
-          <div class="b8-codebox" id="rCode3"></div>
+          <div class="codebox" id="rCode3"></div>
         </div>
 
-        <div class="b8-block"><h3>きみの得意</h3><p id="rGood"></p></div>
-        <div class="b8-block"><h3>避難所での持ち場</h3><p id="rPost"></p></div>
-        <div class="b8-block b8-warn"><h3>気をつけたいこと</h3><p id="rBlind"></p></div>
-        <div class="b8-block"><h3>今日からの一歩</h3><p id="rStep"></p></div>
-        <div class="b8-block">
+        <div class="block"><h3>きみの得意</h3><p id="rGood"></p></div>
+        <div class="block"><h3>避難所での持ち場</h3><p id="rPost"></p></div>
+        <div class="block warn"><h3>気をつけたいこと</h3><p id="rBlind"></p></div>
+        <div class="block"><h3>今日からの一歩</h3><p id="rStep"></p></div>
+        <div class="block">
           <h3>相棒と、正反対</h3>
-          <div class="b8-duo">
-            <div><em>相棒</em><div id="rBuddyImgContainer"></div><b id="rBuddy"></b></div>
-            <div><em>正反対</em><div id="rOppImgContainer"></div><b id="rOpp"></b></div>
+          <div class="duo">
+            <div><em>相棒</em><img id="rBuddyImg" alt=""><b id="rBuddy"></b></div>
+            <div><em>正反対</em><img id="rOppImg" alt=""><b id="rOpp"></b></div>
           </div>
-          <p class="b8-muted" style="margin-top:10px" id="rPairNote"></p>
+          <p class="muted" style="margin-top:10px" id="rPairNote"></p>
         </div>
-        <div class="b8-block"><h3>もっと知りたい人へ</h3><p id="rTheme"></p></div>
+        <div class="block"><h3>もっと知りたい人へ</h3><p id="rTheme"></p></div>
 
-        <div class="b8-note">
+        <div class="note">
           <p>あなたの動物は、置かれた場所や役割で変わります。災害時の行動を最も強く決めるのは性格ではなく、そのときの状況です。結果を「自分はこういう人だ」と決めつけるためではなく、ほかの助け方を知るために使ってください。</p>
         </div>
       </div>
 
-      <div class="b8-sheet b8-noprint" style="margin-top: 20px;">
-        <h2 class="b8-h2">結果を残す</h2>
-        <p class="b8-muted" id="mailNote"></p>
-        <button class="b8-btn b8-sign" id="mailBtn" type="button">メールを作成する</button>
-        <button class="b8-btn b8-ghost" id="printBtn" type="button">このカードを印刷 / PDFで保存</button>
-        <button class="b8-btn b8-ghost" id="againBtn" type="button">もう一度やる</button>
+      <div class="sheet noprint" style="margin-top: 20px;">
+        <h2>結果を残す</h2>
+        <p class="muted" id="mailNote"></p>
+        <button class="btn sign" id="mailBtn" type="button">メールを作成する</button>
+        <button class="btn ghost" id="printBtn" type="button">このカードを印刷 / PDFで保存</button>
+        <button class="btn ghost" id="againBtn" type="button">もう一度やる</button>
       </div>
     </section>
 
@@ -121,250 +127,210 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
 </Layout>
 
 <style>
-  .b8-wrapper {
-    --card: #ffffff;
-    --ink: #232936; 
-    --ink2: #6E7684; 
-    --mute: #9AA1AC;
-    --line: #E6E9F0;
-    --accent: #FF9F1C;
-    --primary: #002b54;
-    --c: #002b54;
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 0 0 30px;
-    color: var(--ink);
-    box-sizing: border-box;
-  }
+:root{
+  --bg1:#F2F7FF; --bg2:#FFF8F0;
+  --card:#ffffff;
+  --ink:#232936; --ink2:#6E7684; --mute:#9AA1AC;
+  --line:#E6E9F0;
+  --accent:#FF9F1C;
+  --primary:#232936;
+  --c:#232936;
+  --r:24px;
+  --disp:"M PLUS Rounded 1c","Hiragino Maru Gothic ProN",sans-serif;
+  --body:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",sans-serif;
+}
+.b8-wrap{
+  font-family:var(--body); color:var(--ink);
+  max-width:600px; margin:0 auto; padding:0 0 44px;
+  box-sizing: border-box;
+}
+*{box-sizing:border-box}
 
-  .b8-sheet {
-    position: relative;
-    background: var(--card);
-    border-radius: 20px;
-    border: 1px solid rgba(0, 154, 166, 0.18);
-    box-shadow: 0 4px 20px rgba(0, 43, 84, 0.05);
-    padding: 30px 24px;
-    box-sizing: border-box;
-  }
-  .b8-sheet + .b8-sheet { margin-top: 20px; }
+.sheet{
+  position:relative; background:var(--card); border-radius:var(--r);
+  box-shadow:0 1px 2px rgba(35,41,54,.05), 0 12px 30px rgba(35,41,54,.08);
+  padding:26px 22px 24px; box-sizing: border-box;
+  width: 100%;
+}
+.sheet + .sheet{margin-top:16px}
 
-  .b8-title {
-    font-size: clamp(26px, 5vw, 34px);
-    font-weight: 900;
-    color: var(--primary);
-    margin: 0 0 10px;
-    line-height: 1.2;
-  }
-  .b8-h2 {
-    font-size: 19px;
-    font-weight: 800;
-    color: var(--primary);
-    margin: 0 0 12px;
-  }
-  .b8-eyebrow {
-    font-weight: 800;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    color: #009aa6;
-    margin: 0 0 8px;
-    text-transform: uppercase;
-  }
-  .b8-p { line-height: 1.8; margin: 0 0 16px; font-size: 14.5px; }
-  .b8-muted { color: var(--ink2); font-size: 12.5px; line-height: 1.7; margin: 10px 0 16px; }
+h1{font-family:var(--disp);font-weight:800;font-size:clamp(32px,9vw,46px);line-height:1.12;margin:0 0 8px;letter-spacing:.01em}
+h2{font-family:var(--disp);font-weight:800;font-size:20px;margin:0 0 10px;line-height:1.4}
+.eyebrow{font-family:var(--disp);font-weight:700;font-size:11.5px;letter-spacing:.2em;color:var(--accent);margin:0 0 10px}
+p{line-height:1.85;margin:0 0 14px;font-size:15px}
+.muted{color:var(--ink2);font-size:12.5px;line-height:1.8}
 
-  .b8-btn {
-    display: block; width: 100%; box-sizing: border-box; border: none; cursor: pointer;
-    font-weight: 800; font-size: 16px; background: var(--primary); color: #fff;
-    padding: 16px; border-radius: 999px; box-shadow: 0 4px 14px rgba(0, 43, 84, 0.2);
-    transition: transform 0.12s ease, box-shadow 0.12s ease; text-align: center;
-  }
-  .b8-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0, 43, 84, 0.28); }
-  .b8-btn:active { transform: translateY(1px); }
-  .b8-btn.b8-sign { background: var(--accent); color: #3A2400; box-shadow: 0 4px 14px rgba(255, 159, 28, 0.35); margin-bottom: 10px; }
-  .b8-btn.b8-ghost { background: transparent; color: var(--ink2); box-shadow: none; font-size: 13.5px; font-weight: 700; padding: 10px; }
-  .b8-btn.b8-ghost:hover { color: var(--ink); transform: none; box-shadow: none; }
+.btn{
+  display:block;width:100%;border:none;cursor:pointer;
+  font-family:var(--disp);font-weight:700;font-size:17px;
+  background:var(--primary);color:#fff;padding:17px;border-radius:999px;
+  box-shadow:0 6px 16px rgba(35,41,54,.24);
+  transition:transform .13s ease, box-shadow .13s ease, opacity .13s;
+  text-align: center; box-sizing: border-box;
+}
+.btn:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(35,41,54,.28)}
+.btn:active{transform:translateY(1px);box-shadow:0 3px 10px rgba(35,41,54,.22)}
+.btn.sign{background:var(--accent);color:#3A2400;box-shadow:0 6px 16px rgba(255,159,28,.4);margin-bottom:10px}
+.btn.ghost{background:transparent;color:var(--ink2);box-shadow:none;font-family:var(--body);font-size:14px;font-weight:500;padding:11px}
+.btn.ghost:hover{transform:none;color:var(--ink);box-shadow:none}
 
-  .b8-prog { display: flex; gap: 4px; margin: 0 0 18px; }
-  .b8-prog i { flex: 1; height: 6px; background: #EDF0F5; border-radius: 999px; transition: background 0.25s; }
-  .b8-prog i.on { background: var(--dot); }
-  .b8-prog i.cur { background: var(--dot); transform: scaleY(1.8); }
-  .b8-count { font-weight: 800; font-size: 12px; color: var(--mute); margin: 0 0 8px; }
+.prog{display:flex;gap:3px;margin:0 0 18px}
+.prog i{flex:1;height:7px;background:#EDF0F5;border-radius:999px;transition:background .25s, transform .25s}
+.prog i.on{background:var(--dot)}
+.prog i.cur{background:var(--dot);transform:scaleY(1.9)}
+.count{font-family:var(--disp);font-weight:700;font-size:12px;color:var(--mute);letter-spacing:.06em;margin:0 0 8px}
 
-  .b8-scene {
-    font-weight: 800; font-size: 11px; color: #fff; background: #009aa6;
-    display: inline-block; padding: 3px 12px; border-radius: 999px; margin-bottom: 12px;
-  }
-  .b8-qtext { font-size: 15.5px; font-weight: 700; line-height: 1.8; margin: 0 0 18px; }
+.scene{
+  font-family:var(--disp);font-weight:700;font-size:12.5px;color:#fff;
+  background:var(--primary);display:inline-block;padding:5px 13px;border-radius:999px;margin-bottom:12px
+}
+.qtext{font-size:16px;line-height:1.9;margin:0 0 20px}
+.choice{
+  display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;cursor:pointer;
+  background:#fff;border:2px solid var(--line);border-radius:18px;
+  padding:15px 16px;font-family:var(--body);font-size:15.5px;line-height:1.7;color:var(--ink);
+  margin-bottom:11px;transition:border-color .14s, box-shadow .14s, transform .14s;
+  box-sizing: border-box;
+}
+.choice:hover{border-color:var(--accent);box-shadow:0 6px 18px rgba(255,159,28,.18);transform:translateY(-1px)}
+.choice .mark{
+  font-family:var(--disp);font-weight:800;font-size:13px;color:var(--ink2);
+  background:#F1F4F9;border-radius:50%;width:24px;height:24px;flex:none;
+  display:flex;align-items:center;justify-content:center;margin-top:2px
+}
+.choice:hover .mark{background:var(--accent);color:#fff}
 
-  .b8-choice {
-    display: flex; align-items: flex-start; gap: 12px; width: 100%; text-align: left; cursor: pointer;
-    background: #fff; border: 2px solid var(--line); border-radius: 16px;
-    padding: 14px 16px; font-size: 14.5px; line-height: 1.65; color: var(--ink);
-    margin-bottom: 10px; transition: border-color 0.15s, box-shadow 0.15s;
-    box-sizing: border-box;
-  }
-  .b8-choice:hover { border-color: #009aa6; box-shadow: 0 4px 14px rgba(0, 154, 166, 0.15); }
-  .b8-choice .mark {
-    font-weight: 800; font-size: 12px; color: var(--ink2); background: #F1F4F9;
-    border-radius: 50%; width: 22px; height: 22px; flex: none; display: flex; align-items: center; justify-content: center; margin-top: 2px;
-  }
-  .b8-choice:hover .mark { background: #009aa6; color: #fff; }
+/* 丸形アイコン一覧表示（はみ出しを確実に防止） */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 18px 0 10px;
+  width: 100%;
+}
+.b8-grid-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.b8-circle-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: var(--disp);
+  font-weight: 700;
+  font-size: 10.5px;
+  line-height: 1.25;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+  margin-bottom: 5px;
+  box-sizing: border-box;
+  padding: 4px;
+}
+.b8-circle-icon span { display: block; white-space: nowrap; }
+.b8-grid-item span.label {
+  font-family: var(--disp); font-size: 11px; font-weight: 700; color: var(--primary);
+}
 
-  /* 8匹の丸型アイコンレイアウト（はみ出し防止） */
-  .b8-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin: 20px 0;
-    width: 100%;
-    box-sizing: border-box;
-  }
+.axbox{background:#F6F8FC;border-radius:18px;padding:15px 16px 13px;margin:16px 0 14px}
+.axttl{font-family:var(--disp);font-weight:800;font-size:14px;margin:0 0 11px}
+.axrow{display:flex;align-items:center;gap:7px;margin-bottom:8px}
+.axrow .nm{font-family:var(--disp);font-weight:700;font-size:11.5px;color:var(--mute);width:54px;flex:none}
+.ltr{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1.5px solid var(--line);
+  border-radius:999px;padding:5px 11px;font-size:12.5px}
+.ltr b{font-family:var(--disp);font-weight:800;color:var(--ink);font-size:14px}
+.axrow .sl{color:var(--mute);font-size:11.5px}
+.axnote{font-size:11.5px;color:var(--ink2);margin:6px 0 0;line-height:1.7}
 
-  .b8-grid-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
+label.f{display:block;font-family:var(--disp);font-weight:700;font-size:14px;margin:18px 0 8px;color:var(--primary)}
+input,select{
+  width:100%;font-family:var(--body);font-size:16px;padding:14px;
+  border:2px solid var(--line);border-radius:14px;background:#fff;color:var(--ink);
+  box-sizing: border-box;
+}
+input:focus,select:focus{border-color:var(--accent);outline:none}
+.pill{display:flex;gap:7px;flex-wrap:wrap}
+.pill button{
+  flex:1 1 auto;min-width:84px;cursor:pointer;font-family:var(--disp);font-weight:700;font-size:14.5px;
+  padding:12px 10px;border:2px solid var(--line);background:#fff;border-radius:999px;color:var(--ink2)
+}
+.pill button[aria-pressed="true"]{background:var(--primary);border-color:var(--primary);color:#fff}
+.req-badge { color: #ef5a48; font-size: 11px; padding: 2px 6px; background: #ffe9e4; border-radius: 4px; margin-left: 4px; font-weight: bold; }
+.err-msg { display: none; color: #ef5a48; font-size: 13px; font-weight: bold; margin-top: 6px; }
 
-  .b8-circle-icon {
-    width: 68px;
-    height: 68px;
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    font-weight: 800;
-    font-size: 11px;
-    line-height: 1.25;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    margin-bottom: 6px;
-    user-select: none;
-    box-sizing: border-box;
-    padding: 4px;
-  }
+#s-result .sheet{border-top:5px solid var(--c)}
+.hero{text-align:center;padding-top:6px}
+.heroimg{position:relative;padding:6px 0 2px; display: flex; justify-content: center;}
 
-  .b8-circle-icon span {
-    display: block;
-    word-break: keep-all;
-    white-space: nowrap;
-  }
+/* 結果画面のメイン丸形アイコン */
+.hero-circle {
+  width: 140px; height: 140px; border-radius: 50%; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; color: #fff; font-family: var(--disp);
+  font-weight: 800; font-size: 15px; line-height: 1.35; margin: 10px auto;
+  box-shadow: 0 10px 22px rgba(35,41,54,.2); position: relative;
+}
+.hero-circle span { display: block; }
 
-  .b8-grid-item span.label {
-    font-size: 11px;
-    font-weight: 800;
-    color: var(--primary);
-    line-height: 1.3;
-    display: block;
-  }
+.code{font-family:var(--disp);font-weight:800;font-size:12px;letter-spacing:.3em;color:var(--c);margin:12px 0 3px}
+.tname{font-family:var(--disp);font-weight:800;font-size:clamp(27px,8vw,36px);margin:0 0 8px;line-height:1.25;color:var(--c)}
+.catch{font-size:14.5px;color:var(--ink2);margin:0 0 4px}
 
-  /* 結果画面のメイン丸型アイコン */
-  .b8-hero-circle {
-    width: 130px;
-    height: 130px;
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    font-weight: 900;
-    font-size: 16px;
-    line-height: 1.3;
-    margin: 10px auto;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-    user-select: none;
-  }
+.bars{margin:24px 0 4px}
+.bar{margin-bottom:14px}
+.bar .lab{display:flex;justify-content:space-between;font-family:var(--disp);font-weight:700;font-size:12px;color:var(--mute);margin-bottom:5px}
+.bar .lab b{color:var(--ink)}
+.track{height:11px;background:#EDF0F5;border-radius:999px;overflow:hidden;display:flex}
+.track span{display:block;height:100%;background:var(--c)}
+.track span.r{background:#C9CFDA;margin-left:auto}
 
-  /* 相棒・正反対の小型丸型アイコン */
-  .b8-sub-circle {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    font-weight: 800;
-    font-size: 10px;
-    line-height: 1.2;
-    margin: 4px auto 6px;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
-    user-select: none;
-  }
+.block{border-top:1px solid var(--line);padding-top:16px;margin-top:16px;text-align:left}
+.block h3{font-family:var(--disp);font-weight:800;font-size:13.5px;margin:0 0 8px;color:var(--c);letter-spacing:.02em}
+.block.warn h3{color:#D2691E}
+.block p{margin:0;font-size:14.5px;line-height:1.85}
 
-  .b8-axbox { background: #F8FAFC; border-radius: 16px; padding: 16px; margin: 16px 0; border: 1px solid var(--line); }
-  .b8-axttl { font-weight: 800; font-size: 13.5px; margin: 0 0 10px; color: var(--primary); }
-  .b8-axrow { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-  .b8-axrow .nm { font-weight: 800; font-size: 11px; color: var(--mute); width: 56px; flex: none; }
-  .b8-ltr { display: inline-flex; align-items: center; gap: 4px; background: #fff; border: 1.5px solid var(--line); border-radius: 999px; padding: 4px 10px; font-size: 12px; }
-  .b8-ltr b { font-weight: 800; color: var(--primary); }
-  .b8-axrow .sl { color: var(--mute); font-size: 11px; }
-  .b8-axnote { font-size: 11.5px; color: var(--ink2); margin: 6px 0 0; line-height: 1.6; }
+.codebox{margin-top:2px}
+.cline{display:flex;gap:12px;align-items:flex-start;background:#F7F9FC;border-radius:16px;padding:12px 14px;margin-bottom:8px}
+.cbig{font-family:var(--disp);font-weight:800;font-size:26px;color:var(--c);line-height:1;width:26px;flex:none;padding-top:2px}
+.cmeta{flex:1}
+.cmeta .t1{font-family:var(--disp);font-weight:700;font-size:14px;margin:0 0 2px}
+.cmeta .t2{font-size:12.5px;color:var(--ink2);margin:0 0 4px;line-height:1.6}
+.cmeta .t3{font-size:11px;color:var(--mute);margin:0;line-height:1.6}
+.cmeta .t3 span{color:var(--ink2);font-weight:600}
 
-  .b8-f-label { display: block; font-weight: 800; font-size: 13.5px; margin: 16px 0 8px; color: var(--primary); }
-  .b8-input, .b8-select {
-    width: 100%; box-sizing: border-box; font-size: 15px; padding: 13px 14px;
-    border: 2px solid var(--line); border-radius: 12px; background: #fff; color: var(--ink);
-  }
-  .b8-input:focus, .b8-select:focus { border-color: #009aa6; outline: none; }
-  .b8-pill { display: flex; gap: 6px; flex-wrap: wrap; }
-  .b8-pill button {
-    flex: 1 1 auto; min-width: 70px; cursor: pointer; font-weight: 700; font-size: 13.5px;
-    padding: 10px 8px; border: 2px solid var(--line); background: #fff; border-radius: 999px; color: var(--ink2);
-  }
-  .b8-pill button[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: #fff; }
-  .b8-req-badge { color: #ef5a48; font-size: 11px; padding: 2px 6px; background: #ffe9e4; border-radius: 4px; margin-left: 4px; }
-  .b8-err-msg { display: none; color: #ef5a48; font-size: 12.5px; font-weight: bold; margin-top: 6px; }
+.duo{display:flex;gap:10px;margin-top:4px}
+.duo div{flex:1;text-align:center;background:#F7F9FC;border-radius:16px;padding:10px 6px 12px}
 
-  /* 結果カードスタイル */
-  #s-result .b8-sheet { border-top: 6px solid var(--c); }
-  .b8-hero { text-align: center; }
-  .b8-heroimg { display: flex; justify-content: center; padding: 10px 0; }
-  .b8-code { font-weight: 900; font-size: 12px; letter-spacing: 0.25em; color: var(--c); margin: 10px 0 4px; }
-  .b8-tname { font-size: clamp(24px, 6vw, 32px); font-weight: 900; margin: 0 0 6px; line-height: 1.25; color: var(--c); }
-  .b8-catch { font-size: 14px; color: var(--ink2); margin: 0 0 10px; font-weight: 700; }
+/* 相棒・正反対の小型アイコン */
+.sub-circle {
+  width: 52px; height: 52px; border-radius: 50%; margin: 0 auto 6px; display: flex;
+  flex-direction: column; align-items: center; justify-content: center; color: #fff;
+  font-family: var(--disp); font-weight: 700; font-size: 9.5px; line-height: 1.2;
+  box-shadow: 0 4px 8px rgba(35,41,54,.12);
+}
+.sub-circle span { display: block; }
 
-  .b8-bars { margin: 20px 0 6px; text-align: left; }
-  .b8-bar { margin-bottom: 12px; }
-  .b8-bar .lab { display: flex; justify-content: space-between; font-weight: 800; font-size: 11.5px; color: var(--mute); margin-bottom: 4px; }
-  .b8-bar .lab b { color: var(--ink); }
-  .b8-track { height: 9px; background: #EDF0F5; border-radius: 999px; overflow: hidden; display: flex; }
-  .b8-track span { display: block; height: 100%; background: var(--c); }
-  .b8-track span.r { background: #C9CFDA; margin-left: auto; }
+.duo b{display:block;font-family:var(--disp);font-size:12.5px;margin-top:4px;line-height:1.4}
+.duo em{display:block;font-style:normal;font-size:10.5px;color:var(--mute);margin-bottom:2px;font-weight:700;letter-spacing:.08em}
 
-  .b8-block { border-top: 1px solid var(--line); padding-top: 14px; margin-top: 14px; text-align: left; }
-  .b8-block h3 { font-weight: 800; font-size: 13.5px; margin: 0 0 6px; color: var(--c); }
-  .b8-block.b8-warn h3 { color: #D2691E; }
-  .b8-block p { margin: 0; font-size: 14px; line-height: 1.8; }
+.note{background:#F6F8FC;border-radius:16px;padding:14px 16px;margin-top:18px;text-align:left}
+.note p{margin:0;font-size:12px;line-height:1.8;color:var(--ink2)}
 
-  .b8-cline { display: flex; gap: 10px; align-items: flex-start; background: #F8FAFC; border-radius: 12px; padding: 10px 12px; margin-bottom: 6px; }
-  .b8-cbig { font-weight: 900; font-size: 22px; color: var(--c); line-height: 1; width: 24px; flex: none; padding-top: 2px; }
-  .b8-cmeta .t1 { font-weight: 800; font-size: 13px; margin: 0 0 2px; }
-  .b8-cmeta .t2 { font-size: 12px; color: var(--ink2); margin: 0; }
-
-  .b8-duo { display: flex; gap: 8px; margin-top: 6px; }
-  .b8-duo div { flex: 1; text-align: center; background: #F8FAFC; border-radius: 12px; padding: 10px 6px; }
-  .b8-duo b { display: block; font-size: 12px; margin-top: 4px; }
-  .b8-duo em { display: block; font-style: normal; font-size: 10px; color: var(--mute); font-weight: 800; }
-
-  .b8-note { background: #F8FAFC; border-radius: 12px; padding: 12px 14px; margin-top: 16px; text-align: left; }
-  .b8-note p { margin: 0; font-size: 11.5px; line-height: 1.7; color: var(--ink2); }
-
-  .b8-hidden { display: none !important; }
-  @media print {
-    .b8-noprint { display: none !important; }
-    .b8-sheet { box-shadow: none; border: 1px solid #ddd; }
-  }
-
-  @media (max-width: 640px) {
-    .b8-grid { gap: 8px; }
-    .b8-circle-icon { width: 52px; height: 52px; font-size: 9.5px; }
-    .b8-grid-item span.label { font-size: 10px; }
-  }
+.b8-hidden{display:none!important}
+@media print{
+  body{background:#fff}
+  .noprint{display:none!important}
+  .sheet{box-shadow:none;border:1px solid #ddd}
+}
+@media (max-width: 640px) {
+  .grid { gap: 6px; }
+  .b8-circle-icon { width: 54px; height: 54px; font-size: 9px; }
+  .b8-grid-item span.label { font-size: 10px; }
+}
 </style>
 
 <script is:inline>
@@ -372,9 +338,10 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     const root = document.getElementById('b8-root');
     if (!root) return;
 
+    // スプレッドシート記録用GASエンドポイント
     const GAS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyuMhptc9qq1HxYVpOhwrO1GA5E1Zec8Wt67i7KsLZ8dv7HSwPGlq0Z1wtumpHclBk/exec";
 
-    // 8匹の表示情報定義（CSS円形レンダリング用）
+    // 8匹の動物の定義（CSS丸型で確実に綺麗に表現）
     const ANIMAL_ICONS = {
       hamster:  { col: "#EF5A48", line1: "てきぱき", line2: "ハムスター", name: "てきぱきハムスター" },
       ant:      { col: "#F06A18", line1: "だんどり", line2: "アリ",       name: "だんどりアリ" },
@@ -387,14 +354,54 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     };
 
     const TYPES = {
-      PSB:{col:"#EF5A48",key:"hamster",name:"てきぱきハムスター",catch:"決まったやり方で、目の前の一人をすぐ助ける",good:"やることが決まっている場面での速さが持ち味。手順を守れるので任せたことが確実に終わります。淡々と手を動かせる強さがあります。",post:"応急手当、荷物運び、体調確認。人手が要る作業を抜けなく回す役。",blind:"手順にないことが起きると足が止まりがち。ひとりで抱え込み助けを呼びそびれることも。",step:"普通救命講習などを受けてみる。手順を1つ増やすと動ける場面が広がります。",buddy:"MSN",opp:"MIN",theme:"災害時の応急対応と手順化"},
-      PSN:{col:"#F06A18",key:"ant",name:"だんどりアリ",catch:"全体の仕事と物を、きちんと回す",good:"人と物の流れを俯瞰して整えるのが得意。数と順番で混乱を減らし、誰が何をするかを決めて場を動かします。",post:"物資、受付、名簿、誘導。避難所運営の背骨になる仕事。",blind:"数字にならない苦しさを見落としがち。うまく回っているのにしんどい人が残ることも。",step:"学校や地域の避難所マニュアルを読み、足りない項目を3つ書き出す。",buddy:"MSB",opp:"MIB",theme:"避難所運営と組織対応"},
-      PIB:{col:"#E8AF1E",key:"squirrel",name:"こうさくリス",catch:"ありもので、目の前の困りごとを解決する",good:"道具がなくても、そこにある物で何とかしてしまう現場の強さ。「代用できる」の発想が早くつまずきを即座に消せます。",post:"段ボールベッド、簡易トイレ、間仕切り作り。生活の不便を潰す役。",blind:"勢いで安全ルールを飛び越えてしまうことがある。壊れたときの備えも大切に。",step:"段ボールベッドや簡易トイレを実際に一度組み立ててみる。",buddy:"MIN",opp:"MSN",theme:"災害対応における即興（Improvisation）"},
-      PIN:{col:"#14875C",key:"beaver",name:"しくみビーバー",catch:"みんなが使える新しい仕組みを作る",good:"混乱を見て「仕組みが足りない」と気づける人。地図・表・掲示などに落とし込み、自分がいない場所でも回る環境を残せます。",post:"掲示、情報整理、記録のかたち作り。迷わない仕組みを残す役。",blind:"現場が使いこなせない仕組みを作ってしまうことも。触ってもらってから広げたい。",step:"自分の家や学校の周りで危険箇所と避難所を書き込んだ地図を1枚作る。",buddy:"MIB",opp:"MSB",theme:"災害時の情報整理と創発的組織づくり"},
-      MSB:{col:"#8B44A8",key:"owl",name:"みまもりフクロウ",catch:"静かに気づいて、そばにいる",good:"人の様子の小さな変化に気づける観察力。騒がずに必要な人の隣にいられます。埋もれがちな声を拾えるのが強み。",post:"巡回、付き添い、相談。数では見えない困りごとを見つける役。",blind:"気づいても言い出せずに抱えがち。自分が消耗していることに気づけないことも。",step:"近所の人や同じ階の人の顔と名前を3人おぼえる。",buddy:"PSN",opp:"PIN",theme:"災害後の情緒的支援と支援者のケア"},
-      MSN:{col:"#123A96",key:"penguin",name:"なごませペンギン",catch:"場の空気の温度を上げて、みんなを落ち着かせる",good:"張りつめた空気をゆるめられる人。あなたがいると人が話し出します。決めごとをみんなが受け入れられる形に整えるのも得意。",post:"運営会議の進行、ルール決め、お茶や食事の時間づくり。",blind:"深刻な問題を「まあまあ」で流してしまうことがある。全員納得を待ちすぎて決断が遅れることも。",step:"話し合いで「まだ話していない人」を1人指名してみる。",buddy:"PSB",opp:"PIB",theme:"集団維持機能（PM理論）"},
-      MIB:{col:"#1BBFC6",key:"otter",name:"あそびカワウソ",catch:"その場のひらめきで、心を軽くする",good:"重い空気の中に笑いや遊びを持ち込める人。子どもやお年寄りにとって居場所を作れます。何もない所から楽しみを生む力。",post:"子どもの遊び場、静養スペース作り。避難所の暮らしを支える役。",blind:"全体の運営から浮いてしまうことがある。盛り上げすぎて休みたい人が疲れることにも注意。",step:"道具のいらない遊びを3つ覚えておく（停電時もできるもの）。",buddy:"PIN",opp:"PSN",theme:"避難所における生活の質と居場所"},
-      MIN:{col:"#EE6A9E",key:"dolphin",name:"つなぎイルカ",catch:"声とつながりで、みんなを元気にする",good:"人と人、地域と外を結ぶのが得意。発信して仲間を集め、孤立しかけた場に外部の助けを呼び込めます。",post:"外部支援の受け入れ、発信、記録。中と外をつなぐ窓口。",blind:"つないだところで手を離してしまいがち。伝えるうちに現実より良い話にしすぎないよう注意。",step:"学校・家・部活以外の場所に話せる人を1人つくる。",buddy:"PIB",opp:"PSB",theme:"ソーシャルキャピタルと復興"}
+      PSB:{col:"#EF5A48",key:"hamster",name:"てきぱきハムスター",catch:"決まったやり方で、目の前の一人をすぐ助ける",
+        good:"やることが決まっている場面での速さが持ち味。手順を守れるので、任せたことが確実に終わります。慌てている人の隣で、淡々と手を動かせる強さがあります。",
+        post:"応急手当、荷物運び、体調の確認。人手が要る作業を、抜けなく回す役。",
+        blind:"手順にないことが起きると足が止まりがち。ひとりで抱え込んで、助け를 呼びそびれることも。",
+        step:"救命講習（普通救命講習Ⅰなど）を受けてみる。手順を1つ増やすと、動ける場面が増えます。",
+        buddy:"MSN", opp:"MIN", theme:"災害時の応急対応と手順化（standard operating procedure と災害対応）"},
+      PSN:{col:"#F06A18",key:"ant",name:"だんどりアリ",catch:"全体の仕事と物を、きちんと回す",
+        good:"人と物の流れを俯瞰して整えるのが得意。数と順番で混乱を減らせます。誰が何をするかを決めると、場が一気に動き出します。",
+        post:"物資、受付、名簿、誘導。避難所運営の背骨になる仕事。",
+        blind:"数字にならない苦しさを見落としがち。うまく回っているのに、しんどい人が残ることがあります。",
+        step:"自分の学校や地域の避難所運営マニュアルを一度読み、足りない項目を3つ書き出す。",
+        buddy:"MSB", opp:"MIB", theme:"避難所運営と組織対応（DRC typology：既存組織はどう災害対応に入るか）"},
+      PIB:{col:"#E8AF1E",key:"squirrel",name:"こうさくリス",catch:"ありもので、目の前の困りごとを解決する",
+        good:"道具がなくても、そこにある物で何とかしてしまう手先の強さ。「これで代用できる」の発想が早く、現場のつまずきをその場で消せます。",
+        post:"段ボールベッド、簡易トイレ、間仕切り作り。生活の不便を1つずつ潰す役。",
+        blind:"勢いで安全のルールを飛び越えてしまうことがある。作ったものが壊れたときの責任まで考えたい。",
+        step:"段ボールベッドか簡易トイレを、実際に一度作ってみる。作ってみないと弱点は見えません。",
+        buddy:"MIN", opp:"MSN", theme:"災害対応における即興（improvisation：計画の失敗ではなく熟達の一部）"},
+      PIN:{col:"#14875C",key:"beaver",name:"しくみビーバー",catch:"みんなが使える新しい仕組みを作る",
+        good:"混乱を見て「仕組みが足りない」と気づける人。一度作れば、あなたがいない場所でも回り続けます。地図・表・掲示に落とし込むのが上手。",
+        post:"掲示、情報整理、記録のかたち作り。あとから来た人が迷わない仕組みを残す役。",
+        blind:"現場が実際には使えない仕組みを作ってしまうことがある。使う人に一度触ってもらってから広げたい。",
+        step:"自分の家か学校の周りで、危ない場所と避難所を書き込んだ地図を1枚作る。",
+        buddy:"MIB", opp:"MSB", theme:"災害時の情報整理と創発的な組織づくり（emergent organization）"},
+      MSB:{col:"#8B44A8",key:"owl",name:"みまもりフクロウ",catch:"静かに気づいて、そばにいる",
+        good:"人の様子の小さな変化に気づける観察力。騒がずに、必要な人の隣にいられます。声の大きい人に埋もれがちな人を拾えるのが強み。",
+        post:"巡回、付き添い、相談。数では見えない困りごとを見つける役。",
+        blind:"気づいても言い出せずに抱えがち。人を支えるうちに、自分が消耗していることに気づけないことも。",
+        step:"近所の人や同じ階の人の顔と名前を3人おぼえる。顔を知っていることが、災害時の第一歩になります。",
+        buddy:"PSN", opp:"PIN", theme:"災害後の情緒的支援と支援者の自身のケア"},
+      MSN:{col:"#123A96",key:"penguin",name:"なごませペンギン",catch:"場の空気をあたためて、みんなを落ち着かせる",
+        good:"張りつめた空気をゆるめられる人。あなたがいると、人が話し出します。決めごとをみんなが受け入れられる形に整えるのも得意。",
+        post:"運営会議の進行、ルール決め、お茶や食事の時間づくり。",
+        blind:"深刻な問題を「まあまあ」で流してしまうことがある。全員の納得を待ちすぎて、決断が遅れることも。",
+        step:"話し合いで「まだ話していない人」を1人指名してみる。場を回す練習になります。",
+        buddy:"PSB", opp:"PIB", theme:"集団維持機能（三隅のPM理論：目標達成だけではリーダーシップは成り立たない）"},
+      MIB:{col:"#1BBFC6",key:"otter",name:"あそびカワウソ",catch:"その場のひらめきで、心を軽くする",
+        good:"重い空気の中に、笑いや遊びを持ち込める人。特に子どもやお年寄りにとって、あなたのいる場所が居場所になります。何もない所から楽しみを作れるのが強み。",
+        post:"子どもの遊び場、静養スペース作り。避難所の「暮らし」を支える役。",
+        blind:"全体の運営から浮いてしまうことがある。盛り上げすぎて、休みたい人が疲れてしまうことも。",
+        step:"道具のいらない遊びを3つ覚えておく。停電中でもできるものだと、なお良い。",
+        buddy:"PIN", opp:"PSN", theme:"避難所における子どもの居場所と生活の質"},
+      MIN:{col:"#EE6A9E",key:"dolphin",name:"つなぎイルカ",catch:"声とつながりで、みんなを元気にする",
+        good:"人と人、地域と外を結ぶのが得意。発信して仲間を集められます。孤立しかけた場に、外からの助けを呼び込めるのが最大の武器。",
+        post:"外部支援の受け入れ、発信、記録。中と外をつなぐ窓口。",
+        blind:"つないだところで手を離してしまいがち。話を伝えるうちに、現実より良い話にしてしまうことにも注意。",
+        step:"学校・家・部活以外の場所に、話せる人を1人つくる。外とのつながりは、災害の前に作るものです。",
+        buddy:"PIB", opp:"PSB", theme:"ブリッジング型ソーシャルキャピタルと復興の速さ（Aldrich）"}
     };
 
     const LETTER = {
@@ -407,73 +414,92 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     };
 
     const AXES = [
-      {name:"支援機能", a:"P", b:"M"},
-      {name:"行動様式", a:"S", b:"I"},
-      {name:"支援射程", a:"B", b:"N"}
+      {name:"支援機能", a:"P", b:"M", src:"三隅二不二のPM理論から。P＝目標達成、M＝集団維持。"},
+      {name:"行動様式", a:"S", b:"I", src:"災害対応の即興（improvisation）研究から。"},
+      {name:"支援射程", a:"B", b:"N", src:"本診断が独自に立てた軸。研究による裏づけはこれから。"}
     ];
 
     const QS = [
-      {ax:"P",scene:"学校で待機",text:"地震のあと学校で待機中、近くの友達が落ち着かない様子です。最初にするなら？",o:[{t:"今必要なものや困っていることを確認する",p:"P"},{t:"何が気になっているのか話を聞く",p:"M"}]},
-      {ax:"P",scene:"訓練中に立ち止まる",text:"防災訓練中、同じグループの人が動けず立ち止まっています。最初にするなら？",o:[{t:"次に何をすべきか一緒に整理する",p:"P"},{t:"どうしたのか声をかけて様子を見る",p:"M"}]},
-      {ax:"P",scene:"大雨で帰れない",text:"大雨で学校待機。近くの人が何度もスマホを見ています。最初にするなら？",o:[{t:"今分かっている情報を一緒に確認する",p:"P"},{t:"何が心配なのか聞いてみる",p:"M"}]},
-      {ax:"P",scene:"訓練のあと",text:"訓練後、同じ班の人がかなり疲れた様子です。最初にするなら？",o:[{t:"残っている作業を整理して負担を減らす",p:"P"},{t:"少し休みながら話さないか声をかける",p:"M"}]},
-      {ax:"P",scene:"話し合いの途中",text:"防災の話し合いで、発言しなくなった人がいます。最初にするなら？",o:[{t:"内容で分かりにくい点がないか確認する",p:"P"},{t:"今どう感じているか聞いてみる",p:"M"}]},
-      {ax:"P",scene:"停電した夜",text:"避難所で停電。小さい子が暗くて怖いと泣き出しました。",o:[{t:"懐中電灯等を探して暗さを解消する",p:"P"},{t:"隣に座って怖い気持ちを受け止める",p:"M"}]},
-      {ax:"P",scene:"受付の列",text:"受付で長く並んだ人が「まだか」と声を荒らげました。",o:[{t:"あと何分で順番が来るか調べて具体的に伝える",p:"P"},{t:"「お待たせしています」と受け止め落ち着いてもらう",p:"M"}]},
-      {ax:"P",scene:"連絡がつかない",text:"クラスで一人だけ家族と連絡がつかない人がいます。",o:[{t:"連絡がつきそうな方法を一緒に片っ端から試す",p:"P"},{t:"つながるまでの間、そばにいて話し相手になる",p:"M"}]},
-      {ax:"P",scene:"着いたばかりの家族",text:"避難所に着いた家族。子どもが泣き親は立ち尽くしています。",o:[{t:"先に荷物をまとめ寝る場所を確保する",p:"P"},{t:"先に親に声をかけ少し座って休んでもらう",p:"M"}]},
-      {ax:"P",scene:"合宿先の地震",text:"合宿先で地震。全員無事だが動けない人が数人います。",o:[{t:"点呼を取り次にやることを決めて動く",p:"P"},{t:"動けない人のそばへ行き一人ずつ声をかける",p:"M"}]},
-      {ax:"S",scene:"文化祭の避難誘導",text:"文化祭中に地震。裏口も使えそうだが安全未確認です。",o:[{t:"決まっている避難ルートへ先頭に立って流す",p:"S"},{t:"裏口の安全を確かめ別ルートを開いて分散させる",p:"I"}]},
-      {ax:"S",scene:"直前の備え",text:"行事直前、防災の備えが不十分だと気づきました。",o:[{t:"前回の資料をもとに役割分担を仕上げる",p:"S"},{t:"今年の企画に合わせて確認事項を一から作る",p:"I"}]},
-      {ax:"S",scene:"訓練の内容",text:"防災訓練の内容を決めています。どちらか一方を選ぶなら？",o:[{t:"毎年の手順を全員が同じ動きでできるまで繰り返す",p:"S"},{t:"パニック役などを入れて想定外が起きる訓練にする",p:"I"}]},
-      {ax:"S",scene:"配給の列",text:"避難所で配給の列が崩れてきました。",o:[{t:"掲示のとおり並ぶよう声を出して整え直す",p:"S"},{t:"テープや椅子を使いその場で新しい並び方を作る",p:"I"}]},
-      {ax:"S",scene:"外国人の避難者",text:"外国人の避難者が来ました。多言語案内シートはあります。",o:[{t:"用意されているシートを順番に指して伝える",p:"S"},{t:"絵やスマホ翻訳を駆使しその場で伝え方を工夫する",p:"I"}]},
-      {ax:"S",scene:"集合場所が使用不能",text:"決められた集合場所が使えないと判明しました。",o:[{t:"あらかじめ決めてあった第二集合場所へ誘導する",p:"S"},{t:"その場で安全な広場を見つけて集めると決める",p:"I"}]},
-      {ax:"S",scene:"分厚いマニュアル",text:"避難所マニュアルが分厚く誰も読んでいません。",o:[{t:"中身を読み込み今日使うページを抜き出して回す",p:"S"},{t:"マニュアルは置き状況に合う手順をその場で作る",p:"I"}]},
-      {ax:"S",scene:"放送が使えない",text:"停電で校内放送が不能。全校に同じ情報を伝えるには？",o:[{t:"クラス伝達係という決まった連絡網を動かす",p:"S"},{t:"ハンドマイクや手書き紙でその場のやり方を組む",p:"I"}]},
-      {ax:"S",scene:"炊き出し",text:"予定していた炊き出し方法では時間内に終わらないと判明。",o:[{t:"決めた手順は変えず人手を増やして回転を上げる",p:"S"},{t:"並ばずに受け取れるよう配り方自体を変える",p:"I"}]},
-      {ax:"S",scene:"防災倉庫",text:"倉庫を開けたら備品の配置が変わっていました。",o:[{t:"備品リストと照らし合わせてリスト順に探す",p:"S"},{t:"リストは後回しにし見た目で必要そうな物から出す",p:"I"}]},
-      {ax:"B",scene:"イベント対象",text:"防災イベントの企画。どちらを重視する？",o:[{t:"まず数人と深く準備し中身の濃いものにする",p:"B"},{t:"まず全校に呼びかけて参加人数を増やす",p:"N"}]},
-      {ax:"B",scene:"委員会の立ち上げ",text:"防災委員会を立ち上げます。始め方は？",o:[{t:"確実に動ける数人で始めできる範囲を積む",p:"B"},{t:"最初から学校全体に広げ多くの人が関わる形にする",p:"N"}]},
-      {ax:"B",scene:"困りごとの把握",text:"「何が足りないか分からない」と相談されました。",o:[{t:"気になる人の所を一人ずつ回って直接聞く",p:"B"},{t:"避難所全体に呼びかけ困りごとを出す場を作る",p:"N"}]},
-      {ax:"B",scene:"支援物資の配布",text:"数に限りがある支援物資が届きました。",o:[{t:"取りに来られない人がいないか確かめ直接届ける",p:"B"},{t:"配る時間と場所を揃え全員に同じ知らせを届ける",p:"N"}]},
-      {ax:"B",scene:"手が空いた30分",text:"避難所で手が空きました。何をする？",o:[{t:"ずっと気になっていた一人の所へ行き話を聴く",p:"B"},{t:"まだ話せていない人に一通り声をかけて回る",p:"N"}]},
-      {ax:"B",scene:"眠れない夜",text:"避難所の夜、眠れていない人が複数いるようです。",o:[{t:"特に気になる一人の所へ行き時間をかけて聴く",p:"B"},{t:"眠れていない人たちに順に声をかけ様子を確かめる",p:"N"}]},
-      {ax:"B",scene:"15分の発表",text:"防災を伝える時間が15分だけあります。",o:[{t:"一人の被災体験を時間をかけて深く伝える",p:"B"},{t:"全員に関わる基本事項をもれなく伝える",p:"N"}]},
-      {ax:"B",scene:"地域の防災訓練",text:"知らない人ばかりの地域訓練に参加しました。",o:[{t:"隣にいた一人としっかり話して顔と名前を覚える",p:"B"},{t:"できるだけ多くの人と短くても挨拶を交わす",p:"N"}]},
-      {ax:"B",scene:"物資の余り",text:"配り終えた後、物資が少しだけ余りました。",o:[{t:"一番必要そうな人を探してまとめて渡す",p:"B"},{t:"少しずつでもできるだけ多くの人に行き渡らせる",p:"N"}]},
-      {ax:"B",scene:"様子を伝える",text:"避難所の様子をSNSで発信することになりました。",o:[{t:"一人の被災者の話を時間をかけて聞いて書く",p:"B"},{t:"避難所全体で何が不足しているか短くまとめる",p:"N"}]}
+      {ax:"P",scene:"学校で待機",text:"地震のあと、学校でしばらく待機することになりました。近くにいる友達が落ち着かない様子です。あなたが最初にするなら？",o:[{t:"今必要なものや困っていることがないか確認する",p:"P"},{t:"何が気になっているのか話を聞く",p:"M"}]},
+      {ax:"P",scene:"訓練中に立ち止まる",text:"防災訓練の途中、同じグループの人が動けずに立ち止まっています。あなたが最初にするなら？",o:[{t:"次に何をすればよいか一緒に整理する",p:"P"},{t:"どうしたのか声をかけて様子を見る",p:"M"}]},
+      {ax:"P",scene:"大雨で帰れない",text:"大雨で帰宅できず、学校で待つことになりました。近くの人が何度もスマホを見ています。あなたが最初にするなら？",o:[{t:"今分かっている情報を一緒に確認する",p:"P"},{t:"何が心配なのか聞いてみる",p:"M"}]},
+      {ax:"P",scene:"訓練のあと",text:"避難訓練のあと、同じ班の人がかなり疲れた様子です。あなたが最初にするなら？",o:[{t:"残っていることを整理して、負担を減らせないか考える",p:"P"},{t:"少し休みながら話さないか声をかける",p:"M"}]},
+      {ax:"P",scene:"話し合いの途中",text:"災害について話し合っているとき、近くの人が途中からあまり発言しなくなりました。あなたが最初にするなら？",o:[{t:"話し合いの内容で分かりにくいところがないか確認する",p:"P"},{t:"今どう感じているか聞いてみる",p:"M"}]},
+      {ax:"P",scene:"停電した夜",text:"停電した避難所の夜。小さい子が、暗いのが怖いと言って泣き出した。",o:[{t:"懐中電灯やランタンを探してきて、暗さそのものをなくす",p:"P"},{t:"隣に座って、暗いのが怖い気持ちを受け止める",p:"M"}]},
+      {ax:"P",scene:"受付の長い列",text:"避難所の受付。長く並んでいた人が「もう待てない」と声を荒らげた。",o:[{t:"あと何分で順番が来るかを調べて、具体的に伝える",p:"P"},{t:"まず「お待たせしています」と受け止め、気持ちを落ち着けてもらう",p:"M"}]},
+      {ax:"P",scene:"連絡がつかない",text:"地震のあと、クラスで一人だけ家族と連絡がつかない人がいる。",o:[{t:"連絡がつきそうな方法を一緒に探して、片っ端から試す",p:"P"},{t:"つながるまでのあいだ、そばにいて話し相手になる",p:"M"}]},
+      {ax:"P",scene:"着いたばかりの家族",text:"避難所に着いたばかりの家族。子どもが泣き、荷物は散らばり、親は立ち尽くしている。",o:[{t:"先に荷物をまとめて、寝られる場所を確保する",p:"P"},{t:"先に親に声をかけて、少し座って休んでもらう",p:"M"}]},
+      {ax:"P",scene:"合宿先の地震",text:"部活の合宿先で大きな地震があった。全員無事だが、動けなくなっている人が数人いる。",o:[{t:"点呼を取り、次にやることを決めて動き出す",p:"P"},{t:"動けなくなっている人のそばへ行き、一人ずつ声をかける",p:"M"}]},
+      {ax:"S",scene:"文化祭の避難誘導",text:"文化祭中に地震が起きた。正面玄関は混雑している。裏口も使えそうだが、安全確認はまだ十分ではない。",o:[{t:"決まっている避難ルートに、自分が先頭に立って人を流す",p:"S"},{t:"裏口の安全を自分で確かめ、別ルートを開いて人を分散させる",p:"I"}]},
+      {ax:"S",scene:"直前の問題提起",text:"文化祭まであと1週間。準備に余裕はないが、防災の備えがほとんど整っていないことに気づいた。",o:[{t:"去年の資料をもとに、当日の役割分担表を仕上げる",p:"S"},{t:"今年の企画に合わせて、確認すべきことを一から作り直す",p:"I"}]},
+      {ax:"S",scene:"訓練のリアルさ",text:"防災訓練の内容を決めている。時間は限られていて、どちらか一方しかできない。",o:[{t:"毎年の手順を、時間を計って全員が同じ動きでできるまで繰り返す",p:"S"},{t:"負傷者役やパニック役を入れて、想定外が起きる訓練にする",p:"I"}]},
+      {ax:"S",scene:"配給の列",text:"避難所で配給の列が崩れてきた。並び方を書いた掲示は貼ってあるが、誰も見ていない。",o:[{t:"掲示のとおりに並ぶよう、自分が声を出して列を整え直す",p:"S"},{t:"テープや椅子を使って、その場で新しい並び方を作る",p:"I"}]},
+      {ax:"S",scene:"外国人の避難者",text:"外国人の避難者が来たが、通訳できる人が近くにいない。多言語の案内シートは備えてある。",o:[{t:"用意されている案内シートを出して、順番に指しながら伝える",p:"S"},{t:"絵やスマホ翻訳を使って、その場で伝え方を工夫する",p:"I"}]},
+      {ax:"S",scene:"集合場所が使えない",text:"避難訓練の最中、決められた集合場所が使えないことが分かった。",o:[{t:"訓練でもう一つ決めてあった第二集合場所へ、自分が誘導する",p:"S"},{t:"その場で安全な広場を見つけて、そこに集めると決める",p:"I"}]},
+      {ax:"S",scene:"分厚いマニュアル",text:"学校が避難所になった。運営マニュアルは一冊あるが、分厚くて誰も読んでいない。",o:[{t:"中身を読み込み、今日使うページを抜き出してみんなに回す",p:"S"},{t:"マニュアルは置いておき、今の状況に合う手順をその場で決める",p:"I"}]},
+      {ax:"S",scene:"校内放送が使えない",text:"停電で校内放送が使えない。全校に同じ情報を伝えなければならない。",o:[{t:"クラスごとの伝達係という決まった仕組みを、順番どおりに動かす",p:"S"},{t:"ハンドマイクと手書きの紙で、その場でやり方を組み立てる",p:"I"}]},
+      {ax:"S",scene:"炊き出しの列",text:"炊き出しの列。予定していた配り方では、時間内に終わらないと分かった。",
+       o:[{t:"決めた手順は変えず、人手を増やして回転を上げる",p:"S"},{t:"配り方そのものを変えて、並ばずに受け取れる形にする",p:"I"}]},
+      {ax:"S",scene:"防災倉庫",text:"防災倉庫を開けたら、備品の置き場所が去年と変わっていた。",
+       o:[{t:"備品リストと照らし合わせて、リストの順に確認していく",p:"S"},{t:"リストは後回しにして、見た目で必要そうなものから取り出す",p:"I"}]},
+      {ax:"B",scene:"防災イベントの参加対象",text:"生徒会で防災イベントを企画している。使える時間も人手も限られていて、どちらかを選ぶことになった。",
+       o:[{t:"まず数人と深く準備して、中身の濃いものにする",p:"B"},{t:"まず全校に呼びかけて、来る人数を増やすことを優先する",p:"N"}]},
+      {ax:"B",scene:"防災委員会の立ち上げ",text:"生徒会内で防災委員会を作る案が出た。始め方について意見が分かれている。",
+       o:[{t:"確実に動ける数人で始め、できる範囲を積み上げる",p:"B"},{t:"最初から学校全体に広げ、多くの人が関わる形にする",p:"N"}]},
+      {ax:"B",scene:"困りごとの把握",text:"避難所を運営している大人から、「何が足りないのか分からない」と相談された。",
+       o:[{t:"気になる人のところを一人ずつ回って、直接聞いてくる",p:"B"},{t:"避難所の全員に呼びかけて、困りごとを出してもらう場をつくる",p:"N"}]},
+      {ax:"B",scene:"支援物資の配布",text:"避難所に支援物資が届いた。数には限りがあり、配り方を決めなければならない。",
+       o:[{t:"取りに来られない人がいないか、先に確かめて直接届ける",p:"B"},{t:"配る時間と場所をそろえ、全員に同じ知らせが届くようにする",p:"N"}]},
+      {ax:"B",scene:"手が空いた30分",text:"避難所で少し手が空いた。自分にできることを探している。",
+       o:[{t:"ずっと気になっていた一人のところへ行き、じっくり話を聴く",p:"B"},{t:"まだ話せていない人に、ひととおり声をかけて回る",p:"N"}]},
+      {ax:"B",scene:"眠れない夜",text:"避難所の夜。眠れていない人が何人かいるらしい。",
+       o:[{t:"特に気になる一人のところへ行き、時間をかけて話を聴く",p:"B"},{t:"眠れていない人に順に声をかけて、様子を確かめて回る",p:"N"}]},
+      {ax:"B",scene:"15分の発表",text:"学校で防災の話をする機会をもらった。使える時間は15分しかない。",
+       o:[{t:"一人の被災体験を時間をかけて深く伝える",p:"B"},{t:"全員に関わる基本を、もれなく伝える",p:"N"}]},
+      {ax:"B",scene:"地域の防災訓練",text:"地域の防災訓練に参加した。まわりは知らない人ばかりだ。",
+       o:[{t:"隣にいた一人と、しっかり話して顔と名前をおぼえる",p:"B"},{t:"できるだけ多くの人と、短くても挨拶を交わす",p:"N"}]},
+      {ax:"B",scene:"物資が余った",text:"配り終えたあと、支援物資が少しだけ余った。",
+       o:[{t:"いちばん必要としていそうな人を探して、その人にまとめて渡す",p:"B"},{t:"少しずつでも、できるだけ多くの人に行き渡るように配る",p:"N"}]},
+      {ax:"B",scene:"避難所の様子を伝える",text:"避難所の様子をSNSで伝えることになった。",
+       o:[{t:"一人の被災者の話を、時間をかけて聞いて書く",p:"B"},{t:"避難所全体で何が足りていないかを、短くまとめて出す",p:"N"}]}
     ];
+
+    (function(){
+      const n={};
+      QS.forEach(q=>{
+        n[q.ax]=(n[q.ax]||0)+1;
+        q.id=q.ax+String(n[q.ax]).padStart(2,"0");
+      });
+    })();
 
     const COV = [
-      {ax:"cov",key:"防災経験",scene:"防災経験",text:"これまでに防災訓練・支援・ボランティア・募金などに関わったことがある。",o:[{t:"ある",p:"1"},{t:"ない / ほとんどない",p:"0"}]},
-      {ax:"cov",key:"サードプレイス",scene:"居場所",text:"学校・家・職場以外に、安心して話せる場所やコミュニティがある。",o:[{t:"ある",p:"1"},{t:"ない / あまりない",p:"0"}]},
-      {ax:"cov",key:"防災ポーチ",scene:"携帯の備え",text:"モバイルバッテリーやライト、常備薬など災害時役立つ物を普段持ち歩いている。",o:[{t:"持ち歩いている",p:"1"},{t:"持ち歩いていない",p:"0"}]},
-      {ax:"cov",key:"相談相手",scene:"頼れる人",text:"困った時に、家族以外で頼れる大人や相談できる人が身近にいる。",o:[{t:"いる",p:"1"},{t:"いない / 思いつかない",p:"0"}]},
-      {ax:"cov",key:"地域防災",scene:"地域の知識",text:"自分の地域の避難所や危険箇所、防災活動について知っている。",o:[{t:"知っている",p:"1"},{t:"知らない / 分からない",p:"0"}]}
+      {ax:"cov",key:"防災経験",scene:"防災経験",text:"これまでに、防災訓練・防災イベント・被災地支援・募金活動など、防災や災害支援に関わったことがある。",o:[{t:"ある",p:"1"},{t:"ない、またはほとんどない",p:"0"}]},
+      {ax:"cov",key:"サードプレイス",scene:"サードプレイス",text:"学校・家・職場以外に、安心して行ける場所や、困った時に話せるコミュニティがある。",o:[{t:"ある",p:"1"},{t:"ない、またはあまりない",p:"0"}]},
+      {ax:"cov",key:"防災ポーチ",scene:"持ち歩きの備え",text:"普段から、モバイルバッテリー・常備薬・ライト・笛・絆創膏・水など、災害時にも役立つものを持ち歩いている。",o:[{t:"持ち歩いている",p:"1"},{t:"持ち歩いていない、または意識していない",p:"0"}]},
+      {ax:"cov",key:"頼れる大人",scene:"相談できる人",text:"災害時や困った時に、家族以外で頼れる大人や相談できる人がいる。",o:[{t:"いる",p:"1"},{t:"いない、またはすぐには思いつかない",p:"0"}]},
+      {ax:"cov",key:"地域防災",scene:"地域のこと",text:"自分の住んでいる地域の避難所、危険な場所、地域の防災活動について少しでも知っている。",o:[{t:"知っている",p:"1"},{t:"知らない、またはほとんど分からない",p:"0"}]}
     ];
 
-    let deck = [], idx = 0, answers = [], sex = "", result = null;
+    let deck=[], idx=0, answers=[], sex="", result=null;
     const $ = id => root.querySelector('#' + id);
     const shuffle = arr => arr.slice().sort(() => Math.random() - 0.5);
 
-    function buildDeck() {
-      const picked = ["P","S","B"].flatMap(ax => shuffle(QS.filter(q => q.ax === ax)).slice(0, 5));
-      const judge = shuffle(picked).map(x => ({ ...x, o: Math.random() < 0.5 ? x.o : [x.o[1], x.o[0]] }));
-      const cov = COV.map(x => ({ ...x, o: x.o.slice() }));
+    function buildDeck(){
+      const picked = ["P","S","B"].flatMap(ax => shuffle(QS.filter(q=>q.ax===ax)).slice(0,5));
+      const judge = shuffle(picked).map(x=>({...x, o: Math.random()<.5 ? x.o : [x.o[1], x.o[0]]}));
+      const cov = COV.map(x=>({...x, o: x.o.slice()}));
       deck = judge.concat(cov);
     }
 
-    function show(id) {
-      ["s-intro", "s-quiz", "s-profile", "s-result"].forEach(s => {
+    function show(id){
+      ["s-intro","s-quiz","s-profile","s-result"].forEach(s=>{
         const el = $(s);
-        if (el) el.classList.toggle("b8-hidden", s !== id);
+        if(el) el.classList.toggle("b8-hidden", s!==id);
       });
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({top:0, behavior:"smooth"});
     }
 
-    // 表紙の8匹アイコン描画（HTML要素で生成するため壊れません）
-    function renderIntro() {
+    function renderIntro(){
       const order = ["hamster", "ant", "squirrel", "beaver", "owl", "penguin", "otter", "dolphin"];
       const grid = $("introGrid");
       if (grid) {
@@ -495,24 +521,23 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
       if (axList) {
         axList.innerHTML = AXES.map(ax => {
           const A = LETTER[ax.a], B = LETTER[ax.b];
-          return `<div class="b8-axrow"><span class="nm">${ax.name}</span>
-            <span class="b8-ltr"><b>${ax.a}</b>${A.ja}</span><span class="sl">か</span>
-            <span class="b8-ltr"><b>${ax.b}</b>${B.ja}</span></div>`;
+          return `<div class="axrow"><span class="nm">${ax.name}</span>
+            <span class="ltr"><b>${ax.a}</b>${A.ja}</span><span class="sl">か</span>
+            <span class="ltr"><b>${ax.b}</b>${B.ja}</span></div>`;
         }).join("");
       }
     }
 
-    function renderQ() {
+    function renderQ(){
       const q = deck[idx];
       const countEl = $("count");
-      if (countEl) countEl.textContent = (idx + 1) + ' / ' + deck.length + (idx >= 15 ? ' （※集計補助設問）' : '');
+      if (countEl) countEl.textContent = `${idx+1} / ${deck.length}` + (idx>=15 ? " ※ここからは判定に使いません" : "");
 
-      const dots = ["#EF5A48", "#F06A18", "#E8AF1E", "#14875C", "#8B44A8", "#123A96", "#1BBFC6", "#EE6A9E"];
+      const dots = ["#EF5A48","#F06A18","#E8AF1E","#14875C","#8B44A8","#123A96","#1BBFC6","#EE6A9E"];
       const progEl = $("prog");
       if (progEl) {
-        progEl.innerHTML = deck.map((_, i) =>
-          `<i class="${i < idx ? "on" : i === idx ? "cur" : ""}" style="--dot:${dots[i % 8]}"></i>`
-        ).join("");
+        progEl.innerHTML = deck.map((_,i)=>
+          `<i class="${i<idx?"on":i===idx?"cur":""}" style="--dot:${dots[i%8]}"></i>`).join("");
       }
 
       const sceneEl = $("scene");
@@ -523,16 +548,12 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
       if (qtextEl) qtextEl.textContent = q.text;
 
       if (choicesEl) {
-        choicesEl.innerHTML = q.o.map((o, i) =>
-          `<button class="b8-choice" data-p="${o.p}" type="button">
-            <span class="mark">${i === 0 ? "A" : "B"}</span>
-            <span>${o.t}</span>
-          </button>`
-        ).join("");
+        choicesEl.innerHTML = q.o.map((o,i)=>
+          `<button class="choice" data-p="${o.p}" type="button"><span class="mark">${i===0?"A":"B"}</span>${o.t}</button>`).join("");
 
-        choicesEl.querySelectorAll("button").forEach(btn => {
-          btn.onclick = () => {
-            answers[idx] = btn.dataset.p;
+        choicesEl.querySelectorAll(".choice").forEach(b => {
+          b.onclick = () => {
+            answers[idx] = {ax:deck[idx].ax, p:b.dataset.p, key:deck[idx].key||null, id:deck[idx].id||null};
             idx++;
             if (idx < deck.length) {
               renderQ();
@@ -545,7 +566,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
 
       const backBtn = $("backBtn");
       if (backBtn) {
-        backBtn.style.display = idx === 0 ? "none" : "block";
+        backBtn.classList.toggle("b8-hidden", idx === 0);
         backBtn.onclick = () => {
           if (idx > 0) {
             idx--;
@@ -555,25 +576,13 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
       }
     }
 
-    function calculateResult() {
-      const pCount = answers.slice(0, 15).filter(a => a === "P").length;
-      const sCount = answers.slice(0, 15).filter(a => a === "S").length;
-      const bCount = answers.slice(0, 15).filter(a => a === "B").length;
-
-      const c1 = pCount >= 3 ? "P" : "M";
-      const c2 = sCount >= 3 ? "S" : "I";
-      const c3 = bCount >= 3 ? "B" : "N";
-
-      const code = c1 + c2 + c3;
-      result = {
-        code: code,
-        type: TYPES[code],
-        scores: {
-          P: pCount, M: 5 - pCount,
-          S: sCount, I: 5 - sCount,
-          B: bCount, N: 5 - bCount
-        }
-      };
+    function calc(){
+      const c={P:0,M:0,S:0,I:0,B:0,N:0};
+      answers.slice(0,15).forEach(a=>{ if(a && a.p in c) c[a.p]++ });
+      const code=(c.P>=3?"P":"M")+(c.S>=3?"S":"I")+(c.B>=3?"B":"N");
+      const cov={};
+      answers.slice(15).forEach(a=>{ if(a && a.key) cov[a.key] = a.p==="1" ? "はい" : "いいえ" });
+      return {code, c, cov};
     }
 
     function submitToSpreadsheet() {
@@ -590,8 +599,8 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
         sex: sex,
         code: result.code,
         typeName: result.type.name,
-        scores: result.scores,
-        answers: answers
+        scores: result.c,
+        answers: answers.map(a => a ? a.p : "")
       };
 
       fetch(GAS_WEBHOOK_URL, {
@@ -602,45 +611,53 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
       }).catch(() => {});
     }
 
-    function renderResult() {
-      if (!result) return;
-      const t = result.type;
-      const ch = ANIMAL_ICONS[t.key];
-      root.style.setProperty("--c", t.col);
+    function bar(leftName, rightName, leftVal){
+      const l = leftVal, r = 5 - leftVal;
+      return `<div class="bar"><div class="lab"><span>${l>=3?"<b>"+leftName+"</b>":leftName} ${l}</span>
+        <span>${r} ${r>3?"<b>"+rightName+"</b>":rightName}</span></div>
+        <div class="track"><span style="width:${l*20}%"></span><span class="r" style="width:${r*20}%"></span></div></div>`;
+    }
 
-      // メインヒーローアイコン
+    function renderResult(){
+      result = calc();
+      const t = TYPES[result.code], c = result.c;
+      const ch = ANIMAL_ICONS[t.key];
+      
+      const sResult = $("s-result");
+      if (sResult) sResult.style.setProperty("--c", t.col);
+
+      // メインヒーローアイコン（丸型CSSレンダリング）
       const rImgContainer = $("rImgContainer");
       if (rImgContainer) {
         rImgContainer.innerHTML = `
-          <div class="b8-hero-circle" style="background:${t.col}">
+          <div class="hero-circle" style="background:${t.col}">
             <span>${ch.line1}</span>
             <span>${ch.line2}</span>
           </div>
         `;
       }
 
-      if ($("rCode")) $("rCode").textContent = result.code;
+      if ($("rCode")) $("rCode").textContent = result.code.split("").join(" ・ ");
       if ($("rName")) $("rName").textContent = t.name;
       if ($("rCatch")) $("rCatch").textContent = t.catch;
 
       const rBars = $("rBars");
       if (rBars) {
-        rBars.innerHTML = AXES.map(ax => {
-          const scA = result.scores[ax.a];
-          const scB = result.scores[ax.b];
-          const pctA = (scA / 5) * 100;
-          return `<div class="b8-bar">
-            <div class="lab"><span><b>${ax.a}</b> ${LETTER[ax.a].ja} (${scA})</span><span><b>${ax.b}</b> ${LETTER[ax.b].ja} (${scB})</span></div>
-            <div class="b8-track"><span style="width:${pctA}%"></span><span class="r" style="width:${100 - pctA}%"></span></div>
-          </div>`;
-        }).join("");
+        rBars.innerHTML = 
+          bar("課題からいく", "気持ちからいく", c.P) +
+          bar("決まった型でいく", "その場で工夫する", c.S) +
+          bar("目の前の一人へ", "全体へ広げる", c.B);
       }
 
       const rCode3 = $("rCode3");
       if (rCode3) {
-        rCode3.innerHTML = result.code.split("").map(ltr => {
-          const info = LETTER[ltr];
-          return `<div class="b8-cline"><div class="b8-cbig">${ltr}</div><div class="b8-cmeta"><div class="t1">${info.ja}（${info.en}）</div><div class="t2">${info.line}</div></div></div>`;
+        rCode3.innerHTML = result.code.split("").map((L,i)=>{
+          const l=LETTER[L], ax=AXES[i], other=LETTER[ax.a===L?ax.b:ax.a];
+          return `<div class="cline"><div class="cbig">${L}</div><div class="cmeta">
+            <p class="t1">${l.ja} <span style="font-weight:500;font-size:12px;color:#8a7f70">${l.en}</span></p>
+            <p class="t2">${l.line}</p>
+            <p class="t3">${ax.name}の軸：<span>${l.ja}(${L})</span> ⇄ ${other.ja}(${ax.a===L?ax.b:ax.a}) ／ ${ax.src}</p>
+          </div></div>`;
         }).join("");
       }
 
@@ -648,62 +665,75 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
       if ($("rPost")) $("rPost").textContent = t.post;
       if ($("rBlind")) $("rBlind").textContent = t.blind;
       if ($("rStep")) $("rStep").textContent = t.step;
-      if ($("rTheme")) $("rTheme").textContent = t.theme;
 
-      // 相棒・正反対アイコン
-      const bud = TYPES[t.buddy], opp = TYPES[t.opp];
-      const budCh = ANIMAL_ICONS[bud.key], oppCh = ANIMAL_ICONS[opp.key];
+      const bd = TYPES[t.buddy], op = TYPES[t.opp];
+      const budCh = ANIMAL_ICONS[bd.key], oppCh = ANIMAL_ICONS[op.key];
 
       const rBuddyImgContainer = $("rBuddyImgContainer");
       if (rBuddyImgContainer) {
         rBuddyImgContainer.innerHTML = `
-          <div class="b8-sub-circle" style="background:${bud.col}">
+          <div class="sub-circle" style="background:${bd.col}">
             <span>${budCh.line1}</span>
             <span>${budCh.line2}</span>
           </div>
         `;
       }
-      if ($("rBuddy")) $("rBuddy").textContent = bud.name;
+      if ($("rBuddy")) $("rBuddy").textContent = bd.name;
 
       const rOppImgContainer = $("rOppImgContainer");
       if (rOppImgContainer) {
         rOppImgContainer.innerHTML = `
-          <div class="b8-sub-circle" style="background:${opp.col}">
+          <div class="sub-circle" style="background:${op.col}">
             <span>${oppCh.line1}</span>
             <span>${oppCh.line2}</span>
           </div>
         `;
       }
-      if ($("rOpp")) $("rOpp").textContent = opp.name;
+      if ($("rOpp")) $("rOpp").textContent = op.name;
 
       if ($("rPairNote")) {
-        $("rPairNote").textContent = `相棒の【${bud.name}】と組むと死角が補われ、正反対の【${opp.name}】の視点を入れるとチームの柔軟性が増します。`;
+        $("rPairNote").textContent = "相棒は、動き方が近いのに死角が違う相手。正反対は、やり方が理解しづらいけれど、そろうと対応できる幅がいちばん広くなる相手です。";
+      }
+      if ($("rTheme")) $("rTheme").textContent = t.theme;
+
+      const mail = $("b8-mail").value.trim();
+      if ($("mailNote")) {
+        $("mailNote").textContent = mail
+          ? `${mail} あてのメールを作成します。送信ボタンを押すのはメールアプリ側です。`
+          : "メールアドレスが入力されています。";
       }
 
-      const mailVal = $("b8-mail") ? $("b8-mail").value.trim() : "";
-      if ($("mailNote")) $("mailNote").textContent = `宛先: ${mailVal}`;
-      
       const mailBtn = $("mailBtn");
       if (mailBtn) {
         mailBtn.onclick = () => {
-          const subject = encodeURIComponent(`【ぼうさい8 診断結果】${t.name} (${result.code})`);
-          const body = encodeURIComponent(`JYRAC 防災共助タイプ診断「ぼうさい8」の結果です。\n\nタイプ: ${t.name} (${result.code})\n特徴: ${t.catch}\n\n■ きみの得意\n${t.good}\n\n■ 避難所での持ち場\n${t.post}\n\n■ 今日からの一歩\n${t.step}\n\nhttps://jyrac.stki.org/gioco`);
-          window.location.href = `mailto:${mailVal}?subject=${subject}&body=${body}`;
+          const to = $("b8-mail").value.trim();
+          if(!to) return;
+          const bodyText = [
+            `■ 防災共助タイプ診断「ぼうさい8」結果`, ``,
+            `あなたのタイプ：${t.name}（${result.code}）`, `${t.catch}`, ``,
+            `── きみの得意 ──`, t.good, ``,
+            `── 避難所での持ち場 ──`, t.post, ``,
+            `── 今日からの一歩 ──`, t.step, ``,
+            `日本若者防災復興協会（JYRAC）`
+          ].join("\n");
+          window.location.href = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent("【ぼうさい8】あなたは "+t.name)}&body=${encodeURIComponent(bodyText)}`;
         };
       }
 
-      const printBtn = $("printBtn");
-      if (printBtn) printBtn.onclick = () => window.print();
+      if ($("printBtn")) $("printBtn").onclick = () => window.print();
 
-      const againBtn = $("againBtn");
-      if (againBtn) {
-        againBtn.onclick = () => {
-          idx = 0;
-          answers = [];
-          buildDeck();
+      if ($("againBtn")) {
+        $("againBtn").onclick = () => {
+          sex = "";
+          $("b8-mail").value = "";
+          $("b8-age").value = "";
+          if(sexPill) [...sexPill.children].forEach(x=>x.setAttribute("aria-pressed","false"));
           show("s-intro");
         };
       }
+
+      submitToSpreadsheet();
+      show("s-result");
     }
 
     renderIntro();
@@ -712,6 +742,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     const startBtn = $("startBtn");
     if (startBtn) {
       startBtn.onclick = () => {
+        buildDeck();
         idx = 0;
         answers = [];
         show("s-quiz");
@@ -721,13 +752,12 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
 
     const sexPill = $("sexPill");
     if (sexPill) {
-      sexPill.querySelectorAll("button").forEach(btn => {
-        btn.onclick = () => {
-          sexPill.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", "false"));
-          btn.setAttribute("aria-pressed", "true");
-          sex = btn.dataset.v;
-        };
-      });
+      sexPill.onclick = e => {
+        const b = e.target.closest("button");
+        if (!b) return;
+        sex = b.dataset.v;
+        [...sexPill.children].forEach(x => x.setAttribute("aria-pressed", x === b));
+      };
     }
 
     const resultBtn = $("resultBtn");
@@ -750,17 +780,13 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
         if (mailErr) mailErr.style.display = "none";
         if (mailInput) mailInput.style.borderColor = "";
 
-        calculateResult();
         renderResult();
-        submitToSpreadsheet();
-        show("s-result");
       };
     }
 
     show("s-intro");
   }
 
-  // 初期化実行
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', runBosai8App);
   } else {
