@@ -3,12 +3,12 @@ import { translations, type Lang } from '../lib/i18n';
 
 interface Props {
   title: string;
-  currentTab: 'news' | 'about' | 'services' | 'recruitment' | 'governance' | 'sns' | 'contact' | 'gioco'; 
+  currentTab: 'news' | 'about' | 'services' | 'recruitment' | 'governance' | 'sns' | 'contact' | 'gioco' | 'bosai8'; 
 }
 
 const { title, currentTab } = Astro.props;
 
-// URLから言語パラメーターを取得 (プロトコルをhttpsに整形して安全に取得)
+// URLから言語パラメーターを取得 (httpsに整形して安全に処理)
 const requestUrl = Astro.request.url.replace(/^http:/, 'https:');
 const url = new URL(requestUrl);
 const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
