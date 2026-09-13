@@ -32,7 +32,7 @@ body{
   background-attachment:fixed;
   min-height:100vh; -webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:600px;margin:0 auto;padding:20px 16px 60px}
+.b8-wrap{width:100%;max-width:600px;margin:0 auto;padding:20px 16px 60px}
 
 /* ---------- カード ---------- */
 .sheet{
@@ -89,8 +89,8 @@ p{line-height:1.85;margin:0 0 14px;font-size:15px}
 .choice:hover .mark{background:var(--accent);color:#fff}
 
 /* ---------- キャラ一覧 ---------- */
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:18px 0 4px;width:100%;min-width:0}
-.grid img{width:100%;max-width:100%;min-width:0;height:auto;display:block;filter:drop-shadow(0 4px 6px rgba(35,41,54,.14))}
+.b8-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:18px 0 4px;width:100%;max-width:100%;}
+.b8-grid img{display:block;width:100%;max-width:100%;min-width:0;height:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(35,41,54,.14))}
 
 /* ---------- 軸の説明 ---------- */
 .axbox{background:#F6F8FC;border-radius:18px;padding:15px 16px 13px;margin:16px 0 14px}
@@ -166,14 +166,14 @@ input:focus,select:focus{border-color:var(--accent);outline:none}
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="b8-wrap">
 
 <!-- ===== 表紙 ===== -->
 <section id="s-intro" class="sheet">
   <p class="eyebrow">JYRAC 防災共助タイプ診断</p>
   <h1>ぼうさい8</h1>
   <p>災害のとき、人の助け方はひとつじゃない。<br>20の場面であなたが選んだ行動から、8匹のうちどの助け方に近いかを見つけます。</p>
-  <div class="grid" id="introGrid"></div>
+  <div class="b8-grid" id="introGrid"></div>
   <div class="axbox">
     <p class="axttl">3つの軸で、8タイプに分かれます</p>
     <div id="axList"></div>
@@ -274,7 +274,7 @@ const IMG = {"hamster": "data:image/webp;base64,UklGRtiVAABXRUJQVlA4WAoAAAAQAAAA
 /* ====== 送信先（JYRAC集計用・任意） ======
    Google Apps Script のウェブアプリURLを入れると、回答が自動でスプレッドシートに記録されます。
    空のままなら送信は行われず、メール作成のみ動きます。 */
-const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbyuMhptc9qq1HxYVpOhwrO1GA5E1Zec8Wt67i7KsLZ8dv7HSwPGlq0Z1wtumpHclBk/exec";
+const GAS_ENDPOINT = "";
 
 /* ====== タイプ定義 ====== */
 const TYPES = {
@@ -584,28 +584,13 @@ t.theme,
 
 function send(){
   if(!GAS_ENDPOINT) return;
-  const t=TYPES[result.code];
-  const mailVal=$("mail").value.trim();
   const payload={
-    timestamp:new Date().toISOString(),
-    mail:mailVal,
-    age:$("age").value,
-    sex:sex,
-    code:result.code,
-    typeName:t.name,
-    scores:{
-      P:result.c.P, M:result.c.M,
-      S:result.c.S, I:result.c.I,
-      B:result.c.B, N:result.c.N
-    },
-    answers:answers
+    at:new Date().toISOString(), code:result.code, score:result.c,
+    age:$("age").value, sex:sex, cov:result.cov,
+    raw:answers.map(a=>a.p).join(""),
+    items:answers.slice(0,15).map(a=>a.id).join(",")
   };
-  fetch(GAS_ENDPOINT,{
-    method:"POST",
-    mode:"no-cors",
-    headers:{"Content-Type":"text/plain;charset=utf-8"},
-    body:JSON.stringify(payload)
-  }).catch(()=>{});
+  fetch(GAS_ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(payload)}).catch(()=>{});
 }
 
 /* ====== イベント ====== */
