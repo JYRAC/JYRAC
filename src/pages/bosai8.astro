@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import { translations, type Lang } from '../lib/i18n';
 
-// プロトコル補正とURLパース
+// URLから言語パラメーターを取得 (プロトコルをhttpsに整形)
 const requestUrl = Astro.request.url.replace(/^http:/, 'https:');
 const url = new URL(requestUrl);
 const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
@@ -12,7 +12,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
 
 <Layout 
   title={currentLang === 'en' ? 'Bosai 8 Type Diagnosis | JYRAC' : 'ぼうさい8 防災共助タイプ診断 | 日本若者防災復興協会'} 
-  currentTab="gioco"
+  currentTab="bosai8"
 >
   <div class="b8-wrapper" id="b8-root">
     
@@ -302,7 +302,9 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     const root = document.getElementById('b8-root');
     if (!root) return;
 
-    // アセットプレースホルダー（SVG / Base64）
+    // ★★★ デプロイしたGASのウェブアプリURLをここに設定 ★★★
+    const GAS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyuMhptc9qq1HxYVpOhwrO1GA5E1Zec8Wt67i7KsLZ8dv7HSwPGlq0Z1wtumpHclBk/exec";
+
     const makeIcon = (color, label) => `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="${encodeURIComponent(color)}" /><text x="50%" y="54%" font-size="14" font-weight="bold" fill="%23fff" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif">${encodeURIComponent(label)}</text></svg>`;
 
     const IMG = {
@@ -493,6 +495,35 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
       };
     }
 
+    // スプレッドシート（GAS）送信処理
+    function submitToSpreadsheet() {
+      if (!GAS_WEBHOOK_URL || GAS_WEBHOOK_URL.includes("XXXXXXXX")) {
+        return;
+      }
+
+      const ageSelect = $("b8-age");
+      const ageVal = ageSelect ? ageSelect.value : "";
+      const mailVal = $("b8-mail") ? $("b8-mail").value.trim() : "";
+
+      const payload = {
+        timestamp: new Date().toISOString(),
+        mail: mailVal,
+        age: ageVal,
+        sex: sex,
+        code: result.code,
+        typeName: result.type.name,
+        scores: result.scores,
+        answers: answers
+      };
+
+      fetch(GAS_WEBHOOK_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).catch(err => console.error("Spreadsheet Submit Error:", err));
+    }
+
     function renderResult() {
       if (!result) return;
       const t = result.type;
@@ -593,7 +624,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
       });
     }
 
-    // 「結果を見る」ボタン（メールアドレス必須チェック）
+    // 「結果を見る」ボタン（バリデーション ＋ スプシ送信）
     $("resultBtn").onclick = () => {
       const mailInput = $("b8-mail");
       const mailVal = mailInput ? mailInput.value.trim() : "";
@@ -606,7 +637,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
           mailInput.focus();
           mailInput.style.borderColor = "#ef5a48";
         }
-        return; // バリデーションエラー時は処理を中断
+        return;
       }
 
       if (mailErr) mailErr.style.display = "none";
@@ -614,6 +645,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
 
       calculateResult();
       renderResult();
+      submitToSpreadsheet();
       show("s-result");
     };
 
