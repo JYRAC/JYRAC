@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import { translations, type Lang } from '../lib/i18n';
 
-// URLから言語パラメーターを取得 (プロトコルをhttpsに整形)
+// URLから言語パラメーターを取得 (httpsに整形して安全に取得)
 const requestUrl = Astro.request.url.replace(/^http:/, 'https:');
 const url = new URL(requestUrl);
 const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
@@ -12,7 +12,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
 
 <Layout 
   title={currentLang === 'en' ? 'Bosai 8 Type Diagnosis | JYRAC' : 'ぼうさい8 防災共助タイプ診断 | 日本若者防災復興協会'} 
-  currentTab="bosai8"
+  currentTab="gioco"
 >
   <div class="b8-wrapper" id="b8-root">
     
@@ -78,7 +78,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     <!-- ===== 結果画面 ===== -->
     <section id="s-result" class="b8-hidden">
       <div class="b8-sheet b8-hero" id="b8-card">
-        <div class="b8-heroimg"><img id="rImg" alt="" /></div>
+        <div class="b8-heroimg"><div id="rImgContainer"></div></div>
         <p class="b8-code" id="rCode"></p>
         <h2 class="b8-tname" id="rName"></h2>
         <p class="b8-catch" id="rCatch"></p>
@@ -97,8 +97,8 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
         <div class="b8-block">
           <h3>相棒と、正反対</h3>
           <div class="b8-duo">
-            <div><em>相棒</em><img id="rBuddyImg" alt=""><b id="rBuddy"></b></div>
-            <div><em>正反対</em><img id="rOppImg" alt=""><b id="rOpp"></b></div>
+            <div><em>相棒</em><div id="rBuddyImgContainer"></div><b id="rBuddy"></b></div>
+            <div><em>正反対</em><div id="rOppImgContainer"></div><b id="rOpp"></b></div>
           </div>
           <p class="b8-muted" style="margin-top:10px" id="rPairNote"></p>
         </div>
@@ -123,39 +123,41 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
 
 <style>
   .b8-wrapper {
-    --bg1: #F2F7FF; --bg2: #FFF8F0;
     --card: #ffffff;
-    --ink: #232936; --ink2: #6E7684; --mute: #9AA1AC;
+    --ink: #232936; 
+    --ink2: #6E7684; 
+    --mute: #9AA1AC;
     --line: #E6E9F0;
     --accent: #FF9F1C;
     --primary: #002b54;
     --c: #002b54;
-    --r: 20px;
     max-width: 640px;
     margin: 0 auto;
-    padding: 10px 0 40px;
+    padding: 0 0 30px;
     color: var(--ink);
+    display: block !important;
   }
 
   .b8-sheet {
     position: relative;
     background: var(--card);
-    border-radius: var(--r);
+    border-radius: 20px;
     border: 1px solid rgba(0, 154, 166, 0.18);
     box-shadow: 0 4px 20px rgba(0, 43, 84, 0.05);
     padding: 30px 24px;
+    box-sizing: border-box;
   }
   .b8-sheet + .b8-sheet { margin-top: 20px; }
 
   .b8-title {
-    font-size: clamp(28px, 6vw, 36px);
+    font-size: clamp(26px, 5vw, 34px);
     font-weight: 900;
     color: var(--primary);
     margin: 0 0 10px;
     line-height: 1.2;
   }
   .b8-h2 {
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 800;
     color: var(--primary);
     margin: 0 0 12px;
@@ -168,33 +170,14 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     margin: 0 0 8px;
     text-transform: uppercase;
   }
-  .b8-p {
-    line-height: 1.8;
-    margin: 0 0 16px;
-    font-size: 14.5px;
-  }
-  .b8-muted {
-    color: var(--ink2);
-    font-size: 12.5px;
-    line-height: 1.7;
-    margin: 10px 0 16px;
-  }
+  .b8-p { line-height: 1.8; margin: 0 0 16px; font-size: 14.5px; }
+  .b8-muted { color: var(--ink2); font-size: 12.5px; line-height: 1.7; margin: 10px 0 16px; }
 
   .b8-btn {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    border: none;
-    cursor: pointer;
-    font-weight: 800;
-    font-size: 16px;
-    background: var(--primary);
-    color: #fff;
-    padding: 16px;
-    border-radius: 999px;
-    box-shadow: 0 4px 14px rgba(0, 43, 84, 0.2);
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
-    text-align: center;
+    display: block; width: 100%; box-sizing: border-box; border: none; cursor: pointer;
+    font-weight: 800; font-size: 16px; background: var(--primary); color: #fff;
+    padding: 16px; border-radius: 999px; box-shadow: 0 4px 14px rgba(0, 43, 84, 0.2);
+    transition: transform 0.12s ease, box-shadow 0.12s ease; text-align: center;
   }
   .b8-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0, 43, 84, 0.28); }
   .b8-btn:active { transform: translateY(1px); }
@@ -203,10 +186,10 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
   .b8-btn.b8-ghost:hover { color: var(--ink); transform: none; box-shadow: none; }
 
   .b8-prog { display: flex; gap: 4px; margin: 0 0 18px; }
-  .b8-prog i { flex: 1; height: 6px; background: #EDF0F5; border-radius: 999px; transition: background 0.25s, transform 0.25s; }
+  .b8-prog i { flex: 1; height: 6px; background: #EDF0F5; border-radius: 999px; transition: background 0.25s; }
   .b8-prog i.on { background: var(--dot); }
   .b8-prog i.cur { background: var(--dot); transform: scaleY(1.8); }
-  .b8-count { font-weight: 800; font-size: 12px; color: var(--mute); margin: 0 0 8px; letter-spacing: 0.05em; }
+  .b8-count { font-weight: 800; font-size: 12px; color: var(--mute); margin: 0 0 8px; }
 
   .b8-scene {
     font-weight: 800; font-size: 11px; color: #fff; background: #009aa6;
@@ -218,17 +201,23 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     display: flex; align-items: flex-start; gap: 12px; width: 100%; text-align: left; cursor: pointer;
     background: #fff; border: 2px solid var(--line); border-radius: 16px;
     padding: 14px 16px; font-size: 14.5px; line-height: 1.65; color: var(--ink);
-    margin-bottom: 10px; transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+    margin-bottom: 10px; transition: border-color 0.15s, box-shadow 0.15s;
+    box-sizing: border-box;
   }
-  .b8-choice:hover { border-color: #009aa6; box-shadow: 0 4px 14px rgba(0, 154, 166, 0.15); transform: translateY(-1px); }
+  .b8-choice:hover { border-color: #009aa6; box-shadow: 0 4px 14px rgba(0, 154, 166, 0.15); }
   .b8-choice .mark {
     font-weight: 800; font-size: 12px; color: var(--ink2); background: #F1F4F9;
     border-radius: 50%; width: 22px; height: 22px; flex: none; display: flex; align-items: center; justify-content: center; margin-top: 2px;
   }
   .b8-choice:hover .mark { background: #009aa6; color: #fff; }
 
-  .b8-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 16px 0; }
-  .b8-grid img { width: 100%; display: block; border-radius: 12px; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1)); }
+  .b8-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 16px 0; }
+  .b8-grid .icon-box {
+    aspect-ratio: 1; border-radius: 16px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; color: #fff; font-weight: bold; font-size: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  }
+  .b8-grid .icon-box span { font-size: 22px; margin-bottom: 4px; }
 
   .b8-axbox { background: #F8FAFC; border-radius: 16px; padding: 16px; margin: 16px 0; border: 1px solid var(--line); }
   .b8-axttl { font-weight: 800; font-size: 13.5px; margin: 0 0 10px; color: var(--primary); }
@@ -254,13 +243,18 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
   .b8-req-badge { color: #ef5a48; font-size: 11px; padding: 2px 6px; background: #ffe9e4; border-radius: 4px; margin-left: 4px; }
   .b8-err-msg { display: none; color: #ef5a48; font-size: 12.5px; font-weight: bold; margin-top: 6px; }
 
-  /* 結果カードスタイル */
   #s-result .b8-sheet { border-top: 6px solid var(--c); }
   .b8-hero { text-align: center; }
-  .b8-heroimg { position: relative; padding: 10px 0; }
-  .b8-heroimg img { position: relative; width: 180px; max-width: 60%; display: block; margin: 0 auto; filter: drop-shadow(0 6px 14px rgba(0,0,0,0.15)); }
-  .b8-code { font-weight: 900; font-size: 12px; letter-spacing: 0.25em; color: var(--c); margin: 10px 0 4px; }
-  .b8-tname { font-size: clamp(24px, 6vw, 32px); font-weight: 900; margin: 0 0 6px; line-height: 1.25; color: var(--c); }
+  .b8-heroimg { display: flex; justify-content: center; padding: 10px 0; }
+  .b8-heroimg .icon-hero {
+    width: 110px; height: 110px; border-radius: 50%; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; color: #fff; font-weight: 900; font-size: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+  .b8-heroimg .icon-hero span { font-size: 40px; margin-bottom: 4px; }
+
+  .b8-code { font-weight: 900; font-size: 13px; letter-spacing: 0.25em; color: var(--c); margin: 12px 0 4px; }
+  .b8-tname { font-size: clamp(24px, 5vw, 30px); font-weight: 900; margin: 0 0 6px; line-height: 1.25; color: var(--c); }
   .b8-catch { font-size: 14px; color: var(--ink2); margin: 0 0 10px; font-weight: 700; }
 
   .b8-bars { margin: 20px 0 6px; text-align: left; }
@@ -277,14 +271,17 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
   .b8-block p { margin: 0; font-size: 14px; line-height: 1.8; }
 
   .b8-cline { display: flex; gap: 10px; align-items: flex-start; background: #F8FAFC; border-radius: 12px; padding: 10px 12px; margin-bottom: 6px; }
-  .b8-cbig { font-weight: 900; font-size: 22px; color: var(--c); line-height: 1; width: 24px; flex: none; padding-top: 2px; }
+  .b8-cbig { font-weight: 900; font-size: 20px; color: var(--c); line-height: 1; width: 24px; flex: none; padding-top: 2px; }
   .b8-cmeta .t1 { font-weight: 800; font-size: 13px; margin: 0 0 2px; }
   .b8-cmeta .t2 { font-size: 12px; color: var(--ink2); margin: 0; }
 
   .b8-duo { display: flex; gap: 8px; margin-top: 6px; }
-  .b8-duo div { flex: 1; text-align: center; background: #F8FAFC; border-radius: 12px; padding: 10px 6px; }
-  .b8-duo img { width: 64px; max-width: 100%; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
-  .b8-duo b { display: block; font-size: 12px; margin-top: 4px; }
+  .b8-duo div { flex: 1; text-align: center; background: #F8FAFC; border-radius: 12px; padding: 12px 6px; }
+  .b8-duo .icon-small {
+    width: 48px; height: 48px; border-radius: 50%; margin: 0 auto 6px; display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 22px;
+  }
+  .b8-duo b { display: block; font-size: 12px; margin-top: 4px; color: var(--ink); }
   .b8-duo em { display: block; font-style: normal; font-size: 10px; color: var(--mute); font-weight: 800; }
 
   .b8-note { background: #F8FAFC; border-radius: 12px; padding: 12px 14px; margin-top: 16px; text-align: left; }
@@ -298,24 +295,21 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
 </style>
 
 <script is:inline>
-  function setupBosai8() {
+  function runBosai8App() {
     const root = document.getElementById('b8-root');
     if (!root) return;
 
-    // ★★★ デプロイしたGASのウェブアプリURLをここに設定 ★★★
     const GAS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyuMhptc9qq1HxYVpOhwrO1GA5E1Zec8Wt67i7KsLZ8dv7HSwPGlq0Z1wtumpHclBk/exec";
 
-    const makeIcon = (color, label) => `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><circle cx="60" cy="60" r="54" fill="${encodeURIComponent(color)}" /><text x="50%" y="54%" font-size="14" font-weight="bold" fill="%23fff" text-anchor="middle" dominant-baseline="middle" font-family="sans-serif">${encodeURIComponent(label)}</text></svg>`;
-
-    const IMG = {
-      hamster: makeIcon('#EF5A48', 'ハムスター'),
-      ant: makeIcon('#F06A18', 'アリ'),
-      squirrel: makeIcon('#E8AF1E', 'リス'),
-      beaver: makeIcon('#14875C', 'ビーバー'),
-      owl: makeIcon('#8B44A8', 'フクロウ'),
-      penguin: makeIcon('#123A96', 'ペンギン'),
-      otter: makeIcon('#1BBFC6', 'カワウソ'),
-      dolphin: makeIcon('#EE6A9E', 'イルカ')
+    const CHARAS = {
+      hamster:  { emoji: "🐹", name: "ハムスター", col: "#EF5A48" },
+      ant:      { emoji: "🐜", name: "アリ",       col: "#F06A18" },
+      squirrel: { emoji: "🐿️", name: "リス",       col: "#E8AF1E" },
+      beaver:   { emoji: "🦫", name: "ビーバー",   col: "#14875C" },
+      owl:      { emoji: "🦉", name: "フクロウ",   col: "#8B44A8" },
+      penguin:  { emoji: "🐧", name: "ペンギン",   col: "#123A96" },
+      otter:    { emoji: "🦦", name: "カワウソ",   col: "#1BBFC6" },
+      dolphin:  { emoji: "🐬", name: "イルカ",     col: "#EE6A9E" }
     };
 
     const TYPES = {
@@ -324,7 +318,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
       PIB:{col:"#E8AF1E",key:"squirrel",name:"こうさくリス",catch:"ありもので、目の前の困りごとを解決する",good:"道具がなくても、そこにある物で何とかしてしまう現場の強さ。「代用できる」の発想が早くつまずきを即座に消せます。",post:"段ボールベッド、簡易トイレ、間仕切り作り。生活の不便を潰す役。",blind:"勢いで安全ルールを飛び越えてしまうことがある。壊れたときの備えも大切に。",step:"段ボールベッドや簡易トイレを実際に一度組み立ててみる。",buddy:"MIN",opp:"MSN",theme:"災害対応における即興（Improvisation）"},
       PIN:{col:"#14875C",key:"beaver",name:"しくみビーバー",catch:"みんなが使える新しい仕組みを作る",good:"混乱を見て「仕組みが足りない」と気づける人。地図・表・掲示などに落とし込み、自分がいない場所でも回る環境を残せます。",post:"掲示、情報整理、記録のかたち作り。迷わない仕組みを残す役。",blind:"現場が使いこなせない仕組みを作ってしまうことも。触ってもらってから広げたい。",step:"自分の家や学校の周りで危険箇所と避難所を書き込んだ地図を1枚作る。",buddy:"MIB",opp:"MSB",theme:"災害時の情報整理と創発的組織づくり"},
       MSB:{col:"#8B44A8",key:"owl",name:"みまもりフクロウ",catch:"静かに気づいて、そばにいる",good:"人の様子の小さな変化に気づける観察力。騒がずに必要な人の隣にいられます。埋もれがちな声を拾えるのが強み。",post:"巡回、付き添い、相談。数では見えない困りごとを見つける役。",blind:"気づいても言い出せずに抱えがち。自分が消耗していることに気づけないことも。",step:"近所の人や同じ階の人の顔と名前を3人おぼえる。",buddy:"PSN",opp:"PIN",theme:"災害後の情緒的支援と支援者のケア"},
-      MSN:{col:"#123A96",key:"penguin",name:"なごませペンギン",catch:"場の空気をあたためて、みんなを落ち着かせる",good:"張りつめた空気をゆるめられる人。あなたがいると人が話し出します。決めごとをみんなが受け入れられる形に整えるのも得意。",post:"運営会議の進行、ルール決め、お茶や食事の時間づくり。",blind:"深刻な問題を「まあまあ」で流してしまうことがある。全員納得を待ちすぎて決断が遅れることも。",step:"話し合いで「まだ話していない人」を1人指名してみる。",buddy:"PSB",opp:"PIB",theme:"集団維持機能（PM理論）"},
+      MSN:{col:"#123A96",key:"penguin",name:"なごませペンギン",catch:"場の空気の温度を上げて、みんなを落ち着かせる",good:"張りつめた空気をゆるめられる人。あなたがいると人が話し出します。決めごとをみんなが受け入れられる形に整えるのも得意。",post:"運営会議の進行、ルール決め、お茶や食事の時間づくり。",blind:"深刻な問題を「まあまあ」で流してしまうことがある。全員納得を待ちすぎて決断が遅れることも。",step:"話し合いで「まだ話していない人」を1人指名してみる。",buddy:"PSB",opp:"PIB",theme:"集団維持機能（PM理論）"},
       MIB:{col:"#1BBFC6",key:"otter",name:"あそびカワウソ",catch:"その場のひらめきで、心を軽くする",good:"重い空気の中に笑いや遊びを持ち込める人。子どもやお年寄りにとって居場所を作れます。何もない所から楽しみを生む力。",post:"子どもの遊び場、静養スペース作り。避難所の暮らしを支える役。",blind:"全体の運営から浮いてしまうことがある。盛り上げすぎて休みたい人が疲れることにも注意。",step:"道具のいらない遊びを3つ覚えておく（停電時もできるもの）。",buddy:"PIN",opp:"PSN",theme:"避難所における生活の質と居場所"},
       MIN:{col:"#EE6A9E",key:"dolphin",name:"つなぎイルカ",catch:"声とつながりで、みんなを元気にする",good:"人と人、地域と外を結ぶのが得意。発信して仲間を集め、孤立しかけた場に外部の助けを呼び込めます。",post:"外部支援の受け入れ、発信、記録。中と外をつなぐ窓口。",blind:"つないだところで手を離してしまいがち。伝えるうちに現実より良い話にしすぎないよう注意。",step:"学校・家・部活以外の場所に話せる人を1人つくる。",buddy:"PIB",opp:"PSB",theme:"ソーシャルキャピタルと復興"}
     };
@@ -386,8 +380,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     ];
 
     let deck = [], idx = 0, answers = [], sex = "", result = null;
-
-    const $ = id => root.querySelector(`#${id}`);
+    const $ = id => root.querySelector('#' + id);
     const shuffle = arr => arr.slice().sort(() => Math.random() - 0.5);
 
     function buildDeck() {
@@ -408,15 +401,20 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     function renderIntro() {
       const order = ["hamster", "ant", "squirrel", "beaver", "owl", "penguin", "otter", "dolphin"];
       const grid = $("introGrid");
-      if (grid) grid.innerHTML = order.map(k => `<img src="${IMG[k]}" alt="${k}" />`).join("");
-      
+      if (grid) {
+        grid.innerHTML = order.map(k => {
+          const item = CHARAS[k];
+          return '<div class="icon-box" style="background:' + item.col + '"><span>' + item.emoji + '</span>' + item.name + '</div>';
+        }).join("");
+      }
+
       const axList = $("axList");
       if (axList) {
         axList.innerHTML = AXES.map(ax => {
           const A = LETTER[ax.a], B = LETTER[ax.b];
-          return `<div class="b8-axrow"><span class="nm">${ax.name}</span>
-            <span class="b8-ltr"><b>${ax.a}</b>${A.ja}</span><span class="sl">か</span>
-            <span class="b8-ltr"><b>${ax.b}</b>${B.ja}</span></div>`;
+          return '<div class="b8-axrow"><span class="nm">' + ax.name + '</span>' +
+            '<span class="b8-ltr"><b>' + ax.a + '</b>' + A.ja + '</span><span class="sl">か</span>' +
+            '<span class="b8-ltr"><b>' + ax.b + '</b>' + B.ja + '</span></div>';
         }).join("");
       }
     }
@@ -424,13 +422,13 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     function renderQ() {
       const q = deck[idx];
       const countEl = $("count");
-      if (countEl) countEl.textContent = `${idx + 1} / ${deck.length}` + (idx >= 15 ? " （※集計補助設問）" : "");
+      if (countEl) countEl.textContent = (idx + 1) + ' / ' + deck.length + (idx >= 15 ? ' （※集計補助設問）' : '');
 
       const dots = ["#EF5A48", "#F06A18", "#E8AF1E", "#14875C", "#8B44A8", "#123A96", "#1BBFC6", "#EE6A9E"];
       const progEl = $("prog");
       if (progEl) {
         progEl.innerHTML = deck.map((_, i) =>
-          `<i class="${i < idx ? "on" : i === idx ? "cur" : ""}" style="--dot:${dots[i % 8]}"></i>`
+          '<i class="' + (i < idx ? "on" : i === idx ? "cur" : "") + '" style="--dot:' + dots[i % 8] + '"></i>'
         ).join("");
       }
 
@@ -443,10 +441,10 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
 
       if (choicesEl) {
         choicesEl.innerHTML = q.o.map((o, i) =>
-          `<button class="b8-choice" data-p="${o.p}" type="button">
-            <span class="mark">${i === 0 ? "A" : "B"}</span>
-            <span>${o.t}</span>
-          </button>`
+          '<button class="b8-choice" data-p="' + o.p + '" type="button">' +
+            '<span class="mark">' + (i === 0 ? "A" : "B") + '</span>' +
+            '<span>' + o.t + '</span>' +
+          '</button>'
         ).join("");
 
         choicesEl.querySelectorAll("button").forEach(btn => {
@@ -485,7 +483,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
 
       const code = c1 + c2 + c3;
       result = {
-        code,
+        code: code,
         type: TYPES[code],
         scores: {
           P: pCount, M: 5 - pCount,
@@ -495,11 +493,8 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
       };
     }
 
-    // スプレッドシート（GAS）送信処理
     function submitToSpreadsheet() {
-      if (!GAS_WEBHOOK_URL || GAS_WEBHOOK_URL.includes("XXXXXXXX")) {
-        return;
-      }
+      if (!GAS_WEBHOOK_URL || GAS_WEBHOOK_URL.indexOf("AKfycb") === -1) return;
 
       const ageSelect = $("b8-age");
       const ageVal = ageSelect ? ageSelect.value : "";
@@ -521,25 +516,23 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
-      }).catch(err => console.error("Spreadsheet Submit Error:", err));
+      }).catch(() => {});
     }
 
     function renderResult() {
       if (!result) return;
       const t = result.type;
+      const ch = CHARAS[t.key];
       root.style.setProperty("--c", t.col);
 
-      const rImg = $("rImg");
-      if (rImg) { rImg.src = IMG[t.key]; rImg.alt = t.name; }
+      const rImg = $("rImgContainer");
+      if (rImg) {
+        rImg.innerHTML = '<div class="icon-hero" style="background:' + t.col + '"><span>' + ch.emoji + '</span>' + ch.name + '</div>';
+      }
 
-      const rCode = $("rCode");
-      if (rCode) rCode.textContent = result.code;
-
-      const rName = $("rName");
-      if (rName) rName.textContent = t.name;
-
-      const rCatch = $("rCatch");
-      if (rCatch) rCatch.textContent = t.catch;
+      if ($("rCode")) $("rCode").textContent = result.code;
+      if ($("rName")) $("rName").textContent = t.name;
+      if ($("rCatch")) $("rCatch").textContent = t.catch;
 
       const rBars = $("rBars");
       if (rBars) {
@@ -547,11 +540,10 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
           const scA = result.scores[ax.a];
           const scB = result.scores[ax.b];
           const pctA = (scA / 5) * 100;
-          return `
-            <div class="b8-bar">
-              <div class="lab"><span><b>${ax.a}</b> ${LETTER[ax.a].ja} (${scA})</span><span><b>${ax.b}</b> ${LETTER[ax.b].ja} (${scB})</span></div>
-              <div class="b8-track"><span style="width:${pctA}%"></span><span class="r" style="width:${100 - pctA}%"></span></div>
-            </div>`;
+          return '<div class="b8-bar">' +
+            '<div class="lab"><span><b>' + ax.a + '</b> ' + LETTER[ax.a].ja + ' (' + scA + ')</span><span><b>' + ax.b + '</b> ' + LETTER[ax.b].ja + ' (' + scB + ')</span></div>' +
+            '<div class="b8-track"><span style="width:' + pctA + '%"></span><span class="r" style="width:' + (100 - pctA) + '%"></span></div>' +
+          '</div>';
         }).join("");
       }
 
@@ -559,7 +551,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
       if (rCode3) {
         rCode3.innerHTML = result.code.split("").map(ltr => {
           const info = LETTER[ltr];
-          return `<div class="b8-cline"><div class="b8-cbig">${ltr}</div><div class="b8-cmeta"><div class="t1">${info.ja}（${info.en}）</div><div class="t2">${info.line}</div></div></div>`;
+          return '<div class="b8-cline"><div class="b8-cbig">' + ltr + '</div><div class="b8-cmeta"><div class="t1">' + info.ja + '（' + info.en + '）</div><div class="t2">' + info.line + '</div></div></div>';
         }).join("");
       }
 
@@ -570,21 +562,31 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
       if ($("rTheme")) $("rTheme").textContent = t.theme;
 
       const bud = TYPES[t.buddy], opp = TYPES[t.opp];
-      if ($("rBuddyImg")) $("rBuddyImg").src = IMG[bud.key];
+      const budCh = CHARAS[bud.key], oppCh = CHARAS[opp.key];
+
+      if ($("rBuddyImgContainer")) {
+        $("rBuddyImgContainer").innerHTML = '<div class="icon-small" style="background:' + bud.col + '">' + budCh.emoji + '</div>';
+      }
       if ($("rBuddy")) $("rBuddy").textContent = bud.name;
-      if ($("rOppImg")) $("rOppImg").src = IMG[opp.key];
+
+      if ($("rOppImgContainer")) {
+        $("rOppImgContainer").innerHTML = '<div class="icon-small" style="background:' + opp.col + '">' + oppCh.emoji + '</div>';
+      }
       if ($("rOpp")) $("rOpp").textContent = opp.name;
-      if ($("rPairNote")) $("rPairNote").textContent = `相棒の【${bud.name}】と組むと死角が補われ、正反対の【${opp.name}】の視点を入れるとチームの柔軟性が増します。`;
+
+      if ($("rPairNote")) {
+        $("rPairNote").textContent = '相棒の【' + bud.name + '】と組むと死角が補われ、正反対の【' + opp.name + '】の視点を入れるとチームの柔軟性が増します。';
+      }
 
       const mailVal = $("b8-mail") ? $("b8-mail").value.trim() : "";
-      if ($("mailNote")) $("mailNote").textContent = `宛先: ${mailVal}`;
+      if ($("mailNote")) $("mailNote").textContent = '宛先: ' + mailVal;
       
       const mailBtn = $("mailBtn");
       if (mailBtn) {
         mailBtn.onclick = () => {
-          const subject = encodeURIComponent(`【ぼうさい8 診断結果】${t.name} (${result.code})`);
-          const body = encodeURIComponent(`JYRAC 防災共助タイプ診断「ぼうさい8」の結果です。\n\nタイプ: ${t.name} (${result.code})\n特徴: ${t.catch}\n\n■ きみの得意\n${t.good}\n\n■ 避難所での持ち場\n${t.post}\n\n■ 今日からの一歩\n${t.step}\n\nhttps://jyrac.stki.org/bosai8`);
-          window.location.href = `mailto:${mailVal}?subject=${subject}&body=${body}`;
+          const subject = encodeURIComponent('【ぼうさい8 診断結果】' + t.name + ' (' + result.code + ')');
+          const body = encodeURIComponent('JYRAC 防災共助タイプ診断「ぼうさい8」の結果です。\n\nタイプ: ' + t.name + ' (' + result.code + ')\n特徴: ' + t.catch + '\n\n■ きみの得意\n' + t.good + '\n\n■ 避難所での持ち場\n' + t.post + '\n\n■ 今日からの一歩\n' + t.step + '\n\nhttps://jyrac.stki.org/bosai8');
+          window.location.href = 'mailto:' + mailVal + '?subject=' + subject + '&body=' + body;
         };
       }
 
@@ -602,16 +604,18 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
       }
     }
 
-    // 初期化とイベント
     renderIntro();
     buildDeck();
 
-    $("startBtn").onclick = () => {
-      idx = 0;
-      answers = [];
-      show("s-quiz");
-      renderQ();
-    };
+    const startBtn = $("startBtn");
+    if (startBtn) {
+      startBtn.onclick = () => {
+        idx = 0;
+        answers = [];
+        show("s-quiz");
+        renderQ();
+      };
+    }
 
     const sexPill = $("sexPill");
     if (sexPill) {
@@ -624,35 +628,41 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
       });
     }
 
-    // 「結果を見る」ボタン（バリデーション ＋ スプシ送信）
-    $("resultBtn").onclick = () => {
-      const mailInput = $("b8-mail");
-      const mailVal = mailInput ? mailInput.value.trim() : "";
-      const mailErr = $("mail-error");
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const resultBtn = $("resultBtn");
+    if (resultBtn) {
+      resultBtn.onclick = () => {
+        const mailInput = $("b8-mail");
+        const mailVal = mailInput ? mailInput.value.trim() : "";
+        const mailErr = $("mail-error");
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      if (!mailVal || !emailRegex.test(mailVal)) {
-        if (mailErr) mailErr.style.display = "block";
-        if (mailInput) {
-          mailInput.focus();
-          mailInput.style.borderColor = "#ef5a48";
+        if (!mailVal || !emailRegex.test(mailVal)) {
+          if (mailErr) mailErr.style.display = "block";
+          if (mailInput) {
+            mailInput.focus();
+            mailInput.style.borderColor = "#ef5a48";
+          }
+          return;
         }
-        return;
-      }
 
-      if (mailErr) mailErr.style.display = "none";
-      if (mailInput) mailInput.style.borderColor = "";
+        if (mailErr) mailErr.style.display = "none";
+        if (mailInput) mailInput.style.borderColor = "";
 
-      calculateResult();
-      renderResult();
-      submitToSpreadsheet();
-      show("s-result");
-    };
+        calculateResult();
+        renderResult();
+        submitToSpreadsheet();
+        show("s-result");
+      };
+    }
 
     show("s-intro");
   }
 
-  document.addEventListener('DOMContentLoaded', setupBosai8);
-  document.addEventListener('astro:page-load', setupBosai8);
-  setupBosai8();
+  // 初期化（重複呼び出しを避けて確実に実行）
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', runBosai8App);
+  } else {
+    runBosai8App();
+  }
+  document.addEventListener('astro:page-load', runBosai8App);
 </script>
