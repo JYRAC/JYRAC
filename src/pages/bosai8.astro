@@ -587,14 +587,32 @@ t.theme,
 }
 
 function send(){
-  if(!GAS_ENDPOINT) return;
+  if(!GAS_ENDPOINT || !result) return;
+  const type = TYPES[result.code];
   const payload={
-    at:new Date().toISOString(), code:result.code, score:result.c,
-    age:$("age").value, sex:sex, cov:result.cov,
+    // 現在のGAS doPost(e) が受け取る項目
+    timestamp:new Date().toISOString(),
+    mail:$("mail").value.trim(),
+    age:$("age").value,
+    sex:sex,
+    code:result.code,
+    typeName:type ? type.name : "",
+    scores:result.c,
+    answers:answers,
+
+    // 既存の送信データも保持（他の処理との互換性のため）
+    at:new Date().toISOString(),
+    score:result.c,
+    cov:result.cov,
     raw:answers.map(a=>a.p).join(""),
     items:answers.slice(0,15).map(a=>a.id).join(",")
   };
-  fetch(GAS_ENDPOINT,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(payload)}).catch(()=>{});
+  fetch(GAS_ENDPOINT,{
+    method:"POST",
+    mode:"no-cors",
+    headers:{"Content-Type":"text/plain;charset=UTF-8"},
+    body:JSON.stringify(payload)
+  }).catch(()=>{});
 }
 
 /* ====== イベント ====== */
