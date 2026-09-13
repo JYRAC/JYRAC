@@ -39,6 +39,7 @@ body{
   position:relative; background:var(--card); border-radius:var(--r);
   box-shadow:0 1px 2px rgba(35,41,54,.05), 0 12px 30px rgba(35,41,54,.08);
   padding:26px 22px 24px;
+  overflow:hidden; /* カード外への要素の飛び出しを防ぐ（保険） */
 }
 .sheet + .sheet{margin-top:16px}
 
@@ -90,7 +91,7 @@ p{line-height:1.85;margin:0 0 14px;font-size:15px}
 
 /* ---------- キャラ一覧 ---------- */
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:18px 0 4px}
-.grid img{width:100%;display:block;filter:drop-shadow(0 4px 6px rgba(35,41,54,.14))}
+.grid img{width:100%;min-width:0;max-width:100%;height:auto;display:block;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(35,41,54,.14))}
 
 /* ---------- 軸の説明 ---------- */
 .axbox{background:#F6F8FC;border-radius:18px;padding:15px 16px 13px;margin:16px 0 14px}
@@ -274,7 +275,7 @@ const IMG = {"hamster": "data:image/webp;base64,UklGRtiVAABXRUJQVlA4WAoAAAAQAAAA
 /* ====== 送信先（JYRAC集計用・任意） ======
    Google Apps Script のウェブアプリURLを入れると、回答が自動でスプレッドシートに記録されます。
    空のままなら送信は行われず、メール作成のみ動きます。 */
-const GAS_ENDPOINT = "";
+const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbyuMhptc9qq1HxYVpOhwrO1GA5E1Zec8Wt67i7KsLZ8dv7HSwPGlq0Z1wtumpHclBk/exec";
 
 /* ====== タイプ定義 ====== */
 const TYPES = {
