@@ -118,7 +118,6 @@ const t = dict[currentLang];
     }
     .b8-wrap{display:block;width:100%;max-width:600px;min-width:0;margin:0 auto;padding:20px 16px 60px;position:relative;}
 
-    /* ---------- 言語切り替えボタン ---------- */
     .lang-switch {
       position: absolute;
       top: 15px;
@@ -143,7 +142,6 @@ const t = dict[currentLang];
       color: var(--accent);
     }
 
-    /* ---------- カード ---------- */
     .sheet{
       position:relative; background:var(--card); border-radius:var(--r);
       box-shadow:0 1px 2px rgba(35,41,54,.05), 0 12px 30px rgba(35,41,54,.08);
@@ -151,14 +149,12 @@ const t = dict[currentLang];
     }
     .sheet + .sheet{margin-top:16px}
 
-    /* ---------- 文字 ---------- */
     h1{font-family:var(--disp);font-weight:800;font-size:clamp(32px,9vw,46px);line-height:1.12;margin:0 0 8px;letter-spacing:.01em}
     h2{font-family:var(--disp);font-weight:800;font-size:20px;margin:0 0 10px;line-height:1.4}
     .eyebrow{font-family:var(--disp);font-weight:700;font-size:11.5px;letter-spacing:.2em;color:var(--accent);margin:0 0 10px}
     p{line-height:1.85;margin:0 0 14px;font-size:15px}
     .muted{color:var(--ink2);font-size:12.5px;line-height:1.8}
 
-    /* ---------- ボタン ---------- */
     .btn{
       display:block;width:100%;border:none;cursor:pointer;
       font-family:var(--disp);font-weight:700;font-size:17px;
@@ -173,14 +169,12 @@ const t = dict[currentLang];
     .btn.ghost:hover{transform:none;color:var(--ink);box-shadow:none}
     :focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 
-    /* ---------- 進捗 ---------- */
     .prog{display:flex;gap:3px;margin:0 0 18px}
     .prog i{flex:1;height:7px;background:#EDF0F5;border-radius:999px;transition:background .25s, transform .25s}
     .prog i.on{background:var(--dot)}
     .prog i.cur{background:var(--dot);transform:scaleY(1.9)}
     .count{font-family:var(--disp);font-weight:700;font-size:12px;color:var(--mute);letter-spacing:.06em;margin:0 0 8px}
 
-    /* ---------- 選択肢 ---------- */
     .scene{font-family:var(--disp);font-weight:700;font-size:12.5px;color:#fff;
       background:var(--primary);display:inline-block;padding:5px 13px;border-radius:999px;margin-bottom:12px}
     .qtext{font-size:16px;line-height:1.9;margin:0 0 20px}
@@ -197,11 +191,9 @@ const t = dict[currentLang];
       display:flex;align-items:center;justify-content:center;margin-top:2px}
     .choice:hover .mark{background:var(--accent);color:#fff}
 
-    /* ---------- キャラ一覧 ---------- */
     .b8-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:18px auto 4px;width:100%;max-width:600px;min-width:0}
     .b8-grid img{display:block;width:100%;max-width:100%;min-width:0;height:auto;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(35,41,54,.14))}
 
-    /* ---------- 軸の説明 ---------- */
     .axbox{background:#F6F8FC;border-radius:18px;padding:15px 16px 13px;margin:16px 0 14px}
     .axttl{font-family:var(--disp);font-weight:800;font-size:14px;margin:0 0 11px}
     .axrow{display:flex;align-items:center;gap:7px;margin-bottom:8px}
@@ -212,7 +204,6 @@ const t = dict[currentLang];
     .axrow .sl{color:var(--mute);font-size:11.5px}
     .axnote{font-size:11.5px;color:var(--ink2);margin:6px 0 0;line-height:1.7}
 
-    /* ---------- フォーム ---------- */
     label.f{display:block;font-family:var(--disp);font-weight:700;font-size:14px;margin:18px 0 8px}
     input,select{width:100%;font-family:var(--body);font-size:16px;padding:14px;
       border:2px solid var(--line);border-radius:14px;background:#fff;color:var(--ink)}
@@ -222,7 +213,6 @@ const t = dict[currentLang];
       padding:12px 10px;border:2px solid var(--line);background:#fff;border-radius:999px;color:var(--ink2)}
     .pill button[aria-pressed="true"]{background:var(--primary);border-color:var(--primary);color:#fff}
 
-    /* ---------- 結果 ---------- */
     #s-result .sheet{border-top:5px solid var(--c)}
     .hero{text-align:center;padding-top:6px}
     .heroimg{position:relative;padding:6px 0 2px}
