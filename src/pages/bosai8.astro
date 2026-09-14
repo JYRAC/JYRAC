@@ -370,7 +370,7 @@ const t = {
       PIN:{col:"#14875C",key:"beaver",name:IS_EN ? "System Beaver" : "しくみビーバー",catch:IS_EN ? "Build new systems that everyone can use." : "みんなが使える新しい仕組みを作る",
         good:IS_EN?"Good at creating structures and maps.":"混乱を見て「仕組みが足りない」と気づける人。一度作れば、あなたがいない場所でも回り続けます。",
         post:IS_EN?"Information & signage.":"掲示、情報整理、記録のかたち作り。",
-        blind:IS_EN?"May build overly complex systems.":"現場が実際には使えない仕組みを作ることもある。",
+        blind:IS_EN?"May build overly complex systems.":"現場が実際には使えない仕組みを作ってしまうこともある。",
         step:IS_EN?"Create a local hazard map.":"地域の危険マップを1枚作る。",
         buddy:"MIB", opp:"MSB",
         theme:IS_EN?"Information organization":"情報整理と創発的な組織づくり"},
@@ -544,19 +544,19 @@ const t = {
       document.getElementById("scene").textContent = q.scene;
       document.getElementById("qtext").textContent = q.text;
       document.getElementById("choices").innerHTML = q.o.map((o,i)=>
-        `<button type="button" class="choice" data-p="${o.p}"><span class="mark">${i===0?"A":"B"}</span>${o.t}</button>`).join("");
+        `<button type="button" class="choice" data-p="${o.p}" data-t="${o.t}"><span class="mark">${i===0?"A":"B"}</span>${o.t}</button>`).join("");
       
       var btns = document.getElementById("choices").querySelectorAll(".choice");
       for(let b=0; b<btns.length; b++){
         (function(btn){
-          btn.onclick = () => pick(btn.getAttribute('data-p'));
+          btn.onclick = () => pick(btn.getAttribute('data-p'), btn.getAttribute('data-t'));
         })(btns[b]);
       }
       document.getElementById("backBtn").classList.toggle("hidden", idx===0);
     }
 
-    function pick(p){
-      answers[idx]={ax:deck[idx].ax, p, key:deck[idx].key||null, id:deck[idx].id||null};
+    function pick(p, text){
+      answers[idx]={ax:deck[idx].ax, p, text: text || "", key:deck[idx].key||null, id:deck[idx].id||null};
       idx++;
       if(idx<deck.length) renderQ(); else show("s-profile");
     }
@@ -584,7 +584,7 @@ const t = {
         <div class="track"><span style="width:${l*20}%"></span><span class="r" style="width:${r*20}%"></span></div></div>`;
     }
 
-    // スプレッドシート（GAS）へデータを自動送信する関数
+    // スプレッドシート（GAS）へ実際の回答テキストを送信する関数
     function sendDataToSheet(resData) {
       const payload = {
         timestamp: new Date().toISOString(),
@@ -594,7 +594,7 @@ const t = {
         code: resData.code,
         typeName: TYPES[resData.code].name,
         scores: resData.c,
-        answerTexts: answers.map(a => a.p)
+        answerTexts: answers.map(a => a.text || a.p) // 選択したテキストを送信
       };
 
       fetch(GAS_ENDPOINT, {
