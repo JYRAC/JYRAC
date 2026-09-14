@@ -6,7 +6,6 @@ import { IMG } from '../imagesData.js';
 const requestUrl = Astro.request.url.replace(/^http:/, 'https:');
 const url = new URL(requestUrl);
 const currentLang = url.searchParams.get("lang") === "en" ? "en" : "ja";
-const langParam = currentLang === 'en' ? '?lang=en' : '';
 
 // 多言語テキスト辞書
 const t = {
@@ -73,18 +72,7 @@ const t = {
       --body:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",sans-serif;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0}
-    body{
-      font-family:var(--body); color:var(--ink);
-      background:
-        radial-gradient(46vw 34vw at 8% 4%, rgba(48,224,224,.16), transparent 70%),
-        radial-gradient(42vw 32vw at 96% 22%, rgba(240,112,160,.15), transparent 70%),
-        radial-gradient(46vw 36vw at 40% 100%, rgba(240,192,48,.16), transparent 70%),
-        linear-gradient(170deg, var(--bg1), var(--bg2));
-      background-attachment:fixed;
-      min-height:100vh; -webkit-font-smoothing:antialiased;
-    }
-    .wrap{max-width:600px;margin:0 auto;padding:20px 16px 60px;position:relative;}
+    .b8-wrap{max-width:600px;margin:0 auto;padding:20px 16px 60px;position:relative;}
 
     .lang-switch {
       position: absolute;
@@ -110,7 +98,6 @@ const t = {
       color: var(--accent);
     }
 
-    /* ---------- カード ---------- */
     .sheet{
       position:relative; background:var(--card); border-radius:var(--r);
       box-shadow:0 1px 2px rgba(35,41,54,.05), 0 12px 30px rgba(35,41,54,.08);
@@ -118,14 +105,12 @@ const t = {
     }
     .sheet + .sheet{margin-top:16px}
 
-    /* ---------- 文字 ---------- */
     h1{font-family:var(--disp);font-weight:800;font-size:clamp(32px,9vw,46px);line-height:1.12;margin:0 0 8px;letter-spacing:.01em}
     h2{font-family:var(--disp);font-weight:800;font-size:20px;margin:0 0 10px;line-height:1.4}
     .eyebrow{font-family:var(--disp);font-weight:700;font-size:11.5px;letter-spacing:.2em;color:var(--accent);margin:0 0 10px}
     p{line-height:1.85;margin:0 0 14px;font-size:15px}
     .muted{color:var(--ink2);font-size:12.5px;line-height:1.8}
 
-    /* ---------- ボタン ---------- */
     .btn{
       display:block;width:100%;border:none;cursor:pointer;
       font-family:var(--disp);font-weight:700;font-size:17px;
@@ -140,14 +125,12 @@ const t = {
     .btn.ghost:hover{transform:none;color:var(--ink);box-shadow:none}
     :focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 
-    /* ---------- 進捗 ---------- */
     .prog{display:flex;gap:3px;margin:0 0 18px}
     .prog i{flex:1;height:7px;background:#EDF0F5;border-radius:999px;transition:background .25s, transform .25s}
     .prog i.on{background:var(--dot)}
     .prog i.cur{background:var(--dot);transform:scaleY(1.9)}
     .count{font-family:var(--disp);font-weight:700;font-size:12px;color:var(--mute);letter-spacing:.06em;margin:0 0 8px}
 
-    /* ---------- 選択肢 ---------- */
     .scene{font-family:var(--disp);font-weight:700;font-size:12.5px;color:#fff;
       background:var(--primary);display:inline-block;padding:5px 13px;border-radius:999px;margin-bottom:12px}
     .qtext{font-size:16px;line-height:1.9;margin:0 0 20px}
@@ -164,11 +147,9 @@ const t = {
       display:flex;align-items:center;justify-content:center;margin-top:2px}
     .choice:hover .mark{background:var(--accent);color:#fff}
 
-    /* ---------- キャラ一覧 ---------- */
     .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:18px 0 4px}
     .grid img{width:100%;display:block;filter:drop-shadow(0 4px 6px rgba(35,41,54,.14))}
 
-    /* ---------- 軸の説明 ---------- */
     .axbox{background:#F6F8FC;border-radius:18px;padding:15px 16px 13px;margin:16px 0 14px}
     .axttl{font-family:var(--disp);font-weight:800;font-size:14px;margin:0 0 11px}
     .axrow{display:flex;align-items:center;gap:7px;margin-bottom:8px}
@@ -179,7 +160,6 @@ const t = {
     .axrow .sl{color:var(--mute);font-size:11.5px}
     .axnote{font-size:11.5px;color:var(--ink2);margin:6px 0 0;line-height:1.7}
 
-    /* ---------- フォーム ---------- */
     label.f{display:block;font-family:var(--disp);font-weight:700;font-size:14px;margin:18px 0 8px}
     input,select{width:100%;font-family:var(--body);font-size:16px;padding:14px;
       border:2px solid var(--line);border-radius:14px;background:#fff;color:var(--ink)}
@@ -189,7 +169,6 @@ const t = {
       padding:12px 10px;border:2px solid var(--line);background:#fff;border-radius:999px;color:var(--ink2)}
     .pill button[aria-pressed="true"]{background:var(--primary);border-color:var(--primary);color:#fff}
 
-    /* ---------- 結果 ---------- */
     #s-result .sheet{border-top:5px solid var(--c)}
     .hero{text-align:center;padding-top:6px}
     .heroimg{position:relative;padding:6px 0 2px}
@@ -240,480 +219,487 @@ const t = {
       .sheet{box-shadow:none;border:1px solid #ddd}
     }
   </style>
-</head>
-<body>
-<div class="wrap" id="b8-root" data-lang={currentLang}>
-  <a href={t.switchLangUrl} class="lang-switch">{t.switchLangText}</a>
 
-  <!-- ===== 表紙 ===== -->
-  <section id="s-intro" class="sheet">
-    <p class="eyebrow">{t.eyebrow}</p>
-    <h1>{t.heading}</h1>
-    <p set:html={t.intro}></p>
-    <div class="grid" id="introGrid"></div>
-    <div class="axbox">
-      <p class="axttl">{t.axTitle}</p>
-      <div id="axList"></div>
-      <p class="axnote">{t.axNote}</p>
-    </div>
-    <p class="muted" set:html={t.muted}></p>
-    <button type="button" class="btn" id="startBtn">{t.startBtn}</button>
-  </section>
+  <div class="b8-wrap" id="b8-root" data-lang={currentLang}>
+    <a href={t.switchLangUrl} class="lang-switch">{t.switchLangText}</a>
 
-  <!-- ===== 設問 ===== -->
-  <section id="s-quiz" class="sheet hidden">
-    <p class="count" id="count"></p>
-    <div class="prog" id="prog"></div>
-    <span class="scene" id="scene"></span>
-    <p class="qtext" id="qtext"></p>
-    <div id="choices"></div>
-    <button type="button" class="btn ghost" id="backBtn">{t.backBtn}</button>
-  </section>
+    <!-- ===== 表紙 ===== -->
+    <section id="s-intro" class="sheet">
+      <p class="eyebrow">{t.eyebrow}</p>
+      <h1>{t.heading}</h1>
+      <p set:html={t.intro}></p>
+      <div class="grid" id="introGrid"></div>
+      <div class="axbox">
+        <p class="axttl">{t.axTitle}</p>
+        <div id="axList"></div>
+        <p class="axnote">{t.axNote}</p>
+      </div>
+      <p class="muted" set:html={t.muted}></p>
+      <button type="button" class="btn" id="startBtn">{t.startBtn}</button>
+    </section>
 
-  <!-- ===== 属性 ===== -->
-  <section id="s-profile" class="sheet hidden">
-    <p class="eyebrow">{t.profileEyebrow}</p>
-    <h2>{t.profileTitle}</h2>
-    <p class="muted">{t.profileDesc}</p>
+    <!-- ===== 設問 ===== -->
+    <section id="s-quiz" class="sheet hidden">
+      <p class="count" id="count"></p>
+      <div class="prog" id="prog"></div>
+      <span class="scene" id="scene"></span>
+      <p class="qtext" id="qtext"></p>
+      <div id="choices"></div>
+      <button type="button" class="btn ghost" id="backBtn">{t.backBtn}</button>
+    </section>
 
-    <label class="f" for="age">{t.labelAge}</label>
-    <select id="age">
-      <option value="">{t.optNoSelect}</option>
-      <option>{currentLang === 'en' ? '12 or under' : '12歳以下'}</option>
-      <option>{currentLang === 'en' ? '13-15' : '13〜15歳'}</option>
-      <option>{currentLang === 'en' ? '16-18' : '16〜18歳'}</option>
-      <option>{currentLang === 'en' ? '19-22' : '19〜22歳'}</option>
-      <option>{currentLang === 'en' ? '23-29' : '23〜29歳'}</option>
-      <option>{currentLang === 'en' ? '30-39' : '30〜39歳'}</option>
-      <option>{currentLang === 'en' ? '40-49' : '40〜49歳'}</option>
-      <option>{currentLang === 'en' ? '50-59' : '50〜59歳'}</option>
-      <option>{currentLang === 'en' ? '60 or older' : '60歳以上'}</option>
-    </select>
+    <!-- ===== 属性 ===== -->
+    <section id="s-profile" class="sheet hidden">
+      <p class="eyebrow">{t.profileEyebrow}</p>
+      <h2>{t.profileTitle}</h2>
+      <p class="muted">{t.profileDesc}</p>
 
-    <label class="f">{t.sexTitle}</label>
-    <div class="pill" id="sexPill">
-      <button type="button" data-v={currentLang === 'en' ? 'Female' : '女性'} aria-pressed="false">{t.sexFemale}</button>
-      <button type="button" data-v={currentLang === 'en' ? 'Male' : '男性'} aria-pressed="false">{t.sexMale}</button>
-      <button type="button" data-v={currentLang === 'en' ? 'Other' : 'その他'} aria-pressed="false">{t.sexOther}</button>
-      <button type="button" data-v={currentLang === 'en' ? 'Prefer not to say' : '答えない'} aria-pressed="false">{t.sexNone}</button>
-    </div>
+      <label class="f" for="age">{t.labelAge}</label>
+      <select id="age">
+        <option value="">{t.optNoSelect}</option>
+        <option>{currentLang === 'en' ? '12 or under' : '12歳以下'}</option>
+        <option>{currentLang === 'en' ? '13-15' : '13〜15歳'}</option>
+        <option>{currentLang === 'en' ? '16-18' : '16〜18歳'}</option>
+        <option>{currentLang === 'en' ? '19-22' : '19〜22歳'}</option>
+        <option>{currentLang === 'en' ? '23-29' : '23〜29歳'}</option>
+        <option>{currentLang === 'en' ? '30-39' : '30〜39歳'}</option>
+        <option>{currentLang === 'en' ? '40-49' : '40〜49歳'}</option>
+        <option>{currentLang === 'en' ? '50-59' : '50〜59歳'}</option>
+        <option>{currentLang === 'en' ? '60 or older' : '60歳以上'}</option>
+      </select>
 
-    <label class="f" for="mail">{t.labelMail}</label>
-    <input id="mail" type="email" inputmode="email" placeholder="you@example.com" autocomplete="email">
-    <p class="muted" style="margin-top:8px">{t.mailDesc}</p>
-
-    <button type="button" class="btn" id="resultBtn" style="margin-top:22px">{t.resultBtn}</button>
-  </section>
-
-  <!-- ===== 結果 ===== -->
-  <section id="s-result" class="hidden">
-    <div class="sheet hero" id="card">
-      <div class="heroimg"><img id="rImg" alt=""></div>
-      <p class="code" id="rCode"></p>
-      <h2 class="tname" id="rName"></h2>
-      <p class="catch" id="rCatch"></p>
-
-      <div class="bars" id="rBars"></div>
-
-      <div class="block">
-        <h3>{t.codeMeaning}</h3>
-        <div class="codebox" id="rCode3"></div>
+      <label class="f">{t.sexTitle}</label>
+      <div class="pill" id="sexPill">
+        <button type="button" data-v={currentLang === 'en' ? 'Female' : '女性'} aria-pressed="false">{t.sexFemale}</button>
+        <button type="button" data-v={currentLang === 'en' ? 'Male' : '男性'} aria-pressed="false">{t.sexMale}</button>
+        <button type="button" data-v={currentLang === 'en' ? 'Other' : 'その他'} aria-pressed="false">{t.sexOther}</button>
+        <button type="button" data-v={currentLang === 'en' ? 'Prefer not to say' : '答えない'} aria-pressed="false">{t.sexNone}</button>
       </div>
 
-      <div class="block"><h3>{t.good}</h3><p id="rGood"></p></div>
-      <div class="block"><h3>{t.post}</h3><p id="rPost"></p></div>
-      <div class="block warn"><h3>{t.blind}</h3><p id="rBlind"></p></div>
-      <div class="block"><h3>{t.step}</h3><p id="rStep"></p></div>
-      <div class="block">
-        <h3>{t.buddy} &amp; {t.opp}</h3>
-        <div class="duo">
-          <div><em id="lblBuddy">{t.buddy}</em><img id="rBuddyImg" alt=""><b id="rBuddy"></b></div>
-          <div><em id="lblOpp">{t.opp}</em><img id="rOppImg" alt=""><b id="rOpp"></b></div>
+      <label class="f" for="mail">{t.labelMail}</label>
+      <input id="mail" type="email" inputmode="email" placeholder="you@example.com" autocomplete="email">
+      <p class="muted" style="margin-top:8px">{t.mailDesc}</p>
+
+      <button type="button" class="btn" id="resultBtn" style="margin-top:22px">{t.resultBtn}</button>
+    </section>
+
+    <!-- ===== 結果 ===== -->
+    <section id="s-result" class="hidden">
+      <div class="sheet hero" id="card">
+        <div class="heroimg"><img id="rImg" alt=""></div>
+        <p class="code" id="rCode"></p>
+        <h2 class="tname" id="rName"></h2>
+        <p class="catch" id="rCatch"></p>
+
+        <div class="bars" id="rBars"></div>
+
+        <div class="block">
+          <h3>{t.codeMeaning}</h3>
+          <div class="codebox" id="rCode3"></div>
         </div>
-        <p class="muted" style="margin-top:10px" id="rPairNote"></p>
+
+        <div class="block"><h3>{t.good}</h3><p id="rGood"></p></div>
+        <div class="block"><h3>{t.post}</h3><p id="rPost"></p></div>
+        <div class="block warn"><h3>{t.blind}</h3><p id="rBlind"></p></div>
+        <div class="block"><h3>{t.step}</h3><p id="rStep"></p></div>
+        <div class="block">
+          <h3>{t.buddy} &amp; {t.opp}</h3>
+          <div class="duo">
+            <div><em id="lblBuddy">{t.buddy}</em><img id="rBuddyImg" alt=""><b id="rBuddy"></b></div>
+            <div><em id="lblOpp">{t.opp}</em><img id="rOppImg" alt=""><b id="rOpp"></b></div>
+          </div>
+          <p class="muted" style="margin-top:10px" id="rPairNote"></p>
+        </div>
+        <div class="block"><h3>{t.theme}</h3><p id="rTheme"></p></div>
+
+        <div class="note">
+          <p>{t.noteFoot}</p>
+        </div>
       </div>
-      <div class="block"><h3>{t.theme}</h3><p id="rTheme"></p></div>
 
-      <div class="note">
-        <p>{t.noteFoot}</p>
+      <div class="sheet noprint">
+        <h2>{t.saveTitle}</h2>
+        <p class="muted" id="mailNote"></p>
+        <button type="button" class="btn sign" id="mailBtn">{t.mailBtn}</button>
+        <button type="button" class="btn ghost" id="printBtn">{t.printBtn}</button>
+        <button type="button" class="btn ghost" id="againBtn">{t.againBtn}</button>
       </div>
-    </div>
+    </section>
+  </div>
 
-    <div class="sheet noprint">
-      <h2>{t.saveTitle}</h2>
-      <p class="muted" id="mailNote"></p>
-      <button type="button" class="btn sign" id="mailBtn">{t.mailBtn}</button>
-      <button type="button" class="btn ghost" id="printBtn">{t.printBtn}</button>
-      <button type="button" class="btn ghost" id="againBtn">{t.againBtn}</button>
-    </div>
-  </section>
-</div>
+  <script is:inline define:vars={{ currentLang }}>
+  (function() {
+    var root = document.getElementById('b8-root');
+    if (!root) return;
+    var IS_EN = currentLang === 'en';
 
-<script is:inline define:vars={{ currentLang }}>
-(function() {
-  var root = document.getElementById('b8-root');
-  if (!root) return;
-  var IS_EN = currentLang === 'en';
+    var IMG = {
+      hamster: "/images/hamster.webp",
+      ant: "/images/ant.webp",
+      squirrel: "/images/squirrel.webp",
+      beaver: "/images/beaver.webp",
+      owl: "/images/owl.webp",
+      penguin: "/images/penguin.webp",
+      otter: "/images/otter.webp",
+      dolphin: "/images/dolphin.webp"
+    };
 
-  /* 外部のimagesData.jsからインポートしたIMGを利用 */
-  var TYPES = {
-    PSB:{col:"#EF5A48",key:"hamster",name:IS_EN ? "Swift Hamster" : "てきぱきハムスター",catch:IS_EN ? "Quickly help the person right in front using established methods." : "決まったやり方で、目の前の一人をすぐ助ける",
-      good:IS_EN?"Fast in structured tasks.":"やることが決まっている場面での速さが持ち味。手順を守れるので、任せたことが確実に終わります。慌てている人の隣で、淡々と手を動かせる強さがあります。",
-      post:IS_EN?"First aid & logistics.":"応急手当、荷物運び、体調の確認。人手が要る作業を、抜けなく回す役。",
-      blind:IS_EN?"Struggles outside standard procedures.":"手順にないことが起きると足が止まりがち。ひとりで抱え込んで、助けを呼びそびれることも。",
-      step:IS_EN?"Take a first aid course.":"救命講習（普通救命講習Ⅰなど）を受けてみる。手順を1つ増やすと、動ける場面が増えます。",
-      buddy:"MSN", opp:"MIN",
-      theme:IS_EN?"Emergency response procedures":"災害時の応急対応と手順化"},
-    PSN:{col:"#F06A18",key:"ant",name:IS_EN ? "Organized Ant" : "だんどりアリ",catch:IS_EN ? "Smoothly manage overall tasks and resources." : "全体の仕事と物を、きちんと回す",
-      good:IS_EN?"Great at organizing people and resources.":"人と物の流れを俯瞰して整えるのが得意。数と順番で混乱を減らせます。誰が何をするかを決めると、場が一気に動き出します。",
-      post:IS_EN?"Supplies & reception.":"物資、受付、名簿、誘導。避難所運営の背骨になる仕事。",
-      blind:IS_EN?"Overlooks subtle personal struggles.":"数字にならない苦しさを見落としがち。うまく回っているのに、しんどい人が残ることがあります。",
-      step:IS_EN?"Read shelter manuals.":"避難所運営マニュアルを読み返す。",
-      buddy:"MSB", opp:"MIB",
-      theme:IS_EN?"Shelter management organization":"避難所運営と組織対応"},
-    PIB:{col:"#E8AF1E",key:"squirrel",name:IS_EN ? "Resourceful Squirrel" : "こうさくリス",catch:IS_EN ? "Solve immediate problems with available items." : "ありもので、目の前の困りごとを解決する",
-      good:IS_EN?"Skilled at improvising solutions.":"道具がなくても、そこにある物で何とかしてしまう手先の強さ。「これで代用できる」の発想が早く、現場のつまずきをその場で消せます。",
-      post:IS_EN?"Bedding & toilet setup.":"段ボールベッド、簡易トイレ、間仕切り作り。生活の不便を1つずつ潰す役。",
-      blind:IS_EN?"Might bypass safety rules.":"勢いで安全のルールを飛び越えてしまうことがある。作ったものが壊れたときの責任まで考えたい。",
-      step:IS_EN?"Try building a cardboard bed.":"段ボールベッドか簡易トイレを、実際に一度作ってみる。",
-      buddy:"MIN", opp:"MSN",
-      theme:IS_EN?"Improvisation in disasters":"災害対応における即興"},
-    PIN:{col:"#14875C",key:"beaver",name:IS_EN ? "System Beaver" : "しくみビーバー",catch:IS_EN ? "Build new systems that everyone can use." : "みんなが使える新しい仕組みを作る",
-      good:IS_EN?"Good at creating structures and maps.":"混乱を見て「仕組みが足りない」と気づける人。一度作れば、あなたがいない場所でも回り続けます。",
-      post:IS_EN?"Information & signage.":"掲示、情報整理、記録のかたち作り。",
-      blind:IS_EN?"May build overly complex systems.":"現場が実際には使えない仕組みを作ってしまうことがある。",
-      step:IS_EN?"Create a local hazard map.":"地域の危険マップを1枚作る。",
-      buddy:"MIB", opp:"MSB",
-      theme:IS_EN?"Information organization":"情報整理と創発的な組織づくり"},
-    MSB:{col:"#8B44A8",key:"owl",name:IS_EN ? "Watchful Owl" : "みまもりフクロウ",catch:IS_EN ? "Quietly notice and stay by someone's side." : "静かに気づいて、そばにいる",
-      good:IS_EN?"Observant of emotional changes.":"人の様子の小さな変化に気づける観察力。騒がずに、必要な人の隣にいられます。",
-      post:IS_EN?"Patrols & consultation.":"巡回、付き添い、相談。",
-      blind:IS_EN?"Hesitates to speak up.":"気づいても言い出せずに抱えがち。",
-      step:IS_EN?"Learn neighbors' names.":"近所の人の顔と名前をおぼえる。",
-      buddy:"PSN", opp:"PIN",
-      theme:IS_EN?"Emotional support":"情緒的支援とケア"},
-    MSN:{col:"#123A96",key:"penguin",name:IS_EN ? "Cheerful Penguin" : "なごませペンギン",catch:IS_EN ? "Warm the atmosphere and help everyone settle down." : "場の空気をあたためて、みんなを落ち着かせる",
-      good:IS_EN?"Eases tense atmosphere.":"張りつめた空気をゆるめられる人。あなたがいると、人が話し出します。",
-      post:IS_EN?"Meeting facilitation.":"運営会議の進行、ルール決め。",
-      blind:IS_EN?"Reluctant to address hard issues.":"深刻な問題を「まあまあ」で流してしまうことが。",
-      step:IS_EN?"Practice drawing out quiet voices.":"話し合いで「まだ話していない人」を1人指名してみる。",
-      buddy:"PSB", opp:"PIB",
-      theme:IS_EN?"Group maintenance":"集団維持機能"},
-    MIB:{col:"#1BBFC6",key:"otter",name:IS_EN ? "Playful Otter" : "あそびカワウソ",catch:IS_EN ? "Lighten the mood with spontaneous sparks of joy." : "その場のひらめきで、心を軽くする",
-      good:IS_EN?"Brings smiles and playfulness.":"重い空気の中に、笑いや遊びを持ち込める人。",
-      post:IS_EN?"Children's play space.":"子どもの遊び場、静養スペース作り。",
-      blind:IS_EN?"May be too energetic for tired people.":"盛り上げすぎて、休みたい人が疲れてしまうことも。",
-      step:IS_EN?"Memorize simple games.":"道具のいらない遊びを3つ覚えておく。",
-      buddy:"PIN", opp:"PSN",
-      theme:IS_EN?"Children's safe spaces":"避難所における子どもの居場所"},
-    MIN:{col:"#EE6A9E",key:"dolphin",name:IS_EN ? "Connecting Dolphin" : "つなぎイルカ",catch:IS_EN ? "Energize everyone through voice and connections." : "声とつながりで、みんなを元気にする",
-      good:IS_EN?"Connects inside and outside groups.":"人と人、地域と外を結ぶのが得意。発信して仲間を集められます。",
-      post:IS_EN?"External communications.":"外部支援の受け入れ、発信、記録。",
-      blind:IS_EN?"May lose track of internal needs.":"つないだところで手を離してしまいがち。",
-      step:IS_EN?"Build connections outside school.":"学校・家以外の場所に、話せる人を1人つくる。",
-      buddy:"PIB", opp:"PSB",
-      theme:IS_EN?"Social capital":"ソーシャルキャピタルと復興の速さ"}
-  };
+    var TYPES = {
+      PSB:{col:"#EF5A48",key:"hamster",name:IS_EN ? "Swift Hamster" : "てきぱきハムスター",catch:IS_EN ? "Quickly help the person right in front using established methods." : "決まったやり方で、目の前の一人をすぐ助ける",
+        good:IS_EN?"Fast in structured tasks.":"やることが決まっている場面での速さが持ち味。手順を守れるので、任せたことが確実に終わります。慌てている人の隣で、淡々と手を動かせる強さがあります。",
+        post:IS_EN?"First aid & logistics.":"応急手当、荷物運び、体調の確認。人手が要る作業を、抜けなく回す役。",
+        blind:IS_EN?"Struggles outside standard procedures.":"手順にないことが起きると足が止まりがち。ひとりで抱え込んで、助けを呼びそびれることも。",
+        step:IS_EN?"Take a first aid course.":"救命講習（普通救命講習Ⅰなど）を受けてみる。手順を1つ増やすと、動ける場面が増えます。",
+        buddy:"MSN", opp:"MIN",
+        theme:IS_EN?"Emergency response procedures":"災害時の応急対応と手順化"},
+      PSN:{col:"#F06A18",key:"ant",name:IS_EN ? "Organized Ant" : "だんどりアリ",catch:IS_EN ? "Smoothly manage overall tasks and resources." : "全体の仕事と物を、きちんと回す",
+        good:IS_EN?"Great at organizing people and resources.":"人と物の流れを俯瞰して整えるのが得意。数と順番で混乱を減らせます。誰が何をするかを決めると、場が一気に動き出します。",
+        post:IS_EN?"Supplies & reception.":"物資、受付、名簿、誘導。避難所運営の背骨になる仕事。",
+        blind:IS_EN?"Overlooks subtle personal struggles.":"数字にならない苦しさを見落としがち。うまく回っているのに、しんどい人が残ることがあります。",
+        step:IS_EN?"Read shelter manuals.":"避難所運営マニュアルを読み返す。",
+        buddy:"MSB", opp:"MIB",
+        theme:IS_EN?"Shelter management organization":"避難所運営と組織対応"},
+      PIB:{col:"#E8AF1E",key:"squirrel",name:IS_EN ? "Resourceful Squirrel" : "こうさくリス",catch:IS_EN ? "Solve immediate problems with available items." : "ありもので、目の前の困りごとを解決する",
+        good:IS_EN?"Skilled at improvising solutions.":"道具がなくても、そこにある物で何とかしてしまう手先の強さ。「これで代用できる」の発想が早く、現場のつまずきをその場で消せます。",
+        post:IS_EN?"Bedding & toilet setup.":"段ボールベッド、簡易トイレ、間仕切り作り。生活の不便を1つずつ潰す役。",
+        blind:IS_EN?"Might bypass safety rules.":"勢いで安全のルールを飛び越えてしまうことがある。作ったものが壊れたときの責任まで考えたい。",
+        step:IS_EN?"Try building a cardboard bed.":"段ボールベッドか簡易トイレを、実際に一度作ってみる。",
+        buddy:"MIN", opp:"MSN",
+        theme:IS_EN?"Improvisation in disasters":"災害対応における即興"},
+      PIN:{col:"#14875C",key:"beaver",name:IS_EN ? "System Beaver" : "しくみビーバー",catch:IS_EN ? "Build new systems that everyone can use." : "みんなが使える新しい仕組みを作る",
+        good:IS_EN?"Good at creating structures and maps.":"混乱を見て「仕組みが足りない」と気づける人。一度作れば、あなたがいない場所でも回り続けます。",
+        post:IS_EN?"Information & signage.":"掲示、情報整理、記録のかたち作り。",
+        blind:IS_EN?"May build overly complex systems.":"現場が実際には使えない仕組みを作ることもある。",
+        step:IS_EN?"Create a local hazard map.":"地域の危険マップを1枚作る。",
+        buddy:"MIB", opp:"MSB",
+        theme:IS_EN?"Information organization":"情報整理と創発的な組織づくり"},
+      MSB:{col:"#8B44A8",key:"owl",name:IS_EN ? "Watchful Owl" : "みまもりフクロウ",catch:IS_EN ? "Quietly notice and stay by someone's side." : "静かに気づいて、そばにいる",
+        good:IS_EN?"Observant of emotional changes.":"人の様子の小さな変化に気づける観察力。騒がずに、必要な人の隣にいられます。",
+        post:IS_EN?"Patrols & consultation.":"巡回、付き添い、相談。",
+        blind:IS_EN?"Hesitates to speak up.":"気づいても言い出せずに抱えがち。",
+        step:IS_EN?"Learn neighbors' names.":"近所の人の顔と名前をおぼえる。",
+        buddy:"PSN", opp:"PIN",
+        theme:IS_EN?"Emotional support":"情緒的支援とケア"},
+      MSN:{col:"#123A96",key:"penguin",name:IS_EN ? "Cheerful Penguin" : "なごませペンギン",catch:IS_EN ? "Warm the atmosphere and help everyone settle down." : "場の空気をあたためて、みんなを落ち着かせる",
+        good:IS_EN?"Eases tense atmosphere.":"張りつめた空気をゆるめられる人。あなたがいると、人が話し出します。",
+        post:IS_EN?"Meeting facilitation.":"運営会議の進行、ルール決め。",
+        blind:IS_EN?"Reluctant to address hard issues.":"深刻な問題を「まあまあ」で流してしまうことが。",
+        step:IS_EN?"Practice drawing out quiet voices.":"話し合いで「まだ話していない人」を1人指名してみる。",
+        buddy:"PSB", opp:"PIB",
+        theme:IS_EN?"Group maintenance":"集団維持機能"},
+      MIB:{col:"#1BBFC6",key:"otter",name:IS_EN ? "Playful Otter" : "あそびカワウソ",catch:IS_EN ? "Lighten the mood with spontaneous sparks of joy." : "その場のひらめきで、心を軽くする",
+        good:IS_EN?"Brings smiles and playfulness.":"重い空気の中に、笑いや遊びを持ち込める人。",
+        post:IS_EN?"Children's play space.":"子どもの遊び場、静養スペース作り。",
+        blind:IS_EN?"May be too energetic for tired people.":"盛り上げすぎて、休みたい人が疲れてしまうことも。",
+        step:IS_EN?"Memorize simple games.":"道具のいらない遊びを3つ覚えておく。",
+        buddy:"PIN", opp:"PSN",
+        theme:IS_EN?"Children's safe spaces":"避難所における子どもの居場所"},
+      MIN:{col:"#EE6A9E",key:"dolphin",name:IS_EN ? "Connecting Dolphin" : "つなぎイルカ",catch:IS_EN ? "Energize everyone through voice and connections." : "声とつながりで、みんなを元気にする",
+        good:IS_EN?"Connects inside and outside groups.":"人と人、地域と外を結ぶのが得意。発信して仲間を集められます。",
+        post:IS_EN?"External communications.":"外部支援の受け入れ、発信、記録。",
+        blind:IS_EN?"May lose track of internal needs.":"つないだところで手を離してしまいがち。",
+        step:IS_EN?"Build connections outside school.":"学校・家以外の場所に、話せる人を1人つくる。",
+        buddy:"PIB", opp:"PSB",
+        theme:IS_EN?"Social capital":"ソーシャルキャピタルと復興の速さ"}
+    };
 
-  var LETTER = {
-    P:{en:"Performance", ja:"課題", line:IS_EN ? "First, resolve the problem itself." : "まず、困りごとそのものを片づけにいく。"},
-    M:{en:"Maintenance", ja:"情緒", line:IS_EN ? "First, help the person feel at ease." : "まず、その人の気持ちが落ち着くほうへ動く。"},
-    S:{en:"Structured", ja:"定型", line:IS_EN ? "Strong at following established patterns." : "決まっている型を、確実に回して強い。"},
-    I:{en:"Improvised", ja:"即興", line:IS_EN ? "Create new solutions with what is on hand." : "その場にあるもので、新しいやり方を作る。"},
-    B:{en:"Beside", ja:"近接", line:IS_EN ? "Engage deeply with the person right in front of you." : "目の前の一人に、深く関わる。"},
-    N:{en:"Network", ja:"広域", line:IS_EN ? "Move broadly to reach the entire community." : "全体に届くように、広く動く。"}
-  };
+    var LETTER = {
+      P:{en:"Performance", ja:"課題", line:IS_EN ? "First, resolve the problem itself." : "まず、困りごとそのものを片づけにいく。"},
+      M:{en:"Maintenance", ja:"情緒", line:IS_EN ? "First, help the person feel at ease." : "まず、その人の気持ちが落ち着くほうへ動く。"},
+      S:{en:"Structured", ja:"定型", line:IS_EN ? "Strong at following established patterns." : "決まっている型を、確実に回して強い。"},
+      I:{en:"Improvised", ja:"即興", line:IS_EN ? "Create new solutions with what is on hand." : "その場にあるもので、新しいやり方を作る。"},
+      B:{en:"Beside", ja:"近接", line:IS_EN ? "Engage deeply with the person right in front of you." : "目の前の一人に、深く関わる。"},
+      N:{en:"Network", ja:"広域", line:IS_EN ? "Move broadly to reach the entire community." : "全体に届くように、広く動く。"}
+    };
 
-  var QS = [
-    {ax:"P",scene:IS_EN?"Waiting at School":"学校で待機",text:IS_EN?"After an earthquake, you have to wait at school for a while. A friend nearby looks restless. What do you do first?":"地震のあと、学校でしばらく待機することになりました。近くにいる友達が落ち着かない様子です。あなたが最初にするなら？",o:[{t:IS_EN?"Check if they need anything or are having trouble":"今必要なものや困っていることがないか確認する",p:"P"},{t:IS_EN?"Ask what is bothering them":"何が気になっているのか話を聞く",p:"M"}]},
-    {ax:"P",scene:IS_EN?"Stopping during a drill":"訓練中に立ち止まる",text:IS_EN?"During a disaster drill, someone in your group stops and cannot move. What do you do first?":"防災訓練の途中、同じグループの人が動けずに立ち止まっています。あなたが最初にするなら？",o:[{t:IS_EN?"Organize together what to do next":"次に何をすればよいか一緒に整理する",p:"P"},{t:IS_EN?"Talk to them to see how they are doing":"どうしたのか声をかけて様子を見る",p:"M"}]},
-    {ax:"P",scene:IS_EN?"Stuck in heavy rain":"大雨で帰れない",text:IS_EN?"Heavy rain prevents you from going home, and you wait at school. Someone nearby keeps checking their phone. What do you do first?":"大雨で帰宅できず、学校で待つことになりました。近くの人が何度もスマホを見ています。あなたが最初にするなら？",o:[{t:IS_EN?"Check known info together":"今分かっている情報を一緒に確認する",p:"P"},{t:IS_EN?"Ask what they are worried about":"何が心配なのか聞いてみる",p:"M"}]},
-    {ax:"P",scene:IS_EN?"After a drill":"訓練のあと",text:IS_EN?"After an evacuation drill, someone in your team looks quite exhausted. What do you do first?":"避難訓練のあと、同じ班の人がかなり疲れた様子です。あなたが最初にするなら？",o:[{t:IS_EN?"Organize remaining tasks to reduce burden":"残っていることを整理して、負担を減らせないか考える",p:"P"},{t:IS_EN?"Ask if they want to take a break and talk":"少し休みながら話さないか声をかける",p:"M"}]},
-    {ax:"P",scene:IS_EN?"During a discussion":"話し合いの途中",text:IS_EN?"During a discussion on disasters, someone nearby stops speaking. What do you do first?":"災害について話し合っているとき、近くの人が途中からあまり発言しなくなりました。あなたが最初にするなら？",o:[{t:IS_EN?"Check if anything in the discussion is unclear":"話し合いの内容で分かりにくいところがないか確認する",p:"P"},{t:IS_EN?"Ask how they are feeling right now":"今どう感じているのか聞いてみる",p:"M"}]},
-    {ax:"P",scene:IS_EN?"Blackout night":"停電した夜",text:IS_EN?"A blackout night at the shelter. A small child starts crying, scared of the dark.":"停電した避難所の夜。小さい子が、暗いのが怖いと言って泣き出した。",o:[{t:IS_EN?"Find a flashlight or lantern to remove the darkness":"懐中電灯やランタンを探してきて、暗さそのものをなくす",p:"P"},{t:IS_EN?"Sit next to them and accept their fear":"隣に座って、暗いのが怖い気持ちを受け止める",p:"M"}]},
-    {ax:"P",scene:IS_EN?"Long reception line":"受付の長い列",text:IS_EN?"At the shelter reception, someone waiting a long time raises their voice in frustration.":"避難所の受付。長く並んでいた人が「もう待てない」と声を荒らげた。",o:[{t:IS_EN?"Check when their turn is and tell them specifically":"あと何分で順番が来るかを調べて、具体的に伝える",p:"P"},{t:IS_EN?"Acknowledge them first and help them calm down":"まず「お待たせしています」と受け止め、気持ちを落ち着けてもらう",p:"M"}]},
-    {ax:"P",scene:IS_EN?"No contact":"連絡がつかない",text:IS_EN?"After an earthquake, one student in your class cannot reach their family.":"地震のあと、クラスで一人だけ家族と連絡がつかない人がいる。",o:[{t:IS_EN?"Explore and try every possible communication method":"連絡がつきそうな方法を一緒に探して、片っ端から試す",p:"P"},{t:IS_EN?"Stay by their side and keep them company until connected":"つながるまでのあいだ、そばにいて話し相手になる",p:"M"}]},
-    {ax:"P",scene:IS_EN?"Arriving family":"着いたばかりの家族",text:IS_EN?"A family just arrived at the shelter. The child is crying, belongings are scattered, and parents look frozen.":"避難所に着いたばかりの家族。子どもが泣き、荷物は散らばり、親は立ち尽くしている。",o:[{t:IS_EN?"Pack belongings first and secure a sleeping space":"先に荷物をまとめて、寝られる場所を確保する",p:"P"},{t:IS_EN?"Talk to parents first so they can rest":"先に親に声をかけて、少し座って休んでもらう",p:"M"}]},
-    {ax:"P",scene:IS_EN?"Earthquake at camp":"合宿先の地震",text:IS_EN?"A major earthquake hits during a club camp. Everyone is safe, but some people are too frozen to move.":"部活の合宿先で大きな地震があった。全員無事だが、動けなくなっている人が数人いる。",o:[{t:IS_EN?"Take roll, decide next steps, and start moving":"点呼を取り、次にやることを決めて動き出す",p:"P"},{t:IS_EN?"Go to those frozen and speak to them individually":"動けなくなっている人のそばへ行き、一人ずつ声をかける",p:"M"}]},
-    {ax:"S",scene:IS_EN?"School festival evacuation":"文化祭の避難誘導",text:IS_EN?"An earthquake happens during a school festival. The main entrance is crowded. The back exit looks usable, but safety isn't verified.":"文化祭中に地震が起きた。正面玄関は混雑している。裏口も使えそうだが、安全確認はまだ十分ではない。",
-    o:[{t:IS_EN?"Guide people along the designated evacuation route as leader":"決まっている避難ルートに、自分が先頭に立って人を流す",p:"S"},{t:IS_EN?"Verify back exit safety yourself and open an alternative route":"裏口の安全を自分で確かめ、別ルートを開いて人を分散させる",p:"I"}]},
-    {ax:"S",scene:IS_EN?"Upcoming issue":"直前の問題提起",text:IS_EN?"One week until the school festival. Little prep time remains, but disaster readiness is almost non-existent.":"文化祭まであと1週間。準備に余裕はないが、防災の備えがほとんど整っていないことに気づいた。",
-    o:[{t:IS_EN?"Complete roles/tasks schedule based on last year's materials":"去年の資料をもとに、当日の役割分担表を仕上げる",p:"S"},{t:IS_EN?"Recreate preparation plans from scratch to match this year's plan":"今年の企画に合わせて、確認すべきことを一から作り直す",p:"I"}]},
-    {ax:"S",scene:IS_EN?"Drill realism":"訓練のリアルさ",text:IS_EN?"Deciding content for a disaster drill with limited time, forcing a choice.":"防災訓練の内容を決めている。時間は限られていて、どちらか一方しかできない。",
-    o:[{t:IS_EN?"Repeat standard procedures with a timer until everyone moves uniformly":"毎年の手順を、時間を計って全員が同じ動きでできるまで繰り返す",p:"S"},{t:IS_EN?"Add injuries/panic scenarios to introduce unexpected elements":"負傷者役やパニック役を入れて、想定外が起きる訓練にする",p:"I"}]},
-    {ax:"S",scene:IS_EN?"Distribution line":"配給の列",text:IS_EN?"Relief distribution lines are breaking down. Signage explaining the queue exists, but nobody is looking.":"避難所で配給の列が崩れてきた。並び方を書いた掲示は貼ってあるが、誰も見ていない。",
-    o:[{t:IS_EN?"Speak up and organize the line according to instructions":"掲示のとおりに並ぶよう、自分が声を出して列を整え直す",p:"S"},{t:IS_EN?"Create a new queue layout on the spot using tape or chairs":"テープや椅子を使って、その場で新しい並び方を作る",p:"I"}]},
-    {ax:"S",scene:IS_EN?"Foreign evacuees":"外国人の避難者",text:IS_EN?"Foreign evacuees arrive, but no interpreter is nearby. Multilingual guide sheets are available.":"外国人の避難者が来たが、通訳できる人が近くにいない。多言語の案内シートは備えてある。",
-    o:[{t:IS_EN?"Bring out guide sheets and point to instructions sequentially":"用意されている案内シートを出して、順番に指しながら伝える",p:"S"},{t:IS_EN?"Improvise communication on the spot using pictures or smartphone translation":"絵やスマホ翻訳を使って、その場で伝え方を工夫する",p:"I"}]},
-    {ax:"S",scene:IS_EN?"Assembly point unusable":"集合場所が使えない",text:IS_EN?"During a drill, you find out the designated assembly point is blocked.":"避難訓練の最中、決められた集合場所が使えないことが分かった。",
-    o:[{t:IS_EN?"Guide people to the secondary assembly point planned for the drill":"訓練でもう一つ決めてあった第二集合場所へ、自分が誘導する",p:"S"},{t:IS_EN?"Find a safe plaza on the spot and decide to gather there":"その場で安全な広場を見つけて、そこに集めると決める",p:"I"}]},
-    {ax:"S",scene:IS_EN?"Thick manual":"分厚いマニュアル",text:IS_EN?"School turned into a shelter. The operations manual is thick and nobody has read it.":"学校が避難所になった。運営マニュアルは一冊あるが、分厚くて誰も読んでいない。",
-    o:[{t:IS_EN?"Read through it and extract pages needed today to share with others":"中身を読み込み、今日使うページを抜き出してみんなに回す",p:"S"},{t:IS_EN?"Set aside the manual and decide procedures on the spot based on conditions":"マニュアルは置いておき、今の状況に合う手順をその場で決める",p:"I"}]},
-    {ax:"S",scene:IS_EN?"No school PA":"校内放送が使えない",text:IS_EN?"Blackout disables school PA. You must share information across the entire school.":"停電で校内放送が使えない。全校に同じ情報を伝えなければならない。",
-    o:[{t:IS_EN?"Operate established classroom messenger system sequentially":"クラスごとの伝達係という決まった仕組みを、順番どおりに動かす",p:"S"},{t:IS_EN?"Assemble improvised methods using megaphones and handmade notes":"ハンドマイクと手書きの紙で、その場のやり方を組み立てる",p:"I"}]},
-    {ax:"S",scene:IS_EN?"Soup kitchen queue":"炊き出しの列",text:IS_EN?"Soup kitchen queue. Planned serving method won't finish in time.":"炊き出しの列。予定していた配り方では、時間内に終わらないと分かった。",
-    o:[{t:IS_EN?"Keep procedures fixed, increase staff rotation speed":"決めた手順は変えず、人手を増やして回転を上げる",p:"S"},{t:IS_EN?"Change serving method entirely for queue-free pickup":"配り方そのものを変えて、並ばずに受け取れる形にする",p:"I"}]},
-    {ax:"S",scene:IS_EN?"Supply storage":"防災倉庫",text:IS_EN?"Opening emergency storage, supply locations have changed from last year.":"防災倉庫を開けたら、備品の置き場所が去年と変わっていた。",
-    o:[{t:IS_EN?"Check items systematically matching supply list order":"備品リストと照らし合わせて、リストの順に確認していく",p:"S"},{t:IS_EN?"Prioritize items visually needed immediately over list order":"リストは後回しにして、見た目で必要そうなものから取り出す",p:"I"}]},
-    {ax:"B",scene:IS_EN?"Event target audience":"防災イベントの参加対象",text:IS_EN?"Student council is planning a disaster event with limited time and staff. Choice must be made.":"生徒会で防災イベントを企画している。使える時間も人手も限られていて、どちらかを選ぶことになった。",
-    o:[{t:IS_EN?"Prepare deeply with a small group for high impact":"まず数人と深く準備して、中身の濃いものにする",p:"B"},{t:IS_EN?"Open invitation school-wide to maximize participant count":"まず全校に呼びかけて、来る人数を増やすことを優先する",p:"N"}]},
-    {ax:"B",scene:IS_EN?"Committee launch":"防災委員会の立ち上げ",text:IS_EN?"Proposal to form a disaster committee in student council. Disagreements on how to start.":"生徒会内で防災委員会を作る案が出た。始め方について意見が分かれている。",
-    o:[{t:IS_EN?"Start with a reliable few and scale up gradually":"確実に動ける数人で始め、できる範囲を積み上げる",p:"B"},{t:IS_EN?"Expand school-wide from start for wide involvement":"最初から学校全体に広げ、多くの人が関われる形にする",p:"N"}]},
-    {ax:"B",scene:IS_EN?"Identifying troubles":"困りごとの把握",text:IS_EN?"Shelter adult manager says, 'We don't know what is missing.'":"避難所を運営している大人から、「何が足りないのか分からない」と相談された。",
-    o:[{t:IS_EN?"Visit concerned individuals one by one to ask directly":"気になる人のところを一人ずつ回って、直接聞いてくる",p:"B"},{t:IS_EN?"Call a general meeting for all shelter occupants to voice concerns":"避難所の全員に呼びかけて、困りごとを出してもらう場をつくる",p:"N"}]},
-    {ax:"B",scene:IS_EN?"Relief distribution":"支援物資の配布",text:IS_EN?"Relief supplies arrived at shelter with limited quantity. Distribution method needed.":"避難所に支援物資が届いた。数には限りがあり、配り方を決めなければならない。",
-    o:[{t:IS_EN?"Check on people unable to come and deliver directly":"取りに来られない人がいないか、先に確かめて直接届ける",p:"B"},{t:IS_EN?"Set uniform distribution times/places for everyone to receive equally":"配る時間と場所をそろえ、全員に同じ知らせが届くようにする",p:"N"}]},
-    {ax:"B",scene:IS_EN?"Free 30 minutes":"手が空いた30分",text:IS_EN?"Slightly free for 30 minutes in shelter. Looking for ways to help.":"避難所で少し手が空いた。自分にできることを探している。",
-    o:[{t:IS_EN?"Visit someone who seemed worried for an in-depth chat":"ずっと気になっていた一人のところへ行き、じっくり話を聴く",p:"B"},{t:IS_EN?"Check in briefly with people you haven't spoken to yet":"まだ話せていない人に、ひととおり声をかけて回る",p:"N"}]},
-    {ax:"B",scene:IS_EN?"Sleepless night":"眠れない夜",text:IS_EN?"Shelter night. Several people seem unable to sleep.":"避難所の夜。眠れていない人が何人かいるらしい。",
-    o:[{t:IS_EN?"Dedicate time to listen deeply to one concerned individual":"特に気になる一人のところへ行き、時間をかけて話を聴く",p:"B"},{t:IS_EN?"Check in sequentially on those struggling to sleep":"眠れていない人に順に声をかけて、様子を確かめて回る",p:"N"}]},
-    {ax:"B",scene:IS_EN?"15-min presentation":"15分の発表",text:IS_EN?"Given a 15-minute slot to talk about disaster safety at school.":"学校で防災の話をする機会をもらった。使える時間は15分しかない。",
-    o:[{t:IS_EN?"Share one evacuee's personal story in depth":"一人の被災者の体験を、時間をかけて深く伝える",p:"B"},{t:IS_EN?"Cover essential basics universally for everyone":"全員に関わる基本を、もれなく伝える",p:"N"}]},
-    {ax:"B",scene:IS_EN?"Local drill":"地域の防災訓練",text:IS_EN?"Attending local disaster drill surrounded by strangers.":"地域の防災訓練に参加した。まわりは知らない人ばかりだ。",
-    o:[{t:IS_EN?"Talk closely with one person next to you to learn names":"隣にいた一人と、しっかり話して顔と名前をおぼえる",p:"B"},{t:IS_EN?"Exchange brief greetings with as many people as possible":"できるだけ多くの人と、短くても挨拶を交わす",p:"N"}]},
-    {ax:"B",scene:IS_EN?"Surplus supplies":"物資が余った",text:IS_EN?"Some relief supplies are left over after general distribution.":"配り終えたあと、支援物資が少しだけ余った。",
-    o:[{t:IS_EN?"Find someone who needs it most and hand it over directly":"いちばん必要としていそうな人を探して、その人にまとめて渡す",p:"B"},{t:IS_EN?"Distribute in small portions to reach as many people as possible":"少しずつでも、できるだけ多くの人に行き渡るように配る",p:"N"}]},
-    {ax:"B",scene:IS_EN?"Shelter updates":"避難所の様子を伝える",text:IS_EN?"Tasked with updating shelter conditions on social media.":"避難所の様子をSNSで伝えることになった。",
-    o:[{t:IS_EN?"Listen thoroughly to one evacuee's story to write about":"一人の被災者の話を、時間をかけて聞いて書く",p:"B"},{t:IS_EN?"Summarize short statements on overall missing supplies":"避難所全体で何が足りていないかを、短くまとめて出す",p:"N"}]}
-  ];
+    var QS = [
+      {ax:"P",scene:IS_EN?"Waiting at School":"学校で待機",text:IS_EN?"After an earthquake, you have to wait at school for a while. A friend nearby looks restless. What do you do first?":"地震のあと、学校でしばらく待機することになりました。近くにいる友達が落ち着かない様子です。あなたが最初にするなら？",o:[{t:IS_EN?"Check if they need anything or are having trouble":"今必要なものや困っていることがないか確認する",p:"P"},{t:IS_EN?"Ask what is bothering them":"何が気になっているのか話を聞く",p:"M"}]},
+      {ax:"P",scene:IS_EN?"Stopping during a drill":"訓練中に立ち止まる",text:IS_EN?"During a disaster drill, someone in your group stops and cannot move. What do you do first?":"防災訓練の途中、同じグループの人が動けずに立ち止まっています。あなたが最初にするなら？",o:[{t:IS_EN?"Organize together what to do next":"次に何をすればよいか一緒に整理する",p:"P"},{t:IS_EN?"Talk to them to see how they are doing":"どうしたのか声をかけて様子を見る",p:"M"}]},
+      {ax:"P",scene:IS_EN?"Stuck in heavy rain":"大雨で帰れない",text:IS_EN?"Heavy rain prevents you from going home, and you wait at school. Someone nearby keeps checking their phone. What do you do first?":"大雨で帰宅できず、学校で待つことになりました。近くの人が何度もスマホを見ています。あなたが最初にするなら？",o:[{t:IS_EN?"Check known info together":"今分かっている情報を一緒に確認する",p:"P"},{t:IS_EN?"Ask what they are worried about":"何が心配なのか聞いてみる",p:"M"}]},
+      {ax:"P",scene:IS_EN?"After a drill":"訓練のあと",text:IS_EN?"After an evacuation drill, someone in your team looks quite exhausted. What do you do first?":"避難訓練のあと、同じ班の人がかなり疲れた様子です。あなたが最初にするなら？",o:[{t:IS_EN?"Organize remaining tasks to reduce burden":"残っていることを整理して、負担を減らせないか考える",p:"P"},{t:IS_EN?"Ask if they want to take a break and talk":"少し休みながら話さないか声をかける",p:"M"}]},
+      {ax:"P",scene:IS_EN?"During a discussion":"話し合いの途中",text:IS_EN?"During a discussion on disasters, someone nearby stops speaking. What do you do first?":"災害について話し合っているとき、近くの人が途中からあまり発言しなくなりました。あなたが最初にするなら？",o:[{t:IS_EN?"Check if anything in the discussion is unclear":"話し合いの内容で分かりにくいところがないか確認する",p:"P"},{t:IS_EN?"Ask how they are feeling right now":"今どう感じているのか聞いてみる",p:"M"}]},
+      {ax:"P",scene:IS_EN?"Blackout night":"停電した夜",text:IS_EN?"A blackout night at the shelter. A small child starts crying, scared of the dark.":"停電した避難所の夜。小さい子が、暗いのが怖いと言って泣き出した。",o:[{t:IS_EN?"Find a flashlight or lantern to remove the darkness":"懐中電灯やランタンを探してきて、暗さそのものをなくす",p:"P"},{t:IS_EN?"Sit next to them and accept their fear":"隣に座って、暗いのが怖い気持ちを受け止める",p:"M"}]},
+      {ax:"P",scene:IS_EN?"Long reception line":"受付の長い列",text:IS_EN?"At the shelter reception, someone waiting a long time raises their voice in frustration.":"避難所の受付。長く並んでいた人が「もう待てない」と声を荒らげた。",o:[{t:IS_EN?"Check when their turn is and tell them specifically":"あと何分で順番が来るかを調べて、具体的に伝える",p:"P"},{t:IS_EN?"Acknowledge them first and help them calm down":"まず「お待たせしています」と受け止め、気持ちを落ち着けてもらう",p:"M"}]},
+      {ax:"P",scene:IS_EN?"No contact":"連絡がつかない",text:IS_EN?"After an earthquake, one student in your class cannot reach their family.":"地震のあと、クラスで一人だけ家族と連絡がつかない人がいる。",o:[{t:IS_EN?"Explore and try every possible communication method":"連絡がつきそうな方法を一緒に探して、片っ端から試す",p:"P"},{t:IS_EN?"Stay by their side and keep them company until connected":"つながるまでのあいだ、そばにいて話し相手になる",p:"M"}]},
+      {ax:"P",scene:IS_EN?"Arriving family":"着いたばかりの家族",text:IS_EN?"A family just arrived at the shelter. The child is crying, belongings are scattered, and parents look frozen.":"避難所に着いたばかりの家族。子どもが泣き、荷物は散らばり、親は立ち尽くしている。",o:[{t:IS_EN?"Pack belongings first and secure a sleeping space":"先に荷物をまとめて、寝られる場所を確保する",p:"P"},{t:IS_EN?"Talk to parents first so they can rest":"先に親に声をかけて、少し座って休んでもらう",p:"M"}]},
+      {ax:"P",scene:IS_EN?"Earthquake at camp":"合宿先の地震",text:IS_EN?"A major earthquake hits during a club camp. Everyone is safe, but some people are too frozen to move.":"部活の合宿先で大きな地震があった。全員無事だが、動けなくなっている人が数人いる。",o:[{t:IS_EN?"Take roll, decide next steps, and start moving":"点呼を取り、次にやることを決めて動き出す",p:"P"},{t:IS_EN?"Go to those frozen and speak to them individually":"動けなくなっている人のそばへ行き、一人ずつ声をかける",p:"M"}]},
+      {ax:"S",scene:IS_EN?"School festival evacuation":"文化祭の避難誘導",text:IS_EN?"An earthquake happens during a school festival. The main entrance is crowded. The back exit looks usable, but safety isn't verified.":"文化祭中に地震が起きた。正面玄関は混雑している。裏口も使えそうだが、安全確認はまだ十分ではない。",
+      o:[{t:IS_EN?"Guide people along the designated evacuation route as leader":"決まっている避難ルートに、自分が先頭に立って人を流す",p:"S"},{t:IS_EN?"Verify back exit safety yourself and open an alternative route":"裏口の安全を自分で確かめ、別ルートを開いて人を分散させる",p:"I"}]},
+      {ax:"S",scene:IS_EN?"Upcoming issue":"直前の問題提起",text:IS_EN?"One week until the school festival. Little prep time remains, but disaster readiness is almost non-existent.":"文化祭まであと1週間。準備に余裕はないが、防災の備えがほとんど整っていないことに気づいた。",
+      o:[{t:IS_EN?"Complete roles/tasks schedule based on last year's materials":"去年の資料をもとに、当日の役割分担表を仕上げる",p:"S"},{t:IS_EN?"Recreate preparation plans from scratch to match this year's plan":"今年の企画に合わせて、確認すべきことを一から作り直す",p:"I"}]},
+      {ax:"S",scene:IS_EN?"Drill realism":"訓練のリアルさ",text:IS_EN?"Deciding content for a disaster drill with limited time, forcing a choice.":"防災訓練の内容を決めている。時間は限られていて、どちらか一方しかできない。",
+      o:[{t:IS_EN?"Repeat standard procedures with a timer until everyone moves uniformly":"毎年の手順を、時間を計って全員が同じ動きでできるまで繰り返す",p:"S"},{t:IS_EN?"Add injuries/panic scenarios to introduce unexpected elements":"負傷者役やパニック役を入れて、想定外が起きる訓練にする",p:"I"}]},
+      {ax:"S",scene:IS_EN?"Distribution line":"配給の列",text:IS_EN?"Relief distribution lines are breaking down. Signage explaining the queue exists, but nobody is looking.":"避難所で配給の列が崩れてきた。並び方を書いた掲示は貼ってあるが、誰も見ていない。",
+      o:[{t:IS_EN?"Speak up and organize the line according to instructions":"掲示のとおりに並ぶよう、自分が声を出して列を整え直す",p:"S"},{t:IS_EN?"Create a new queue layout on the spot using tape or chairs":"テープや椅子を使って、その場で新しい並び方を作る",p:"I"}]},
+      {ax:"S",scene:IS_EN?"Foreign evacuees":"外国人の避難者",text:IS_EN?"Foreign evacuees arrive, but no interpreter is nearby. Multilingual guide sheets are available.":"外国人の避難者が来たが、通訳できる人が近くにいない。多言語の案内シートは備えてある。",
+      o:[{t:IS_EN?"Bring out guide sheets and point to instructions sequentially":"用意されている案内シートを出して、順番に指しながら伝える",p:"S"},{t:IS_EN?"Improvise communication on the spot using pictures or smartphone translation":"絵やスマホ翻訳を使って、その場で伝え方を工夫する",p:"I"}]},
+      {ax:"S",scene:IS_EN?"Assembly point unusable":"集合場所が使えない",text:IS_EN?"During a drill, you find out the designated assembly point is blocked.":"避難訓練の最中、決められた集合場所が使えないことが分かった。",
+      o:[{t:IS_EN?"Guide people to the secondary assembly point planned for the drill":"訓練でもう一つ決めてあった第二集合場所へ、自分が誘導する",p:"S"},{t:IS_EN?"Find a safe plaza on the spot and decide to gather there":"その場で安全な広場を見つけて、そこに集めると決める",p:"I"}]},
+      {ax:"S",scene:IS_EN?"Thick manual":"分厚いマニュアル",text:IS_EN?"School turned into a shelter. The operations manual is thick and nobody has read it.":"学校が避難所になった。運営マニュアルは一冊あるが、分厚くて誰も読んでいない。",
+      o:[{t:IS_EN?"Read through it and extract pages needed today to share with others":"中身を読み込み、今日使うページを抜き出してみんなに回す",p:"S"},{t:IS_EN?"Set aside the manual and decide procedures on the spot based on conditions":"マニュアルは置いておき、今の状況に合う手順をその場で決める",p:"I"}]},
+      {ax:"S",scene:IS_EN?"No school PA":"校内放送が使えない",text:IS_EN?"Blackout disables school PA. You must share information across the entire school.":"停電で校内放送が使えない。全校に同じ情報を伝えなければならない。",
+      o:[{t:IS_EN?"Operate established classroom messenger system sequentially":"クラスごとの伝達係という決まった仕組みを、順番どおりに動かす",p:"S"},{t:IS_EN?"Assemble improvised methods using megaphones and handmade notes":"ハンドマイクと手書きの紙で、その場のやり方を組み立てる",p:"I"}]},
+      {ax:"S",scene:IS_EN?"Soup kitchen queue":"炊き出しの列",text:IS_EN?"Soup kitchen queue. Planned serving method won't finish in time.":"炊き出しの列。予定していた配り方では、時間内に終わらないと分かった。",
+      o:[{t:IS_EN?"Keep procedures fixed, increase staff rotation speed":"決めた手順は変えず、人手を増やして回転を上げる",p:"S"},{t:IS_EN?"Change serving method entirely for queue-free pickup":"配り方そのものを変えて、並ばずに受け取れる形にする",p:"I"}]},
+      {ax:"S",scene:IS_EN?"Supply storage":"防災倉庫",text:IS_EN?"Opening emergency storage, supply locations have changed from last year.":"防災倉庫を開けたら、備品の置き場所が去年と変わっていた。",
+      o:[{t:IS_EN?"Check items systematically matching supply list order":"備品リストと照らし合わせて、リストの順に確認していく",p:"S"},{t:IS_EN?"Prioritize items visually needed immediately over list order":"リストは後回しにして、見た目で必要そうなものから取り出す",p:"I"}]},
+      {ax:"B",scene:IS_EN?"Event target audience":"防災イベントの参加対象",text:IS_EN?"Student council is planning a disaster event with limited time and staff. Choice must be made.":"生徒会で防災イベントを企画している。使える時間も人手も限られていて、どちらかを選ぶことになった。",
+      o:[{t:IS_EN?"Prepare deeply with a small group for high impact":"まず数人と深く準備して、中身の濃いものにする",p:"B"},{t:IS_EN?"Open invitation school-wide to maximize participant count":"まず全校に呼びかけて、来る人数を増やすことを優先する",p:"N"}]},
+      {ax:"B",scene:IS_EN?"Committee launch":"防災委員会の立ち上げ",text:IS_EN?"Proposal to form a disaster committee in student council. Disagreements on how to start.":"生徒会内で防災委員会を作る案が出た。始め方について意見が分かれている。",
+      o:[{t:IS_EN?"Start with a reliable few and scale up gradually":"確実に動ける数人で始め、できる範囲を積み上げる",p:"B"},{t:IS_EN?"Expand school-wide from start for wide involvement":"最初から学校全体に広げ、多くの人が関われる形にする",p:"N"}]},
+      {ax:"B",scene:IS_EN?"Identifying troubles":"困りごとの把握",text:IS_EN?"Shelter adult manager says, 'We don't know what is missing.'":"避難所を運営している大人から、「何が足りないのか分からない」と相談された。",
+      o:[{t:IS_EN?"Visit concerned individuals one by one to ask directly":"気になる人のところを一人ずつ回って、直接聞いてくる",p:"B"},{t:IS_EN?"Call a general meeting for all shelter occupants to voice concerns":"避難所の全員に呼びかけて、困りごとを出してもらう場をつくる",p:"N"}]},
+      {ax:"B",scene:IS_EN?"Relief distribution":"支援物資の配布",text:IS_EN?"Relief supplies arrived at shelter with limited quantity. Distribution method needed.":"避難所に支援物資が届いた。数には限りがあり、配り方を決めなければならない。",
+      o:[{t:IS_EN?"Check on people unable to come and deliver directly":"取りに来られない人がいないか、先に確かめて直接届ける",p:"B"},{t:IS_EN?"Set uniform distribution times/places for everyone to receive equally":"配る時間と場所をそろえ、全員に同じ知らせが届くようにする",p:"N"}]},
+      {ax:"B",scene:IS_EN?"Free 30 minutes":"手が空いた30分",text:IS_EN?"Slightly free for 30 minutes in shelter. Looking for ways to help.":"避難所で少し手が空いた。自分にできることを探している。",
+      o:[{t:IS_EN?"Visit someone who seemed worried for an in-depth chat":"ずっと気になっていた一人のところへ行き、じっくり話を聴く",p:"B"},{t:IS_EN?"Check in briefly with people you haven't spoken to yet":"まだ話せていない人に、ひととおり声をかけて回る",p:"N"}]},
+      {ax:"B",scene:IS_EN?"Sleepless night":"眠れない夜",text:IS_EN?"Shelter night. Several people seem unable to sleep.":"避難所の夜。眠れていない人が何人かいるらしい。",
+      o:[{t:IS_EN?"Dedicate time to listen deeply to one concerned individual":"特に気になる一人のところへ行き、時間をかけて話を聴く",p:"B"},{t:IS_EN?"Check in sequentially on those struggling to sleep":"眠れていない人に順に声をかけて、様子を確かめて回る",p:"N"}]},
+      {ax:"B",scene:IS_EN?"15-min presentation":"15分の発表",text:IS_EN?"Given a 15-minute slot to talk about disaster safety at school.":"学校で防災の話をする機会をもらった。使える時間は15分しかない。",
+      o:[{t:IS_EN?"Share one evacuee's personal story in depth":"一人の被災者の体験を、時間をかけて深く伝える",p:"B"},{t:IS_EN?"Cover essential basics universally for everyone":"全員に関わる基本を、もれなく伝える",p:"N"}]},
+      {ax:"B",scene:IS_EN?"Local drill":"地域の防災訓練",text:IS_EN?"Attending local disaster drill surrounded by strangers.":"地域の防災訓練に参加した。まわりは知らない人ばかりだ。",
+      o:[{t:IS_EN?"Talk closely with one person next to you to learn names":"隣にいた一人と、しっかり話して顔と名前をおぼえる",p:"B"},{t:IS_EN?"Exchange brief greetings with as many people as possible":"できるだけ多くの人と、短くても挨拶を交わす",p:"N"}]},
+      {ax:"B",scene:IS_EN?"Surplus supplies":"物資が余った",text:IS_EN?"Some relief supplies are left over after general distribution.":"配り終えたあと、支援物資が少しだけ余った。",
+      o:[{t:IS_EN?"Find someone who needs it most and hand it over directly":"いちばん必要としていそうな人を探して、その人にまとめて渡す",p:"B"},{t:IS_EN?"Distribute in small portions to reach as many people as possible":"少しずつでも、できるだけ多くの人に行き渡るように配る",p:"N"}]},
+      {ax:"B",scene:IS_EN?"Shelter updates":"避難所の様子を伝える",text:IS_EN?"Tasked with updating shelter conditions on social media.":"避難所の様子をSNSで伝えることになった。",
+      o:[{t:IS_EN?"Listen thoroughly to one evacuee's story to write about":"一人の被災者の話を、時間をかけて聞いて書く",p:"B"},{t:IS_EN?"Summarize short statements on overall missing supplies":"避難所全体で何が足りていないかを、短くまとめて出す",p:"N"}]}
+    ];
 
-  (function(){
-    var n = {};
-    QS.forEach(function(q) {
-      n[q.ax] = (n[q.ax] || 0) + 1;
-      q.id = q.ax + String(n[q.ax]).padStart(2, "0");
-    });
-  })();
+    (function(){
+      var n = {};
+      QS.forEach(function(q) {
+        n[q.ax] = (n[q.ax] || 0) + 1;
+        q.id = q.ax + String(n[q.ax]).padStart(2, "0");
+      });
+    })();
 
-  const COV = [
-    {ax:"cov",key:"防災経験",scene:IS_EN?"Experience":"防災経験",text:IS_EN?"Have you ever participated in disaster drills, events, or volunteer work?":"これまでに、防災訓練・防災イベント・被災地支援・募金活動など、防災や災害支援に関わったことがある。",o:[{t:IS_EN?"Yes":"ある",p:"1"},{t:IS_EN?"No / Rarely":"ない、またはほとんどない",p:"0"}]},
-    {ax:"cov",key:"サードプレイス",scene:IS_EN?"Third Place":"サードプレイス",text:IS_EN?"Do you have a safe community outside school/home to talk to?":"学校・家・職場以外に、安心して行ける場所や、困った時に話せるコミュニティがある。",o:[{t:IS_EN?"Yes":"ある",p:"1"},{t:IS_EN?"No / Few":"ない、またはあまりない",p:"0"}]},
-    {ax:"cov",key:"防災ポーチ",scene:IS_EN?"Emergency Pouch":"持ち歩きの備え",text:IS_EN?"Do you carry items like power banks, medicine, or water for emergencies?":"普段から、モバイルバッテリー・常備薬・ライト・笛・絆創膏・水など、災害時にも役立つものを持ち歩いている。",o:[{t:IS_EN?"Yes":"持ち歩いている",p:"1"},{t:IS_EN?"No":"持ち歩いていない、または意識していない",p:"0"}]},
-    {ax:"cov",key:"頼れる大人",scene:IS_EN?"Trusted Adult":"相談できる人",text:IS_EN?"Is there a trusted adult outside family you can consult during a crisis?":"災害時や困った時に、家族以外で頼れる大人や相談できる人がいる。",o:[{t:IS_EN?"Yes":"いる",p:"1"},{t:IS_EN?"No":"いない、またはすぐには思いつかない",p:"0"}]},
-    {ax:"cov",key:"地域防災",scene:IS_EN?"Local Community":"地域のこと",text:IS_EN?"Do you know local evacuation shelters or hazards?":"自分の住んでいる地域の避難所、危険な場所、地域の防災活動について少しでも知っている。",o:[{t:IS_EN?"Yes":"知っている",p:"1"},{t:IS_EN?"No":"知らない、またはほとんど分からない",p:"0"}]}
-  ];
+    const COV = [
+      {ax:"cov",key:"防災経験",scene:IS_EN?"Experience":"防災経験",text:IS_EN?"Have you ever participated in disaster drills, events, or volunteer work?":"これまでに、防災訓練・防災イベント・被災地支援・募金活動など、防災や災害支援に関わったことがある。",o:[{t:IS_EN?"Yes":"ある",p:"1"},{t:IS_EN?"No / Rarely":"ない、またはほとんどない",p:"0"}]},
+      {ax:"cov",key:"サードプレイス",scene:IS_EN?"Third Place":"サードプレイス",text:IS_EN?"Do you have a safe community outside school/home to talk to?":"学校・家・職場以外に、安心して行ける場所や、困った時に話せるコミュニティがある。",o:[{t:IS_EN?"Yes":"ある",p:"1"},{t:IS_EN?"No / Few":"ない、またはあまりない",p:"0"}]},
+      {ax:"cov",key:"防災ポーチ",scene:IS_EN?"Emergency Pouch":"持ち歩きの備え",text:IS_EN?"Do you carry items like power banks, medicine, or water for emergencies?":"普段から、モバイルバッテリー・常備薬・ライト・笛・絆創膏・水など、災害時にも役立つものを持ち歩いている。",o:[{t:IS_EN?"Yes":"持ち歩いている",p:"1"},{t:IS_EN?"No":"持ち歩いていない、または意識していない",p:"0"}]},
+      {ax:"cov",key:"頼れる大人",scene:IS_EN?"Trusted Adult":"相談できる人",text:IS_EN?"Is there a trusted adult outside family you can consult during a crisis?":"災害時や困った時に、家族以外で頼れる大人や相談できる人がいる。",o:[{t:IS_EN?"Yes":"いる",p:"1"},{t:IS_EN?"No":"いない、またはすぐには思いつかない",p:"0"}]},
+      {ax:"cov",key:"地域防災",scene:IS_EN?"Local Community":"地域のこと",text:IS_EN?"Do you know local evacuation shelters or hazards?":"自分の住んでいる地域の避難所、危険な場所、地域の防災活動について少しでも知っている。",o:[{t:IS_EN?"Yes":"知っている",p:"1"},{t:IS_EN?"No":"知らない、またはほとんど分からない",p:"0"}]}
+    ];
 
-  var deck = [], idx = 0, answers = [], sex = "", result = null;
+    var deck = [], idx = 0, answers = [], sex = "", result = null;
 
-  function shuffle(a){
-    var res = a.slice();
-    for(let i=res.length-1; i>0; i--){
-      const j = Math.random()*(i+1)|0;
-      var temp = res[i]; res[i] = res[j]; res[j] = temp;
-    }
-    return res;
-  }
-
-  function buildDeck(){
-    var axes = ["P","S","B"];
-    var picked = [];
-    for(let i=0; i<axes.length; i++){
-      var ax = axes[i];
-      var filtered = QS.filter(q=>q.ax===ax);
-      picked = picked.concat(shuffle(filtered).slice(0,5));
-    }
-    var judge = shuffle(picked).map(x=>({...x, o: Math.random()<.5 ? x.o : [x.o[1], x.o[0]]}));
-    var cov = COV.map(x=>({...x, o: x.o.slice()}));
-    deck = judge.concat(cov);
-  }
-
-  function show(id){
-    ["s-intro","s-quiz","s-profile","s-result"].forEach(s=>{
-      var el = document.getElementById(s);
-      if(el) el.classList.toggle("hidden", s!==id);
-    });
-    window.scrollTo({top:0,behavior:"instant"});
-  }
-
-  function renderIntro(){
-    const order=["hamster","ant","squirrel","beaver","owl","penguin","otter","dolphin"];
-    var grid = document.getElementById("introGrid");
-    if(grid) {
-      grid.innerHTML = order.map(k=>`<img src="${IMG[k]}" alt="">`).join("");
+    function shuffle(a){
+      var res = a.slice();
+      for(let i=res.length-1; i>0; i--){
+        const j = Math.random()*(i+1)|0;
+        var temp = res[i]; res[i] = res[j]; res[j] = temp;
+      }
+      return res;
     }
 
-    var list = document.getElementById("axList");
-    if(list) {
+    function buildDeck(){
+      var axes = ["P","S","B"];
+      var picked = [];
+      for(let i=0; i<axes.length; i++){
+        var ax = axes[i];
+        var filtered = QS.filter(q=>q.ax===ax);
+        picked = picked.concat(shuffle(filtered).slice(0,5));
+      }
+      var judge = shuffle(picked).map(x=>({...x, o: Math.random()<.5 ? x.o : [x.o[1], x.o[0]]}));
+      var cov = COV.map(x=>({...x, o: x.o.slice()}));
+      deck = judge.concat(cov);
+    }
+
+    function show(id){
+      ["s-intro","s-quiz","s-profile","s-result"].forEach(s=>{
+        var el = document.getElementById(s);
+        if(el) el.classList.toggle("hidden", s!==id);
+      });
+      window.scrollTo({top:0,behavior:"instant"});
+    }
+
+    function renderIntro(){
+      const order=["hamster","ant","squirrel","beaver","owl","penguin","otter","dolphin"];
+      var grid = document.getElementById("introGrid");
+      if(grid) {
+        grid.innerHTML = order.map(k=>`<img src="${IMG[k]}" alt="">`).join("");
+      }
+
+      var list = document.getElementById("axList");
+      if(list) {
+        const AXES_DEF = [
+          {name: IS_EN ? "Support Function" : "支援機能", a:"P", b:"M"},
+          {name: IS_EN ? "Action Style" : "行動様式", a:"S", b:"I"},
+          {name: IS_EN ? "Support Range" : "支援射程", a:"B", b:"N"}
+        ];
+        list.innerHTML = AXES_DEF.map(ax=>{
+          const A=LETTER[ax.a], B=LETTER[ax.b];
+          return `<div class="axrow"><span class="nm">${ax.name}</span>
+            <span class="ltr"><b>${ax.a}</b>${A.ja}</span><span class="sl">${t.orText}</span>
+            <span class="ltr"><b>${ax.b}</b>${B.ja}</span></div>`;
+        }).join("");
+      }
+    }
+
+    function renderQ(){
+      const q=deck[idx];
+      document.getElementById("count").textContent = `${idx+1} / ${deck.length}` + (idx>=15 ? (IS_EN ? " *Not scored" : " ※ここからは判定に使いません") : "");
+      const dots=["#EF5A48","#F06A18","#E8AF1E","#14875C","#8B44A8","#123A96","#1BBFC6","#EE6A9E"];
+      document.getElementById("prog").innerHTML = deck.map((_,i)=>
+        `<i class="${i<idx?"on":i===idx?"cur":""}" style="--dot:${dots[i%8]}"></i>`).join("");
+      document.getElementById("scene").textContent = q.scene;
+      document.getElementById("qtext").textContent = q.text;
+      document.getElementById("choices").innerHTML = q.o.map((o,i)=>
+        `<button type="button" class="choice" data-p="${o.p}"><span class="mark">${i===0?"A":"B"}</span>${o.t}</button>`).join("");
+      
+      var btns = document.getElementById("choices").querySelectorAll(".choice");
+      for(let b=0; b<btns.length; b++){
+        (function(btn){
+          btn.onclick = () => pick(btn.getAttribute('data-p'));
+        })(btns[b]);
+      }
+      document.getElementById("backBtn").classList.toggle("hidden", idx===0);
+    }
+
+    function pick(p){
+      answers[idx]={ax:deck[idx].ax, p, key:deck[idx].key||null, id:deck[idx].id||null};
+      idx++;
+      if(idx<deck.length) renderQ(); else show("s-profile");
+    }
+
+    function calc(){
+      const c={P:0,M:0,S:0,I:0,B:0,N:0};
+      for(let i=0; i<15; i++){
+        var p = answers[i] ? answers[i].p : null;
+        if(p && p in c) c[p]++;
+      }
+      const code=(c.P>=3?"P":"M")+(c.S>=3?"S":"I")+(c.B>=3?"B":"N");
+      const cov={};
+      for(let j=15; j<answers.length; j++){
+        if(answers[j] && answers[j].key){
+          cov[answers[j].key] = answers[j].p==="1" ? (IS_EN ? "Yes" : "はい") : (IS_EN ? "No" : "いいえ");
+        }
+      }
+      return {code, c, cov};
+    }
+
+    function bar(label,leftName,rightName,leftVal){
+      const l=leftVal, r=5-leftVal;
+      return `<div class="bar"><div class="lab"><span>${l>=3?"<b>"+leftName+"</b>":leftName} ${l}</span>
+        <span>${r} ${r>3?"<b>"+rightName+"</b>":rightName}</span></div>
+        <div class="track"><span style="width:${l*20}%"></span><span class="r" style="width:${r*20}%"></span></div></div>`;
+    }
+
+    function renderResult(){
+      result=calc();
+      const tData=TYPES[result.code], c=result.c;
+      document.getElementById("s-result").style.setProperty("--c", tData.col);
+      if(tData.key && IMG[tData.key]) {
+        document.getElementById("rImg").src=IMG[tData.key];
+        document.getElementById("rImg").alt=tData.name;
+      }
+      document.getElementById("rCode").textContent=result.code.split("").join(" ・ ");
+      document.getElementById("rName").textContent=tData.name;
+      document.getElementById("rCatch").textContent=tData.catch;
+      document.getElementById("rBars").innerHTML =
+        bar("", IS_EN ? "Performance" : "課題からいく", IS_EN ? "Maintenance" : "気持ちからいく", c.P)+
+        bar("", IS_EN ? "Structured" : "決まった型でいく", IS_EN ? "Improvised" : "その場で工夫する", c.S)+
+        bar("", IS_EN ? "Beside" : "目の前の一人へ", IS_EN ? "Network" : "全体へ広げる", c.B);
+      
       const AXES_DEF = [
         {name: IS_EN ? "Support Function" : "支援機能", a:"P", b:"M"},
         {name: IS_EN ? "Action Style" : "行動様式", a:"S", b:"I"},
         {name: IS_EN ? "Support Range" : "支援射程", a:"B", b:"N"}
       ];
-      list.innerHTML = AXES_DEF.map(ax=>{
-        const A=LETTER[ax.a], B=LETTER[ax.b];
-        return `<div class="axrow"><span class="nm">${ax.name}</span>
-          <span class="ltr"><b>${ax.a}</b>${A.ja}</span><span class="sl">${t.orText}</span>
-          <span class="ltr"><b>${ax.b}</b>${B.ja}</span></div>`;
+
+      document.getElementById("rCode3").innerHTML = result.code.split("").map((L,i)=>{
+        const l=LETTER[L], ax=AXES_DEF[i], otherKey=(ax.a===L?ax.b:ax.a), other=LETTER[otherKey];
+        return `<div class="cline"><div class="cbig">${L}</div><div class="cmeta">
+          <p class="t1">${l.ja} <span style="font-weight:500;font-size:12px;color:#8a7f70">${l.en}</span></p>
+          <p class="t2">${l.line}</p>
+          <p class="t3">${ax.name}軸：<span>${l.ja}(${L})</span> ⇄ ${other.ja}(${otherKey})</p>
+        </div></div>`;
       }).join("");
-    }
-  }
-
-  function renderQ(){
-    const q=deck[idx];
-    document.getElementById("count").textContent = `${idx+1} / ${deck.length}` + (idx>=15 ? (IS_EN ? " *Not scored" : " ※ここからは判定に使いません") : "");
-    const dots=["#EF5A48","#F06A18","#E8AF1E","#14875C","#8B44A8","#123A96","#1BBFC6","#EE6A9E"];
-    document.getElementById("prog").innerHTML = deck.map((_,i)=>
-      `<i class="${i<idx?"on":i===idx?"cur":""}" style="--dot:${dots[i%8]}"></i>`).join("");
-    document.getElementById("scene").textContent = q.scene;
-    document.getElementById("qtext").textContent = q.text;
-    document.getElementById("choices").innerHTML = q.o.map((o,i)=>
-      `<button type="button" class="choice" data-p="${o.p}"><span class="mark">${i===0?"A":"B"}</span>${o.t}</button>`).join("");
-    
-    var btns = document.getElementById("choices").querySelectorAll(".choice");
-    for(let b=0; b<btns.length; b++){
-      (function(btn){
-        btn.onclick = () => pick(btn.getAttribute('data-p'));
-      })(btns[b]);
-    }
-    document.getElementById("backBtn").classList.toggle("hidden", idx===0);
-  }
-
-  function pick(p){
-    answers[idx]={ax:deck[idx].ax, p, key:deck[idx].key||null, id:deck[idx].id||null};
-    idx++;
-    if(idx<deck.length) renderQ(); else show("s-profile");
-  }
-
-  function calc(){
-    const c={P:0,M:0,S:0,I:0,B:0,N:0};
-    for(let i=0; i<15; i++){
-      var p = answers[i] ? answers[i].p : null;
-      if(p && p in c) c[p]++;
-    }
-    const code=(c.P>=3?"P":"M")+(c.S>=3?"S":"I")+(c.B>=3?"B":"N");
-    const cov={};
-    for(let j=15; j<answers.length; j++){
-      if(answers[j] && answers[j].key){
-        cov[answers[j].key] = answers[j].p==="1" ? (IS_EN ? "Yes" : "はい") : (IS_EN ? "No" : "いいえ");
+      document.getElementById("rGood").textContent=tData.good;
+      document.getElementById("rPost").textContent=tData.post;
+      document.getElementById("rBlind").textContent=tData.blind;
+      document.getElementById("rStep").textContent=tData.step;
+      const bd=TYPES[tData.buddy], op=TYPES[tData.opp];
+      if(bd && bd.key && IMG[bd.key]) {
+        document.getElementById("rBuddyImg").src=IMG[bd.key];
       }
+      document.getElementById("rBuddy").textContent=bd.name;
+      if(op && op.key && IMG[op.key]) {
+        document.getElementById("rOppImg").src=IMG[op.key];
+      }
+      document.getElementById("rOpp").textContent=op.name;
+      document.getElementById("rPairNote").textContent= t.pairNote;
+      document.getElementById("rTheme").textContent=tData.theme;
+
+      const mail=document.getElementById("mail").value.trim();
+      document.getElementById("mailNote").textContent = mail
+        ? (IS_EN ? `Creating email to ${mail}.` : `${mail} あてのメールを作成します。`)
+        : (IS_EN ? "Email is empty. You can print or save as PDF below." : "メールアドレスが未入力です。下の印刷から保存してください。");
+      
+      var mailBtn = document.getElementById("mailBtn");
+      mailBtn.disabled = !mail;
+      mailBtn.style.opacity = mail ? 1 : .45;
+
+      show("s-result");
     }
-    return {code, c, cov};
-  }
 
-  function bar(label,leftName,rightName,leftVal){
-    const l=leftVal, r=5-leftVal;
-    return `<div class="bar"><div class="lab"><span>${l>=3?"<b>"+leftName+"</b>":leftName} ${l}</span>
-      <span>${r} ${r>3?"<b>"+rightName+"</b>":rightName}</span></div>
-      <div class="track"><span style="width:${l*20}%"></span><span class="r" style="width:${r*20}%"></span></div></div>`;
-  }
-
-  function renderResult(){
-    result=calc();
-    const tData=TYPES[result.code], c=result.c;
-    document.getElementById("s-result").style.setProperty("--c", tData.col);
-    if(tData.key && IMG[tData.key]) {
-      document.getElementById("rImg").src=IMG[tData.key];
-      document.getElementById("rImg").alt=tData.name;
+    function mailBody(){
+      const tData=TYPES[result.code], c=result.c;
+      return [
+        IS_EN ? "■ Bosai 8 Type Quiz Result" : "■ 防災共助タイプ診断「ぼうさい8」結果",
+        "",
+        (IS_EN ? "Your Type: " : "あなたのタイプ：") + `${tData.name}（${result.code}）`,
+        tData.catch,
+        "",
+        IS_EN ? "── Code Meaning ──" : "── コードの意味 ──",
+        ...result.code.split("").map((L,i)=>`${L}＝${LETTER[L].ja}（${LETTER[L].en}）`),
+        "",
+        IS_EN ? "── Scores ──" : "── スコア ──",
+        `Performance ${c.P} / Maintenance ${c.M}`,
+        `Structured ${c.S} / Improvised ${c.I}`,
+        `Beside ${c.B} / Network ${c.N}`,
+        "",
+        IS_EN ? "── Strengths ──" : "── きみの得意 ──",
+        tData.good,
+        "",
+        IS_EN ? "── Shelter Role ──" : "── 避難所での持ち場 ──",
+        tData.post,
+        "",
+        IS_EN ? "── Watch out for ──" : "── 気をつけたいこと ──",
+        tData.blind,
+        "",
+        IS_EN ? "── First Step ──" : "── 今日からの一歩 ──",
+        tData.step,
+        "",
+        IS_EN ? "JYRAC" : "日本若者防災復興協会（JYRAC）"
+      ].join("\n");
     }
-    document.getElementById("rCode").textContent=result.code.split("").join(" ・ ");
-    document.getElementById("rName").textContent=tData.name;
-    document.getElementById("rCatch").textContent=tData.catch;
-    document.getElementById("rBars").innerHTML =
-      bar("", IS_EN ? "Performance" : "課題からいく", IS_EN ? "Maintenance" : "気持ちからいく", c.P)+
-      bar("", IS_EN ? "Structured" : "決まった型でいく", IS_EN ? "Improvised" : "その場で工夫する", c.S)+
-      bar("", IS_EN ? "Beside" : "目の前の一人へ", IS_EN ? "Network" : "全体へ広げる", c.B);
-    
-    const AXES_DEF = [
-      {name: IS_EN ? "Support Function" : "支援機能", a:"P", b:"M"},
-      {name: IS_EN ? "Action Style" : "行動様式", a:"S", b:"I"},
-      {name: IS_EN ? "Support Range" : "支援射程", a:"B", b:"N"}
-    ];
 
-    document.getElementById("rCode3").innerHTML = result.code.split("").map((L,i)=>{
-      const l=LETTER[L], ax=AXES_DEF[i], otherKey=(ax.a===L?ax.b:ax.a), other=LETTER[otherKey];
-      return `<div class="cline"><div class="cbig">${L}</div><div class="cmeta">
-        <p class="t1">${l.ja} <span style="font-weight:500;font-size:12px;color:#8a7f70">${l.en}</span></p>
-        <p class="t2">${l.line}</p>
-        <p class="t3">${ax.name}軸：<span>${l.ja}(${L})</span> ⇄ ${other.ja}(${otherKey})</p>
-      </div></div>`;
-    }).join("");
-    document.getElementById("rGood").textContent=tData.good;
-    document.getElementById("rPost").textContent=tData.post;
-    document.getElementById("rBlind").textContent=tData.blind;
-    document.getElementById("rStep").textContent=tData.step;
-    const bd=TYPES[tData.buddy], op=TYPES[tData.opp];
-    if(bd && bd.key && IMG[bd.key]) {
-      document.getElementById("rBuddyImg").src=IMG[bd.key];
-    }
-    document.getElementById("rBuddy").textContent=bd.name;
-    if(op && op.key && IMG[op.key]) {
-      document.getElementById("rOppImg").src=IMG[op.key];
-    }
-    document.getElementById("rOpp").textContent=op.name;
-    document.getElementById("rPairNote").textContent= t.pairNote;
-    document.getElementById("rTheme").textContent=tData.theme;
+    document.getElementById("startBtn").onclick=()=>{buildDeck();idx=0;answers=[];renderQ();show("s-quiz")};
+    document.getElementById("backBtn").onclick=()=>{if(idx>0){idx--;renderQ()}};
+    document.getElementById("resultBtn").onclick=renderResult;
+    document.getElementById("sexPill").onclick=e=>{
+      const b=e.target.closest("button"); if(!b)return;
+      sex=b.getAttribute('data-v');
+      var btns = document.getElementById("sexPill").children;
+      for(let i=0; i<btns.length; i++){
+        btns[i].setAttribute("aria-pressed", btns[i] === b ? "true" : "false");
+      }
+    };
+    document.getElementById("mailBtn").onclick=()=>{
+      const to=document.getElementById("mail").value.trim(); if(!to)return;
+      location.href=`mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(IS_EN ? "【Bosai 8】Your Type: " + TYPES[result.code].name : "【ぼうさい8】あなたは " + TYPES[result.code].name)}&body=${encodeURIComponent(mailBody())}`;
+    };
+    document.getElementById("printBtn").onclick=()=>window.print();
+    document.getElementById("againBtn").onclick=()=>{sex="";document.getElementById("mail").value="";document.getElementById("age").value="";
+      var btns = document.getElementById("sexPill").children;
+      for(let i=0; i<btns.length; i++){
+        btns[i].setAttribute("aria-pressed", "false");
+      }
+      show("s-intro")
+    };
 
-    const mail=document.getElementById("mail").value.trim();
-    document.getElementById("mailNote").textContent = mail
-      ? (IS_EN ? `Creating email to ${mail}.` : `${mail} あてのメールを作成します。`)
-      : (IS_EN ? "Email is empty. You can print or save as PDF below." : "メールアドレスが未入力です。下の印刷から保存してください。");
-    
-    var mailBtn = document.getElementById("mailBtn");
-    mailBtn.disabled = !mail;
-    mailBtn.style.opacity = mail ? 1 : .45;
-
-    show("s-result");
-  }
-
-  function mailBody(){
-    const tData=TYPES[result.code], c=result.c;
-    return [
-      IS_EN ? "■ Bosai 8 Type Quiz Result" : "■ 防災共助タイプ診断「ぼうさい8」結果",
-      "",
-      (IS_EN ? "Your Type: " : "あなたのタイプ：") + `${tData.name}（${result.code}）`,
-      tData.catch,
-      "",
-      IS_EN ? "── Code Meaning ──" : "── コードの意味 ──",
-      ...result.code.split("").map((L,i)=>`${L}＝${LETTER[L].ja}（${LETTER[L].en}）`),
-      "",
-      IS_EN ? "── Scores ──" : "── スコア ──",
-      `Performance ${c.P} / Maintenance ${c.M}`,
-      `Structured ${c.S} / Improvised ${c.I}`,
-      `Beside ${c.B} / Network ${c.N}`,
-      "",
-      IS_EN ? "── Strengths ──" : "── きみの得意 ──",
-      tData.good,
-      "",
-      IS_EN ? "── Shelter Role ──" : "── 避難所での持ち場 ──",
-      tData.post,
-      "",
-      IS_EN ? "── Watch out for ──" : "── 気をつけたいこと ──",
-      tData.blind,
-      "",
-      IS_EN ? "── First Step ──" : "── 今日からの一歩 ──",
-      tData.step,
-      "",
-      IS_EN ? "JYRAC" : "日本若者防災復興協会（JYRAC）"
-    ].join("\n");
-  }
-
-  document.getElementById("startBtn").onclick=()=>{buildDeck();idx=0;answers=[];renderQ();show("s-quiz")};
-  document.getElementById("backBtn").onclick=()=>{if(idx>0){idx--;renderQ()}};
-  document.getElementById("resultBtn").onclick=renderResult;
-  document.getElementById("sexPill").onclick=e=>{
-    const b=e.target.closest("button"); if(!b)return;
-    sex=b.getAttribute('data-v');
-    var btns = document.getElementById("sexPill").children;
-    for(let i=0; i<btns.length; i++){
-      btns[i].setAttribute("aria-pressed", btns[i] === b ? "true" : "false");
-    }
-  };
-  document.getElementById("mailBtn").onclick=()=>{
-    const to=document.getElementById("mail").value.trim(); if(!to)return;
-    location.href=`mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(IS_EN ? "【Bosai 8】Your Type: " + TYPES[result.code].name : "【ぼうさい8】あなたは " + TYPES[result.code].name)}&body=${encodeURIComponent(mailBody())}`;
-  };
-  document.getElementById("printBtn").onclick=()=>window.print();
-  document.getElementById("againBtn").onclick=()=>{sex="";document.getElementById("mail").value="";document.getElementById("age").value="";
-    var btns = document.getElementById("sexPill").children;
-    for(let i=0; i<btns.length; i++){
-      btns[i].setAttribute("aria-pressed", "false");
-    }
-    show("s-intro")
-  };
-
-  renderIntro();
-})();
-</script>
-</body>
-</html>
+    renderIntro();
+  })();
+  </script>
 </Layout>
