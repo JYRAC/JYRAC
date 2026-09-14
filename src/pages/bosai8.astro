@@ -384,4 +384,291 @@ const t = {
         buddy:"PIN", opp:"PSN",
         theme:IS_EN?"Children's safe spaces":"避難所における子どもの居場所"},
       MIN:{col:"#EE6A9E",key:"dolphin",name:IS_EN ? "Connecting Dolphin" : "つなぎイルカ",catch:IS_EN ? "Energize everyone through voice and connections." : "声とつながりで、みんなを元気にする",
-        good:IS_EN?"Connects inside and outside groups.":"人と人、地域と外を結ぶのが得意。発信してSorry, something went wrong. Please try your request again.
+        good:IS_EN?"Connects inside and outside groups.":"人と人、地域と外を結ぶのが得意。発信して仲間を集められます。",
+        post:IS_EN?"External communications.":"外部支援の受け入れ、発信、記録。",
+        blind:IS_EN?"May lose track of internal needs.":"つないだところで手を離してしまいがち。",
+        step:IS_EN?"Build connections outside school.":"学校・家以外の場所に、話せる人を1人つくる。",
+        buddy:"PIB", opp:"PSB",
+        theme:IS_EN?"Social capital":"ソーシャルキャピタルと復興の速さ"}
+    };
+
+    var LETTER = {
+      P:{en:"Performance", ja:"課題", line:IS_EN ? "First, resolve the problem itself." : "まず、困りごとそのものを片づけにいく。"},
+      M:{en:"Maintenance", ja:"情緒", line:IS_EN ? "First, help the person feel at ease." : "まず、その人の気持ちが落ち着くほうへ動く。"},
+      S:{en:"Structured", ja:"定型", line:IS_EN ? "Strong at following established patterns." : "決まっている型を、確実に回して強い。"},
+      I:{en:"Improvised", ja:"即興", line:IS_EN ? "Create new solutions with what is on hand." : "その場にあるもので、新しいやり方を作る。"},
+      B:{en:"Beside", ja:"近接", line:IS_EN ? "Engage deeply with the person right in front of you." : "目の前の一人に、深く関わる。"},
+      N:{en:"Network", ja:"広域", line:IS_EN ? "Move broadly to reach the entire community." : "全体に届くように、広く動く。"}
+    };
+
+    var QS = [
+      {ax:"P",scene:IS_EN?"Waiting at School":"学校で待機",text:IS_EN?"After an earthquake, you have to wait at school for a while. A friend nearby looks restless. What do you do first?":"地震のあと、学校でしばらく待機することになりました。近くにいる友達が落ち着かない様子です。あなたが最初にするなら？",o:[{t:IS_EN?"Check if they need anything or are having trouble":"今必要なものや困っていることがないか確認する",p:"P"},{t:IS_EN?"Ask what is bothering them":"何が気になっているのか話を聞く",p:"M"}]},
+      {ax:"P",scene:IS_EN?"Stopping during a drill":"訓練中に立ち止まる",text:IS_EN?"During a disaster drill, someone in your group stops and cannot move. What do you do first?":"防災訓練の途中、同じグループの人が動けずに立ち止まっています。あなたが最初にするなら？",o:[{t:IS_EN?"Organize together what to do next":"次に何をすればよいか一緒に整理する",p:"P"},{t:IS_EN?"Talk to them to see how they are doing":"どうしたのか声をかけて様子を見る",p:"M"}]},
+      {ax:"P",scene:IS_EN?"Stuck in heavy rain":"大雨で帰れない",text:IS_EN?"Heavy rain prevents you from going home, and you wait at school. Someone nearby keeps checking their phone. What do you do first?":"大雨で帰宅できず、学校で待つことになりました。近くの人が何度もスマホを見ています。あなたが最初にするなら？",o:[{t:IS_EN?"Check info together":"今分かっている情報を一緒に確認する",p:"P"},{t:IS_EN?"Ask what worries them":"何が心配なのか聞いてみる",p:"M"}]},
+      {ax:"P",scene:IS_EN?"Tired":"疲労",text:IS_EN?"Team member looks exhausted after drill.":"訓練後、班の人が疲れている。",o:[{t:IS_EN?"Reduce burden":"負担を減らす",p:"P"},{t:IS_EN?"Talk and rest":"休みながら声をかける",p:"M"}]},
+      {ax:"P",scene:IS_EN?"Quiet":"沈黙",text:IS_EN?"Someone stopped speaking in a discussion.":"話し合いで発言しなくなった人がいる。",o:[{t:IS_EN?"Check if unclear":"内容を確認",p:"P"},{t:IS_EN?"Ask how they feel":"気持ちを聞く",p:"M"}]},
+      {ax:"P",scene:IS_EN?"Blackout":"停電",text:IS_EN?"Child cries in dark shelter.":"避難所の夜、子供が泣いている。",o:[{t:IS_EN?"Find light":"明かりを探す",p:"P"},{t:IS_EN?"Sit by them":"そばに座る",p:"M"}]},
+      {ax:"P",scene:IS_EN?"Line":"列",text:IS_EN?"Someone is frustrated in long line.":"受付の列で怒っている人がいる。",o:[{t:IS_EN?"Tell timing":"順番を伝える",p:"P"},{t:IS_EN?"Calm them":"気持ちを受け止める",p:"M"}]},
+      {ax:"P",scene:IS_EN?"Contact":"連絡",text:IS_EN?"Cannot reach family after earthquake.":"家族と連絡がつかない人がいる。",o:[{t:IS_EN?"Try methods":"方法を探す",p:"P"},{t:IS_EN?"Keep company":"話し相手になる",p:"M"}]},
+      {ax:"P",scene:IS_EN?"Family":"家族",text:IS_EN?"Family arrives, looks overwhelmed.":"避難所に着いた家族が困っている。",o:[{t:IS_EN?"Secure space":"場所を確保",p:"P"},{t:IS_EN?"Let them rest":"休んでもらう",p:"M"}]},
+      {ax:"P",scene:IS_EN?"Camp":"合宿",text:IS_EN?"Earthquake at camp, some frozen.":"合宿先で動けない人がいる。",o:[{t:IS_EN?"Start moving":"動き出す",p:"P"},{t:IS_EN?"Speak individually":"声をかける",p:"M"}]},
+      {ax:"S",scene:IS_EN?"Festival":"文化祭",text:IS_EN?"Earthquake at school festival.":"文化祭中に地震が起きた。",o:[{t:IS_EN?"Use main route":"決まったルートで行く",p:"S"},{t:IS_EN?"Open new route":"別のルートを作る",p:"I"}]},
+      {ax:"S",scene:IS_EN?"Prep":"準備",text:IS_EN?"Almost no disaster prep before festival.":"防災の備えが整っていない。",o:[{t:IS_EN?"Use past schedule":"過去の表を使う",p:"S"},{t:IS_EN?"Recreate plan":"新しく作る",p:"I"}]},
+      {ax:"S",scene:IS_EN?"Drill Type":"訓練",text:IS_EN?"Deciding drill content.":"防災訓練の内容を決める。",o:[{t:IS_EN?"Repeat standard":"毎年同じ手順",p:"S"},{t:IS_EN?"Add unexpected":"想定外を入れる",p:"I"}]},
+      {ax:"S",scene:IS_EN?"Queue":"配給",text:IS_EN?"Distribution queue breaking down.":"配給の列が崩れている。",o:[{t:IS_EN?"Organize line":"列を整える",p:"S"},{t:IS_EN?"Make new layout":"新しい並び方を作る",p:"I"}]},
+      {ax:"S",scene:IS_EN?"Foreigners":"外国人",text:IS_EN?"Foreign evacuees arrive without interpreter.":"外国人の避難者が来た。",o:[{t:IS_EN?"Use guide sheet":"案内シートを使う",p:"S"},{t:IS_EN?"Improvise":"工夫して伝える",p:"I"}]},
+      {ax:"S",scene:IS_EN?"Assembly":"集合",text:IS_EN?"Assembly point blocked.":"集合場所が使えない。",o:[{t:IS_EN?"Use backup point":"第二集合場所へ",p:"S"},{t:IS_EN?"Find new place":"新しい場所を探す",p:"I"}]},
+      {ax:"S",scene:IS_EN?"Manual":"マニュアル",text:IS_EN?"Thick manual unread.":"分厚いマニュアルがある。",o:[{t:IS_EN?"Extract pages":"必要なページを抜粋",p:"S"},{t:IS_EN?"Decide on spot":"その場で決める",p:"I"}]},
+      {ax:"S",scene:IS_EN?"PA":"放送",text:IS_EN?"No school PA.":"校内放送が使えない。",o:[{t:IS_EN?"Messenger system":"伝達係を使う",p:"S"},{t:IS_EN?"Megaphone":"マイクを使う",p:"I"}]},
+      {ax:"S",scene:IS_EN?"Kitchen":"炊き出し",text:IS_EN?"Soup kitchen too slow.":"炊き出しが遅い。",o:[{t:IS_EN?"Increase staff":"人手を増やす",p:"S"},{t:IS_EN?"Change method":"やり方を変える",p:"I"}]},
+      {ax:"S",scene:IS_EN?"Storage":"倉庫",text:IS_EN?"Supply locations changed.":"備品の場所が変わった。",o:[{t:IS_EN?"Match list":"リスト通り確認",p:"S"},{t:IS_EN?"Grab visually":"見た目で判断",p:"I"}]},
+      {ax:"B",scene:IS_EN?"Event":"イベント",text:IS_EN?"Planning disaster event.":"防災イベントを企画する。",o:[{t:IS_EN?"Deep prep few":"少数で深く",p:"B"},{t:IS_EN?"School-wide":"全校に呼びかけ",p:"N"}]},
+      {ax:"B",scene:IS_EN?"Committee":"委員会",text:IS_EN?"Starting committee.":"委員会を作る。",o:[{t:IS_EN?"Reliable few":"確実に動く数人",p:"B"},{t:IS_EN?"All school":"学校全体",p:"N"}]},
+      {ax:"B",scene:IS_EN?"Needs":"把握",text:IS_EN?"Manager asks what's missing.":"何が足りないか聞かれた。",o:[{t:IS_EN?"Ask individually":"直接聞いて回る",p:"B"},{t:IS_EN?"General call":"全員に呼びかけ",p:"N"}]},
+      {ax:"B",scene:IS_EN?"Supplies":"物資",text:IS_EN?"Limited relief supplies.":"支援物資が届いた。",o:[{t:IS_EN?"Deliver directly":"直接届ける",p:"B"},{t:IS_EN?"Uniform distribution":"一斉に配る",p:"N"}]},
+      {ax:"B",scene:IS_EN?"Free time":"自由時間",text:IS_EN?"Free 30 minutes in shelter.":"避難所で手が空いた。",o:[{t:IS_EN?"Talk to one person":"気になる人と話す",p:"B"},{t:IS_EN?"Check all":"声をかけて回る",p:"N"}]},
+      {ax:"B",scene:IS_EN?"Sleep":"睡眠",text:IS_EN?"People unable to sleep.":"眠れていない人がいる。",o:[{t:IS_EN?"Listen to one":"一人とじっくり",p:"B"},{t:IS_EN?"Check all":"順に声をかける",p:"N"}]},
+      {ax:"B",scene:IS_EN?"Talk":"発表",text:IS_EN?"15-min disaster talk.":"15分の話をする。",o:[{t:IS_EN?"One story":"一人の体験を深く",p:"B"},{t:IS_EN?"General basics":"基本を広く",p:"N"}]},
+      {ax:"B",scene:IS_EN?"Drill group":"訓練",text:IS_EN?"At local drill with strangers.":"地域の訓練に参加した。",o:[{t:IS_EN?"Talk to one":"一人とおぼえる",p:"B"},{t:IS_EN?"Greet many":"多くの人と挨拶",p:"N"}]},
+      {ax:"B",scene:IS_EN?"Surplus":"余り",text:IS_EN?"Supplies left over.":"物資が余った。",o:[{t:IS_EN?"Give to one in need":"必要な人に渡す",p:"B"},{t:IS_EN?"Share widely":"多くの人に分ける",p:"N"}]},
+      {ax:"B",scene:IS_EN?"SNS":"発信",text:IS_EN?"Updating shelter on social media.":"SNSで伝える。",o:[{t:IS_EN?"One story":"一人の話を書く",p:"B"},{t:IS_EN?"Overall status":"全体の状態を出す",p:"N"}]}
+    ];
+
+    (function(){
+      var n = {};
+      QS.forEach(function(q) {
+        n[q.ax] = (n[q.ax] || 0) + 1;
+        q.id = q.ax + String(n[q.ax]).padStart(2, "0");
+      });
+    })();
+
+    const COV = [
+      {ax:"cov",key:"防災経験",scene:IS_EN?"Experience":"防災経験",text:IS_EN?"Have you ever participated in disaster drills, events, or volunteer work?":"これまでに、防災訓練・防災イベント・被災地支援・募金活動など、防災や災害支援に関わったことがある。",o:[{t:IS_EN?"Yes":"ある",p:"1"},{t:IS_EN?"No / Rarely":"ない、またはほとんどない",p:"0"}]},
+      {ax:"cov",key:"サードプレイス",scene:IS_EN?"Third Place":"サードプレイス",text:IS_EN?"Do you have a safe community outside school/home to talk to?":"学校・家・職場以外に、安心して行ける場所や、困った時に話せるコミュニティがある。",o:[{t:IS_EN?"Yes":"ある",p:"1"},{t:IS_EN?"No / Few":"ない、またはあまりない",p:"0"}]},
+      {ax:"cov",key:"防災ポーチ",scene:IS_EN?"Emergency Pouch":"持ち歩きの備え",text:IS_EN?"Do you carry items like power banks, medicine, or water for emergencies?":"普段から、モバイルバッテリー・常備薬・ライト・笛・絆創膏・水など、災害時にも役立つものを持ち歩いている。",o:[{t:IS_EN?"Yes":"持ち歩いている",p:"1"},{t:IS_EN?"No":"持ち歩いていない、または意識していない",p:"0"}]},
+      {ax:"cov",key:"頼れる大人",scene:IS_EN?"Trusted Adult":"相談できる人",text:IS_EN?"Is there a trusted adult outside family you can consult during a crisis?":"災害時や困った時に、家族以外で頼れる大人や相談できる人がいる。",o:[{t:IS_EN?"Yes":"いる",p:"1"},{t:IS_EN?"No":"いない、またはすぐには思いつかない",p:"0"}]},
+      {ax:"cov",key:"地域防災",scene:IS_EN?"Local Community":"地域のこと",text:IS_EN?"Do you know local evacuation shelters or hazards?":"自分の住んでいる地域の避難所、危険な場所、地域の防災活動について少しでも知っている。",o:[{t:IS_EN?"Yes":"知っている",p:"1"},{t:IS_EN?"No":"知らない、またはほとんど分からない",p:"0"}]}
+    ];
+
+    var deck = [], idx = 0, answers = [], sex = "", result = null;
+
+    function shuffle(a){
+      var res = a.slice();
+      for(let i=res.length-1; i>0; i--){
+        const j = Math.random()*(i+1)|0;
+        var temp = res[i]; res[i] = res[j]; res[j] = temp;
+      }
+      return res;
+    }
+
+    function buildDeck(){
+      var axes = ["P","S","B"];
+      var picked = [];
+      for(let i=0; i<axes.length; i++){
+        var ax = axes[i];
+        var filtered = QS.filter(q=>q.ax===ax);
+        picked = picked.concat(shuffle(filtered).slice(0,5));
+      }
+      var judge = shuffle(picked).map(x=>({...x, o: Math.random()<.5 ? x.o : [x.o[1], x.o[0]]}));
+      var cov = COV.map(x=>({...x, o: x.o.slice()}));
+      deck = judge.concat(cov);
+    }
+
+    function show(id){
+      ["s-intro","s-quiz","s-profile","s-result"].forEach(s=>{
+        var el = document.getElementById(s);
+        if(el) el.classList.toggle("hidden", s!==id);
+      });
+      window.scrollTo({top:0,behavior:"instant"});
+    }
+
+    function renderIntro(){
+      const order=["hamster","ant","squirrel","beaver","owl","penguin","otter","dolphin"];
+      var grid = document.getElementById("introGrid");
+      if(grid) {
+        grid.innerHTML = order.map(k=>`<img src="${IMG[k]}" alt="">`).join("");
+      }
+
+      var list = document.getElementById("axList");
+      if(list) {
+        const AXES_DEF = [
+          {name: IS_EN ? "Support Function" : "支援機能", a:"P", b:"M"},
+          {name: IS_EN ? "Action Style" : "行動様式", a:"S", b:"I"},
+          {name: IS_EN ? "Support Range" : "支援射程", a:"B", b:"N"}
+        ];
+        list.innerHTML = AXES_DEF.map(ax=>{
+          const A=LETTER[ax.a], B=LETTER[ax.b];
+          return `<div class="axrow"><span class="nm">${ax.name}</span>
+            <span class="ltr"><b>${ax.a}</b>${A.ja}</span><span class="sl">か</span>
+            <span class="ltr"><b>${ax.b}</b>${B.ja}</span></div>`;
+        }).join("");
+      }
+    }
+
+    function renderQ(){
+      const q=deck[idx];
+      document.getElementById("count").textContent = `${idx+1} / ${deck.length}` + (idx>=15 ? (IS_EN ? " *Not scored" : " ※ここからは判定に使いません") : "");
+      const dots=["#EF5A48","#F06A18","#E8AF1E","#14875C","#8B44A8","#123A96","#1BBFC6","#EE6A9E"];
+      document.getElementById("prog").innerHTML = deck.map((_,i)=>
+        `<i class="${i<idx?"on":i===idx?"cur":""}" style="--dot:${dots[i%8]}"></i>`).join("");
+      document.getElementById("scene").textContent = q.scene;
+      document.getElementById("qtext").textContent = q.text;
+      document.getElementById("choices").innerHTML = q.o.map((o,i)=>
+        `<button type="button" class="choice" data-p="${o.p}"><span class="mark">${i===0?"A":"B"}</span>${o.t}</button>`).join("");
+      
+      var btns = document.getElementById("choices").querySelectorAll(".choice");
+      for(let b=0; b<btns.length; b++){
+        (function(btn){
+          btn.onclick = () => pick(btn.getAttribute('data-p'));
+        })(btns[b]);
+      }
+      document.getElementById("backBtn").classList.toggle("hidden", idx===0);
+    }
+
+    function pick(p){
+      answers[idx]={ax:deck[idx].ax, p, key:deck[idx].key||null, id:deck[idx].id||null};
+      idx++;
+      if(idx<deck.length) renderQ(); else show("s-profile");
+    }
+
+    function calc(){
+      const c={P:0,M:0,S:0,I:0,B:0,N:0};
+      for(let i=0; i<15; i++){
+        var p = answers[i] ? answers[i].p : null;
+        if(p && p in c) c[p]++;
+      }
+      const code=(c.P>=3?"P":"M")+(c.S>=3?"S":"I")+(c.B>=3?"B":"N");
+      const cov={};
+      for(let j=15; j<answers.length; j++){
+        if(answers[j] && answers[j].key){
+          cov[answers[j].key] = answers[j].p==="1" ? (IS_EN ? "Yes" : "はい") : (IS_EN ? "No" : "いいえ");
+        }
+      }
+      return {code, c, cov};
+    }
+
+    function bar(label,leftName,rightName,leftVal){
+      const l=leftVal, r=5-leftVal;
+      return `<div class="bar"><div class="lab"><span>${l>=3?"<b>"+leftName+"</b>":leftName} ${l}</span>
+        <span>${r} ${r>3?"<b>"+rightName+"</b>":rightName}</span></div>
+        <div class="track"><span style="width:${l*20}%"></span><span class="r" style="width:${r*20}%"></span></div></div>`;
+    }
+
+    function renderResult(){
+      result=calc();
+      const tData=TYPES[result.code], c=result.c;
+      document.getElementById("s-result").style.setProperty("--c", tData.col);
+      if(tData.key && IMG[tData.key]) {
+        document.getElementById("rImg").src=IMG[tData.key];
+        document.getElementById("rImg").alt=tData.name;
+      }
+      document.getElementById("rCode").textContent=result.code.split("").join(" ・ ");
+      document.getElementById("rName").textContent=tData.name;
+      document.getElementById("rCatch").textContent=tData.catch;
+      document.getElementById("rBars").innerHTML =
+        bar("", IS_EN ? "Performance" : "課題からいく", IS_EN ? "Maintenance" : "気持ちからいく", c.P)+
+        bar("", IS_EN ? "Structured" : "決まった型でいく", IS_EN ? "Improvised" : "その場で工夫する", c.S)+
+        bar("", IS_EN ? "Beside" : "目の前の一人へ", IS_EN ? "Network" : "全体へ広げる", c.B);
+      
+      const AXES_DEF = [
+        {name: IS_EN ? "Support Function" : "支援機能", a:"P", b:"M"},
+        {name: IS_EN ? "Action Style" : "行動様式", a:"S", b:"I"},
+        {name: IS_EN ? "Support Range" : "支援射程", a:"B", b:"N"}
+      ];
+
+      document.getElementById("rCode3").innerHTML = result.code.split("").map((L,i)=>{
+        const l=LETTER[L], ax=AXES_DEF[i], otherKey=(ax.a===L?ax.b:ax.a), other=LETTER[otherKey];
+        return `<div class="cline"><div class="cbig">${L}</div><div class="cmeta">
+          <p class="t1">${l.ja} <span style="font-weight:500;font-size:12px;color:#8a7f70">${l.en}</span></p>
+          <p class="t2">${l.line}</p>
+          <p class="t3">${ax.name}軸：<span>${l.ja}(${L})</span> ⇄ ${other.ja}(${otherKey})</p>
+        </div></div>`;
+      }).join("");
+      document.getElementById("rGood").textContent=tData.good;
+      document.getElementById("rPost").textContent=tData.post;
+      document.getElementById("rBlind").textContent=tData.blind;
+      document.getElementById("rStep").textContent=tData.step;
+      const bd=TYPES[tData.buddy], op=TYPES[tData.opp];
+      if(bd && bd.key && IMG[bd.key]) {
+        document.getElementById("rBuddyImg").src=IMG[bd.key];
+      }
+      document.getElementById("rBuddy").textContent=bd.name;
+      if(op && op.key && IMG[op.key]) {
+        document.getElementById("rOppImg").src=IMG[op.key];
+      }
+      document.getElementById("rOpp").textContent=op.name;
+      document.getElementById("rPairNote").textContent= "相棒は、動き方が近いのに死角が違う相手。正反対は、やり方が理解しづらいけれど、そろうと対応できる幅がいちばん広くなる相手です。";
+      document.getElementById("rTheme").textContent=tData.theme;
+
+      const mail=document.getElementById("mail").value.trim();
+      document.getElementById("mailNote").textContent = mail
+        ? (IS_EN ? `Creating email to ${mail}.` : `${mail} あてのメールを作成します。`)
+        : (IS_EN ? "Email is empty. You can print or save as PDF below." : "メールアドレスが未入力です。下の印刷から保存してください。");
+      
+      var mailBtn = document.getElementById("mailBtn");
+      mailBtn.disabled = !mail;
+      mailBtn.style.opacity = mail ? 1 : .45;
+
+      show("s-result");
+    }
+
+    function mailBody(){
+      const tData=TYPES[result.code], c=result.c;
+      return [
+        IS_EN ? "■ Bosai 8 Type Quiz Result" : "■ 防災共助タイプ診断「ぼうさい8」結果",
+        "",
+        (IS_EN ? "Your Type: " : "あなたのタイプ：") + `${tData.name}（${result.code}）`,
+        tData.catch,
+        "",
+        IS_EN ? "── Code Meaning ──" : "── コードの意味 ──",
+        ...result.code.split("").map((L,i)=>`${L}＝${LETTER[L].ja}（${LETTER[L].en}）`),
+        "",
+        IS_EN ? "── Scores ──" : "── スコア ──",
+        `Performance ${c.P} / Maintenance ${c.M}`,
+        `Structured ${c.S} / Improvised ${c.I}`,
+        `Beside ${c.B} / Network ${c.N}`,
+        "",
+        IS_EN ? "── Strengths ──" : "── きみの得意 ──",
+        tData.good,
+        "",
+        IS_EN ? "── Shelter Role ──" : "── 避難所での持ち場 ──",
+        tData.post,
+        "",
+        IS_EN ? "── Watch out for ──" : "── 気をつけたいこと ──",
+        tData.blind,
+        "",
+        IS_EN ? "── First Step ──" : "── 今日からの一歩 ──",
+        tData.step,
+        "",
+        IS_EN ? "JYRAC" : "日本若者防災復興協会（JYRAC）"
+      ].join("\n");
+    }
+
+    document.getElementById("startBtn").onclick=()=>{buildDeck();idx=0;answers=[];renderQ();show("s-quiz")};
+    document.getElementById("backBtn").onclick=()=>{if(idx>0){idx--;renderQ()}};
+    document.getElementById("resultBtn").onclick=renderResult;
+    document.getElementById("sexPill").onclick=e=>{
+      const b=e.target.closest("button"); if(!b)return;
+      sex=b.getAttribute('data-v');
+      var btns = document.getElementById("sexPill").children;
+      for(let i=0; i<btns.length; i++){
+        btns[i].setAttribute("aria-pressed", btns[i] === b ? "true" : "false");
+      }
+    };
+    document.getElementById("mailBtn").onclick=()=>{
+      const to=document.getElementById("mail").value.trim(); if(!to)return;
+      location.href=`mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(IS_EN ? "【Bosai 8】Your Type: " + TYPES[result.code].name : "【ぼうさい8】あなたは " + TYPES[result.code].name)}&body=${encodeURIComponent(mailBody())}`;
+    };
+    document.getElementById("printBtn").onclick=()=>window.print();
+    document.getElementById("againBtn").onclick=()=>{sex="";document.getElementById("mail").value="";document.getElementById("age").value="";
+      var btns = document.getElementById("sexPill").children;
+      for(let i=0; i<btns.length; i++){
+        btns[i].setAttribute("aria-pressed", "false");
+      }
+      show("s-intro")
+    };
+
+    renderIntro();
+  })();
+  </script>
+</Layout>
