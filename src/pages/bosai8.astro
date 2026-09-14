@@ -327,15 +327,12 @@ const t = {
     </section>
   </div>
 
-  <script is:inline define:vars={{ currentLang }}>
+  <script is:inline define:vars={{ currentLang, IMG }}>
   (function() {
     var root = document.getElementById('b8-root');
     if (!root) return;
     var IS_EN = currentLang === 'en';
 
-    // imagesData.js からインポートされた IMG を利用
-    // もしグローバルやインポートがうまく結びつかない場合は、ここで直接定義または参照します。
-    // 今回は imagesData.js の IMG オブジェクトをスクリプト内で再利用できるように紐付けます。
     var TYPES = {
       PSB:{col:"#EF5A48",key:"hamster",name:IS_EN ? "Swift Hamster" : "てきぱきハムスター",catch:IS_EN ? "Quickly help the person right in front using established methods." : "決まったやり方で、目の前の一人をすぐ助ける",
         good:IS_EN?"Fast in structured tasks.":"やることが決まっている場面での速さが持ち味。手順を守れるので、任せたことが確実に終わります。慌てている人の隣で、淡々と手を動かせる強さがあります。",
@@ -352,7 +349,7 @@ const t = {
         buddy:"MSB", opp:"MIB",
         theme:IS_EN?"Shelter management organization":"避難所運営と組織対応"},
       PIB:{col:"#E8AF1E",key:"squirrel",name:IS_EN ? "Resourceful Squirrel" : "こうさくリス",catch:IS_EN ? "Solve immediate problems with available items." : "ありもので、目の前の困りごとを解決する",
-        good:IS_EN?"Skilled at improvising solutions.":"道具がなくても、そこにある物で何とかしてしまう手先の強さ。「これで代用できる」の発想が早く、現場のつまずきをその場で消せます。",
+        good:IS_EN?"Skilled at improvising solutions.":"道具がなくても、そこにある物で何とかしてしまう手先の強さ。「こうやって代用できる」の発想が早く、現場のつまずきをその場で消せます。",
         post:IS_EN?"Bedding & toilet setup.":"段ボールベッド、簡易トイレ、間仕切り作り。生活の不便を1つずつ潰す役。",
         blind:IS_EN?"Might bypass safety rules.":"勢いで安全のルールを飛び越えてしまうことがある。作ったものが壊れたときの責任まで考えたい。",
         step:IS_EN?"Try building a cardboard bed.":"段ボールベッドか簡易トイレを、実際に一度作ってみる。",
@@ -361,7 +358,7 @@ const t = {
       PIN:{col:"#14875C",key:"beaver",name:IS_EN ? "System Beaver" : "しくみビーバー",catch:IS_EN ? "Build new systems that everyone can use." : "みんなが使える新しい仕組みを作る",
         good:IS_EN?"Good at creating structures and maps.":"混乱を見て「仕組みが足りない」と気づける人。一度作れば、あなたがいない場所でも回り続けます。",
         post:IS_EN?"Information & signage.":"掲示、情報整理、記録のかたち作り。",
-        blind:IS_EN?"May build overly complex systems.":"現場が実際には使えない仕組みを作ることもある。",
+        blind:IS_EN?"May build overly complex systems.":"現場が実際には使えない仕組みを作ってしまうこともある。",
         step:IS_EN?"Create a local hazard map.":"地域の危険マップを1枚作る。",
         buddy:"MIB", opp:"MSB",
         theme:IS_EN?"Information organization":"情報整理と創発的な組織づくり"},
@@ -371,7 +368,7 @@ const t = {
         blind:IS_EN?"Hesitates to speak up.":"気づいても言い出せずに抱えがち。",
         step:IS_EN?"Learn neighbors' names.":"近所の人の顔と名前をおぼえる。",
         buddy:"PSN", opp:"PIN",
-        theme:IS_EN?"Emotional support":"情緒的支援とケア"},
+        theme:IS_EN?"Emotional support":"情緒permitAllの支援とケア"},
       MSN:{col:"#123A96",key:"penguin",name:IS_EN ? "Cheerful Penguin" : "なごませペンギン",catch:IS_EN ? "Warm the atmosphere and help everyone settle down." : "場の空気をあたためて、みんなを落ち着かせる",
         good:IS_EN?"Eases tense atmosphere.":"張りつめた空気をゆるめられる人。あなたがいると、人が話し出します。",
         post:IS_EN?"Meeting facilitation.":"運営会議の進行、ルール決め。",
@@ -450,11 +447,10 @@ const t = {
       {ax:"B",scene:IS_EN?"15-min presentation":"15分の発表",text:IS_EN?"Given a 15-minute slot to talk about disaster safety at school.":"学校で防災の話をする機会をもらった。使える時間は15分しかない。",
       o:[{t:IS_EN?"Share one evacuee's personal story in depth":"一人の被災者の体験を、時間をかけて深く伝える",p:"B"},{t:IS_EN?"Cover essential basics universally for everyone":"全員に関わる基本を、もれなく伝える",p:"N"}]},
       {ax:"B",scene:IS_EN?"Local drill":"地域の防災訓練",text:IS_EN?"Attending local disaster drill surrounded by strangers.":"地域の防災訓練に参加した。まわりは知らない人ばかりだ。",
-      o:[{t:IS_EN?"Talk closely with one person next to you to learn names":"隣にいた一人と、しっかり話して顔と名前をおぼえる",p:"B"},{t:IS_EN?"Exchange brief greetings with as many people as possible":"できるだけ多くの人と、短くても挨拶を交わす",p:"N"}]},
+      o:[{t:IS_EN?"Talk closely with one person next to you to learn names":"隣にいた一人と、しっかり話して顔と名前をおぼえる",p:"B"},{t:IS_EN?"Exchange brief greetings with as many people as possible":"多くの人と短く挨拶を交わす",p:"N"}]},
       {ax:"B",scene:IS_EN?"Surplus supplies":"物資が余った",text:IS_EN?"Some relief supplies are left over after general distribution.":"配り終えたあと、支援物資が少しだけ余った。",
-      o:[{t:IS_EN?"Find someone who needs it most and hand it over directly":"いちばん必要としていそうな人を探して、その人にまとめて渡す",p:"B"},{t:IS_EN?"Distribute in small portions to reach as many people as possible":"少しずつでも、できるだけ多くの人に行き渡るように配る",p:"N"}]},
-      {ax:"B",scene:IS_EN?"Shelter updates":"避難所の様子を伝える",text:IS_EN?"Tasked with updating shelter conditions on social media.":"避難所の様子をSNSで伝えることになった。",
-      o:[{t:IS_EN?"Listen thoroughly to one evacuee's story to write about":"一人の被災者の話を、時間をかけて聞いて書く",p:"B"},{t:IS_EN?"Summarize short statements on overall missing supplies":"避難所全体で何が足りていないかを、短くまとめて出す",p:"N"}]}
+      o:[{t:IS_EN?"Give to one in need":"必要な人に渡す",p:"B"},{t:IS_EN?"Share widely":"多くの人に分ける",p:"N"}]},
+      {ax:"B",scene:IS_EN?"SNS":"発信",text:IS_EN?"Updating shelter on social media.":"SNSで伝える。",o:[{t:IS_EN?"One story":"一人の話を書く",p:"B"},{t:IS_EN?"Overall status":"全体の状態を出す",p:"N"}]}
     ];
 
     (function(){
@@ -522,7 +518,7 @@ const t = {
         list.innerHTML = AXES_DEF.map(ax=>{
           const A=LETTER[ax.a], B=LETTER[ax.b];
           return `<div class="axrow"><span class="nm">${ax.name}</span>
-            <span class="ltr"><b>${ax.a}</b>${A.ja}</span><span class="sl">${t.orText}</span>
+            <span class="ltr"><b>${ax.a}</b>${A.ja}</span><span class="sl">か</span>
             <span class="ltr"><b>${ax.b}</b>${B.ja}</span></div>`;
         }).join("");
       }
@@ -620,7 +616,7 @@ const t = {
         document.getElementById("rOppImg").src=IMG[op.key];
       }
       document.getElementById("rOpp").textContent=op.name;
-      document.getElementById("rPairNote").textContent= t.pairNote;
+      document.getElementById("rPairNote").textContent= "相棒は、動き方が近いのに死角が違う相手。正反対は、やり方が理解しづらいけれど、そろうと対応できる幅がいちばん広くなる相手です。";
       document.getElementById("rTheme").textContent=tData.theme;
 
       const mail=document.getElementById("mail").value.trim();
