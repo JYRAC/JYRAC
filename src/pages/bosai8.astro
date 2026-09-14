@@ -82,6 +82,7 @@ const t = {
     .choice{display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;cursor:pointer;background:#fff;border:2px solid var(--line);border-radius:18px;padding:15px 16px;font-size:15.5px;margin-bottom:11px;}
     .choice .mark{font-family:var(--disp);font-weight:800;font-size:13px;color:var(--ink2);background:#F1F4F9;border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center;margin-top:2px}
     .b8-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:18px auto 4px;}
+    .b8-grid img{width:100%;height:auto;display:block;object-fit:contain;filter:drop-shadow(0 4px 6px rgba(35,41,54,.14))}
     .axbox{background:#F6F8FC;border-radius:18px;padding:15px 16px;margin:16px 0 14px}
     .axrow{display:flex;align-items:center;gap:7px;margin-bottom:8px}
     .axrow .nm{font-weight:700;font-size:11.5px;color:var(--mute);width:74px;}
@@ -92,8 +93,12 @@ const t = {
     .pill button{flex:1;cursor:pointer;font-weight:700;padding:12px 10px;border:2px solid var(--line);background:#fff;border-radius:999px;color:var(--ink2)}
     .pill button[aria-pressed="true"]{background:var(--primary);border-color:var(--primary);color:#fff}
     .hero{text-align:center;}
+    .heroimg{position:relative;padding:6px 0 2px}
+    .heroimg::before{content:"";position:absolute;left:50%;top:52%;transform:translate(-50%,-50%);width:230px;height:230px;border-radius:50%;background:var(--c);opacity:.13;filter:blur(6px)}
+    .heroimg img{position:relative;width:230px;max-width:70%;display:block;margin:0 auto;filter:drop-shadow(0 10px 16px rgba(35,41,54,.2))}
     .code{font-family:var(--disp);font-weight:800;font-size:12px;letter-spacing:.3em;color:var(--c);margin:12px 0 3px}
     .tname{font-family:var(--disp);font-weight:800;font-size:32px;margin:0 0 8px;color:var(--c)}
+    .catch{font-size:14.5px;color:var(--ink2);margin:0 0 4px}
     .bars{margin:24px 0}
     .bar{margin-bottom:14px}
     .bar .lab{display:flex;justify-content:space-between;font-weight:700;font-size:12px;color:var(--mute);margin-bottom:5px}
@@ -104,6 +109,7 @@ const t = {
     .block h3{font-family:var(--disp);font-weight:800;font-size:13.5px;margin:0 0 8px;color:var(--c);}
     .duo{display:flex;gap:10px;margin-top:4px}
     .duo div{flex:1;text-align:center;background:#F7F9FC;border-radius:16px;padding:10px}
+    .duo img{width:100%;max-width:78px;filter:drop-shadow(0 4px 6px rgba(35,41,54,.16))}
     .note{background:#F6F8FC;border-radius:16px;padding:14px 16px;margin-top:18px;text-align:left;font-size:12px;color:var(--ink2)}
     .hidden{display:none}
   </style>
@@ -170,6 +176,7 @@ const t = {
 
   <section id="s-result" class="hidden">
     <div class="sheet hero" id="card">
+      <div class="heroimg"><img id="rImg" alt=""></div>
       <p class="code" id="rCode"></p>
       <h2 class="tname" id="rName"></h2>
       <p class="catch" id="rCatch"></p>
@@ -188,8 +195,8 @@ const t = {
       <div class="block">
         <h3>{t.buddy} & {t.opp}</h3>
         <div class="duo">
-          <div><em id="lblBuddy">{t.buddy}</em><b id="rBuddy"></b></div>
-          <div><em id="lblOpp">{t.opp}</em><b id="rOpp"></b></div>
+          <div><em id="lblBuddy">{t.buddy}</em><img id="rBuddyImg" alt=""><b id="rBuddy"></b></div>
+          <div><em id="lblOpp">{t.opp}</em><img id="rOppImg" alt=""><b id="rOpp"></b></div>
         </div>
       </div>
       <div class="block"><h3>{t.theme}</h3><p id="rTheme"></p></div>
@@ -216,6 +223,10 @@ const t = {
   const currentLang = root.getAttribute('data-lang') || 'ja';
   const IS_EN = currentLang === 'en';
 
+  const IMG = {
+    "hamster": "data:image/webp;base64,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*EOF"
+  };
+
   const AXES = [
     {name: IS_EN ? "Support Function" : "支援機能", a:"P", b:"M"},
     {name: IS_EN ? "Action Style" : "行動様式", a:"S", b:"I"},
@@ -232,13 +243,13 @@ const t = {
   };
 
   const TYPES = {
-    PSB:{col:"#EF5A48",name:IS_EN ? "Swift Hamster" : "てきぱきハムスター",catch:IS_EN ? "Quickly help the person right in front using established methods." : "決まったやり方で、目の前の一人をすぐ助ける", good:IS_EN?"Fast in structured tasks.":"やることが決まっている場面での速さが持ち味。", post:IS_EN?"First aid & logistics.":"応急手当、荷物運び。", blind:IS_EN?"Struggles outside standard procedures.":"手順にないことが起きると足が止まりがち。", step:IS_EN?"Take a first aid course.":"救命講習を受けてみる。", buddy:"MSN", opp:"MIN", theme:IS_EN?"Emergency response procedures":"災害時の応急対応と手順化"},
-    PSN:{col:"#F06A18",name:IS_EN ? "Organized Ant" : "だんどりアリ",catch:IS_EN ? "Smoothly manage overall tasks and resources." : "全体の仕事と物を、きちんと回す", good:IS_EN?"Great at organizing people and resources.":"人と物の流れを俯瞰して整えるのが得意。", post:IS_EN?"Supplies & reception.":"物資、受付、名簿。", blind:IS_EN?"Overlooks subtle personal struggles.":"数字にならない苦しさを見落としがち。", step:IS_EN?"Read shelter manuals.":"避難所運営マニュアルを読み返す。", buddy:"MSB", opp:"MIB", theme:IS_EN?"Shelter management organization":"避難所運営と組織対応"},
-    PIB:{col:"#E8AF1E",name:IS_EN ? "Resourceful Squirrel" : "こうさくリス",catch:IS_EN ? "Solve immediate problems with available items." : "ありもので、目の前の困りごとを解決する", good:IS_EN?"Skilled at improvising solutions.":"道具がなくても何とかしてしまう手先の強さ。", post:IS_EN?"Bedding & toilet setup.":"段ボールベッド、簡易トイレ作り。", blind:IS_EN?"Might bypass safety rules.":"勢いで安全のルールを飛び越えることが.", step:IS_EN?"Try building a cardboard bed.":"段ボールベッドを作ってみる。", buddy:"MIN", opp:"MSN", theme:IS_EN?"Improvisation in disasters":"災害対応における即興"},
-    PIN:{col:"#14875C",name:IS_EN ? "System Beaver" : "しくみビーバー",catch:IS_EN ? "Build new systems that everyone can use." : "みんなが使える新しい仕組みを作る", good:IS_EN?"Good at creating structures and maps.":"仕組み化して分かりやすく整理するのが得意。", post:IS_EN?"Information & signage.":"掲示、情報整理。", blind:IS_EN?"May build overly complex systems.":"現場が実際には使えない仕組みを作ることも。", step:IS_EN?"Create a local hazard map.":"地域の危険マップを作る。", buddy:"MIB", opp:"MSB", theme:IS_EN?"Information organization":"情報整理と創発的組織"},
-    MSB:{col:"#8B44A8",name:IS_EN ? "Watchful Owl" : "みまもりフクロウ",catch:IS_EN ? "Quietly notice and stay by someone's side." : "静かに気づいて、そばにいる", good:IS_EN?"Observant of emotional changes.":"人の様子の小さな変化に気づける観察力。", post:IS_EN?"Patrols & consultation.":"巡回、相談役。", blind:IS_EN?"Hesitates to speak up.":"気づいても言い出せずに抱えがち。", step:IS_EN?"Learn neighbors' names.":"近所の人の名前をおぼえる。", buddy:"PSN", opp:"PIN", theme:IS_EN?"Emotional support":"情緒的支援とケア"},
+    PSB:{col:"#EF5A48",key:"hamster",name:IS_EN ? "Swift Hamster" : "てきぱきハムスター",catch:IS_EN ? "Quickly help the person right in front using established methods." : "決まったやり方で、目の前の一人をすぐ助ける", good:IS_EN?"Fast in structured tasks.":"やることが決まっている場面での速さが持ち味。", post:IS_EN?"First aid & logistics.":"応急手当、荷物運び。", blind:IS_EN?"Struggles outside standard procedures.":"手順にないことが起きると足が止まりがち。", step:IS_EN?"Take a first aid course.":"救命講習を受けてみる。", buddy:"MSN", opp:"MIN", theme:IS_EN?"Emergency response procedures":"災害時の応急対応と手順化"},
+    PSN:{col:"#F06A18",key:"ant",name:IS_EN ? "Organized Ant" : "だんどりアリ",catch:IS_EN ? "Smoothly manage overall tasks and resources." : "全体の仕事と物を、きちんと回す", good:IS_EN?"Great at organizing people and resources.":"人と物の流れを俯瞰して整えるのが得意。", post:IS_EN?"Supplies & reception.":"物資、受付、名簿。", blind:IS_EN?"Overlooks subtle personal struggles.":"数字にならない苦しさを見落としがち。", step:IS_EN?"Read shelter manuals.":"避難所運営マニュアルを読み返す。", buddy:"MSB", opp:"MIB", theme:IS_EN?"Shelter management organization":"避難所運営と組織対応"},
+    PIB:{col:"#E8AF1E",key:"squirrel",name:IS_EN ? "Resourceful Squirrel" : "こうさくリス",catch:IS_EN ? "Solve immediate problems with available items." : "ありもので、目の前の困りごとを解決する", good:IS_EN?"Skilled at improvising solutions.":"道具がなくても何とかしてしまう手先の強さ。", post:IS_EN?"Bedding & toilet setup.":"段ボールベッド、簡易トイレ作り。", blind:IS_EN?"Might bypass safety rules.":"勢いで安全のルールを飛び越えることが.", step:IS_EN?"Try building a cardboard bed.":"段ボールベッドを作ってみる。", buddy:"MIN", opp:"MSN", theme:IS_EN?"Improvisation in disasters":"災害対応における即興"},
+    PIN:{col:"#14875C",key:"beaver",name:IS_EN ? "System Beaver" : "しくみビーバー",catch:IS_EN ? "Build new systems that everyone can use." : "みんなが使える新しい仕組みを作る", good:IS_EN?"Good at creating structures and maps.":"仕組み化して分かりやすく整理するのが得意。", post:IS_EN?"Information & signage.":"掲示、情報整理。", blind:IS_EN?"May build overly complex systems.":"現場が実際には使えない仕組みを作ることも。", step:IS_EN?"Create a local hazard map.":"地域の危険マップを作る。", buddy:"MIB", opp:"MSB", theme:IS_EN?"Information organization":"情報整理と創発的組織"},
+    MSB:{col:"#8B44A8",key:"owl",name:IS_EN ? "Watchful Owl" : "みまもりフクロウ",catch:IS_EN ? "Quietly notice and stay by someone's side." : "静かに気づいて、そばにいる", good:IS_EN?"Observant of emotional changes.":"人の様子の小さな変化に気づける観察力。", post:IS_EN?"Patrols & consultation.":"巡回、相談役。", blind:IS_EN?"Hesitates to speak up.":"気づいても言い出せずに抱えがち。", step:IS_EN?"Learn neighbors' names.":"近所の人の名前をおぼえる。", buddy:"PSN", opp:"PIN", theme:IS_EN?"Emotional support":"情緒的支援とケア"},
     MSN:{col:"#123A96",name:IS_EN ? "Cheerful Penguin" : "なごませペンギン",catch:IS_EN ? "Warm the atmosphere and help everyone settle down." : "場の空気をあたためて、みんなを落ち着かせる", good:IS_EN?"Eases tense atmosphere.":"張りつめた空気をゆるめられる人。", post:IS_EN?"Meeting facilitation.":"運営会議の進行。", blind:IS_EN?"Reluctant to address hard issues.":"深刻な問題を流してしまうことが。", step:IS_EN?"Practice drawing out quiet voices.":"まだ話していない人に声をかける。", buddy:"PSB", opp:"PIB", theme:IS_EN?"Group maintenance":"集団維持機能"},
-    MIB:{col:"#1BBFC6",name:IS_EN ? "Playful Otter" : "あそびカワウソ",catch:IS_EN ? "Lighten the mood with spontaneous sparks of joy." : "その場のひらめきで、心を軽くする", good:IS_EN?"Brings smiles and playfulness.":"笑いや遊びを持ち込める人。", post:IS_EN?"Children's play space.":"子どもの遊び場作り。", blind:IS_EN?"May be too energetic for tired people.":"盛り上げすぎて疲れてしまうことも。", step:IS_EN?"Memorize simple games.":"簡単な遊びを覚えておく。", buddy:"PIN", opp:"PSN", theme:IS_EN?"Children's safe spaces":"子どもの居場所作り"},
+    MIB:{col:"#1BBFC6",key:"otter",name:IS_EN ? "Playful Otter" : "あそびカワウソ",catch:IS_EN ? "Lighten the mood with spontaneous sparks of joy." : "その場のひらめきで、心を軽くする", good:IS_EN?"Brings smiles and playfulness.":"笑いや遊びを持ち込める人。", post:IS_EN?"Children's play space.":"子どもの遊び場作り。", blind:IS_EN?"May be too energetic for tired people.":"盛り上げすぎて疲れてしまうことも。", step:IS_EN?"Memorize simple games.":"簡単な遊びを覚えておく。", buddy:"PIN", opp:"PSN", theme:IS_EN?"Children's safe spaces":"子どもの居場所作り"},
     MIN:{col:"#EE6A9E",name:IS_EN ? "Connecting Dolphin" : "つなぎイルカ",catch:IS_EN ? "Energize everyone through voice and connections." : "声とつながりで、みんなを元気にする", good:IS_EN?"Connects inside and outside groups.":"人と人、地域と外を結ぶのが得意。", post:IS_EN?"External communications.":"外部連携・発信。", blind:IS_EN?"May lose track of internal needs.":"つないだところで手を離してしまいがち。", step:IS_EN?"Build connections outside school.":"外とのつながりを作る。", buddy:"PIB", opp:"PSB", theme:IS_EN?"Social capital":"ソーシャルキャピタル"}
   };
 
@@ -309,6 +320,9 @@ const t = {
   }
 
   function renderIntro() {
+    const order = ["hamster", "ant", "squirrel", "beaver", "owl", "penguin", "otter", "dolphin"];
+    document.getElementById("introGrid").innerHTML = order.map(k => `<img src="${IMG[k]}" alt="">`).join("");
+
     const AXES_DEF = [
       {name: IS_EN ? "Function" : "支援機能", a:"P", b:"M"},
       {name: IS_EN ? "Style" : "行動様式", a:"S", b:"I"},
@@ -359,6 +373,8 @@ const t = {
     result = calc();
     const tData = TYPES[result.code], c = result.c;
     document.getElementById("s-result").style.setProperty("--c", tData.col);
+    document.getElementById("rImg").src = IMG[tData.key];
+    document.getElementById("rImg").alt = tData.name;
     document.getElementById("rCode").textContent = result.code.split("").join(" ・ ");
     document.getElementById("rName").textContent = tData.name;
     document.getElementById("rCatch").textContent = tData.catch;
@@ -381,7 +397,9 @@ const t = {
     document.getElementById("rStep").textContent = tData.step;
     
     const bd = TYPES[tData.buddy], op = TYPES[tData.opp];
+    document.getElementById("rBuddyImg").src = IMG[bd.key];
     document.getElementById("rBuddy").textContent = bd.name;
+    document.getElementById("rOppImg").src = IMG[op.key];
     document.getElementById("rOpp").textContent = op.name;
     document.getElementById("rTheme").textContent = tData.theme;
 
