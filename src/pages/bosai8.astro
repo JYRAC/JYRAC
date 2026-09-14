@@ -1,11 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { IMG } from '../imagesData.js';
 
 // URLから言語パラメータを取得 (例: /bosai8?lang=en)
 const requestUrl = Astro.request.url.replace(/^http:/, 'https:');
 const url = new URL(requestUrl);
 const currentLang = url.searchParams.get("lang") === "en" ? "en" : "ja";
+
+// 安全な画像プレースホルダー（文字切れ・ビルドエラー防止）[cite: 2]
+const IMG = {
+  hamster: "https://placehold.jp/150x150.png?text=Hamster",
+  ant: "https://placehold.jp/150x150.png?text=Ant",
+  squirrel: "https://placehold.jp/150x150.png?text=Squirrel",
+  beaver: "https://placehold.jp/150x150.png?text=Beaver",
+  owl: "https://placehold.jp/150x150.png?text=Owl",
+  penguin: "https://placehold.jp/150x150.png?text=Penguin",
+  otter: "https://placehold.jp/150x150.png?text=Otter",
+  dolphin: "https://placehold.jp/150x150.png?text=Dolphin"
+};
 
 // 多言語テキスト辞書
 const t = {
