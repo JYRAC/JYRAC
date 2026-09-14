@@ -343,6 +343,7 @@ const t = {
     var root = document.getElementById('b8-root');
     if (!root) return;
     var IS_EN = currentLang === 'en';
+    const GAS_ENDPOINT = "https://script.google.com/macros/s/AKfycbwmzKCxc363Di8WzGTIccpIICGfU26YNufoJ5h0SwjOlgbPN-zXgiEeorvcFQyRXxBO/exec";
 
     var TYPES = {
       PSB:{col:"#EF5A48",key:"hamster",name:IS_EN ? "Swift Hamster" : "てきぱきハムスター",catch:IS_EN ? "Quickly help the person right in front using established methods." : "決まったやり方で、目の前の一人をすぐ助ける",
@@ -460,8 +461,7 @@ const t = {
       {ax:"B",scene:IS_EN?"Local drill":"地域の防災訓練",text:IS_EN?"Attending local disaster drill surrounded by strangers.":"地域の防災訓練に参加した。まわりは知らない人ばかりだ。",
       o:[{t:IS_EN?"Talk closely with one person next to you to learn names":"隣にいた一人と、しっかり話して顔と名前をおぼえる",p:"B"},{t:IS_EN?"Exchange brief greetings with as many people as possible":"多くの人と短く挨拶を交わす",p:"N"}]},
       {ax:"B",scene:IS_EN?"Surplus supplies":"物資が余った",text:IS_EN?"Some relief supplies are left over after general distribution.":"配り終えたあと、支援物資が少しだけ余った。",
-      o:[{t:IS_EN?"Give to one in need":"必要な人に渡す",p:"B"},{t:IS_EN?"Share widely":"多くの人に分ける",p:"N"}]},
-      {ax:"B",scene:IS_EN?"SNS":"発信",text:IS_EN?"Updating shelter on social media.":"SNSで伝える。",o:[{t:IS_EN?"One story":"一人の話を書く",p:"B"},{t:IS_EN?"Overall status":"全体の状態を出す",p:"N"}]}
+      o:[{t:IS_EN?"Give to one in need":"必要な人に渡す",p:"B"},{t:IS_EN?"Share widely":"多くの人に分ける",p:"N"}]}
     ];
 
     (function(){
@@ -584,8 +584,33 @@ const t = {
         <div class="track"><span style="width:${l*20}%"></span><span class="r" style="width:${r*20}%"></span></div></div>`;
     }
 
+    // スプレッドシート（GAS）へデータを自動送信する関数
+    function sendDataToSheet(resData) {
+      const payload = {
+        timestamp: new Date().toISOString(),
+        mail: document.getElementById("mail").value.trim(),
+        age: document.getElementById("age").value,
+        sex: sex,
+        code: resData.code,
+        typeName: TYPES[resData.code].name,
+        scores: resData.c,
+        answerTexts: answers.map(a => a.p)
+      };
+
+      fetch(GAS_ENDPOINT, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      }).catch(err => console.error("Sheet send error:", err));
+    }
+
     function renderResult(){
       result=calc();
+      
+      // 結果表示時にGASへデータを送信
+      sendDataToSheet(result);
+
       const tData=TYPES[result.code], c=result.c;
       document.getElementById("s-result").style.setProperty("--c", tData.col);
       if(tData.key && IMG[tData.key]) {
