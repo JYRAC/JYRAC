@@ -6,16 +6,16 @@ const requestUrl = Astro.request.url.replace(/^http:/, 'https:');
 const url = new URL(requestUrl);
 const currentLang = url.searchParams.get("lang") === "en" ? "en" : "ja";
 
-// 安全な画像プレースホルダー（文字切れ・ビルドエラー防止）[cite: 2]
+// ローカルの public/images/ フォルダからイラストを読み込む設定
 const IMG = {
-  hamster: "https://placehold.jp/150x150.png?text=Hamster",
-  ant: "https://placehold.jp/150x150.png?text=Ant",
-  squirrel: "https://placehold.jp/150x150.png?text=Squirrel",
-  beaver: "https://placehold.jp/150x150.png?text=Beaver",
-  owl: "https://placehold.jp/150x150.png?text=Owl",
-  penguin: "https://placehold.jp/150x150.png?text=Penguin",
-  otter: "https://placehold.jp/150x150.png?text=Otter",
-  dolphin: "https://placehold.jp/150x150.png?text=Dolphin"
+  hamster: "/images/hamster.webp",
+  ant: "/images/ant.webp",
+  squirrel: "/images/squirrel.webp",
+  beaver: "/images/beaver.webp",
+  owl: "/images/owl.webp",
+  penguin: "/images/penguin.webp",
+  otter: "/images/otter.webp",
+  dolphin: "/images/dolphin.webp"
 };
 
 // 多言語テキスト辞書
