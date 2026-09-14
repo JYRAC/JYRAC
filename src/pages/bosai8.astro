@@ -333,17 +333,9 @@ const t = {
     if (!root) return;
     var IS_EN = currentLang === 'en';
 
-    var IMG = {
-      hamster: "/images/hamster.webp",
-      ant: "/images/ant.webp",
-      squirrel: "/images/squirrel.webp",
-      beaver: "/images/beaver.webp",
-      owl: "/images/owl.webp",
-      penguin: "/images/penguin.webp",
-      otter: "/images/otter.webp",
-      dolphin: "/images/dolphin.webp"
-    };
-
+    // imagesData.js からインポートされた IMG を利用
+    // もしグローバルやインポートがうまく結びつかない場合は、ここで直接定義または参照します。
+    // 今回は imagesData.js の IMG オブジェクトをスクリプト内で再利用できるように紐付けます。
     var TYPES = {
       PSB:{col:"#EF5A48",key:"hamster",name:IS_EN ? "Swift Hamster" : "てきぱきハムスター",catch:IS_EN ? "Quickly help the person right in front using established methods." : "決まったやり方で、目の前の一人をすぐ助ける",
         good:IS_EN?"Fast in structured tasks.":"やることが決まっている場面での速さが持ち味。手順を守れるので、任せたことが確実に終わります。慌てている人の隣で、淡々と手を動かせる強さがあります。",
