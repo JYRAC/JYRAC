@@ -26,6 +26,7 @@ const t = translations[currentLang];
         </p>
         
         <div class="project-grid">
+            <!-- 1. NSF PROJECTs -->
             <div class="project-card">
                 <h4>
                     <span class="project-badge">
@@ -43,6 +44,7 @@ const t = translations[currentLang];
                 </a>
             </div>
 
+            <!-- 2. 全国生徒会防災サミット -->
             <div class="project-card orange-card">
                 <h4>
                     <span class="project-badge summit">
@@ -56,6 +58,24 @@ const t = translations[currentLang];
                         : 'JYRACが主催する最重要サミットです。東日本大震災や能登半島地震などの教訓の継承、地域や世代を超えた防災ディスカッションを行い、若者発の「次世代防災提言」を発信しています。'}
                 </p>
                 <a href="https://summit.jyrac.stki.org" class="btn-link btn-summit" target="_blank" rel="noopener noreferrer">
+                    {currentLang === 'en' ? 'Official Site ➔' : '公式サイト ➔'}
+                </a>
+            </div>
+
+            <!-- 3. 模擬防災国連 (MWCDRR) -->
+            <div class="project-card navy-card">
+                <h4>
+                    <span class="project-badge mwcdrr">
+                        {currentLang === 'en' ? 'Hosted Event' : '主催事業'}
+                    </span>
+                    {currentLang === 'en' ? 'Model World Conference on Disaster Risk Reduction (MWCDRR)' : '模擬防災国連（MWCDRR）'}
+                </h4>
+                <p>
+                    {currentLang === 'en'
+                        ? 'Modeled after the UN World Conference on Disaster Risk Reduction, participants represent various nations to discuss, negotiate, and formulate international disaster policies. This program empowers youth to tackle global disaster risk reduction from international perspectives.'
+                        : '国連防災世界会議をモデルとし、参加者が各国代表になりきって国際的な防災・減災政策を議論・交渉するプログラムです。「模擬国連」の仕組みを通じて、若者が国際的・多角的な視野から防災に向き合う場を提供します。'}
+                </p>
+                <a href="https://mwcdrr.jyrac.stki.org/" class="btn-link btn-mwcdrr" target="_blank" rel="noopener noreferrer">
                     {currentLang === 'en' ? 'Official Site ➔' : '公式サイト ➔'}
                 </a>
             </div>
@@ -94,7 +114,7 @@ const t = translations[currentLang];
   }
   @media (min-width: 768px) {
     .project-grid {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     }
   }
 
@@ -118,6 +138,9 @@ const t = translations[currentLang];
   }
   .project-card.orange-card {
     border-color: rgba(230, 126, 34, 0.2);
+  }
+  .project-card.navy-card {
+    border-color: rgba(0, 43, 84, 0.2);
   }
 
   .project-card h4 {
@@ -144,6 +167,9 @@ const t = translations[currentLang];
   .project-badge.summit {
     background: #e67e22;
   }
+  .project-badge.mwcdrr {
+    background: #005a9c;
+  }
 
   .project-card p {
     margin: 0;
@@ -153,7 +179,7 @@ const t = translations[currentLang];
     flex-grow: 1;
   }
 
-  /* 💡 本来のきれいで立体的なボタンリンクデザインを完全に復元 */
+  /* 💡 ボタンリンクデザイン */
   .btn-link {
     display: inline-flex;
     align-items: center;
@@ -181,5 +207,13 @@ const t = translations[currentLang];
   }
   .btn-summit:active {
     box-shadow: 0 2px 6px rgba(230, 126, 34, 0.2);
+  }
+
+  .btn-mwcdrr {
+    background: linear-gradient(135deg, #005a9c 0%, #1a82d2 100%);
+    box-shadow: 0 4px 14px rgba(0, 90, 156, 0.25);
+  }
+  .btn-mwcdrr:active {
+    box-shadow: 0 2px 6px rgba(0, 90, 156, 0.2);
   }
 </style>
