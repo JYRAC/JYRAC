@@ -6,240 +6,164 @@ const currentLang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
 const langParam = currentLang === 'en' ? '?lang=en' : '';
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-// 募集ポジション・部門一覧（事業説明資料の組織体制に基づく）[cite: 1]
-const departments = [
+// 現在募集中のポジション一覧データ
+const jobOpenings = [
   {
-    name: "広報局",
-    enName: "Public Relations Bureau",
-    badge: "デザイン・発信",
-    summary: "公式SNS運用（Instagram・X・note）、Webサイト更新、イベントチラシ・告知画像制作、プレスリリース配信など、JYRACの活動と想いを社会へ届けるクリエイティブ部門です。",
-    details: ["SNS企画・運用・投稿", "Canva等を用いたデザイン制作", "取材・活動レポート執筆"]
+    id: "pr",
+    department: "広報局",
+    title: "広報スタッフ（SNS運用・デザイン・Web記事執筆）",
+    badge: "募集中",
+    badgeType: "open",
+    target: "中学生 / 高校生 / 大学生 / 若手社会人",
+    location: "完全オンライン（全国どこからでも参加可能）",
+    timeCommitment: "週1〜3時間程度（試験・学業最優先）",
+    summary: "公式Instagram・X・noteの企画運用や、Canvaを用いた画像制作、Web記事・プレスリリース作成などを通じて、若者の防災・減災アクションを社会へ届けるポジションです。",
+    detailLink: `${baseUrl}/recruitment/pr${langParam}`,
+    isFeatured: true
   },
   {
-    name: "防災事業本部",
-    enName: "Disaster Prevention Division",
-    badge: "サミット・政策提言",
-    summary: "内閣府共催「全国生徒会防災サミット」の企画・運営や、避難所環境改善（守寝プロジェクト）、ダンボールベッド体験、地域ハザードマップ企画などを推進します。",
-    details: ["サミット当日運営・生徒交流企画", "避難所環境改善調査・実証", "政策提言書の起草支援"]
+    id: "disaster-prevention",
+    department: "防災事業本部",
+    title: "生徒会防災サミット 企画運営・政策提言サポート",
+    badge: "募集中",
+    badgeType: "open",
+    target: "高校生 / 大学生",
+    location: "オンライン ＋ 現地（サミット本番・避難所体験等）",
+    timeCommitment: "週2〜4時間程度",
+    summary: "内閣府共催「全国生徒会防災サミット」のセッション設計や参加校サポート、避難所環境改善（守寝プロジェクト）、国や行政への政策提言ドラフト作成に関わります。",
+    detailLink: "https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form",
+    isFeatured: false
   },
   {
-    name: "復興事業本部",
-    enName: "Disaster Recovery Division",
-    badge: "能登現地・食文化継承",
-    summary: "能登半島現地でのボランティア活動、仮設住宅での住民傾聴・交流会、「能登うまいもん再発見プロジェクト」などの継続的な復興支援プログラムを担います。",
-    details: ["現地ボランティア・視察企画", "食文化継承・物産展イベント運営", "被災地の現状調査・中長期発信"]
+    id: "recovery",
+    department: "復興事業本部",
+    title: "能登現地支援・食文化継承プロジェクトメンバー",
+    badge: "募集中",
+    badgeType: "open",
+    target: "高校生 / 大学生 / 若手社会人",
+    location: "オンライン ＋ 能登現地（能登視察・ボランティア）",
+    timeCommitment: "週1〜2時間程度 ＋ 現地遠征（任意）",
+    summary: "能登半島での家屋片付けや炊き出し支援、仮設住宅での交流会、郷土食の魅力を東京等で届ける「能登うまいもん再発見プロジェクト」などの現地・都市連携企画を担当します。",
+    detailLink: "https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form",
+    isFeatured: false
   },
   {
-    name: "地域事業本部 / 募金事業本部",
-    enName: "Community & Fundraising Division",
-    badge: "街頭募金・地域連携",
-    summary: "全国各地での街頭支援募金活動の企画・申請・実施や、自治体・地域の防災フェス等への出展を通じて、住民と若者が平時からつながる共助の場を創出します。",
-    details: ["街頭募金活動の現場運営", "地域防災イベント出展・ブース企画", "募金使途の管理・透明性ある報告"]
+    id: "fundraising",
+    department: "地域事業本部 / 募金事業本部",
+    title: "街頭支援募金・地域防災イベント企画スタッフ",
+    badge: "募集中",
+    badgeType: "open",
+    target: "中学生 / 高校生 / 大学生",
+    location: "各地域（街頭募金実施地）およびオンライン",
+    timeCommitment: "月1〜2回（土日活動中心）",
+    summary: "被災地支援のための街頭募金活動（累計59回実施・総額260万円超）の現地リーダーや、自治体・地域の防災イベント出展ブースの企画運営を担います。",
+    detailLink: "https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form",
+    isFeatured: false
   },
   {
-    name: "事務局・人事局・外務局",
-    enName: "Corporate & HR Bureau",
-    badge: "組織運営・渉外",
-    summary: "法人の総務・会計・情報管理、全国のメンバー採用・オンボーディング、行政機関・学校・協賛企業等との渉外連携を担当する組織の基盤チームです。",
-    details: ["新メンバーの面談・活動案内", "法務・会計・ITインフラ管理", "他団体・行政・企業との連携窓口"]
-  }
-];
-
-// 参加メリット（できること・魅力）
-const merits = [
-  {
-    title: "若者目線で社会の防災スタンダードを変える",
-    desc: "受け身の「お勉強の防災」ではなく、自ら企画・行動して同世代の意識を高め、行政や地域へ直接提言を届ける実感を得られます。"
-  },
-  {
-    title: "将来に活きる実践的なチーム運営・スキル習得",
-    desc: "SNS運用、デザイン、プレスリリース執筆、イベント企画、自治体との折衝など、学校では得られない実務経験が身につきます。"
-  },
-  {
-    title: "全国470名超の志高い仲間・同世代とのつながり",
-    desc: "全国の中学・高校・大学生がオンライン・オフライン問わず参加しており、地域や学校の枠を越えた一生モノのネットワークが広がります。[cite: 1]"
-  }
-];
-
-// 応募フロー
-const steps = [
-  {
-    step: "STEP 01",
-    title: "エントリーフォーム送信",
-    desc: "下記Googleフォームより、基本情報や興味のある部門・活動動機を入力して送信してください。"
-  },
-  {
-    step: "STEP 02",
-    title: "オンライン面談・説明会",
-    desc: "DiscordまたはGoogle Meetにて、活動内容の紹介や参加頻度の相談、双方の質疑応答を行います。"
-  },
-  {
-    step: "STEP 03",
-    title: "Discordチームへ合流・活動開始",
-    desc: "チームの連絡ツール（Discord）へ招待。先輩メンバーのサポートのもと、無理のないペースで活動をスタートできます。"
+    id: "corporate",
+    department: "事務局 / 人事局 / 外務局",
+    title: "法人運営・メンバー採用オンボーディング・渉外補佐",
+    badge: "若干名",
+    badgeType: "limited",
+    target: "大学生 / 若手社会人",
+    location: "完全オンライン",
+    timeCommitment: "週2〜3時間程度",
+    summary: "全国470名を超えるメンバーの参加窓口、ITツール運用、総務・法務・会計の補佐、他団体や自治体・協賛企業との連携連絡窓口などを担当します。",
+    detailLink: "https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form",
+    isFeatured: false
   }
 ];
 ---
 
 <Layout 
-  title={currentLang === 'en' ? 'Join Us | JYRAC Recruitment' : 'メンバー募集 | 日本若者防災復興協会'} 
+  title={currentLang === 'en' ? 'Recruitment & Open Roles | JYRAC' : 'メンバー募集一覧 | 日本若者防災復興協会'} 
   currentTab="recruitment"
 >
-  <div class="recruit-container">
+  <div class="recruit-list-container">
 
     <!-- ページ見出し -->
-    <header class="recruit-header">
-      <span class="sub-label">JOIN OUR MOVEMENT</span>
-      <h1 class="main-heading">
-        {currentLang === 'en' ? 'Youth Member Recruitment' : 'メンバー募集要項'}
-      </h1>
+    <header class="page-header">
+      <span class="sub-label">JOIN JYRAC</span>
+      <h1 class="main-heading">メンバー募集一覧</h1>
       <p class="desc-text">
-        {currentLang === 'en'
-          ? 'JYRAC is widely recruiting junior high, high school, and university students across Japan to lead disaster resilience and recovery initiatives.'
-          : '特定非営利活動法人日本若者防災復興協会（JYRAC）では、全国の中学生・高校生・大学生を中心とした若者メンバーを広く募集しています。'}
+        全国の中学生・高校生・大学生・若手社会人を対象に、現在募集中のポジション一覧です。<br />
+        完全オンライン参加から現地フィールドワークまで、自分のライフスタイルに合わせて関わり方を選べます。
       </p>
     </header>
 
-    <!-- メインメッセージカード -->
-    <section class="lead-banner">
-      <div class="lead-inner">
-        <span class="lead-tag">WHO WE ARE LOOKING FOR</span>
-        <h2 class="lead-title">
-          「守られる側」から、「未来を動かす側」へ。
-        </h2>
-        <p class="lead-text">
-          災害大国・日本において、次に日常を守るのは私たち若い世代です。専門知識や特別な経験は一切必要ありません。「誰かの役に立ちたい」「同世代と何か大きな挑戦をしてみたい」「デザインや発信を通じて被災地を応援したい」という想いがあれば、全国どこからでも参加できます。
-        </p>
+    <!-- 参加の流れクイックガイド -->
+    <div class="quick-guide-bar">
+      <div class="guide-item">
+        <span class="step-num">01</span>
+        <span>募集要項を選ぶ</span>
       </div>
-    </section>
-
-    <!-- 参加するとできること・魅力 -->
-    <section class="section-card">
-      <div class="section-header-left">
-        <span class="sub-label">WHY JOIN JYRAC</span>
-        <h2 class="card-heading">参加する魅力・得られる経験</h2>
+      <span class="guide-arrow">➔</span>
+      <div class="guide-item">
+        <span class="step-num">02</span>
+        <span>Googleフォームからエントリー</span>
       </div>
-
-      <div class="merits-grid">
-        {merits.map(m => (
-          <div class="merit-box">
-            <h3 class="merit-title">{m.title}</h3>
-            <p class="merit-desc">{m.desc}</p>
-          </div>
-        ))}
+      <span class="guide-arrow">➔</span>
+      <div class="guide-item">
+        <span class="step-num">03</span>
+        <span>オンライン面談・Discord合流</span>
       </div>
-    </section>
+    </div>
 
-    <!-- 募集部門・プロジェクト一覧 -->
-    <section class="section-card">
-      <div class="section-header-left">
-        <span class="sub-label">DEPARTMENTS & ROLES</span>
-        <h2 class="card-heading">募集部門・活動領域</h2>
-        <p class="desc-text" style="margin-top: 4px;">ご自身の興味・得意分野・活動可能ペースに合わせて選択・複数兼務が可能です。</p>
-      </div>
-
-      <div class="dept-grid">
-        {departments.map(d => (
-          <div class="dept-card">
-            <div class="dept-top">
-              <span class="dept-badge">{d.badge}</span>
-              <span class="dept-en">{d.enName}</span>
+    <!-- 募集一覧リスト -->
+    <div class="job-list-stack">
+      {jobOpenings.map(job => (
+        <article class={`job-card ${job.isFeatured ? 'job-card-featured' : ''}`}>
+          
+          <div class="job-card-main">
+            <div class="job-top-row">
+              <span class="dept-tag">{job.department}</span>
+              <span class={`status-pill pill-${job.badgeType}`}>{job.badge}</span>
             </div>
-            <h3 class="dept-name">{d.name}</h3>
-            <p class="dept-summary">{d.summary}</p>
-            <div class="dept-details-box">
-              <span class="details-label">主な業務・プロジェクト：</span>
-              <ul class="details-list">
-                {d.details.map(item => (
-                  <li>・{item}</li>
-                ))}
-              </ul>
+
+            <h2 class="job-title">
+              <a href={job.detailLink}>{job.title}</a>
+            </h2>
+
+            <p class="job-summary">{job.summary}</p>
+
+            <div class="job-spec-chips">
+              <span class="spec-chip">👤 対象：{job.target}</span>
+              <span class="spec-chip">📍 拠点：{job.location}</span>
+              <span class="spec-chip">⏱ 目安：{job.timeCommitment}</span>
             </div>
           </div>
-        ))}
-      </div>
-    </section>
 
-    <!-- 応募条件 ＆ 活動頻度スペック表 -->
-    <section class="section-card">
-      <div class="section-header-left">
-        <span class="sub-label">REQUIREMENTS & ACTIVITY STYLE</span>
-        <h2 class="card-heading">募集要件・活動スタイル</h2>
-      </div>
-
-      <table class="info-table">
-        <tbody>
-          <tr>
-            <th>応募対象</th>
-            <td>全国の中学生・高校生・高専生・専門学校生・大学生・大学院生・若手社会人（30歳未満）</td>
-          </tr>
-          <tr>
-            <th>活動場所・拠点</th>
-            <td>
-              <strong>完全オンライン対応（全国どこからでも参加可能）</strong><br />
-              ※被災地ボランティア、街頭募金、サミット本番等は現地での参加機会もあります（交通費補助等の制度あり・任意参加）。
-            </td>
-          </tr>
-          <tr>
-            <th>活動頻度・目安</th>
-            <td>
-              <strong>週1〜3時間程度から調整可能</strong><br />
-              学業・部活動・受験・試験期間を最優先していただけます。自分のペースに合わせて活動量を調整できる柔軟なシフト制・タスク制を採用しています。
-            </td>
-          </tr>
-          <tr>
-            <th>使用ツール</th>
-            <td>
-              連絡：<strong>Discord</strong>（導入サポートあり）<br />
-              ミーティング：<strong>Zoom / Google Meet</strong><br />
-              作業：Google Workspace、Canva 等
-            </td>
-          </tr>
-          <tr>
-            <th>必須条件</th>
-            <td>
-              ・基本的な報連相（報告・連絡・相談）ができる方<br />
-              ・Discordを導入・使用できる環境を用意できる方<br />
-              ・NPO法人日本若者防災復興協会の目的に賛同し、メンバー登録を行っていただける方
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
-    <!-- 応募の流れ -->
-    <section class="section-card">
-      <div class="section-header-left">
-        <span class="sub-label">APPLICATION PROCESS</span>
-        <h2 class="card-heading">参加までの流れ</h2>
-      </div>
-
-      <div class="steps-container">
-        {steps.map(st => (
-          <div class="step-card">
-            <span class="step-badge">{st.step}</span>
-            <h3 class="step-title">{st.title}</h3>
-            <p class="step-desc">{st.desc}</p>
+          <div class="job-card-action">
+            {job.id === 'pr' ? (
+              <a href={job.detailLink} class="btn-job-detail">
+                詳細・募集要項を見る ➔
+              </a>
+            ) : (
+              <a href={job.detailLink} target="_blank" rel="noopener noreferrer" class="btn-job-detail">
+                応募フォームを開く ↗
+              </a>
+            )}
           </div>
-        ))}
-      </div>
-    </section>
 
-    <!-- エントリー CTA -->
-    <section class="cta-banner">
-      <span class="cta-sub">READY TO TAKE ACTION?</span>
-      <h2 class="cta-heading">全国の仲間があなたを待っています</h2>
-      <p class="cta-desc">
-        まずはエントリーフォームよりお気軽にご応募ください。質問やご相談のみのお問い合わせも歓迎しています。
+        </article>
+      ))}
+    </div>
+
+    <!-- 全ポジション共通の案内 -->
+    <section class="common-notice-card">
+      <h3 class="notice-heading">どの部門に応募するか迷っている方へ</h3>
+      <p class="notice-desc">
+        「何かやってみたいけれど、どのポジションが自分に合うかわからない」「活動頻度の相談をしたい」という場合も歓迎しています。エントリーフォームにて「部門未定・相談希望」を選択して送信していただければ、オンライン面談にて適性に合ったチームをご案内いたします。
       </p>
-      <div class="cta-actions">
+      <div class="notice-btn-row">
         <a 
           href="https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form" 
           target="_blank" 
           rel="noopener noreferrer" 
-          class="btn-cta-primary"
+          class="btn-general-apply"
         >
-          応募・お問い合わせフォームを開く [Google Forms] ↗
+          総合エントリー / 相談フォームを開く ↗
         </a>
       </div>
     </section>
@@ -253,16 +177,16 @@ const steps = [
 </Layout>
 
 <style>
-  .recruit-container {
-    max-width: 1060px;
+  .recruit-list-container {
+    max-width: 1000px;
     margin: 0 auto;
     padding: 48px 16px;
     display: flex;
     flex-direction: column;
-    gap: 48px;
+    gap: 40px;
   }
 
-  .recruit-header {
+  .page-header {
     text-align: center;
   }
   .sub-label {
@@ -281,258 +205,205 @@ const steps = [
     line-height: 1.3;
   }
   .desc-text {
-    font-size: 13px;
+    font-size: 13.5px;
     color: var(--text-muted);
-    margin-top: 6px;
+    margin-top: 8px;
+    line-height: 1.7;
   }
 
-  /* リードバナー */
-  .lead-banner {
-    background: linear-gradient(135deg, var(--jyrac-navy) 0%, #004d61 100%);
-    border-radius: 20px;
-    padding: 36px 32px;
-    color: #ffffff;
+  /* クイックガイドバー */
+  .quick-guide-bar {
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--jyrac-navy);
   }
-  .lead-inner {
-    max-width: 800px;
+  .guide-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
-  .lead-tag {
+  .step-num {
     font-size: 10px;
     font-family: ui-monospace, monospace;
-    font-weight: 800;
-    background: rgba(255, 255, 255, 0.15);
-    padding: 3px 10px;
-    border-radius: 12px;
-    display: inline-block;
-    margin-bottom: 12px;
-  }
-  .lead-title {
-    font-size: 24px;
     font-weight: 900;
-    line-height: 1.35;
-    margin-bottom: 12px;
+    background: var(--jyrac-navy);
+    color: #ffffff;
+    padding: 2px 7px;
+    border-radius: 6px;
   }
-  .lead-text {
-    font-size: 13.5px;
-    color: #e2e8f0;
-    line-height: 1.8;
+  .guide-arrow {
+    color: var(--jyrac-teal);
+    font-size: 12px;
   }
 
-  /* セクションカード */
-  .section-card {
-    background: #ffffff;
-    border: 1px solid var(--border-color);
-    border-radius: 20px;
-    padding: 32px;
+  /* 募集カードスタック */
+  .job-list-stack {
     display: flex;
     flex-direction: column;
     gap: 20px;
   }
-  .section-header-left {
-    border-bottom: 1.5px solid var(--border-color);
-    padding-bottom: 12px;
-  }
-  .card-heading {
-    font-size: 20px;
-    font-weight: 900;
-    color: var(--jyrac-navy);
-  }
 
-  /* メリットグリッド */
-  .merits-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 16px;
-  }
-  .merit-box {
-    background: var(--bg-light);
+  .job-card {
+    background: #ffffff;
     border: 1px solid var(--border-color);
-    border-radius: 14px;
-    padding: 20px;
+    border-radius: 18px;
+    padding: 28px;
     display: flex;
-    flex-direction: column;
-    gap: 8px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
   }
-  .merit-title {
-    font-size: 15px;
-    font-weight: 800;
-    color: var(--jyrac-navy);
-    line-height: 1.45;
+  .job-card:hover {
+    border-color: var(--jyrac-teal);
+    box-shadow: 0 4px 16px rgba(0, 43, 84, 0.05);
   }
-  .merit-desc {
-    font-size: 12.5px;
-    color: var(--text-muted);
-    line-height: 1.7;
+  .job-card-featured {
+    border-left: 5px solid var(--jyrac-teal);
+    background: linear-gradient(180deg, #ffffff 0%, #fafcfc 100%);
   }
 
-  /* 部門グリッド */
-  .dept-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 18px;
-  }
-  .dept-card {
-    background: var(--bg-light);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 24px;
+  .job-card-main {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     gap: 10px;
   }
-  .dept-top {
+
+  .job-top-row {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 10px;
   }
-  .dept-badge {
+  .dept-tag {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+    font-family: ui-monospace, monospace;
+  }
+  .status-pill {
     font-size: 10px;
     font-weight: 800;
-    background: #e0f2fe;
-    color: #0369a1;
-    padding: 3px 8px;
+    padding: 2px 8px;
     border-radius: 6px;
   }
-  .dept-en {
-    font-size: 10px;
-    font-family: ui-monospace, monospace;
-    color: #94a3b8;
-    font-weight: 700;
+  .pill-open {
+    background: #e0f2fe;
+    color: #0284c7;
   }
-  .dept-name {
+  .pill-limited {
+    background: #fef3c7;
+    color: #d97706;
+  }
+
+  .job-title {
     font-size: 18px;
     font-weight: 900;
     color: var(--jyrac-navy);
+    line-height: 1.4;
+    margin: 0;
   }
-  .dept-summary {
-    font-size: 12.5px;
-    color: var(--text-main);
-    line-height: 1.65;
+  .job-title a {
+    color: inherit;
+    text-decoration: none;
   }
-  .dept-details-box {
-    margin-top: 8px;
-    padding-top: 10px;
-    border-top: 1px solid var(--border-color);
-  }
-  .details-label {
-    font-size: 11px;
-    font-weight: 800;
-    color: var(--jyrac-teal-dark);
-    display: block;
-    margin-bottom: 4px;
-  }
-  .details-list {
-    list-style: none;
-    font-size: 12px;
-    color: var(--text-muted);
-    line-height: 1.6;
+  .job-title a:hover {
+    color: var(--jyrac-teal);
   }
 
-  /* テーブル */
-  .info-table {
-    width: 100%;
-    border-collapse: collapse;
+  .job-summary {
     font-size: 13px;
-    margin-top: 6px;
-  }
-  .info-table th {
-    width: 26%;
-    background-color: var(--bg-light);
-    color: var(--jyrac-navy);
-    font-weight: 800;
-    text-align: left;
-    padding: 14px 18px;
-    border: 1px solid var(--border-color);
-    vertical-align: top;
-  }
-  .info-table td {
-    padding: 14px 18px;
-    border: 1px solid var(--border-color);
-    color: var(--text-main);
-    line-height: 1.7;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin: 0;
   }
 
-  /* ステップ */
-  .steps-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 16px;
+  .job-spec-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 4px;
   }
-  .step-card {
+  .spec-chip {
+    font-size: 11px;
+    color: var(--text-main);
     background: var(--bg-light);
     border: 1px solid var(--border-color);
-    border-radius: 14px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .step-badge {
-    font-size: 10px;
-    font-family: ui-monospace, monospace;
-    font-weight: 800;
-    background: var(--jyrac-teal);
-    color: #ffffff;
-    padding: 2px 8px;
+    padding: 3px 10px;
     border-radius: 6px;
-    width: fit-content;
-  }
-  .step-title {
-    font-size: 15px;
-    font-weight: 800;
-    color: var(--jyrac-navy);
-  }
-  .step-desc {
-    font-size: 12px;
-    color: var(--text-muted);
-    line-height: 1.6;
+    font-weight: 600;
   }
 
-  /* CTAバナー */
-  .cta-banner {
-    background: linear-gradient(135deg, var(--jyrac-navy) 0%, #002b54 100%);
-    border-radius: 20px;
-    padding: 48px 24px;
+  .job-card-action {
+    flex-shrink: 0;
+  }
+  .btn-job-detail {
+    display: inline-block;
+    background: var(--jyrac-navy);
+    color: #ffffff !important;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 12px 24px;
+    border-radius: 10px;
+    white-space: nowrap;
+    transition: background-color 0.2s, transform 0.2s;
+  }
+  .btn-job-detail:hover {
+    background: var(--jyrac-teal);
+    transform: translateY(-2px);
+  }
+
+  /* 迷っている方向けカード */
+  .common-notice-card {
+    background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 100%);
+    border: 1px solid #ccfbf1;
+    border-radius: 18px;
+    padding: 32px;
     text-align: center;
-    color: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
   }
-  .cta-sub {
-    font-size: 10px;
-    font-family: ui-monospace, monospace;
+  .notice-heading {
+    font-size: 18px;
     font-weight: 800;
-    color: #5eead4;
-    letter-spacing: 0.08em;
+    color: var(--jyrac-navy);
+    margin: 0;
   }
-  .cta-heading {
-    font-size: 24px;
-    font-weight: 900;
-  }
-  .cta-desc {
-    max-width: 600px;
+  .notice-desc {
+    max-width: 680px;
     font-size: 13px;
-    color: #cbd5e1;
+    color: var(--text-main);
     line-height: 1.7;
+    margin: 0;
   }
-  .cta-actions {
+  .notice-btn-row {
     margin-top: 8px;
   }
-  .btn-cta-primary {
+  .btn-general-apply {
     display: inline-block;
     background: var(--jyrac-teal);
     color: #ffffff;
-    padding: 14px 32px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 800;
     text-decoration: none;
-    box-shadow: 0 4px 14px rgba(0, 154, 166, 0.3);
-    transition: transform 0.2s, background-color 0.2s;
+    font-size: 13.5px;
+    font-weight: 800;
+    padding: 12px 28px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 154, 166, 0.25);
+    transition: background-color 0.2s, transform 0.2s;
   }
-  .btn-cta-primary:hover {
+  .btn-general-apply:hover {
     background: var(--jyrac-teal-dark);
     transform: translateY(-2px);
   }
@@ -551,23 +422,26 @@ const steps = [
   }
 
   @media (max-width: 768px) {
-    .section-card {
+    .job-card {
+      flex-direction: column;
+      align-items: flex-start;
       padding: 20px 16px;
     }
-    .lead-banner {
-      padding: 24px 20px;
-    }
-    .info-table th, .info-table td {
-      padding: 10px 12px;
-      font-size: 12px;
-    }
-    .info-table th {
-      width: 32%;
-    }
-    .btn-cta-primary {
+    .btn-job-detail {
       width: 100%;
-      font-size: 13px;
-      padding: 14px 16px;
+      text-align: center;
+      padding: 12px 16px;
+      box-sizing: border-box;
+    }
+    .job-card-action {
+      width: 100%;
+    }
+    .quick-guide-bar {
+      flex-direction: column;
+      gap: 8px;
+    }
+    .guide-arrow {
+      transform: rotate(90deg);
     }
   }
 </style>
