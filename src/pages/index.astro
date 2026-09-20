@@ -52,7 +52,7 @@ const businessDomains = [
   }
 ];
 
-// ピックアップ最新ニュース（直近3件）
+// ピックアップ最新ニュース（直近3件・news.astroと完全同期）
 const pickupNews = [
   {
     date: "2026.09.20",
@@ -62,18 +62,18 @@ const pickupNews = [
     isExt: true
   },
   {
-    date: "2026.08.15",
-    category: "復興支援",
-    title: "【熊本地震】被災地へ願いを届けるデジタル絵馬ページを公開しました",
-    url: "https://nsf.stki.org/ema",
-    isExt: true
+    date: "2026.09.01",
+    category: "募集情報",
+    title: "【秋期メンバー募集】企画・デザイン・広報・政策提言を担うユースメンバーの募集を開始",
+    url: `${baseUrl}/recruitment${langParam}`,
+    isExt: false
   },
   {
-    date: "2026.06.21",
-    category: "法人情報",
-    title: "特定非営利活動法人 日本若者防災復興協会 正式設立（登記完了）のお知らせ",
-    url: `${baseUrl}/about${langParam}`,
-    isExt: false
+    date: "2026.08.15",
+    category: "復興支援",
+    title: "【熊本地震】被災地へ願いを届けるデジタル絵馬特設ページを公開",
+    url: "https://nsf.stki.org/ema",
+    isExt: true
   }
 ];
 ---
@@ -103,7 +103,7 @@ const pickupNews = [
         <div class="hero-btn-row">
           <a href={`${baseUrl}/about${langParam}`} class="btn-hero btn-navy">JYRACについて知る</a> 
           <a href="#business-domains" class="btn-hero btn-white">活動・事業領域を見る</a>
-          <a href={`${baseUrl}/recruitment${langParam}`} class="btn-hero btn-teal">メンバーとして参加する</a>
+          <a href={`${baseUrl}/recruitment${langParam}`} class="btn-hero btn-teal">メンバーとして参加する ↗</a>
         </div>
       </div>
 
@@ -443,7 +443,6 @@ const pickupNews = [
     backdrop-filter: blur(4px);
     transform-origin: 50% 100%;
   }
-  /* 上半分4面（ティール〜シアンのグラデーション） */
   .crystal-face.f1 {
     border-bottom: 70px solid rgba(0, 154, 166, 0.7);
     transform: rotateY(0deg) translateZ(26px) rotateX(24deg);
@@ -460,7 +459,6 @@ const pickupNews = [
     border-bottom: 70px solid rgba(2, 132, 199, 0.7);
     transform: rotateY(270deg) translateZ(26px) rotateX(24deg);
   }
-  /* 下半分4面（ネイビー〜ディープティール） */
   .crystal-face.f5 {
     top: 70px;
     border-top: 70px solid rgba(0, 43, 84, 0.75);
@@ -490,7 +488,6 @@ const pickupNews = [
     transform-origin: 50% 0%;
   }
 
-  /* オービットリング */
   .crystal-orbit {
     position: absolute;
     border-radius: 50%;
@@ -521,20 +518,12 @@ const pickupNews = [
   }
 
   @keyframes crystalFloat {
-    0%, 100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-16px);
-    }
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-16px); }
   }
   @keyframes crystalSpin {
-    0% {
-      transform: rotateY(0deg) rotateX(12deg);
-    }
-    100% {
-      transform: rotateY(360deg) rotateX(12deg);
-    }
+    0% { transform: rotateY(0deg) rotateX(12deg); }
+    100% { transform: rotateY(360deg) rotateX(12deg); }
   }
   @keyframes orbitSpin {
     0% { transform: rotateX(72deg) rotateY(15deg) rotateZ(0deg); }
