@@ -1,66 +1,264 @@
 ---
 // src/pages/contact.astro
 import Layout from '../layouts/Layout.astro';
-import { translations, type Lang } from '../lib/i18n';
 
-// URLから言語パラメーターを取得 (プロトコルをhttpsに整形)
-const requestUrl = Astro.request.url.replace(/^http:/, 'https:');
-const url = new URL(requestUrl);
-const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
-const t = translations[currentLang];
+const currentLang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
+const langParam = currentLang === 'en' ? '?lang=en' : '';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <Layout 
-    title={currentLang === 'en' ? 'Contact Us | Japan Youth Resilience Action Consortium' : 'お問い合わせ | 日本若者防災復興協会'} 
-    currentTab="contact"
+  title={currentLang === 'en' ? 'Contact | JYRAC' : 'お問い合わせ | 日本若者防災復興協会'} 
+  currentTab="contact"
 >
-    <div class="content-panel">
-        <h2>
-            {currentLang === 'en' ? 'Contact Us' : 'お問い合わせ'}
-        </h2>
-        
-        <p>
-            {currentLang === 'en'
-                ? 'For inquiries, joining our activities, press/media, or sponsorship requests, please feel free to contact us via our official Google Form below.'
-                : '当団体へのご質問、活動へのご参加希望、取材・協賛のご依頼などは、下記の公式お問い合わせフォーム（Googleフォーム）よりお気軽にご連絡ください。'}
+  <div class="contact-container">
+
+    <header class="contact-header">
+      <span class="sub-label">GET IN TOUCH</span>
+      <h1 class="main-heading">お問い合わせ・取材窓口</h1>
+      <p class="desc-text">
+        JYRACへの取材依頼、行政・企業・学校関係者様からの連携相談、活動に関するご質問などはこちらから受け付けております。
+      </p>
+    </header>
+
+    <div class="contact-grid">
+      
+      <!-- メール窓口カード -->
+      <div class="contact-card">
+        <span class="card-badge">DIRECT EMAIL</span>
+        <h2 class="card-title">メールでのお問い合わせ</h2>
+        <p class="card-desc">
+          取材依頼、ご協賛・パートナーシップのご提案、公的機関・学校関係者様からのご連絡は、外務局窓口まで直接メールをお送りください。
         </p>
-        
-        <div style="text-align: center; margin: 45px 0;">
-            <a href="https://forms.gle/aJGpNosn9FEYdaEG8" target="_blank" rel="noopener noreferrer" class="google-form-btn">
-                {currentLang === 'en'
-                    ? 'Open Contact Form (Google Form) ➔'
-                    : 'お問い合わせフォームを開く（Googleフォーム） ➔'}
-            </a>
-            <p style="font-size: 12px; color: #7f8c8d; margin-top: 12px;">
-                {currentLang === 'en'
-                    ? '*Opens in an external window (Google Forms).'
-                    : '※外部サイト（Googleフォーム）のウインドウが開きます。'}
-            </p>
+        <div class="email-box">
+          <span class="email-label">公式メールアドレス：</span>
+          <a href="mailto:jy.rac.gaimu@gmail.com" class="email-link">jy.rac.gaimu@gmail.com</a>
         </div>
+        <p class="note-text">※通常2〜3営業日以内に担当（外務局・広報局）よりご返信いたします。</p>
+      </div>
+
+      <!-- フォーム窓口カード -->
+      <div class="contact-card card-teal">
+        <span class="card-badge">WEB FORM</span>
+        <h2 class="card-title">フォームからのお問い合わせ</h2>
+        <p class="card-desc">
+          メンバー参加に関するご相談、一般的なご質問、取材のお申し込みは専用フォームからも簡単にご送信いただけます。
+        </p>
+        <div class="form-btn-wrap">
+          <a 
+            href="https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="btn-form"
+          >
+            Googleフォームを開く ↗
+          </a>
+        </div>
+        <p class="note-text">※別ウィンドウでGoogle Formsが開きます。</p>
+      </div>
+
     </div>
+
+    <!-- 事務所情報 -->
+    <section class="office-card">
+      <span class="sub-label">OFFICE DETAILS</span>
+      <h3 class="office-heading">法人所在地・連絡先情報</h3>
+      <table class="office-table">
+        <tbody>
+          <tr>
+            <th>法人名称</th>
+            <td>特定非営利活動法人 日本若者防災復興協会（JYRAC）</td>
+          </tr>
+          <tr>
+            <th>所在地</th>
+            <td>東京都文京区小日向四丁目4番6-603号</td>
+          </tr>
+          <tr>
+            <th>代表者</th>
+            <td>理事長 久保 壮太郎</td>
+          </tr>
+          <tr>
+            <th>所轄庁</th>
+            <td>東京都（生活文化スポーツ局）</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 戻るリンク -->
+    <div class="back-row">
+      <a href={`${baseUrl}/${langParam}`} class="header-link">← ホームに戻る</a>
+    </div>
+
+  </div>
 </Layout>
 
 <style>
-    /* Googleフォームボタン専用のスタイリッシュなデザイン */
-    .google-form-btn {
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(135deg, var(--primary) 0%, var(--navy) 100%);
-        color: #ffffff;
-        padding: 20px 38px;
-        text-decoration: none;
-        border-radius: 14px;
-        font-weight: 800;
-        font-size: 16px;
-        letter-spacing: 0.5px;
-        box-shadow: 0 6px 20px rgba(0, 43, 84, 0.15);
-        transition: transform 0.25s, box-shadow 0.25s;
-    }
+  .contact-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .contact-header {
+    text-align: center;
+  }
+  .sub-label {
+    font-size: 10px;
+    font-family: ui-monospace, monospace;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .main-heading {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--jyrac-navy);
+    line-height: 1.3;
+  }
+  .desc-text {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    line-height: 1.7;
+  }
 
-    .google-form-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(0, 154, 166, 0.3);
-        color: #ffffff;
-    }
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+  }
+  .contact-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .card-teal {
+    background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 100%);
+    border-color: #ccfbf1;
+  }
+  .card-badge {
+    font-size: 9px;
+    font-family: ui-monospace, monospace;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+    background: #f1f5f9;
+    padding: 2px 8px;
+    border-radius: 6px;
+    width: fit-content;
+  }
+  .card-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--jyrac-navy);
+    margin: 0;
+  }
+  .card-desc {
+    font-size: 13px;
+    color: var(--text-main);
+    line-height: 1.7;
+    margin: 0;
+    flex-grow: 1;
+  }
+  .email-box {
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .email-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+  .email-link {
+    font-size: 15px;
+    font-weight: 800;
+    font-family: ui-monospace, monospace;
+    color: var(--jyrac-navy);
+    text-decoration: underline;
+    word-break: break-all;
+  }
+  .form-btn-wrap {
+    margin-top: 12px;
+  }
+  .btn-form {
+    display: inline-block;
+    background: var(--jyrac-navy);
+    color: #ffffff !important;
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 800;
+    padding: 12px 28px;
+    border-radius: 10px;
+    transition: background-color 0.2s;
+  }
+  .btn-form:hover {
+    background: var(--jyrac-teal);
+  }
+  .note-text {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .office-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .office-heading {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--jyrac-navy);
+    margin: 0;
+  }
+  .office-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .office-table th {
+    width: 24%;
+    background: var(--bg-light);
+    color: var(--jyrac-navy);
+    font-weight: 800;
+    text-align: left;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+  }
+  .office-table td {
+    padding: 12px 16px;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+  }
+
+  .header-link {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+    text-decoration: none;
+  }
+  .header-link:hover {
+    text-decoration: underline;
+  }
+  .back-row {
+    text-align: center;
+  }
 </style>
