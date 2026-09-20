@@ -16,13 +16,14 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 const t = translations[currentLang];
 
-// ナビゲーション定義
+// ナビゲーション定義（教材・診断ツール gioco を配置）
 const navItems = [
   { id: 'home', label: t.nav.home, href: `${baseUrl}/${langParam}` },
   { id: 'about', label: t.nav.about, href: `${baseUrl}/about${langParam}` },
   { id: 'services', label: t.nav.services, href: `${baseUrl}/services${langParam}` },
   { id: 'history', label: t.nav.history, href: `${baseUrl}/history${langParam}` },
   { id: 'news', label: t.nav.news, href: `${baseUrl}/news${langParam}` },
+  { id: 'gioco', label: t.nav.gioco, href: `${baseUrl}/gioco${langParam}` },
   { id: 'recruitment', label: t.nav.recruitment, href: `${baseUrl}/recruitment${langParam}` },
   { id: 'contact', label: t.nav.contact, href: `${baseUrl}/contact${langParam}` },
 ];
@@ -113,6 +114,7 @@ const navItems = [
         <div class="footer-links">
           <a href={`${baseUrl}/${langParam}`}>ホーム</a>
           <a href={`${baseUrl}/about${langParam}`}>団体概要</a>
+          <a href={`${baseUrl}/gioco${langParam}`}>教材・診断</a>
           <a href={`${baseUrl}/governance${langParam}`}>情報公開</a>
           <a href={`${baseUrl}/contact${langParam}`}>お問い合わせ</a>
         </div>
@@ -239,16 +241,17 @@ const navItems = [
   .nav-list {
     display: flex;
     list-style: none;
-    gap: 18px;
+    gap: 14px;
     align-items: center;
   }
   .nav-link {
     text-decoration: none;
-    font-size: 13.5px;
+    font-size: 13px;
     font-weight: 700;
     color: var(--jyrac-navy);
     padding: 6px 4px;
     transition: color 0.2s;
+    white-space: nowrap;
   }
   .nav-link:hover, .nav-link.active {
     color: var(--jyrac-teal);
@@ -341,12 +344,12 @@ const navItems = [
   .mobile-nav-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
   }
   .mobile-nav-link {
     display: block;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 800;
     color: var(--jyrac-navy);
     padding: 12px 16px;
@@ -401,7 +404,7 @@ const navItems = [
   }
   .footer-links {
     display: flex;
-    gap: 20px;
+    gap: 18px;
     flex-wrap: wrap;
   }
   .footer-links a {
@@ -424,10 +427,10 @@ const navItems = [
   /* PC向けブレークポイント */
   @media (min-width: 992px) {
     .brand-logo .logo-text-ja {
-      font-size: 18px;
+      font-size: 17px;
     }
     .brand-logo .logo-text-en {
-      font-size: 8.5px;
+      font-size: 8px;
     }
     .desktop-nav {
       display: block;
