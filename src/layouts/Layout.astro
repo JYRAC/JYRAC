@@ -44,10 +44,13 @@ const navItems = [
     <header class="global-header">
       <div class="header-inner">
         
-        <!-- ロゴエリア -->
+        <!-- ロゴエリア（左側にJYRACロゴアイコンを表示） -->
         <a href={`${baseUrl}/${langParam}`} class="brand-logo">
-          <span class="logo-text-ja">日本若者防災復興協会</span>
-          <span class="logo-text-en">JAPAN YOUTH RESILIENCE ACTION CONSORTIUM</span>
+          <img src={`${baseUrl}/JYRAC.jpg`} alt="JYRAC Logo" class="logo-img" />
+          <div class="logo-text-group">
+            <span class="logo-text-ja">日本若者防災復興協会</span>
+            <span class="logo-text-en">JAPAN YOUTH RESILIENCE ACTION CONSORTIUM</span>
+          </div>
         </a>
 
         <!-- PC向けナビゲーション -->
@@ -211,13 +214,26 @@ const navItems = [
     gap: 16px;
   }
 
-  /* ブランドロゴ */
+  /* ブランドロゴ（アイコン＋テキストの横並び） */
   .brand-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  .logo-img {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 2px 6px rgba(0, 43, 84, 0.1);
+    border: 1px solid rgba(0, 43, 84, 0.08);
+  }
+  .logo-text-group {
     display: flex;
     flex-direction: column;
-    text-decoration: none;
-    line-height: 1.15;
-    flex-shrink: 0;
+    line-height: 1.2;
   }
   .logo-text-ja {
     font-size: 16px;
@@ -231,7 +247,7 @@ const navItems = [
     color: var(--jyrac-teal);
     font-family: ui-monospace, monospace;
     letter-spacing: 0.04em;
-    margin-top: 2px;
+    margin-top: 1px;
   }
 
   /* デスクトップナビ */
@@ -426,6 +442,10 @@ const navItems = [
 
   /* PC向けブレークポイント */
   @media (min-width: 992px) {
+    .logo-img {
+      width: 42px;
+      height: 42px;
+    }
     .brand-logo .logo-text-ja {
       font-size: 17px;
     }
