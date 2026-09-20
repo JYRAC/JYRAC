@@ -6,96 +6,70 @@ const currentLang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
 const langParam = currentLang === 'en' ? '?lang=en' : '';
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-// 現在募集中のポジション一覧データ
-const jobOpenings = [
+// ポジション一覧（現在募集しているのは広報局のみ）
+const activeJob = {
+  id: "pr",
+  department: "広報局",
+  title: "広報スタッフ（公式SNS運用・デザイン・Web記事執筆）",
+  badge: "積極募集中",
+  badgeType: "open",
+  target: "中学生 / 高校生 / 大学生 / 若手社会人",
+  location: "完全オンライン（全国どこからでも参加可能）",
+  timeCommitment: "週1〜3時間程度（学業・試験期間最優先）",
+  summary: "公式Instagram・X・noteの企画運用や、Canvaを用いた画像・動画制作、Webサイト更新、プレスリリース作成などを通じて、若者の防災・減災アクションを社会へ届けるクリエイティブポジションです。",
+  detailLink: `${baseUrl}/join-pr${langParam}`
+};
+
+// 募集停止中・準備中の部門
+const upcomingDepartments = [
   {
-    id: "pr",
-    department: "広報局",
-    title: "広報スタッフ（SNS運用・デザイン・Web記事執筆）",
-    badge: "募集中",
-    badgeType: "open",
-    target: "中学生 / 高校生 / 大学生 / 若手社会人",
-    location: "完全オンライン（全国どこからでも参加可能）",
-    timeCommitment: "週1〜3時間程度（試験・学業最優先）",
-    summary: "公式Instagram・X・noteの企画運用や、Canvaを用いた画像制作、Web記事・プレスリリース作成などを通じて、若者の防災・減災アクションを社会へ届けるポジションです。",
-    // src/pages/join-pr.astro へのリンク
-    detailLink: `${baseUrl}/join-pr${langParam}`,
-    isFeatured: true
-  },
-  {
-    id: "disaster-prevention",
     department: "防災事業本部",
     title: "生徒会防災サミット 企画運営・政策提言サポート",
-    badge: "募集中",
-    badgeType: "open",
-    target: "高校生 / 大学生",
-    location: "オンライン ＋ 現地（サミット本番・避難所体験等）",
-    timeCommitment: "週2〜4時間程度",
-    summary: "内閣府共催「全国生徒会防災サミット」のセッション設計や参加校サポート、避難所環境改善（守寝プロジェクト）、国や行政への政策提言ドラフト作成に関わります。",
-    detailLink: "https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form",
-    isFeatured: false
+    badge: "次回募集準備中",
+    summary: "全国生徒会防災サミットの企画・当日運営、避難所環境改善調査、政策提言ドラフト作成など。"
   },
   {
-    id: "recovery",
     department: "復興事業本部",
     title: "能登現地支援・食文化継承プロジェクトメンバー",
-    badge: "募集中",
-    badgeType: "open",
-    target: "高校生 / 大学生 / 若手社会人",
-    location: "オンライン ＋ 能登現地（能登視察・ボランティア）",
-    timeCommitment: "週1〜2時間程度 ＋ 現地遠征（任意）",
-    summary: "能登半島での家屋片付けや炊き出し支援、仮設住宅での交流会、郷土食の魅力を東京等で届ける「能登うまいもん再発見プロジェクト」などの現地・都市連携企画を担当します。",
-    detailLink: "https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form",
-    isFeatured: false
+    badge: "次回募集準備中",
+    summary: "能登半島でのボランティア活動、仮設住宅交流会、郷土食の魅力を伝える物産企画など。"
   },
   {
-    id: "fundraising",
     department: "地域事業本部 / 募金事業本部",
-    title: "街頭支援募金・地域防災イベント企画スタッフ",
-    badge: "募集中",
-    badgeType: "open",
-    target: "中学生 / 高校生 / 大学生",
-    location: "各地域（街頭募金実施地）およびオンライン",
-    timeCommitment: "月1〜2回（土日活動中心）",
-    summary: "被災地支援のための街頭募金活動（累計59回実施・総額260万円超）の現地リーダーや、自治体・地域の防災イベント出展ブースの企画運営を担います。",
-    detailLink: "https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form",
-    isFeatured: false
+    title: "街頭支援募金・地域防災イベントスタッフ",
+    badge: "次回募集準備中",
+    summary: "全国各地での街頭募金活動の運営、地域防災フェスへのブース出展・ワークショップ企画など。"
   },
   {
-    id: "corporate",
     department: "事務局 / 人事局 / 外務局",
-    title: "法人運営・メンバー採用オンボーディング・渉外補佐",
-    badge: "若干名",
-    badgeType: "limited",
-    target: "大学生 / 若手社会人",
-    location: "完全オンライン",
-    timeCommitment: "週2〜3時間程度",
-    summary: "全国470名を超えるメンバーの参加窓口、ITツール運用、総務・法務・会計の補佐、他団体や自治体・協賛企業との連携連絡窓口などを担当します。",
-    detailLink: "https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form",
-    isFeatured: false
+    title: "法人基盤運営・メンバー育成・渉外補佐",
+    badge: "次回募集準備中",
+    summary: "メンバー採用オンボーディング、ITツール管理、行政・企業・他団体との連携窓口など。"
   }
 ];
 ---
 
 <Layout 
-  title={currentLang === 'en' ? 'Recruitment & Open Roles | JYRAC' : 'メンバー募集一覧 | 日本若者防災復興協会'} 
+  title={currentLang === 'en' ? 'Recruitment | JYRAC' : 'メンバー募集一覧 | 日本若者防災復興協会'} 
   currentTab="recruitment"
 >
   <div class="recruit-list-container">
 
+    <!-- ページ見出し -->
     <header class="page-header">
       <span class="sub-label">JOIN JYRAC</span>
-      <h1 class="main-heading">メンバー募集一覧</h1>
+      <h1 class="main-heading">メンバー募集</h1>
       <p class="desc-text">
-        全国の中学生・高校生・大学生・若手社会人を対象に、現在募集中のポジション一覧です。<br />
-        完全オンライン参加から現地フィールドワークまで、自分のライフスタイルに合わせて関わり方を選べます。
+        現在、日本若者防災復興協会（JYRAC）では<strong>【広報局】</strong>のメンバーを重点募集しています。<br />
+        全国の中学・高校・大学生が完全オンラインで活動中。あなたの発信力やデザインへの興味を、防災と復興の現場で活かしてみませんか？
       </p>
     </header>
 
+    <!-- 応募手順ガイド -->
     <div class="quick-guide-bar">
       <div class="guide-item">
         <span class="step-num">01</span>
-        <span>募集要項を選ぶ</span>
+        <span>募集要項を確認</span>
       </div>
       <span class="guide-arrow">➔</span>
       <div class="guide-item">
@@ -109,49 +83,76 @@ const jobOpenings = [
       </div>
     </div>
 
-    <div class="job-list-stack">
-      {jobOpenings.map(job => (
-        <article class={`job-card ${job.isFeatured ? 'job-card-featured' : ''}`}>
-          
-          <div class="job-card-main">
-            <div class="job-top-row">
-              <span class="dept-tag">{job.department}</span>
-              <span class={`status-pill pill-${job.badgeType}`}>{job.badge}</span>
-            </div>
+    <!-- 募集中セクション -->
+    <section class="section-block">
+      <div class="section-title-wrap">
+        <span class="status-indicator"></span>
+        <h2 class="section-title">現在募集中のポジション</h2>
+      </div>
 
-            <h2 class="job-title">
-              <a href={job.detailLink}>{job.title}</a>
-            </h2>
-
-            <p class="job-summary">{job.summary}</p>
-
-            <div class="job-spec-chips">
-              <span class="spec-chip">👤 対象：{job.target}</span>
-              <span class="spec-chip">📍 拠点：{job.location}</span>
-              <span class="spec-chip">⏱ 目安：{job.timeCommitment}</span>
-            </div>
+      <!-- 広報局員 注目カード -->
+      <article class="active-job-card">
+        <div class="job-card-main">
+          <div class="job-top-row">
+            <span class="dept-tag">{activeJob.department}</span>
+            <span class="status-pill pill-active">{activeJob.badge}</span>
           </div>
 
-          <div class="job-card-action">
-            {job.id === 'pr' ? (
-              <a href={job.detailLink} class="btn-job-detail">
-                詳細・募集要項を見る ➔
-              </a>
-            ) : (
-              <a href={job.detailLink} target="_blank" rel="noopener noreferrer" class="btn-job-detail">
-                応募フォームを開く ↗
-              </a>
-            )}
+          <h3 class="job-title">
+            <a href={activeJob.detailLink}>{activeJob.title}</a>
+          </h3>
+
+          <p class="job-summary">{activeJob.summary}</p>
+
+          <div class="job-spec-chips">
+            <span class="spec-chip">👤 対象：{activeJob.target}</span>
+            <span class="spec-chip">📍 拠点：{activeJob.location}</span>
+            <span class="spec-chip">⏱ 目安：{activeJob.timeCommitment}</span>
           </div>
+        </div>
 
-        </article>
-      ))}
-    </div>
+        <div class="job-card-action">
+          <a href={activeJob.detailLink} class="btn-job-detail">
+            募集要項・詳細を見る ➔
+          </a>
+          <a 
+            href="https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="btn-job-apply"
+          >
+            直接エントリー ↗
+          </a>
+        </div>
+      </article>
+    </section>
 
+    <!-- 募集準備中セクション -->
+    <section class="section-block">
+      <div class="section-title-wrap">
+        <h2 class="section-title-sub">次回募集準備中のポジション</h2>
+        <span class="sub-note">※以下の部門は現在定員またはプロジェクト準備中のため、次回募集開始時に改めて告知いたします。</span>
+      </div>
+
+      <div class="closed-jobs-grid">
+        {upcomingDepartments.map(dept => (
+          <div class="closed-card">
+            <div class="closed-top">
+              <span class="closed-dept">{dept.department}</span>
+              <span class="status-pill pill-closed">{dept.badge}</span>
+            </div>
+            <h4 class="closed-title">{dept.title}</h4>
+            <p class="closed-summary">{dept.summary}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- お問い合わせ・相談カード -->
     <section class="common-notice-card">
-      <h3 class="notice-heading">どの部門に応募するか迷っている方へ</h3>
+      <h3 class="notice-heading">応募前の質問・相談について</h3>
       <p class="notice-desc">
-        「何かやってみたいけれど、どのポジションが自分に合うかわからない」「活動頻度の相談をしたい」という場合も歓迎しています。エントリーフォームにて「部門未定・相談希望」を選択して送信していただければ、オンライン面談にて適性に合ったチームをご案内いたします。
+        「学業や部活動と両立できるか不安」「まずは活動の雰囲気を聞いてみたい」という方も大歓迎です。エントリーフォームまたは公式メール（外務局窓口）よりお気軽にご連絡ください。
       </p>
       <div class="notice-btn-row">
         <a 
@@ -160,11 +161,12 @@ const jobOpenings = [
           rel="noopener noreferrer" 
           class="btn-general-apply"
         >
-          総合エントリー / 相談フォームを開く ↗
+          応募・相談フォームを開く ↗
         </a>
       </div>
     </section>
 
+    <!-- 戻るリンク -->
     <div class="back-row">
       <a href={`${baseUrl}/${langParam}`} class="header-link">← ホームに戻る</a>
     </div>
@@ -174,13 +176,14 @@ const jobOpenings = [
 
 <style>
   .recruit-list-container {
-    max-width: 1000px;
+    max-width: 980px;
     margin: 0 auto;
     padding: 48px 16px;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 44px;
   }
+
   .page-header {
     text-align: center;
   }
@@ -203,8 +206,10 @@ const jobOpenings = [
     font-size: 13.5px;
     color: var(--text-muted);
     margin-top: 8px;
-    line-height: 1.7;
+    line-height: 1.75;
   }
+
+  /* ガイドバー */
   .quick-guide-bar {
     background: var(--bg-light);
     border: 1px solid var(--border-color);
@@ -237,35 +242,60 @@ const jobOpenings = [
     color: var(--jyrac-teal);
     font-size: 12px;
   }
-  .job-list-stack {
+
+  /* セクション見出し */
+  .section-block {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
   }
-  .job-card {
+  .section-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #16a34a;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.2);
+  }
+  .section-title {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--jyrac-navy);
+    margin: 0;
+  }
+  .section-title-sub {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-muted);
+    margin: 0;
+  }
+  .sub-note {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* 募集中カード（強調デザイン） */
+  .active-job-card {
     background: #ffffff;
-    border: 1px solid var(--border-color);
-    border-radius: 18px;
-    padding: 28px;
+    border: 2px solid var(--jyrac-teal);
+    border-radius: 20px;
+    padding: 32px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 24px;
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-  }
-  .job-card:hover {
-    border-color: var(--jyrac-teal);
-    box-shadow: 0 4px 16px rgba(0, 43, 84, 0.05);
-  }
-  .job-card-featured {
-    border-left: 5px solid var(--jyrac-teal);
-    background: linear-gradient(180deg, #ffffff 0%, #fafcfc 100%);
+    gap: 28px;
+    box-shadow: 0 8px 24px rgba(0, 154, 166, 0.08);
   }
   .job-card-main {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
   }
   .job-top-row {
     display: flex;
@@ -273,7 +303,7 @@ const jobOpenings = [
     gap: 10px;
   }
   .dept-tag {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 800;
     color: var(--jyrac-teal);
     font-family: ui-monospace, monospace;
@@ -281,19 +311,20 @@ const jobOpenings = [
   .status-pill {
     font-size: 10px;
     font-weight: 800;
-    padding: 2px 8px;
+    padding: 3px 10px;
     border-radius: 6px;
   }
-  .pill-open {
-    background: #e0f2fe;
-    color: #0284c7;
+  .pill-active {
+    background: #dcfce7;
+    color: #15803d;
   }
-  .pill-limited {
-    background: #fef3c7;
-    color: #d97706;
+  .pill-closed {
+    background: #f1f5f9;
+    color: #64748b;
   }
+
   .job-title {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 900;
     color: var(--jyrac-navy);
     line-height: 1.4;
@@ -306,12 +337,14 @@ const jobOpenings = [
   .job-title a:hover {
     color: var(--jyrac-teal);
   }
+
   .job-summary {
-    font-size: 13px;
-    color: var(--text-muted);
-    line-height: 1.65;
+    font-size: 13.5px;
+    color: var(--text-main);
+    line-height: 1.7;
     margin: 0;
   }
+
   .job-spec-chips {
     display: flex;
     flex-wrap: wrap;
@@ -323,29 +356,92 @@ const jobOpenings = [
     color: var(--text-main);
     background: var(--bg-light);
     border: 1px solid var(--border-color);
-    padding: 3px 10px;
+    padding: 4px 10px;
     border-radius: 6px;
     font-weight: 600;
   }
+
   .job-card-action {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     flex-shrink: 0;
+    min-width: 200px;
   }
   .btn-job-detail {
-    display: inline-block;
-    background: var(--jyrac-navy);
+    display: block;
+    text-align: center;
+    background: var(--jyrac-teal);
     color: #ffffff !important;
     text-decoration: none;
     font-size: 13px;
     font-weight: 800;
-    padding: 12px 24px;
+    padding: 12px 20px;
     border-radius: 10px;
-    white-space: nowrap;
     transition: background-color 0.2s, transform 0.2s;
   }
   .btn-job-detail:hover {
-    background: var(--jyrac-teal);
+    background: var(--jyrac-teal-dark);
     transform: translateY(-2px);
   }
+  .btn-job-apply {
+    display: block;
+    text-align: center;
+    background: #ffffff;
+    color: var(--jyrac-navy) !important;
+    border: 1px solid var(--border-color);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: background-color 0.2s;
+  }
+  .btn-job-apply:hover {
+    background: var(--bg-light);
+  }
+
+  /* 準備中グリッド */
+  .closed-jobs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+  .closed-card {
+    background: #ffffff;
+    border: 1px dashed var(--border-color);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    opacity: 0.75;
+  }
+  .closed-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .closed-dept {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+  .closed-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--text-main);
+    margin: 0;
+    line-height: 1.4;
+  }
+  .closed-summary {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* 相談カード */
   .common-notice-card {
     background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 100%);
     border: 1px solid #ccfbf1;
@@ -358,37 +454,36 @@ const jobOpenings = [
     gap: 12px;
   }
   .notice-heading {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 800;
     color: var(--jyrac-navy);
     margin: 0;
   }
   .notice-desc {
-    max-width: 680px;
+    max-width: 640px;
     font-size: 13px;
     color: var(--text-main);
     line-height: 1.7;
     margin: 0;
   }
   .notice-btn-row {
-    margin-top: 8px;
+    margin-top: 6px;
   }
   .btn-general-apply {
     display: inline-block;
-    background: var(--jyrac-teal);
+    background: var(--jyrac-navy);
     color: #ffffff;
     text-decoration: none;
-    font-size: 13.5px;
+    font-size: 13px;
     font-weight: 800;
-    padding: 12px 28px;
+    padding: 11px 24px;
     border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 154, 166, 0.25);
-    transition: background-color 0.2s, transform 0.2s;
+    transition: background-color 0.2s;
   }
   .btn-general-apply:hover {
-    background: var(--jyrac-teal-dark);
-    transform: translateY(-2px);
+    background: var(--jyrac-teal);
   }
+
   .header-link {
     font-size: 12px;
     font-weight: 800;
@@ -401,20 +496,16 @@ const jobOpenings = [
   .back-row {
     text-align: center;
   }
+
   @media (max-width: 768px) {
-    .job-card {
+    .active-job-card {
       flex-direction: column;
       align-items: flex-start;
-      padding: 20px 16px;
-    }
-    .btn-job-detail {
-      width: 100%;
-      text-align: center;
-      padding: 12px 16px;
-      box-sizing: border-box;
+      padding: 24px 18px;
     }
     .job-card-action {
       width: 100%;
+      min-width: unset;
     }
     .quick-guide-bar {
       flex-direction: column;
