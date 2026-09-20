@@ -1,10 +1,13 @@
+---
+// src/pages/recruitment.astro
 import Layout from "../layouts/Layout.astro";
+import { translations, type Lang } from "../lib/i18n";
 
-const currentLang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
+const currentLang: Lang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
 const langParam = currentLang === 'en' ? '?lang=en' : '';
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-// 現在募集中のポジション一覧データ
+// 募集ポジション一覧データ
 const jobOpenings = [
   {
     id: "pr",
@@ -148,7 +151,7 @@ const jobOpenings = [
       ))}
     </div>
 
-    <!-- 全ポジション共通の案内 -->
+    <!-- 迷っている方向け案内 -->
     <section class="common-notice-card">
       <h3 class="notice-heading">どの部門に応募するか迷っている方へ</h3>
       <p class="notice-desc">
@@ -183,7 +186,6 @@ const jobOpenings = [
     flex-direction: column;
     gap: 40px;
   }
-
   .page-header {
     text-align: center;
   }
@@ -208,8 +210,6 @@ const jobOpenings = [
     margin-top: 8px;
     line-height: 1.7;
   }
-
-  /* クイックガイドバー */
   .quick-guide-bar {
     background: var(--bg-light);
     border: 1px solid var(--border-color);
@@ -242,14 +242,11 @@ const jobOpenings = [
     color: var(--jyrac-teal);
     font-size: 12px;
   }
-
-  /* 募集カードスタック */
   .job-list-stack {
     display: flex;
     flex-direction: column;
     gap: 20px;
   }
-
   .job-card {
     background: #ffffff;
     border: 1px solid var(--border-color);
@@ -269,14 +266,12 @@ const jobOpenings = [
     border-left: 5px solid var(--jyrac-teal);
     background: linear-gradient(180deg, #ffffff 0%, #fafcfc 100%);
   }
-
   .job-card-main {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     gap: 10px;
   }
-
   .job-top-row {
     display: flex;
     align-items: center;
@@ -302,7 +297,6 @@ const jobOpenings = [
     background: #fef3c7;
     color: #d97706;
   }
-
   .job-title {
     font-size: 18px;
     font-weight: 900;
@@ -317,14 +311,12 @@ const jobOpenings = [
   .job-title a:hover {
     color: var(--jyrac-teal);
   }
-
   .job-summary {
     font-size: 13px;
     color: var(--text-muted);
     line-height: 1.65;
     margin: 0;
   }
-
   .job-spec-chips {
     display: flex;
     flex-wrap: wrap;
@@ -340,7 +332,6 @@ const jobOpenings = [
     border-radius: 6px;
     font-weight: 600;
   }
-
   .job-card-action {
     flex-shrink: 0;
   }
@@ -360,8 +351,6 @@ const jobOpenings = [
     background: var(--jyrac-teal);
     transform: translateY(-2px);
   }
-
-  /* 迷っている方向けカード */
   .common-notice-card {
     background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 100%);
     border: 1px solid #ccfbf1;
@@ -405,7 +394,6 @@ const jobOpenings = [
     background: var(--jyrac-teal-dark);
     transform: translateY(-2px);
   }
-
   .header-link {
     font-size: 12px;
     font-weight: 800;
