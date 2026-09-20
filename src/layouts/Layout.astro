@@ -24,7 +24,7 @@ const currentPath = url.pathname;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="U3N1SPErYZ6hcrPgWswh8WCyACwLkJXfE7c7QNofrBQ" />
-    <meta name="description" content="日本若者防災復興協会（JYRAC）は、若者が主体となり防災・減災・災害復興に取り組むNPO法人です。" />
+    <meta name="description" content="特定非営利活動法人 日本若者防災復興協会（JYRAC）は、全国の中学・高校・大学生を中心とした若者が主体となり、防災・減災・災害復興に取り組むNPO法人です。" />
     <title>{title}</title>
     <link rel="icon" href="/JYRAC.jpg" type="image/jpeg">
     <link rel="apple-touch-icon" href="/JYRAC.jpg">
@@ -43,7 +43,7 @@ const currentPath = url.pathname;
             --navy-light: #0a3d6d;
             --accent: #e67e22;
             --accent-light: #ff9f43;
-            --panel-bg: rgba(255, 255, 255, 0.90);
+            --panel-bg: rgba(255, 255, 255, 0.92);
         }
 
         html, body {
@@ -70,8 +70,8 @@ const currentPath = url.pathname;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(rgba(0, 154, 166, 0.01) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(0, 154, 166, 0.01) 1px, transparent 1px);
+            background: linear-gradient(rgba(0, 154, 166, 0.015) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0, 154, 166, 0.015) 1px, transparent 1px);
             background-size: 60px 60px;
             pointer-events: none;
             z-index: -1;
@@ -112,10 +112,10 @@ const currentPath = url.pathname;
         .cr-3 { top: 35%; right: 4%; transform: scale(1.4); border-bottom-color: rgba(230, 126, 34, 0.08); }
 
         header {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.88);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            padding: 20px 24px;
+            padding: 18px 24px;
             border-bottom: 1px solid rgba(0, 154, 166, 0.2);
             position: sticky;
             top: 0;
@@ -135,6 +135,7 @@ const currentPath = url.pathname;
             flex-direction: column;
             align-items: flex-start;
             max-width: 100%;
+            text-decoration: none;
         }
         .brand-zone h1 {
             margin: 0;
@@ -165,6 +166,7 @@ const currentPath = url.pathname;
             margin-top: 2px;
             overflow-wrap: break-word;
             word-break: break-word;
+            font-family: ui-monospace, monospace;
         }
 
         .lang-switch {
@@ -193,18 +195,21 @@ const currentPath = url.pathname;
 
         .dashboard-container {
             max-width: 1200px;
-            margin: 40px auto;
+            margin: 36px auto;
             padding: 0 20px;
             display: flex;
-            gap: 40px;
+            gap: 36px;
             position: relative;
             z-index: 10;
             width: 100%;
+            align-items: flex-start;
         }
 
         aside {
-            width: 280px;
+            width: 270px;
             flex-shrink: 0;
+            position: sticky;
+            top: 96px;
         }
         .side-menu {
             padding: 0;
@@ -212,16 +217,16 @@ const currentPath = url.pathname;
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 10px;
         }
         .menu-btn {
             display: block;
             width: 100%;
-            padding: 18px 24px;
+            padding: 14px 20px;
             color: var(--navy);
             text-decoration: none;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13.5px;
             background: var(--panel-bg);
             border: 1px solid rgba(0, 154, 166, 0.2);
             border-radius: 14px;
@@ -248,7 +253,7 @@ const currentPath = url.pathname;
         .menu-btn:hover {
             color: #ffffff;
             border-color: var(--primary-light);
-            padding-left: 30px;
+            padding-left: 26px;
         }
         .menu-btn:hover::before {
             width: 100%;
@@ -257,24 +262,23 @@ const currentPath = url.pathname;
             background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
             color: #ffffff;
             border: 1px solid var(--primary-light);
-            box-shadow: 0 10px 25px rgba(0, 43, 84, 0.15);
+            box-shadow: 0 8px 20px rgba(0, 43, 84, 0.15);
         }
 
         main {
             flex-grow: 1;
-            width: 100%;
-            max-width: 100%;
+            width: calc(100% - 306px);
+            min-width: 0;
             background: var(--panel-bg);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            padding: 50px;
+            padding: 44px;
             border: 1px solid rgba(255, 255, 255, 0.7);
             border-top: 4px solid var(--primary);
             min-height: 500px;
             box-shadow: 0 20px 50px rgba(0, 43, 84, 0.03);
             border-radius: 24px;
             position: relative;
-            overflow: hidden;
         }
 
         main::before {
@@ -301,19 +305,18 @@ const currentPath = url.pathname;
 
         footer {
             text-align: center;
-            padding: 45px 20px;
+            padding: 40px 20px;
             background-color: var(--navy);
             color: rgba(255, 255, 255, 0.7);
             font-size: 13px;
-            margin-top: 80px;
-            border-top: 5px solid var(--primary-light);
+            margin-top: 70px;
+            border-top: 4px solid var(--primary-light);
             position: relative;
             z-index: 20;
             width: 100%;
-            overflow-wrap: break-word;
         }
 
-        @media (max-width: 850px) {
+        @media (max-width: 960px) {
             header { 
                 padding: 16px; 
             }
@@ -322,27 +325,28 @@ const currentPath = url.pathname;
                 gap: 12px; 
                 text-align: center; 
             }
-            .brand-zone {
-                align-items: center !important;
-                text-align: center !important;
-                width: 100%;
+            .brand-zone { 
+                align-items: center !important; 
+                text-align: center !important; 
+                width: 100%; 
             }
-            .brand-zone h1 {
-                justify-content: center !important;
-                text-align: center !important;
-                font-size: 18px;
+            .brand-zone h1 { 
+                justify-content: center !important; 
+                text-align: center !important; 
+                font-size: 19px; 
             }
-            .subtitle {
-                text-align: center !important;
+            .subtitle { 
+                text-align: center !important; 
             }
             .dashboard-container { 
                 flex-direction: column; 
                 margin: 20px auto; 
-                padding: 0 12px;
+                padding: 0 14px; 
                 gap: 20px; 
             }
             aside { 
                 width: 100%; 
+                position: static;
             }
             .side-menu { 
                 display: grid; 
@@ -353,16 +357,17 @@ const currentPath = url.pathname;
             .menu-btn { 
                 text-align: center; 
                 border-radius: 10px; 
-                padding: 12px 6px; 
-                font-size: 12px;
+                padding: 12px 8px; 
+                font-size: 12px; 
             }
             .menu-btn:hover { 
-                padding-left: 6px; 
+                padding-left: 8px; 
             }
             main { 
-                padding: 20px 16px; 
-                border-radius: 16px;
-                min-height: auto;
+                width: 100%;
+                padding: 24px 18px; 
+                border-radius: 18px; 
+                min-height: auto; 
             }
             .crystal-field { 
                 display: none; 
@@ -380,13 +385,13 @@ const currentPath = url.pathname;
 
 <header>
     <div class="header-container">
-        <div class="brand-zone">
+        <a href={`/${langParam}`} class="brand-zone">
             <h1>
                 {t?.brand?.name ?? (currentLang === 'en' ? 'JYRAC' : '日本若者防災復興協会')}
                 <span>{t?.brand?.tag ?? (currentLang === 'en' ? 'NPO' : '特定非営利活動法人')}</span>
             </h1>
             <div class="subtitle">{t?.brand?.sub ?? 'JAPAN YOUTH RESILIENCE ACTION CONSORTIUM'}</div>
-        </div>
+        </a>
         <div class="lang-switch">
             <a href={`${currentPath}?lang=ja`} class={`lang-btn ${currentLang === 'ja' ? 'active' : ''}`}>日本語</a>
             <a href={`${currentPath}?lang=en`} class={`lang-btn ${currentLang === 'en' ? 'active' : ''}`}>English</a>
@@ -397,15 +402,32 @@ const currentPath = url.pathname;
 <div class="dashboard-container">
     <aside>
         <ul class="side-menu">
-            <li><a href={`/${langParam}`} class={`menu-btn ${currentTab === 'news' ? 'active' : ''}`}>{t?.nav?.news ?? 'お知らせ'}</a></li>
+            <!-- 1. ホーム（ポータル） -->
+            <li><a href={`/${langParam}`} class={`menu-btn ${currentTab === 'home' ? 'active' : ''}`}>{currentLang === 'en' ? 'Home' : 'ホーム'}</a></li>
+            
+            <!-- 2. お知らせ・最新情報 -->
+            <li><a href={`/news${langParam}`} class={`menu-btn ${currentTab === 'news' ? 'active' : ''}`}>{t?.nav?.news ?? 'お知らせ'}</a></li>
+            
+            <!-- 3. JYRACについて（理念・役員・組織図など） -->
             <li><a href={`/about${langParam}`} class={`menu-btn ${currentTab === 'about' ? 'active' : ''}`}>{t?.nav?.about ?? '当団体について'}</a></li>
+            
+            <!-- 4. 事業内容（4大領域） -->
             <li><a href={`/services${langParam}`} class={`menu-btn ${currentTab === 'services' ? 'active' : ''}`}>{t?.nav?.services ?? '事業内容'}</a></li>
+            
+            <!-- 5. 活動実績・沿革（新設依頼項目） -->
+            <li><a href={`/history${langParam}`} class={`menu-btn ${currentTab === 'history' ? 'active' : ''}`}>{currentLang === 'en' ? 'History' : '活動実績・沿革'}</a></li>
+            
+            <!-- 6. メンバー募集 -->
             <li><a href={`/recruitment${langParam}`} class={`menu-btn ${currentTab === 'recruitment' ? 'active' : ''}`}>{t?.nav?.recruitment ?? 'メンバー募集'}</a></li>
+            
+            <!-- 7. 教材・診断ツール -->
             <li>
                 <a href={`/gioco${langParam}`} class={`menu-btn ${currentTab === 'gioco' ? 'active' : ''}`}>
                     {currentLang === 'en' ? 'Tools & Diagnosis' : '教材・診断ツール'}
                 </a>
             </li>
+            
+            <!-- 8. 情報公開・公式SNS・問い合わせ -->
             <li><a href={`/governance${langParam}`} class={`menu-btn ${currentTab === 'governance' ? 'active' : ''}`}>{t?.nav?.governance ?? '情報公開'}</a></li>
             <li><a href={`/sns${langParam}`} class={`menu-btn ${currentTab === 'sns' ? 'active' : ''}`}>{t?.nav?.sns ?? '公式SNS'}</a></li>
             <li><a href={`/contact${langParam}`} class={`menu-btn ${currentTab === 'contact' ? 'active' : ''}`}>{t?.nav?.contact ?? 'お問い合わせ'}</a></li>
@@ -425,7 +447,7 @@ const currentPath = url.pathname;
     function runJyracGsapAnimation() {
         if (typeof gsap === "undefined") return;
 
-        if (window.innerWidth > 850) {
+        if (window.innerWidth > 960) {
             gsap.killTweensOf(".crystal");
             gsap.to(".cr-1", { y: -25, rotation: 360, duration: 12, repeat: -1, yoyo: true, ease: "power1.inOut" });
             gsap.to(".cr-2", { y: 20, rotation: -360, duration: 15, repeat: -1, yoyo: true, ease: "power1.inOut" });
@@ -433,9 +455,9 @@ const currentPath = url.pathname;
 
             const menuButtons = document.querySelectorAll('.side-menu a');
             menuButtons.forEach((btn, index) => {
-                gsap.to(btn, { y: -5, duration: 5, repeat: -1, yoyo: true, ease: "power1.inOut", delay: index * 0.2 });
-                btn.addEventListener('mouseenter', () => gsap.to(btn, { y: -2, scale: 1.03, duration: 0.3, ease: "power2.out" }));
-                btn.addEventListener('mouseleave', () => gsap.to(btn, { scale: 1, duration: 0.3, ease: "power2.inOut" }));
+                gsap.to(btn, { y: -4, duration: 5, repeat: -1, yoyo: true, ease: "power1.inOut", delay: index * 0.15 });
+                btn.addEventListener('mouseenter', () => gsap.to(btn, { y: -2, scale: 1.02, duration: 0.25, ease: "power2.out" }));
+                btn.addEventListener('mouseleave', () => gsap.to(btn, { scale: 1, duration: 0.25, ease: "power2.inOut" }));
             });
         }
     }
