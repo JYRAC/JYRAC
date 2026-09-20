@@ -7,10 +7,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<Layout 
-  title={currentLang === 'en' ? 'Contact | JYRAC' : 'お問い合わせ | 日本若者防災復興協会'} 
-  currentTab="contact"
->
+<Layout title={currentLang === 'en' ? 'Contact | JYRAC' : 'お問い合わせ | 日本若者防災復興協会'} currentTab="contact">
   <div class="contact-container">
 
     <header class="contact-header">
@@ -45,14 +42,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
           メンバー参加に関するご相談、一般的なご質問、取材のお申し込みは専用フォームからも簡単にご送信いただけます。
         </p>
         <div class="form-btn-wrap">
-          <a 
-            href="https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            class="btn-form"
-          >
-            Googleフォームを開く ↗
-          </a>
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form" target="_blank"  rel="noopener noreferrer"class="btn-form">Googleフォームを開く</a>
         </div>
         <p class="note-text">※別ウィンドウでGoogle Formsが開きます。</p>
       </div>
