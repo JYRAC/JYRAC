@@ -1,490 +1,197 @@
 ---
+// src/layouts/Layout.astro
 import { translations, type Lang } from '../lib/i18n';
 
 interface Props {
   title: string;
-  currentTab: string;
+  currentTab?: string;
+  description?: string;
 }
 
-const { title, currentTab } = Astro.props;
+const { 
+  title, 
+  currentTab = 'home',
+  description = "特定非営利活動法人 日本若者防災復興協会（JYRAC）公式サイト。若者の力で、防災を日常に。被災地に確かな未来を。"
+} = Astro.props;
 
-// URLパラメーターから言語を取得（httpsプロトコルへ補正）
 const requestUrl = Astro.request.url.replace(/^http:/, 'https:');
 const url = new URL(requestUrl);
 const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
 
-// translations オブジェクトから取得（未定義時もフォールバック）
 const t = translations?.[currentLang] || translations?.['ja'] || {} as any;
 const langParam = currentLang === 'en' ? '?lang=en' : '';
 const currentPath = url.pathname;
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const logoSrc = `${baseUrl}/JYRAC.jpg`;
+
+const navLinks = [
+  { key: 'home', label: currentLang === 'en' ? 'Home' : 'ホーム', href: `/${langParam}` },
+  { key: 'about', label: currentLang === 'en' ? 'About' : 'JYRACについて', href: `/about${langParam}` },
+  { key: 'services', label: currentLang === 'en' ? 'Business' : '事業案内', href: `/services${langParam}` },
+  { key: 'history', label: currentLang === 'en' ? 'History' : '活動実績・沿革', href: `/history${langParam}` },
+  { key: 'news', label: currentLang === 'en' ? 'News' : 'お知らせ', href: `/news${langParam}` },
+  { key: 'recruitment', label: currentLang === 'en' ? 'Join Us' : 'メンバー募集', href: `/recruitment${langParam}` },
+  { key: 'contact', label: currentLang === 'en' ? 'Contact' : 'お問い合わせ', href: `/contact${langParam}` }
+];
 ---
 <!DOCTYPE html>
-<html lang={currentLang}>
+<html lang={currentLang} class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-site-verification" content="U3N1SPErYZ6hcrPgWswh8WCyACwLkJXfE7c7QNofrBQ" />
-    <meta name="description" content="特定非営利活動法人 日本若者防災復興協会（JYRAC）は、全国の中学・高校・大学生を中心とした若者が主体となり、防災・減災・災害復興に取り組むNPO法人です。" />
-    <title>{title}</title>
-    <link rel="icon" href="/JYRAC.jpg" type="image/jpeg">
-    <link rel="apple-touch-icon" href="/JYRAC.jpg">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" is:inline></script>
-    
-    <style>
-        *, *::before, *::after {
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary: #009aa6;
-            --primary-light: #00d2e0;
-            --primary-dark: #1d8b98;
-            --navy: #002b54;
-            --navy-light: #0a3d6d;
-            --accent: #e67e22;
-            --accent-light: #ff9f43;
-            --panel-bg: rgba(255, 255, 255, 0.92);
-        }
-
-        html, body {
-            max-width: 100%;
-            overflow-x: hidden;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-            line-height: 1.8;
-            color: #2c3e50;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #e3f6f7 0%, #ffffff 50%, #f4fafb 100%);
-            background-attachment: fixed;
-            min-height: 100vh;
-            position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(rgba(0, 154, 166, 0.015) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(0, 154, 166, 0.015) 1px, transparent 1px);
-            background-size: 60px 60px;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .crystal-field {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-        .crystal {
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-bottom: 35px solid rgba(0, 154, 166, 0.12);
-            filter: drop-shadow(0 4px 10px rgba(0, 210, 224, 0.2));
-            transform: translate3d(0, 0, 0);
-        }
-        .crystal::after {
-            content: '';
-            position: absolute;
-            left: -20px;
-            top: 35px;
-            width: 0;
-            height: 0;
-            border-left: 20px solid transparent;
-            border-right: 20px solid transparent;
-            border-top: 35px solid rgba(0, 43, 84, 0.08);
-        }
-        .cr-1 { top: 15%; left: 3%; transform: scale(0.7); }
-        .cr-2 { top: 75%; left: 6%; transform: scale(1.1); }
-        .cr-3 { top: 35%; right: 4%; transform: scale(1.4); border-bottom-color: rgba(230, 126, 34, 0.08); }
-
-        header {
-            background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 18px 24px;
-            border-bottom: 1px solid rgba(0, 154, 166, 0.2);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            width: 100%;
-        }
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-        .brand-zone {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            max-width: 100%;
-            text-decoration: none;
-        }
-        .brand-zone h1 {
-            margin: 0;
-            font-size: 22px;
-            color: var(--navy);
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            overflow-wrap: break-word;
-            word-break: break-word;
-        }
-        .brand-zone h1 span {
-            font-size: 10px;
-            color: #ffffff;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--accent) 0%, #d35400 100%);
-            padding: 3px 10px;
-            border-radius: 20px;
-            white-space: nowrap;
-        }
-        .subtitle {
-            font-size: 10px;
-            color: var(--primary-dark);
-            font-weight: 700;
-            letter-spacing: 1px;
-            margin-top: 2px;
-            overflow-wrap: break-word;
-            word-break: break-word;
-            font-family: ui-monospace, monospace;
-        }
-
-        .lang-switch {
-            display: flex;
-            gap: 4px;
-            background: rgba(0, 154, 166, 0.1);
-            padding: 4px;
-            border-radius: 20px;
-            border: 1px solid rgba(0, 154, 166, 0.2);
-            flex-shrink: 0;
-        }
-        .lang-btn {
-            font-size: 12px;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 14px;
-            text-decoration: none;
-            color: var(--navy);
-            transition: all 0.2s ease;
-        }
-        .lang-btn.active {
-            background: var(--primary);
-            color: #ffffff;
-            box-shadow: 0 2px 6px rgba(0, 154, 166, 0.3);
-        }
-
-        .dashboard-container {
-            max-width: 1200px;
-            margin: 36px auto;
-            padding: 0 20px;
-            display: flex;
-            gap: 36px;
-            position: relative;
-            z-index: 10;
-            width: 100%;
-            align-items: flex-start;
-        }
-
-        aside {
-            width: 270px;
-            flex-shrink: 0;
-            position: sticky;
-            top: 96px;
-        }
-        .side-menu {
-            padding: 0;
-            margin: 0;
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .menu-btn {
-            display: block;
-            width: 100%;
-            padding: 14px 20px;
-            color: var(--navy);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 13.5px;
-            background: var(--panel-bg);
-            border: 1px solid rgba(0, 154, 166, 0.2);
-            border-radius: 14px;
-            text-align: left;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 43, 84, 0.02);
-            transition: color 0.25s, border-color 0.25s, padding-left 0.25s, background 0.25s;
-            overflow-wrap: break-word;
-            word-break: break-word;
-        }
-        .menu-btn::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 0;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
-            transition: width 0.2s ease;
-            z-index: -1;
-        }
-        .menu-btn:hover {
-            color: #ffffff;
-            border-color: var(--primary-light);
-            padding-left: 26px;
-        }
-        .menu-btn:hover::before {
-            width: 100%;
-        }
-        .menu-btn.active {
-            background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
-            color: #ffffff;
-            border: 1px solid var(--primary-light);
-            box-shadow: 0 8px 20px rgba(0, 43, 84, 0.15);
-        }
-
-        main {
-            flex-grow: 1;
-            width: calc(100% - 306px);
-            min-width: 0;
-            background: var(--panel-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            padding: 44px;
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            border-top: 4px solid var(--primary);
-            min-height: 500px;
-            box-shadow: 0 20px 50px rgba(0, 43, 84, 0.03);
-            border-radius: 24px;
-            position: relative;
-        }
-
-        main::before {
-            content: '';
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            width: 16px;
-            height: 16px;
-            border-top: 2px solid var(--primary-light);
-            border-right: 2px solid var(--primary-light);
-            pointer-events: none;
-        }
-
-        .layout-gioco-mode {
-            background: transparent !important;
-            border: none !important;
-            padding: 0 !important;
-            box-shadow: none !important;
-        }
-        .layout-gioco-mode::before {
-            display: none !important;
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            background-color: var(--navy);
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 13px;
-            margin-top: 70px;
-            border-top: 4px solid var(--primary-light);
-            position: relative;
-            z-index: 20;
-            width: 100%;
-        }
-
-        @media (max-width: 960px) {
-            header { 
-                padding: 16px; 
-            }
-            .header-container { 
-                flex-direction: column; 
-                gap: 12px; 
-                text-align: center; 
-            }
-            .brand-zone { 
-                align-items: center !important; 
-                text-align: center !important; 
-                width: 100%; 
-            }
-            .brand-zone h1 { 
-                justify-content: center !important; 
-                text-align: center !important; 
-                font-size: 19px; 
-            }
-            .subtitle { 
-                text-align: center !important; 
-            }
-            .dashboard-container { 
-                flex-direction: column; 
-                margin: 20px auto; 
-                padding: 0 14px; 
-                gap: 20px; 
-            }
-            aside { 
-                width: 100%; 
-                position: static;
-            }
-            .side-menu { 
-                display: grid; 
-                grid-template-columns: repeat(2, 1fr); 
-                border-radius: 16px; 
-                gap: 8px; 
-            }
-            .menu-btn { 
-                text-align: center; 
-                border-radius: 10px; 
-                padding: 12px 8px; 
-                font-size: 12px; 
-            }
-            .menu-btn:hover { 
-                padding-left: 8px; 
-            }
-            main { 
-                width: 100%;
-                padding: 24px 18px; 
-                border-radius: 18px; 
-                min-height: auto; 
-            }
-            .crystal-field { 
-                display: none; 
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content={description} />
+  <title>{title}</title>
+  <link rel="icon" href="/JYRAC.jpg" type="image/jpeg">
+  <link rel="apple-touch-icon" href="/JYRAC.jpg">
+  
+  <style is:global>
+    :root {
+      --primary: #009aa6;
+      --primary-dark: #007c87;
+      --navy: #002b54;
+      --navy-light: #0d3b66;
+      --accent: #e67e22;
+      --bg-slate: #f8fafc;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #334155;
+      background-color: #ffffff;
+      overflow-x: hidden;
+    }
+  </style>
 </head>
-<body>
+<body class="flex flex-col min-h-screen">
 
-<div class="crystal-field">
-    <div class="crystal cr-1"></div>
-    <div class="crystal cr-2"></div>
-    <div class="crystal cr-3"></div>
-</div>
-
-<header>
-    <div class="header-container">
-        <a href={`/${langParam}`} class="brand-zone">
-            <h1>
-                {t?.brand?.name ?? (currentLang === 'en' ? 'JYRAC' : '日本若者防災復興協会')}
-                <span>{t?.brand?.tag ?? (currentLang === 'en' ? 'NPO' : '特定非営利活動法人')}</span>
-            </h1>
-            <div class="subtitle">{t?.brand?.sub ?? 'JAPAN YOUTH RESILIENCE ACTION CONSORTIUM'}</div>
-        </a>
-        <div class="lang-switch">
-            <a href={`${currentPath}?lang=ja`} class={`lang-btn ${currentLang === 'ja' ? 'active' : ''}`}>日本語</a>
-            <a href={`${currentPath}?lang=en`} class={`lang-btn ${currentLang === 'en' ? 'active' : ''}`}>English</a>
+  <!-- グローバルヘッダー -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-4">
+      
+      <!-- ロゴ＆団体名 -->
+      <a href={`/${langParam}`} class="flex items-center gap-3 no-underline shrink-0 group">
+        <img src={logoSrc} alt="JYRAC ロゴ" class="w-10 h-10 sm:w-11 sm:h-11 object-contain rounded-xl shadow-xs group-hover:scale-105 transition" />
+        <div class="flex flex-col">
+          <span class="text-base sm:text-lg font-black tracking-tight text-[#002b54] leading-tight">
+            日本若者防災復興協会
+          </span>
+          <span class="text-[9px] sm:text-[10px] font-mono font-bold tracking-wider text-[#009aa6] uppercase">
+            JAPAN YOUTH RESILIENCE ACTION CONSORTIUM
+          </span>
         </div>
+      </a>
+
+      <!-- PC ナビゲーションリンク -->
+      <nav class="hidden lg:flex items-center gap-1">
+        {navLinks.map(link => (
+          <a
+            href={link.href}
+            class={`px-3 py-2 rounded-lg text-xs font-black transition no-underline ${
+              currentTab === link.key 
+                ? 'text-[#009aa6] bg-teal-50/70 font-black' 
+                : 'text-slate-600 hover:text-[#002b54] hover:bg-slate-100/60'
+            }`}
+          >
+            {link.label}
+          </a>
+        ))}
+      </nav>
+
+      <!-- 言語切替 ＆ アクション -->
+      <div class="flex items-center gap-2.5 shrink-0">
+        <div class="flex items-center bg-slate-100 rounded-full p-1 border border-slate-200 text-[11px] font-bold">
+          <a href={`${currentPath}?lang=ja`} class={`px-2.5 py-1 rounded-full transition no-underline ${currentLang === 'ja' ? 'bg-white text-[#002b54] shadow-2xs' : 'text-slate-500'}`}>JA</a>
+          <a href={`${currentPath}?lang=en`} class={`px-2.5 py-1 rounded-full transition no-underline ${currentLang === 'en' ? 'bg-white text-[#002b54] shadow-2xs' : 'text-slate-500'}`}>EN</a>
+        </div>
+
+        <a
+          href={`/recruitment${langParam}`}
+          class="hidden sm:inline-flex items-center justify-center px-4 py-2 rounded-xl bg-gradient-to-r from-[#009aa6] to-teal-500 hover:to-[#007c87] text-white text-xs font-black shadow-sm transition no-underline active:scale-95"
+        >
+          <span>参加する</span>
+        </a>
+      </div>
+
     </div>
-</header>
 
-<div class="dashboard-container">
-    <aside>
-        <ul class="side-menu">
-            <!-- 1. ホーム（ポータル） -->
-            <li><a href={`/${langParam}`} class={`menu-btn ${currentTab === 'home' ? 'active' : ''}`}>{currentLang === 'en' ? 'Home' : 'ホーム'}</a></li>
-            
-            <!-- 2. お知らせ・最新情報 -->
-            <li><a href={`/news${langParam}`} class={`menu-btn ${currentTab === 'news' ? 'active' : ''}`}>{t?.nav?.news ?? 'お知らせ'}</a></li>
-            
-            <!-- 3. JYRACについて（理念・役員・組織図など） -->
-            <li><a href={`/about${langParam}`} class={`menu-btn ${currentTab === 'about' ? 'active' : ''}`}>{t?.nav?.about ?? '当団体について'}</a></li>
-            
-            <!-- 4. 事業内容（4大領域） -->
-            <li><a href={`/services${langParam}`} class={`menu-btn ${currentTab === 'services' ? 'active' : ''}`}>{t?.nav?.services ?? '事業内容'}</a></li>
-            
-            <!-- 5. 活動実績・沿革（新設依頼項目） -->
-            <li><a href={`/history${langParam}`} class={`menu-btn ${currentTab === 'history' ? 'active' : ''}`}>{currentLang === 'en' ? 'History' : '活動実績・沿革'}</a></li>
-            
-            <!-- 6. メンバー募集 -->
-            <li><a href={`/recruitment${langParam}`} class={`menu-btn ${currentTab === 'recruitment' ? 'active' : ''}`}>{t?.nav?.recruitment ?? 'メンバー募集'}</a></li>
-            
-            <!-- 7. 教材・診断ツール -->
-            <li>
-                <a href={`/gioco${langParam}`} class={`menu-btn ${currentTab === 'gioco' ? 'active' : ''}`}>
-                    {currentLang === 'en' ? 'Tools & Diagnosis' : '教材・診断ツール'}
-                </a>
-            </li>
-            
-            <!-- 8. 情報公開・公式SNS・問い合わせ -->
-            <li><a href={`/governance${langParam}`} class={`menu-btn ${currentTab === 'governance' ? 'active' : ''}`}>{t?.nav?.governance ?? '情報公開'}</a></li>
-            <li><a href={`/sns${langParam}`} class={`menu-btn ${currentTab === 'sns' ? 'active' : ''}`}>{t?.nav?.sns ?? '公式SNS'}</a></li>
-            <li><a href={`/contact${langParam}`} class={`menu-btn ${currentTab === 'contact' ? 'active' : ''}`}>{t?.nav?.contact ?? 'お問い合わせ'}</a></li>
-        </ul>
-    </aside>
+    <!-- スマホ・タブレット用 サブナビゲーションスクロールバー -->
+    <div class="lg:hidden border-t border-slate-100 bg-slate-50/80 px-4 py-2 overflow-x-auto flex items-center gap-2 no-scrollbar">
+      {navLinks.map(link => (
+        <a
+          href={link.href}
+          class={`px-3 py-1.5 rounded-full text-[11px] font-bold shrink-0 no-underline transition ${
+            currentTab === link.key 
+              ? 'bg-[#002b54] text-white shadow-xs' 
+              : 'bg-white text-slate-600 border border-slate-200/80'
+          }`}
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+  </header>
 
-    <main id="main-panel" class={Astro.url.pathname.includes('hug-gioco') || Astro.url.pathname.includes('bosai8') ? 'layout-gioco-mode' : ''}>
-        <slot />
-    </main>
-</div>
+  <!-- メインコンテンツ領域（全幅コンテナ） -->
+  <main class="flex-grow w-full">
+    <slot />
+  </main>
 
-<footer>
-    <p>{t?.footer?.copyright ?? '© 特定非営利活動法人 日本若者防災復興協会 (JYRAC) All Rights Reserved.'}</p>
-</footer>
+  <!-- メガフッター -->
+  <footer class="bg-[#002b54] text-white pt-16 pb-12 border-t-4 border-[#009aa6]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        
+        <div class="md:col-span-2 space-y-4">
+          <div class="flex items-center gap-3">
+            <img src={logoSrc} alt="JYRAC" class="w-10 h-10 rounded-xl bg-white p-1 object-contain" />
+            <div>
+              <span class="text-base font-black tracking-tight block">特定非営利活動法人 日本若者防災復興協会</span>
+              <span class="text-xs text-teal-300 font-mono font-bold block">JAPAN YOUTH RESILIENCE ACTION CONSORTIUM</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed max-w-md">
+            「いつもの暮らし」が、いちばん強い。若者の力で、防災を日常に。被災地に確かな未来を。全国の中高生・大学生と手を取り合い、新しい防災・復興のスタンダードを築きます。
+          </p>
+          <div class="text-xs text-slate-400 space-y-1">
+            <p>所在地：東京都文京区小日向四丁目4番6-603号</p>
+            <p>連絡先：jy.rac.gaimu@gmail.com[cite: 3]</p>
+          </div>
+        </div>
 
-<script is:inline>
-    function runJyracGsapAnimation() {
-        if (typeof gsap === "undefined") return;
+        <div class="space-y-3">
+          <span class="text-xs font-mono font-black text-teal-400 uppercase tracking-wider block">NAVIGATION</span>
+          <ul class="space-y-2 text-xs text-slate-300">
+            <li><a href={`/about${langParam}`} class="hover:text-white transition">JYRACについて[cite: 3]</a></li>
+            <li><a href={`/services${langParam}`} class="hover:text-white transition">事業内容（4大領域）[cite: 3]</a></li>
+            <li><a href={`/history${langParam}`} class="hover:text-white transition">活動実績・沿革[cite: 3]</a></li>
+            <li><a href={`/recruitment${langParam}`} class="hover:text-white transition">メンバー募集要項</a></li>
+          </ul>
+        </div>
 
-        if (window.innerWidth > 960) {
-            gsap.killTweensOf(".crystal");
-            gsap.to(".cr-1", { y: -25, rotation: 360, duration: 12, repeat: -1, yoyo: true, ease: "power1.inOut" });
-            gsap.to(".cr-2", { y: 20, rotation: -360, duration: 15, repeat: -1, yoyo: true, ease: "power1.inOut" });
-            gsap.to(".cr-3", { y: -30, rotation: 180, duration: 10, repeat: -1, yoyo: true, ease: "power1.inOut" });
+        <div class="space-y-3">
+          <span class="text-xs font-mono font-black text-teal-400 uppercase tracking-wider block">PROJECTS & TOOLS</span>
+          <ul class="space-y-2 text-xs text-slate-300">
+            <li><a href="https://summit.jyrac.stki.org" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">生徒会防災サミット ↗[cite: 3]</a></li>
+            <li><a href="https://nsf.stki.org/ema" target="_blank" rel="noopener noreferrer" class="hover:text-white transition">デジタル絵馬プロジェクト ↗</a></li>
+            <li><a href={`/gioco${langParam}`} class="hover:text-white transition">教材・診断ツール</a></li>
+            <li><a href={`/contact${langParam}`} class="hover:text-white transition">取材・お問い合わせ</a></li>
+          </ul>
+        </div>
 
-            const menuButtons = document.querySelectorAll('.side-menu a');
-            menuButtons.forEach((btn, index) => {
-                gsap.to(btn, { y: -4, duration: 5, repeat: -1, yoyo: true, ease: "power1.inOut", delay: index * 0.15 });
-                btn.addEventListener('mouseenter', () => gsap.to(btn, { y: -2, scale: 1.02, duration: 0.25, ease: "power2.out" }));
-                btn.addEventListener('mouseleave', () => gsap.to(btn, { scale: 1, duration: 0.25, ease: "power2.inOut" }));
-            });
-        }
-    }
+      </div>
 
-    function applyI18nLinks() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const currentLang = urlParams.get('lang');
-        if (currentLang === 'en') {
-            document.querySelectorAll('a[href]').forEach(link => {
-                const href = link.getAttribute('href');
-                if (href && href.startsWith('/') && !href.includes('lang=')) {
-                    const separator = href.includes('?') ? '&' : '?';
-                    link.setAttribute('href', href + separator + 'lang=en');
-                }
-            });
-        }
-    }
+      <div class="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+        <p>© 2026 特定非営利活動法人 日本若者防災復興協会 (JYRAC) All Rights Reserved.</p>
+        <div class="flex items-center gap-4">
+          <a href={`/governance${langParam}`} class="hover:text-slate-200">情報公開</a>
+          <a href="https://www.instagram.com/pred.studentsummit" target="_blank" rel="noopener noreferrer" class="hover:text-slate-200">公式Instagram[cite: 3]</a>
+        </div>
+      </div>
+    </div>
+  </footer>
 
-    document.addEventListener("DOMContentLoaded", () => {
-        runJyracGsapAnimation();
-        applyI18nLinks();
-    });
-    document.addEventListener("astro:page-load", () => {
-        runJyracGsapAnimation();
-        applyI18nLinks();
-    });
-</script>
-<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "cec25f9117274a519150136e7a35a0d9"}'></script>
+  <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "cec25f9117274a519150136e7a35a0d9"}'></script>
 </body>
 </html>
