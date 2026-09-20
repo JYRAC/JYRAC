@@ -1,4 +1,5 @@
 ---
+// src/pages/hug-gioco.astro
 // ==========================================
 // 1. DATA LAYER (Astroフロントマターでデータを一元管理)
 // ==========================================
@@ -11,6 +12,7 @@ const url = new URL(requestUrl);
 const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
 const t = translations[currentLang];
 const langParam = currentLang === 'en' ? '?lang=en' : '';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 // 言語に応じたカードデータ
 const CARDS = [
@@ -64,8 +66,8 @@ const CH_CARDS = [
         <span>{currentLang === 'en' ? 'TKB Evacuation Shelter Discussion Game' : 'TKB型避難所運営ディスカッションゲーム'}</span>
       </div>
       <div class="nav-spacer"></div>
-      <a href={`/gioco${langParam}`} class="btn-back-to-site">
-        {currentLang === 'en' ? '➔ Back to JYRAC Site' : 'JYRACサイトに戻る ➔'}
+      <a href={`${baseUrl}/gioco${langParam}`} class="btn-back-to-site">
+        {currentLang === 'en' ? '➔ Back to Selection' : '教材一覧に戻る ➔'}
       </a>
       <div class="step-dots">
         <i id="dot-0" class="on"></i>
@@ -348,9 +350,6 @@ const CH_CARDS = [
   <div id="game-scoped-toast" class="game-scoped-toast"></div>
 </Layout>
 
-{/* ==========================================
-// 3. SCOPED STYLE LAYER
-// ========================================== */}
 <style>
   .gioco-local-wrapper {
     --navy: #1B3A8C; --navy-deep: #152E70; --green: #2E9E4F; --green-deep: #1f7d3c; --red: #E01E2B; --red-deep: #b8161f;
@@ -361,8 +360,11 @@ const CH_CARDS = [
 
     background: var(--cream);
     color: var(--ink);
-    padding: 30px;
+    padding: clamp(16px, 4vw, 30px);
     border-radius: var(--radius);
+    max-width: 1040px;
+    margin: 20px auto;
+    box-sizing: border-box;
     background-image: 
       radial-gradient(circle at 12% 8%, rgba(74,169,224,0.10) 0 22px, transparent 23px),
       radial-gradient(circle at 88% 14%, rgba(46,158,79,0.08) 0 26px, transparent 27px),
@@ -374,8 +376,12 @@ const CH_CARDS = [
 
   .game-inner-header {
     border-bottom: 3px solid var(--navy);
-    padding: 10px 0 15px; display: flex; align-items: center; gap: 12px;
+    padding: 10px 0 15px; 
+    display: flex; 
+    align-items: center; 
+    gap: 12px;
     margin-bottom: 25px;
+    flex-wrap: wrap;
   }
   .game-inner-header .titles-area { display: flex; flex-direction: column; line-height: 1.15; }
   .game-inner-header .titles-area b { font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: 1.18rem; color: var(--navy); letter-spacing: 0.5px; }
@@ -386,16 +392,16 @@ const CH_CARDS = [
   .step-dots i.on { background: var(--navy); transform: scale(1.25); }
   .step-dots i.done { background: var(--green); }
   
-  .btn-back-to-site { font-weight:700; font-size:.85rem; color: var(--navy); text-decoration:none; background:#fff; border:2px solid var(--navy); padding:6px 16px; border-radius:999px; transition:.2s; display:inline-flex; align-items: center; gap:6px; margin-right: 15px; }
+  .btn-back-to-site { font-weight:700; font-size:.85rem; color: var(--navy); text-decoration:none; background:#fff; border:2px solid var(--navy); padding:6px 16px; border-radius:999px; transition:.2s; display:inline-flex; align-items: center; gap:6px; }
   .btn-back-to-site:hover { background:var(--navy); color:#fff; }
 
-  .setup-box { background: #fff; padding: 24px; border-radius: var(--radius-sm); box-shadow: var(--shadow); max-width: 600px; margin: 0 auto; text-align: left; }
+  .setup-box { background: #fff; padding: clamp(16px, 4vw, 24px); border-radius: var(--radius-sm); box-shadow: var(--shadow); max-width: 600px; margin: 0 auto; text-align: left; }
   .setup-box h3 { color: var(--navy); font-weight: 800; margin-top: 0; margin-bottom: 20px; border-bottom: 2px dashed var(--line); padding-bottom: 10px; }
   .setup-group { margin-bottom: 20px; }
   .setup-group label { display: block; font-weight: 800; margin-bottom: 8px; color: var(--ink); font-size: 0.95rem; }
   
-  .radio-tile-group { display: flex; gap: 10px; }
-  .radio-tile { flex: 1; cursor: pointer; display: block; text-align: center; }
+  .radio-tile-group { display: flex; gap: 10px; flex-wrap: wrap; }
+  .radio-tile { flex: 1 1 120px; cursor: pointer; display: block; text-align: center; }
   .radio-tile input { display: none; }
   .radio-tile span { display: block; padding: 12px; border: 2px solid var(--line); border-radius: 12px; font-weight: 700; background: #fafafa; transition: 0.2s; font-size: 0.9rem; }
   .radio-tile input:checked + span { border-color: var(--navy); background: var(--sky-soft); color: var(--navy); }
@@ -446,13 +452,13 @@ const CH_CARDS = [
   .logo-g2 { background: linear-gradient(135deg, #FF4D58 0%, var(--red) 100%); transform: rotate(-2deg); margin-top: 6px; }
   .logo-g2::before { border-bottom: 12px solid #FF4D58; }
   .logo-text-gioco { font-size: 46px; font-weight: 800; color: var(--navy); margin-left: 6px; letter-spacing: -0.01em; transform: rotate(1deg); display: inline-block; }
-  .sub { color: var(--green); font-size: clamp(1rem, 3vw, 1.25rem); font-weight: 800; letter-spacing: 1px; margin-bottom: 25px; text-transform: uppercase; display: block; text-align: center; }
+  .sub { color: var(--green); font-size: clamp(0.95rem, 3vw, 1.25rem); font-weight: 800; letter-spacing: 1px; margin-bottom: 25px; text-transform: uppercase; display: block; text-align: center; }
 
   .gioco-local-wrapper p.desc { max-width: 620px; margin: 0 auto 30px; font-size: 1.05rem; color: var(--ink-soft); font-weight: 500; text-align: center; }
   .highlight-text { color: var(--red); font-weight: 900; border-bottom: 3px solid var(--sun); padding-bottom: 1px; }
 
-  .tkb-badge-row { display: flex; justify-content: center; gap: 14px; margin-bottom: 24px; flex-wrap: wrap; }
-  .tkb-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 18px; border-radius: 999px; font-size: 0.95rem; font-weight: 800; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+  .tkb-badge-row { display: flex; justify-content: center; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+  .tkb-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; font-size: 0.88rem; font-weight: 800; color: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
   .tkb-badge.t { background: var(--green); } .tkb-badge.k { background: var(--red); } .tkb-badge.b { background: var(--navy); }
 
   .cards { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); }
@@ -473,7 +479,7 @@ const CH_CARDS = [
 
   .situation { background: linear-gradient(135deg, var(--navy), #2a52b0); color: #fff; border-radius: var(--radius-sm); padding: 18px 20px; margin-bottom: 20px; box-shadow: var(--shadow); text-align: left; }
   .situation .lbl { font-weight: 800; font-size: 0.85rem; opacity: 0.85; }
-  .situation p { font-size: 1.1rem; font-weight: 700; margin: 6px 0 0; line-height: 1.7; }
+  .situation p { font-size: 1.05rem; font-weight: 700; margin: 6px 0 0; line-height: 1.7; }
 
   .q-groups { display: grid; gap: 14px; grid-template-columns: 1fr; margin-bottom: 20px; }
   @media(min-width: 760px) { .q-groups { grid-template-columns: 1fr 1fr 1fr; } }
@@ -520,11 +526,20 @@ const CH_CARDS = [
   .r-item .content { white-space: pre-wrap; color: var(--ink); font-size: 0.95rem; font-weight: 500; }
   .r-item .empty { color: #b7bdc7; font-style: italic; }
 
-  .final-actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 25px; }
+  .final-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 25px; }
   .footer-note { text-align: center; color: var(--ink-soft); font-size: 0.8rem; margin-top: 40px; padding: 15px; background: rgba(255,255,255,0.5); border-radius: 12px; border: 1px dashed var(--line); }
 
   .game-scoped-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(30px); background: var(--navy); color: #fff; padding: 13px 26px; border-radius: 999px; font-weight: 800; box-shadow: var(--shadow-lg); opacity: 0; pointer-events: none; transition: 0.3s; z-index: 200; }
   .game-scoped-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 600px) {
+    .logo-text-gioco { font-size: 34px; }
+    .logo-h, .logo-u, .logo-g2 { width: 40px; height: 40px; font-size: 24px; border-radius: 10px; }
+    .logo-h::before, .logo-u::before, .logo-g2::before { border-left-width: 20px; border-right-width: 20px; border-bottom-width: 10px; top: -10px; }
+    .game-inner-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .btn-back-to-site { width: 100%; text-align: center; justify-content: center; margin-right: 0; }
+    .game-btn { width: 100%; box-sizing: border-box; }
+  }
 
   @media print {
     .game-inner-header, .final-actions, .step-dots, .btn, .footer-note, .note-line { display: none !important; }
@@ -536,9 +551,6 @@ const CH_CARDS = [
   }
 </style>
 
-{/* ==========================================
-// 4. SCRIPT LAYER (進行・ゲームロジック・API送信：完全防御版)
-// ========================================== */}
 <script is:inline define:vars={{ CARDS, DISCUSSIONS, CH_CARDS, currentLang }}>
   function setupGiocoEngine() {
     const root = document.getElementById('jyrac-gioco-root');
