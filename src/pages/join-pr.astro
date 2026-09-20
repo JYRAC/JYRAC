@@ -1,244 +1,423 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import { translations, type Lang } from "../lib/i18n";
+import Layout from "../../layouts/Layout.astro";
 
-// URLから言語パラメーターを取得 (プロトコルをhttpsに整形)
-const requestUrl = Astro.request.url.replace(/^http:/, 'https:');
-const url = new URL(requestUrl);
-const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
-const t = translations[currentLang];
+const currentLang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
+const langParam = currentLang === 'en' ? '?lang=en' : '';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <Layout 
-  title={currentLang === 'en' ? 'PR Staff Recruitment | JYRAC' : '広報局員募集 | JYRAC 日本若者防災復興協会'} 
+  title={currentLang === 'en' ? 'PR Staff Wanted | JYRAC' : '広報局員募集要項 | 日本若者防災復興協会'} 
   currentTab="recruitment"
 >
-  <div class="nago-style-wrapper">
-    <header class="header-container">
-      <div class="header-left">
-        <span class="sub-tag">
-          {currentLang === 'en' ? 'Specified Non-profit Organization' : '特定非営利活動法人'}
-        </span>
-        <h1 class="site-title">
-          {currentLang === 'en' ? 'Japan Youth Resilience Action Consortium' : '日本若者防災復興協会'}
-        </h1>
-      </div>
-    </header>
+  <div class="pr-recruit-container">
 
-    <main>
-      <h2 class="post-title">
-        {currentLang === 'en'
-          ? '[PR Staff Wanted] Delivering Youth Disaster Prevention & Recovery Actions to Society'
-          : '【広報局員募集】「伝える力」で、若者の防災・減災アクションを社会へ'}
-      </h2>
+    <!-- パンくず / 戻るリンク -->
+    <div class="breadcrumb">
+      <a href={`${baseUrl}/recruitment${langParam}`}>← メンバー募集トップに戻る</a>
+    </div>
+
+    <!-- 記事カード本体 -->
+    <article class="article-card">
       
-      <div class="post-body">
+      <!-- 記事ヘッダー -->
+      <header class="article-header">
+        <div class="badge-row">
+          <span class="sub-tag">特定非営利活動法人 日本若者防災復興協会</span>
+          <span class="status-badge">広報局 2026年度 随時募集中</span>
+        </div>
+        <h1 class="post-title">
+          【広報局員募集】「伝える力」で、若者の防災・減災アクションを社会へ
+        </h1>
+      </header>
+
+      <!-- リード文 -->
+      <div class="lead-box">
         <p>
-          {currentLang === 'en' ? (
-            <>Japan Youth Resilience Action Consortium (JYRAC) is recruiting <b>PR staff (Public Relations Department members)</b> to communicate youth-led disaster prevention, mitigation, and recovery initiatives to society!</>
-          ) : (
-            <>特定非営利活動法人 日本若者防災復興協会（JYRAC）では、若者が主体となる防災・減災・災害復興の取り組みを社会へ発信する<b>広報スタッフ（広報局員）</b>を大募集しています！</>
-          )}
+          特定非営利活動法人 日本若者防災復興協会（JYRAC）では、若者が主体となる防災・減災・災害復興の取り組みを社会へ発信する<strong>広報スタッフ（広報局員）</strong>を大募集しています！
         </p>
-
-        <div class="section-h3">
-          {currentLang === 'en' ? 'Rewards & Appeal of PR Staff' : '広報スタッフのやりがい・魅力'}
-        </div>
-        <ul>
-          {currentLang === 'en' ? (
-            <>
-              <li><b>Promoting disaster prevention from a youth perspective:</b> Articles and posts you create can raise disaster awareness among peers and lead to regional support, offering great fulfillment.</li>
-              <li><b>Acquiring practical skills:</b> Gain valuable future skills such as SNS operation, article writing, and graphic/video design.</li>
-              <li><b>Meeting ambitious peers across Japan:</b> Experience a sense of accomplishment in building projects together with teammates nationwide.</li>
-            </>
-          ) : (
-            <>
-              <li><b>防災・復興の重要性を「若者目線」で届ける力になる：</b> あなたが作成した記事や投稿がきっかけとなり、同世代の防災意識が高まったり、地域の支援につながる大きなやりがいがあります。</li>
-              <li><b>実践的なスキルが身につく：</b> SNS運用や記事執筆、画像・動画デザインなど将来役立つスキルが身につきます。</li>
-              <li><b>全国の志の高い仲間と出会える：</b> 全国の仲間と一緒にプロジェクトを作り上げる達成感があります。</li>
-            </>
-          )}
-        </ul>
-
-        <div class="section-h3">
-          {currentLang === 'en' ? 'Main Activities' : '主な活動内容'}
-        </div>
-        <ul>
-          {currentLang === 'en' ? (
-            <>
-              <li>Planning, operating, and posting on official SNS (Instagram, X, Note, etc.)</li>
-              <li>Website updates, article writing, press releases, and event banner design</li>
-              <li>Recording and reporting on events and seminars</li>
-            </>
-          ) : (
-            <>
-              <li>公式SNS（Instagram、X、Note等）の企画・運用・発信</li>
-              <li>Webサイト更新や記事執筆、プレスリリース、イベント告知画像の作成</li>
-              <li>イベント・講座等の記録発信</li>
-            </>
-          )}
-        </ul>
-
-        <div class="section-h3">
-          {currentLang === 'en' ? 'Requirements (Essential & Welcome)' : '募集条件（必須・歓迎）'}
-        </div>
-        <ul>
-          {currentLang === 'en' ? (
-            <>
-              <li><b>Ability to communicate effectively (Report, Contact, Consult)</b></li>
-              <li><b>Ability to install and use Discord</b> (Used as team communication tool)</li>
-              <li><b>Environment to use design/image creation tools like Canva</b></li>
-              <li><b>Ability to attend irregular meetings (MTG)</b></li>
-              <li><b>Membership in Japan Youth Resilience Action Consortium is required</b></li>
-            </>
-          ) : (
-            <>
-              <li><b>基本的な報連相（報告・連絡・相談）がしっかりできる方</b></li>
-              <li><b>Discord（ディスコード）の導入・利用ができる方</b>（チーム内の連絡ツールとして使用します）</li>
-              <li><b>Canvaなどのデザインツール・画像制作ツールを使用できる環境をお持ちの方</b></li>
-              <li><b>不定期開催のミーティング（MTG）に参加可能な方</b></li>
-              <li><b>特定非営利活動法人 日本若者防災復興協会への加入が必須となります</b></li>
-            </>
-          )}
-        </ul>
-
-        <div class="cta-area">
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form" target="_blank" rel="noopener noreferrer" class="cta-btn">
-            {currentLang === 'en' 
-              ? 'Open Application / Inquiry Form ➔' 
-              : '応募・お問い合わせフォームはこちら ➔'}
-          </a>
-        </div>
       </div>
-    </main>
+
+      <!-- セクション：やりがい・魅力 -->
+      <section class="content-section">
+        <h2 class="section-heading">広報スタッフのやりがい・魅力</h2>
+        <ul class="styled-list">
+          <li>
+            <strong>防災・復興の重要性を「若者目線」で届ける力になる</strong><br />
+            あなたが作成した記事や投稿がきっかけとなり、同世代の防災意識が高まったり、被災地や地域への支援につながる大きなやりがいがあります。
+          </li>
+          <li>
+            <strong>実践的なクリエイティブ・発信スキルが身につく</strong><br />
+            公式SNS運用、記事執筆、プレスリリース作成、画像・動画デザインなど、将来どの分野でも役立つ実務スキルが実践の中で身につきます。
+          </li>
+          <li>
+            <strong>全国の志の高い仲間と出会える</strong><br />
+            全国の中学・高校・大学生が集まるチームで、互いに刺激を受け合いながらひとつのプロジェクトを作り上げる達成感を味わえます。
+          </li>
+        </ul>
+      </section>
+
+      <!-- セクション：主な活動内容 -->
+      <section class="content-section">
+        <h2 class="section-heading">主な活動内容</h2>
+        <div class="work-grid">
+          <div class="work-item">
+            <span class="work-tag">SNS OPERATION</span>
+            <h3>公式SNSの企画・運用・発信</h3>
+            <p>Instagram、X（旧Twitter）、note等の公式アカウントにおける企画・投稿文作成・リール制作などを担当します。</p>
+          </div>
+          <div class="work-item">
+            <span class="work-tag">WEB & PRESS</span>
+            <h3>広報素材制作・Web更新</h3>
+            <p>公式サイトのお知らせ更新、活動報告記事の執筆、プレスリリース起草、イベント告知用バナーの作成を行います。</p>
+          </div>
+          <div class="work-item">
+            <span class="work-tag">REPORTING</span>
+            <h3>イベント記録・現場取材</h3>
+            <p>全国生徒会防災サミットや避難所宿泊体験、能登現地ボランティアなどの現場取材や記録発信を担います。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- セクション：募集条件 -->
+      <section class="content-section">
+        <h2 class="section-heading">募集条件（必須・歓迎）</h2>
+        <table class="req-table">
+          <tbody>
+            <tr>
+              <th>必須条件</th>
+              <td>
+                <ul class="clean-bullet">
+                  <li>基本的な報連相（報告・連絡・相談）がしっかりできる方</li>
+                  <li>Discord（ディスコード）の導入・利用ができる方（チーム連絡ツール）</li>
+                  <li>Canva等のデザインツール・画像制作ツールを使用できる環境をお持ちの方</li>
+                  <li>不定期開催のオンラインミーティング（MTG）に参加可能な方</li>
+                  <li>特定非営利活動法人 日本若者防災復興協会の目的に賛同し、加入いただける方</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>歓迎条件</th>
+              <td>
+                <ul class="clean-bullet">
+                  <li>SNS運用（個人・団体問わず）の経験がある方</li>
+                  <li>デザイン制作、動画編集、記事執筆などに興味がある・経験がある方</li>
+                  <li>防災や被災地支援、社会貢献活動に関心がある方</li>
+                </ul>
+              </td>
+            </tr>
+            <tr>
+              <th>活動頻度</th>
+              <td>
+                <strong>週1〜3時間程度から調整可能</strong><br />
+                ※学業・試験期間・部活動・就職活動を最優先していただけます。完全オンライン対応です。
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- CTAボタンエリア -->
+      <div class="cta-card">
+        <h2>あなたの「好き」や「得意」を活かしてみませんか？</h2>
+        <p>
+          まずはGoogleフォームよりお気軽にご応募ください。ご質問や相談のみのお問い合わせも歓迎しています。
+        </p>
+        <a 
+          href="https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="btn-apply"
+        >
+          応募・お問い合わせフォームを開く [Google Forms] ↗
+        </a>
+      </div>
+
+    </article>
+
+    <!-- フッター戻るリンク -->
+    <div class="back-row">
+      <a href={`${baseUrl}/recruitment${langParam}`} class="back-link">← メンバー募集トップに戻る</a>
+    </div>
+
   </div>
 </Layout>
 
 <style>
-  .nago-style-wrapper {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans JP", sans-serif;
-    max-width: 800px;
-    margin: 30px auto;
+  .pr-recruit-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 36px 16px 64px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* パンくず */
+  .breadcrumb a {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+    text-decoration: none;
+  }
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+
+  /* 記事カード */
+  .article-card {
     background: #ffffff;
-    padding: 32px 24px;
-    border-radius: 16px;
-    border: 1px solid rgba(0, 154, 166, 0.15);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-    box-sizing: border-box;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 36px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    box-shadow: 0 4px 16px rgba(0, 43, 84, 0.03);
   }
 
-  /* --- ヘッダーエリア --- */
-  .header-container {
+  /* ヘッダー */
+  .article-header {
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 20px;
     display: flex;
-    align-items: center;
-    padding-bottom: 16px;
-    border-bottom: 2px solid #e5e5e5;
-    margin-bottom: 24px;
+    flex-direction: column;
+    gap: 12px;
   }
-
-  .header-left {
+  .badge-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     flex-wrap: wrap;
   }
-
   .sub-tag {
-    display: inline-block;
-    background-color: #f27824;
-    color: #ffffff;
-    font-size: 0.75rem;
-    font-weight: bold;
-    padding: 3px 8px;
-    border-radius: 4px;
-    letter-spacing: 0.03em;
-    white-space: nowrap;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+    background: #f0fdfa;
+    border: 1px solid #ccfbf1;
+    padding: 3px 10px;
+    border-radius: 6px;
   }
-
-  .site-title {
-    font-size: 1.3rem;
-    font-weight: bold;
-    color: #0c3866;
-    margin: 0;
-    line-height: 1.2;
-    letter-spacing: 0.02em;
+  .status-badge {
+    font-size: 11px;
+    font-weight: 800;
+    color: #c2410c;
+    background: #fff7ed;
+    border: 1px solid #ffedd5;
+    padding: 3px 10px;
+    border-radius: 6px;
   }
-
-  /* --- 記事本文エリア --- */
   .post-title {
-    font-size: 1.32rem;
-    font-weight: bold;
-    color: #0c3866;
-    margin: 0 0 20px 0;
-    padding-left: 12px;
-    border-left: 5px solid #00b4c5;
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--jyrac-navy);
     line-height: 1.4;
+    margin: 0;
   }
 
-  .post-body {
-    font-size: 0.95rem;
-    color: #333333;
+  /* リード文 */
+  .lead-box {
+    background: var(--bg-light);
+    border-left: 4px solid var(--jyrac-teal);
+    padding: 16px 20px;
+    border-radius: 0 12px 12px 0;
+    font-size: 14px;
     line-height: 1.8;
+    color: var(--text-main);
+  }
+  .lead-box p {
+    margin: 0;
   }
 
-  .section-h3 {
-    font-size: 1.05rem;
-    font-weight: bold;
-    color: #0c3866;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 6px;
-    margin-top: 28px;
-    margin-bottom: 12px;
+  /* セクション共通 */
+  .content-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .section-heading {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--jyrac-navy);
+    border-bottom: 1.5px solid var(--border-color);
+    padding-bottom: 8px;
+    margin: 0;
   }
 
-  .post-body ul {
+  /* リスト */
+  .styled-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .styled-list li {
+    font-size: 13.5px;
+    color: var(--text-main);
+    line-height: 1.7;
+    position: relative;
     padding-left: 20px;
-    margin-bottom: 20px;
+  }
+  .styled-list li::before {
+    content: "●";
+    color: var(--jyrac-teal);
+    font-size: 10px;
+    position: absolute;
+    left: 2px;
+    top: 3px;
   }
 
-  .post-body ul li {
-    margin-bottom: 8px;
+  /* 活動内容グリッド */
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .work-item {
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .work-tag {
+    font-size: 9px;
+    font-family: ui-monospace, monospace;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+  }
+  .work-item h3 {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--jyrac-navy);
+    margin: 0;
+  }
+  .work-item p {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
   }
 
-  /* --- 公式サイトカラーに寄せたボタンエリア --- */
-  .cta-area {
+  /* 条件テーブル */
+  .req-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  .req-table th {
+    width: 22%;
+    background: var(--bg-light);
+    color: var(--jyrac-navy);
+    font-weight: 800;
+    text-align: left;
+    padding: 14px 16px;
+    border: 1px solid var(--border-color);
+    vertical-align: top;
+  }
+  .req-table td {
+    padding: 14px 16px;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    line-height: 1.7;
+  }
+  .clean-bullet {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .clean-bullet li {
+    position: relative;
+    padding-left: 14px;
+  }
+  .clean-bullet li::before {
+    content: "・";
+    position: absolute;
+    left: 0;
+    color: var(--jyrac-teal);
+  }
+
+  /* CTAカード */
+  .cta-card {
+    background: linear-gradient(135deg, var(--jyrac-navy) 0%, #002b54 100%);
+    border-radius: 16px;
+    padding: 36px 24px;
     text-align: center;
-    margin: 40px 0 20px 0;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
   }
-
-  .cta-btn {
+  .cta-card h2 {
+    font-size: 20px;
+    font-weight: 900;
+    margin: 0;
+  }
+  .cta-card p {
+    font-size: 13px;
+    color: #cbd5e1;
+    max-width: 520px;
+    margin: 0;
+    line-height: 1.6;
+  }
+  .btn-apply {
     display: inline-block;
-    background: linear-gradient(135deg, #00b4c5 0%, #0093a2 100%);
+    background: var(--jyrac-teal);
     color: #ffffff !important;
     text-decoration: none;
-    font-size: 1.05rem;
-    font-weight: bold;
-    padding: 16px 40px;
-    border-radius: 8px;
-    transition: all 0.25s ease;
-    box-shadow: 0 4px 12px rgba(0, 180, 197, 0.3);
-    letter-spacing: 0.03em;
+    font-size: 13.5px;
+    font-weight: 800;
+    padding: 14px 32px;
+    border-radius: 10px;
+    margin-top: 8px;
+    box-shadow: 0 4px 14px rgba(0, 154, 166, 0.3);
+    transition: transform 0.2s, background-color 0.2s;
   }
-
-  .cta-btn:hover {
-    background: linear-gradient(135deg, #0c3866 0%, #082647 100%);
-    box-shadow: 0 6px 16px rgba(12, 56, 102, 0.35);
+  .btn-apply:hover {
+    background: var(--jyrac-teal-dark);
     transform: translateY(-2px);
   }
 
+  .back-row {
+    text-align: center;
+  }
+  .back-link {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+    text-decoration: none;
+  }
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
   @media (max-width: 640px) {
-    .nago-style-wrapper {
-      padding: 20px 16px;
-      margin: 15px;
+    .article-card {
+      padding: 24px 16px;
     }
     .post-title {
-      font-size: 1.15rem;
+      font-size: 19px;
     }
-    .cta-btn {
+    .req-table th {
+      width: 28%;
+      padding: 10px;
+    }
+    .req-table td {
+      padding: 10px;
+    }
+    .btn-apply {
       width: 100%;
       padding: 14px 16px;
       box-sizing: border-box;
-      font-size: 0.95rem;
     }
   }
 </style>
