@@ -1,5 +1,7 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+// src/pages/join-pr.astro
+// 1階層上の Layout.astro を指定
+import Layout from "../layouts/Layout.astro";
 
 const currentLang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
 const langParam = currentLang === 'en' ? '?lang=en' : '';
@@ -12,15 +14,15 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 >
   <div class="pr-recruit-container">
 
-    <!-- パンくず / 戻るリンク -->
+    <!-- パンくず / 募集一覧に戻るリンク -->
     <div class="breadcrumb">
-      <a href={`${baseUrl}/recruitment${langParam}`}>← メンバー募集トップに戻る</a>
+      <a href={`${baseUrl}/recruitment${langParam}`}>← メンバー募集一覧に戻る</a>
     </div>
 
     <!-- 記事カード本体 -->
     <article class="article-card">
       
-      <!-- 記事ヘッダー -->
+      <!-- ヘッダー -->
       <header class="article-header">
         <div class="badge-row">
           <span class="sub-tag">特定非営利活動法人 日本若者防災復興協会</span>
@@ -38,26 +40,26 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
         </p>
       </div>
 
-      <!-- セクション：やりがい・魅力 -->
+      <!-- やりがいの説明 -->
       <section class="content-section">
         <h2 class="section-heading">広報スタッフのやりがい・魅力</h2>
         <ul class="styled-list">
           <li>
             <strong>防災・復興の重要性を「若者目線」で届ける力になる</strong><br />
-            あなたが作成した記事や投稿がきっかけとなり、同世代の防災意識が高まったり、被災地や地域への支援につながる大きなやりがいがあります。
+            あなたが作成した記事や投稿がきっかけとなり、同世代の防災意識が高まったり、地域の支援につながる大きなやりがいがあります。
           </li>
           <li>
             <strong>実践的なクリエイティブ・発信スキルが身につく</strong><br />
-            公式SNS運用、記事執筆、プレスリリース作成、画像・動画デザインなど、将来どの分野でも役立つ実務スキルが実践の中で身につきます。
+            公式SNS運用、記事執筆、プレスリリース作成、画像・動画デザインなど、将来どの分野でも役立つ実務スキルが身につきます。
           </li>
           <li>
             <strong>全国の志の高い仲間と出会える</strong><br />
-            全国の中学・高校・大学生が集まるチームで、互いに刺激を受け合いながらひとつのプロジェクトを作り上げる達成感を味わえます。
+            全国の中学・高校・大学生が集まるチームで、互いに刺激を受け合いながらひとつのプロジェクトを作り上げる達成感があります。
           </li>
         </ul>
       </section>
 
-      <!-- セクション：主な活動内容 -->
+      <!-- 主な活動内容 -->
       <section class="content-section">
         <h2 class="section-heading">主な活動内容</h2>
         <div class="work-grid">
@@ -79,7 +81,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
         </div>
       </section>
 
-      <!-- セクション：募集条件 -->
+      <!-- 募集条件 -->
       <section class="content-section">
         <h2 class="section-heading">募集条件（必須・歓迎）</h2>
         <table class="req-table">
@@ -117,7 +119,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
         </table>
       </section>
 
-      <!-- CTAボタンエリア -->
+      <!-- CTA -->
       <div class="cta-card">
         <h2>あなたの「好き」や「得意」を活かしてみませんか？</h2>
         <p>
@@ -135,9 +137,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     </article>
 
-    <!-- フッター戻るリンク -->
+    <!-- 戻るリンク -->
     <div class="back-row">
-      <a href={`${baseUrl}/recruitment${langParam}`} class="back-link">← メンバー募集トップに戻る</a>
+      <a href={`${baseUrl}/recruitment${langParam}`} class="back-link">← メンバー募集一覧に戻る</a>
     </div>
 
   </div>
@@ -152,8 +154,6 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     flex-direction: column;
     gap: 24px;
   }
-
-  /* パンくず */
   .breadcrumb a {
     font-size: 12px;
     font-weight: 800;
@@ -163,8 +163,6 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   .breadcrumb a:hover {
     text-decoration: underline;
   }
-
-  /* 記事カード */
   .article-card {
     background: #ffffff;
     border: 1px solid var(--border-color);
@@ -175,8 +173,6 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     gap: 32px;
     box-shadow: 0 4px 16px rgba(0, 43, 84, 0.03);
   }
-
-  /* ヘッダー */
   .article-header {
     border-bottom: 2px solid var(--border-color);
     padding-bottom: 20px;
@@ -215,8 +211,6 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     line-height: 1.4;
     margin: 0;
   }
-
-  /* リード文 */
   .lead-box {
     background: var(--bg-light);
     border-left: 4px solid var(--jyrac-teal);
@@ -229,8 +223,6 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   .lead-box p {
     margin: 0;
   }
-
-  /* セクション共通 */
   .content-section {
     display: flex;
     flex-direction: column;
@@ -244,8 +236,6 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     padding-bottom: 8px;
     margin: 0;
   }
-
-  /* リスト */
   .styled-list {
     list-style: none;
     padding: 0;
@@ -268,8 +258,6 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     left: 2px;
     top: 3px;
   }
-
-  /* 活動内容グリッド */
   .work-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -302,8 +290,6 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     line-height: 1.6;
     margin: 0;
   }
-
-  /* 条件テーブル */
   .req-table {
     width: 100%;
     border-collapse: collapse;
@@ -343,8 +329,6 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     left: 0;
     color: var(--jyrac-teal);
   }
-
-  /* CTAカード */
   .cta-card {
     background: linear-gradient(135deg, var(--jyrac-navy) 0%, #002b54 100%);
     border-radius: 16px;
@@ -386,7 +370,6 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     background: var(--jyrac-teal-dark);
     transform: translateY(-2px);
   }
-
   .back-row {
     text-align: center;
   }
