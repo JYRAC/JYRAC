@@ -13,11 +13,24 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 const logoSrc = `${baseUrl}/JYRAC.jpg`;
 
-// 言語に応じたニュース記事データ
+// 言語に応じたニュース記事データ（資料の実績・沿革を反映）
 const newsArticles = [
   {
-    title: currentLang === 'en' 
-      ? '[Kumamoto Earthquake] Digital Ema (Message) Page Launched' 
+    title: currentLang === 'en'
+      ? '[Disaster Summit] "2026 All-Japan Student Council Disaster Summit Autumn Session DAY 2" Registration Open'
+      : '【全国生徒会防災サミット】「2026 秋の陣 DAY 2（10/24開催）」エントリー受付中',
+    url: "https://summit.jyrac.stki.org/autumn/day2",
+    date: "2026.09.20",
+    category: currentLang === 'en' ? 'Summit' : 'サミット',
+    badgeClass: "badge-recruitment",
+    hasLink: true,
+    summary: currentLang === 'en'
+      ? 'Under the theme "From Thinking About Disaster Prevention to Taking Action," DAY 2 will be held online via Zoom on Saturday, October 24. Free of charge for junior and senior high school students nationwide.'
+      : '10月24日（土）にZoomで開催される「秋の陣 DAY 2」の参加申し込みを受け付けています。テーマは【考える防災から動く防災へ】。全国の中高生・生徒会役員・有志グループの皆さまのご参加をお待ちしています（参加費無料）。'
+  },
+  {
+    title: currentLang === 'en'
+      ? '[Kumamoto Earthquake] Digital Ema (Message) Page Launched'
       : '【熊本地震】願いを届けるデジタル絵馬を公開しました',
     url: "https://nsf.stki.org/ema",
     date: "2026.08.15",
@@ -30,55 +43,55 @@ const newsArticles = [
   },
   {
     title: currentLang === 'en'
-      ? '[2026 Kumamoto Earthquake: Relief Members Wanted] Our Response and Relief Activities'
-      : '【令和8年熊本地震 支援メンバー募集】当団体の対応および支援活動について',
-    url: `/earthquake-notice${langParam}`,
-    date: "2026.07.28",
-    category: currentLang === 'en' ? 'Urgent' : '緊急募集',
-    badgeClass: "badge-urgent",
-    hasLink: true,
-    summary: currentLang === 'en'
-      ? 'Regarding today’s earthquake, JYRAC is launching a youth/student-led fundraising project. We are urgently seeking junior high, high school, and university student members nationwide.'
-      : '本日発生いたしました地震につきまして、当団体では学生・若者を中心とした支援募金プロジェクトの立ち上げを進めております。現在、全国で支援活動にご協力いただける中学生・高校生・大学生等のメンバーを緊急募集しています。'
-  },
-  {
-    title: currentLang === 'en'
-      ? '[Recruitment] Updated Application Guidelines for PR & Disaster Relief Projects'
-      : '【メンバー募集】広報・災害支援など各種プロジェクトの募集情報を更新しました',
+      ? '[Recruitment] Updated Application Guidelines for Projects & Headquarters'
+      : '【メンバー募集】広報・災害支援・各事業本部の募集情報を更新しました',
     url: `/recruitment${langParam}`,
     date: "2026.07.30",
     category: currentLang === 'en' ? 'Recruit' : '募集',
     badgeClass: "badge-recruitment",
     hasLink: true,
     summary: currentLang === 'en'
-      ? 'JYRAC is recruiting youth members across Japan, centered on junior high, high school, and college students. Check out the latest application details here.'
-      : '日本若者防災復興協会（JYRAC）では、全国の中学生・高校生・大学生を中心とした若者メンバーを大募集しています。最新の募集要項はこちらからご確認いただけます。'
+      ? 'JYRAC is widely recruiting youth members centered on junior high, high school, and college students across Japan. Check the recruitment page for details.'
+      : '特定非営利活動法人日本若者防災復興協会（JYRAC）では、全国の中学生・高校生・大学生を中心としたメンバーを広く募集しています。オンライン活動や各事業本部の募集要項はこちらからご確認いただけます。'
   },
   {
     title: currentLang === 'en'
-      ? 'Official Establishment (Registration Completed) of Japan Youth Resilience Action Consortium'
+      ? 'Official Incorporation: Completion of Non-Profit Organization Registration'
       : '特定非営利活動法人 日本若者防災復興協会 正式設立（登記完了）のお知らせ',
-    url: "#",
+    url: `/about${langParam}`,
     date: "2026.06.21",
     category: currentLang === 'en' ? 'News' : 'お知らせ',
     badgeClass: "badge-info",
-    hasLink: false,
+    hasLink: true,
     summary: currentLang === 'en'
-      ? 'JYRAC has completed incorporation registration procedures at the Legal Affairs Bureau and officially established as an NPO. Additionally, to keep initial costs low, we operate on "jyrac.stki.org" generously provided by "TRANs".'
-      : '特定非営利活動法人 日本若者防災復興協会は、法務局での設立登記手続きが完了し、正式に法人として設立いたしました。また、初期運用コストを抑えるため、学生団体の共有ドメインサービスを運営する協力団体「TRANs」の許可を得て、そのドメイン「stki.org」のサブドメインである「jyrac.stki.org」を当団体の公式ウェブサイト・公式ドメインとして無償で借り受け、運用しております。'
+      ? 'Japan Youth Resilience Action Consortium (JYRAC) completed incorporation registration at the Legal Affairs Bureau on June 21, 2026, officially establishing as a certified NPO.'
+      : '特定非営利活動法人 日本若者防災復興協会は、法務局での設立登記手続きが完了し、令和8年6月21日をもって正式に法人として設立いたしました。若者の力で防災・復興を社会に根づかせるべく、持続可能な活動体制を整えてまいります。'
   },
   {
     title: currentLang === 'en'
-      ? 'Establishment Certification Approved by Tokyo Metropolitan Government'
-      : '特定非営利活動法人 日本若者防災復興協会 設立（認証されました）のお知らせ',
-    url: "#",
-    date: "2026.06.17",
-    category: currentLang === 'en' ? 'News' : 'お知らせ',
+      ? '[Event Report] Co-hosted with the Cabinet Office: "All-Japan Student Council Disaster Summit 2026" Held at the House of Representatives'
+      : '【開催報告】内閣府共催「全国生徒会防災サミット2026」を衆議院議員会館にて開催',
+    url: "https://summit.jyrac.stki.org/",
+    date: "2026.03.23",
+    category: currentLang === 'en' ? 'Summit' : 'サミット',
     badgeClass: "badge-info",
-    hasLink: false,
+    hasLink: true,
     summary: currentLang === 'en'
-      ? 'We report that the establishment of Japan Youth Resilience Action Consortium (JYRAC) has been officially certified by the Tokyo Metropolitan Government.'
-      : '東京都より特定非営利活動法人 日本若者防災復興協会の設立が認証されましたことをご報告いたします。'
+      ? 'Co-hosted with the Cabinet Office, the "All-Japan Student Council Disaster Summit 2026" was held at the House of Representatives Members’ Office Building, bringing together students nationwide for policy proposals and dialogue.'
+      : '内閣府共催のもと、東京都・衆議院議員会館にて「全国生徒会防災サミット2026」を開催いたしました。全国の中高生が集い、避難所改善や主体的な防災アクションに関する成果提案を行いました。'
+  },
+  {
+    title: currentLang === 'en'
+      ? '[Award] Received Excellence Award at "U20 Youth Action AWARD 2025" (Regional Revitalization Category)'
+      : '【受賞】「U20若者活動AWARD 2025 地域活性化部門 優秀賞」を受賞しました',
+    url: `/about${langParam}`,
+    date: "2025.12.15",
+    category: currentLang === 'en' ? 'Award' : '実績',
+    badgeClass: "badge-award",
+    hasLink: true,
+    summary: currentLang === 'en'
+      ? 'At the "U20 Youth Action AWARD 2025" hosted by the Japan Youth Career Support Association, JYRAC received the Excellence Award in the Regional Revitalization Category.'
+      : '日本若者キャリア支援協会主催「U20若者活動AWARD 2025」において、地域活性化部門の優秀賞を受賞いたしました。これまでご支援いただいた皆さまに心より感謝申し上げます。'
   }
 ];
 ---
@@ -87,7 +100,6 @@ const newsArticles = [
   <div class="news-page-container">
     
     <header class="news-header">
-      <!-- ロゴ画像 -->
       <div class="header-logo-wrap">
         <img 
           src={logoSrc} 
@@ -105,37 +117,39 @@ const newsArticles = [
       <p class="header-desc">
         {currentLang === 'en' 
           ? 'Delivering the latest news from Japan Youth Resilience Action Consortium (JYRAC).' 
-          : '特定非営利活動法人 日本若者防災復興協会の最新情報をお届けします。'}
+          : '特定非営利活動法人 日本若者防災復興協会の活動・最新情報をお届けします。'}
       </p>
     </header>
 
     <div class="news-list">
       {newsArticles.map((article) => (
         article.hasLink ? (
-          <div class={`news-card ${article.badgeClass === 'badge-urgent' ? 'card-urgent' : 'card-link'}`}>
+          <article class={`news-card ${article.badgeClass === 'badge-urgent' ? 'card-urgent' : 'card-link'}`}>
             <div class="card-header">
               <span class={`badge ${article.badgeClass}`}>{article.category}</span>
-              <span class="news-date">{article.date}</span>
+              <time datetime={article.date} class="news-date">{article.date}</time>
             </div>
             <h2 class="card-title">
-              <a href={article.url}>{article.title}</a>
+              <a href={article.url} target={article.url.startsWith('http') ? '_blank' : '_self'} rel={article.url.startsWith('http') ? 'noopener noreferrer' : ''}>
+                {article.title}
+              </a>
             </h2>
             <p class="card-summary">{article.summary}</p>
             <div class="card-footer">
-              <a href={article.url} class="detail-link">
-                {currentLang === 'en' ? 'View Details ➔' : '詳細ページを見る ➔'}
+              <a href={article.url} target={article.url.startsWith('http') ? '_blank' : '_self'} rel={article.url.startsWith('http') ? 'noopener noreferrer' : ''} class="detail-link">
+                {currentLang === 'en' ? 'View Details ➔' : '詳細を見る ➔'}
               </a>
             </div>
-          </div>
+          </article>
         ) : (
-          <div class="news-card card-normal">
+          <article class="news-card card-normal">
             <div class="card-header">
               <span class={`badge ${article.badgeClass}`}>{article.category}</span>
-              <span class="news-date">{article.date}</span>
+              <time datetime={article.date} class="news-date">{article.date}</time>
             </div>
             <h2 class="card-title-normal">{article.title}</h2>
             <p class="card-summary">{article.summary}</p>
-          </div>
+          </article>
         )
       ))}
     </div>
@@ -147,11 +161,10 @@ const newsArticles = [
   .news-page-container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px 0 40px 0;
+    padding: 20px 16px 40px 16px;
     box-sizing: border-box;
   }
 
-  /* ヘッダー */
   .news-header {
     text-align: center;
     padding-bottom: 24px;
@@ -159,7 +172,6 @@ const newsArticles = [
     border-bottom: 2px solid rgba(0, 154, 166, 0.15);
   }
 
-  /* ロゴエリア */
   .header-logo-wrap {
     margin-bottom: 16px;
     display: flex;
@@ -179,14 +191,15 @@ const newsArticles = [
 
   .sub-title {
     display: inline-block;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 800;
     color: #009aa6;
     background: rgba(0, 154, 166, 0.08);
     padding: 4px 12px;
     border-radius: 20px;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
     margin-bottom: 8px;
+    font-family: ui-monospace, monospace;
   }
 
   .main-title {
@@ -203,7 +216,6 @@ const newsArticles = [
     margin: 0;
   }
 
-  /* ニュースカード一覧 */
   .news-list {
     display: flex;
     flex-direction: column;
@@ -214,13 +226,9 @@ const newsArticles = [
     border-radius: 16px;
     padding: 24px;
     box-sizing: border-box;
-    transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), 
-                box-shadow 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), 
-                border-color 0.3s ease;
-    will-change: transform, box-shadow;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   }
 
-  /* 緊急カード（赤） */
   .card-urgent {
     background: #ffffff;
     border: 2px solid #e53e3e;
@@ -228,12 +236,11 @@ const newsArticles = [
   }
 
   .card-urgent:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 12px 28px rgba(229, 62, 62, 0.18);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(229, 62, 62, 0.15);
     border-color: #c53030;
   }
 
-  /* リンク付き通常カード */
   .card-link {
     background: #ffffff;
     border: 1.5px solid #009aa6;
@@ -241,12 +248,11 @@ const newsArticles = [
   }
 
   .card-link:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 24px rgba(0, 154, 166, 0.18);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0, 154, 166, 0.15);
     border-color: #002b54;
   }
 
-  /* 通常カード（リンクなし） */
   .card-normal {
     background: #f8fafc;
     border: 1px solid rgba(0, 154, 166, 0.15);
@@ -260,7 +266,6 @@ const newsArticles = [
     box-shadow: 0 8px 20px rgba(0, 43, 84, 0.08);
   }
 
-  /* カードヘッダー */
   .card-header {
     display: flex;
     align-items: center;
@@ -271,9 +276,8 @@ const newsArticles = [
   .badge {
     font-size: 11px;
     font-weight: 800;
-    padding: 4px 12px;
+    padding: 4px 10px;
     border-radius: 20px;
-    letter-spacing: 0.04em;
     color: #ffffff;
     display: inline-block;
     line-height: 1.2;
@@ -281,30 +285,32 @@ const newsArticles = [
 
   .badge-urgent {
     background: linear-gradient(135deg, #ff4b4b 0%, #c53030 100%);
-    box-shadow: 0 2px 8px rgba(229, 62, 62, 0.35);
   }
 
   .badge-recruitment {
-    background: linear-gradient(135deg, #00d2e0 0%, #008f9b 100%);
-    box-shadow: 0 2px 8px rgba(0, 180, 197, 0.35);
+    background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
   }
 
   .badge-info {
     background: linear-gradient(135deg, #0a4f8f 0%, #002b54 100%);
-    box-shadow: 0 2px 8px rgba(0, 43, 84, 0.25);
+  }
+
+  .badge-award {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
   }
 
   .news-date {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
     color: #718096;
+    font-family: ui-monospace, monospace;
   }
 
   .card-title {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 800;
     margin: 0 0 10px 0;
-    line-height: 1.4;
+    line-height: 1.45;
   }
 
   .card-title a {
@@ -323,24 +329,24 @@ const newsArticles = [
     font-weight: 800;
     color: #2d3748;
     margin: 0 0 10px 0;
-    line-height: 1.4;
+    line-height: 1.45;
   }
 
   .card-summary {
-    font-size: 14px;
+    font-size: 13px;
     color: #4a5568;
     line-height: 1.6;
     margin: 0;
   }
 
   .card-footer {
-    margin-top: 16px;
+    margin-top: 14px;
     text-align: right;
   }
 
   .detail-link {
     display: inline-block;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 800;
     color: #009aa6;
     text-decoration: none;
@@ -364,7 +370,7 @@ const newsArticles = [
       font-size: 20px;
     }
     .card-title {
-      font-size: 16px;
+      font-size: 15px;
     }
   }
 </style>
