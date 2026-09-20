@@ -1,13 +1,12 @@
 ---
 // src/pages/recruitment.astro
 import Layout from "../layouts/Layout.astro";
-import { translations, type Lang } from "../lib/i18n";
 
-const currentLang: Lang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
+const currentLang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
 const langParam = currentLang === 'en' ? '?lang=en' : '';
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-// 募集ポジション一覧データ
+// 現在募集中のポジション一覧データ
 const jobOpenings = [
   {
     id: "pr",
@@ -19,7 +18,8 @@ const jobOpenings = [
     location: "完全オンライン（全国どこからでも参加可能）",
     timeCommitment: "週1〜3時間程度（試験・学業最優先）",
     summary: "公式Instagram・X・noteの企画運用や、Canvaを用いた画像制作、Web記事・プレスリリース作成などを通じて、若者の防災・減災アクションを社会へ届けるポジションです。",
-    detailLink: `${baseUrl}/recruitment/pr${langParam}`,
+    // src/pages/join-pr.astro へのリンク
+    detailLink: `${baseUrl}/join-pr${langParam}`,
     isFeatured: true
   },
   {
@@ -83,7 +83,6 @@ const jobOpenings = [
 >
   <div class="recruit-list-container">
 
-    <!-- ページ見出し -->
     <header class="page-header">
       <span class="sub-label">JOIN JYRAC</span>
       <h1 class="main-heading">メンバー募集一覧</h1>
@@ -93,7 +92,6 @@ const jobOpenings = [
       </p>
     </header>
 
-    <!-- 参加の流れクイックガイド -->
     <div class="quick-guide-bar">
       <div class="guide-item">
         <span class="step-num">01</span>
@@ -111,7 +109,6 @@ const jobOpenings = [
       </div>
     </div>
 
-    <!-- 募集一覧リスト -->
     <div class="job-list-stack">
       {jobOpenings.map(job => (
         <article class={`job-card ${job.isFeatured ? 'job-card-featured' : ''}`}>
@@ -151,7 +148,6 @@ const jobOpenings = [
       ))}
     </div>
 
-    <!-- 迷っている方向け案内 -->
     <section class="common-notice-card">
       <h3 class="notice-heading">どの部門に応募するか迷っている方へ</h3>
       <p class="notice-desc">
@@ -169,7 +165,6 @@ const jobOpenings = [
       </div>
     </section>
 
-    <!-- 戻るリンク -->
     <div class="back-row">
       <a href={`${baseUrl}/${langParam}`} class="header-link">← ホームに戻る</a>
     </div>
@@ -406,7 +401,6 @@ const jobOpenings = [
   .back-row {
     text-align: center;
   }
-
   @media (max-width: 768px) {
     .job-card {
       flex-direction: column;
