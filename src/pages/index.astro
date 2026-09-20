@@ -85,12 +85,12 @@ const pickupNews = [
 
 <Layout title="特定非営利活動法人 日本若者防災復興協会（JYRAC）" currentTab="home">
 
-  <!-- 1. トップページのファーストビュー改善 -->
+  <!-- 1. トップページのファーストビュー -->
   <section class="relative bg-gradient-to-b from-teal-50/60 via-white to-white py-16 sm:py-24 overflow-hidden border-b border-slate-100">
     <div class="absolute inset-0 mx-auto w-[600px] h-[300px] bg-gradient-to-tr from-teal-200/30 via-blue-200/30 to-orange-200/20 blur-3xl pointer-events-none -z-10 rounded-full"></div>
 
     <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center space-y-6">
-      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-teal-200 shadow-2xs">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-teal-200 shadow-xs">
         <span class="w-2 h-2 rounded-full bg-teal-600 animate-pulse"></span>
         <span class="text-xs font-mono font-black tracking-wide text-teal-800">
           OFFICIAL PORTAL / JYRAC
@@ -106,7 +106,7 @@ const pickupNews = [
 
       <p class="max-w-2xl mx-auto text-sm sm:text-base text-slate-600 leading-relaxed font-medium">
         特定非営利活動法人日本若者防災復興協会（JYRAC）は、全国の中学生・高校生・大学生が主体となり、
-        お堅い「お勉強の防災」を刷新。誰もが自然と関わりたくなる持続可能な防災・復興のスタンダードを築くNPO法人です。
+        お堅い「お勉強の防災」を刷新。誰もが自然と関わりたくなる持続可能な防災・復興のスタンダードを築くNPO法人です[cite: 3]。
       </p>
 
       <!-- 主要ページ誘導ボタン群 -->
@@ -151,17 +151,17 @@ const pickupNews = [
       </div>
     </section>
 
-    <!-- 2. 数字で見るJYRAC（新設） -->
+    <!-- 2. 数字で見るJYRAC -->
     <section class="space-y-8">
       <div class="text-center space-y-2">
         <span class="text-xs font-mono font-black text-[#009aa6] uppercase tracking-widest">FACTS & NUMBERS</span>
         <h2 class="text-2xl sm:text-3xl font-black text-[#002b54]">数字で見るJYRAC</h2>
-        <p class="text-xs sm:text-sm text-slate-500">2024年能登半島地震支援の発足から現在までに積み上げてきた活動実績です。</p>
+        <p class="text-xs sm:text-sm text-slate-500">2024年能登半島地震支援の発足から現在までに積み上げてきた活動実績です[cite: 3]。</p>
       </div>
 
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
         {stats.map(s => (
-          <div class="p-5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs text-center flex flex-col justify-between hover:border-teal-400 transition">
+          <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs text-center flex flex-col justify-between hover:border-teal-400 transition">
             <span class="text-[10px] font-mono font-bold text-slate-400">{s.en}</span>
             <div class="my-3">
               <span class="text-3xl sm:text-4xl font-black text-[#002b54] font-mono">{s.num}</span>
@@ -173,8 +173,8 @@ const pickupNews = [
       </div>
     </section>
 
-    <!-- 3. 事業内容（4大領域の再整理） -->
-    <section id="business-domains" class="space-y-8">
+    <!-- 3. 事業内容（4つの事業領域） -->
+    <section id="business-domains" class="space-y-8 scroll-mt-24">
       <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 pb-4">
         <div class="space-y-1">
           <span class="text-xs font-mono font-black text-[#009aa6] uppercase tracking-widest">BUSINESS DOMAINS</span>
@@ -187,7 +187,7 @@ const pickupNews = [
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {businessDomains.map(b => (
-          <div class="p-7 rounded-3xl bg-white border border-slate-200 shadow-2xs hover:border-[#009aa6] hover:shadow-md transition space-y-4">
+          <div class="p-7 rounded-3xl bg-white border border-slate-200 shadow-xs hover:border-[#009aa6] hover:shadow-md transition space-y-4">
             <div class="flex items-center justify-between">
               <span class="text-xs font-mono font-black text-[#009aa6]">{b.num} / {b.enTitle}</span>
               <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">{b.badge}</span>
@@ -213,7 +213,7 @@ const pickupNews = [
               href={n.url}
               target={n.isExt ? "_blank" : "_self"}
               rel={n.isExt ? "noopener noreferrer" : ""}
-              class="p-4 rounded-2xl bg-white border border-slate-200 hover:border-teal-400 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 no-underline group transition"
+              class="p-4 rounded-2xl bg-white border border-slate-200 hover:border-teal-400 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 no-underline group transition"
             >
               <div class="flex items-center gap-3">
                 <span class={`text-[10px] font-bold px-2.5 py-0.5 rounded shrink-0 ${n.badgeClass}`}>{n.category}</span>
@@ -229,24 +229,24 @@ const pickupNews = [
       </div>
 
       <!-- 沿革要約（1カラム分） -->
-      <div class="bg-slate-50 rounded-3xl p-6 border border-slate-200/80 space-y-4">
+      <div class="bg-slate-50 rounded-3xl p-6 border border-slate-200 space-y-4">
         <h3 class="text-base font-black text-[#002b54] border-b border-slate-200 pb-2">これまでの歩み</h3>
         <ul class="space-y-3 text-xs">
           <li class="space-y-0.5">
             <span class="font-mono font-bold text-teal-700">2024年01月</span>
-            <p class="text-slate-600 font-medium">能登半島地震を受け、学生支援募金プロジェクト発足</p>
+            <p class="text-slate-600 font-medium">能登半島地震を受け、学生支援募金プロジェクト発足[cite: 3]</p>
           </li>
           <li class="space-y-0.5">
             <span class="font-mono font-bold text-teal-700">2025年12月</span>
-            <p class="text-slate-600 font-medium">「U20若者活動AWARD 2025 優秀賞」を受賞</p>
+            <p class="text-slate-600 font-medium">「U20若者活動AWARD 2025 優秀賞」を受賞[cite: 3]</p>
           </li>
           <li class="space-y-0.5">
             <span class="font-mono font-bold text-teal-700">2026年03月</span>
-            <p class="text-slate-600 font-medium">内閣府共催「全国生徒会防災サミット2026」開催（衆議院議員会館）</p>
+            <p class="text-slate-600 font-medium">内閣府共催「全国生徒会防災サミット2026」開催（衆議院議員会館）[cite: 3]</p>
           </li>
           <li class="space-y-0.5">
             <span class="font-mono font-bold text-teal-700">2026年06月</span>
-            <p class="text-slate-600 font-medium">「特定非営利活動法人 日本若者防災復興協会」登記完了</p>
+            <p class="text-slate-600 font-medium">「特定非営利活動法人 日本若者防災復興協会」登記完了[cite: 3]</p>
           </li>
         </ul>
         <a href={`/history${langParam}`} class="block pt-2 text-xs font-bold text-[#009aa6] hover:underline no-underline">
@@ -260,7 +260,7 @@ const pickupNews = [
       <div class="space-y-1">
         <span class="text-xs font-mono font-black text-[#009aa6] uppercase tracking-widest">ORGANIZATION CHART</span>
         <h2 class="text-2xl sm:text-3xl font-black text-[#002b54]">組織体制</h2>
-        <p class="text-xs sm:text-sm text-slate-500">外部向けに組織の全体構造（局・各本部・政調会）を簡潔に示しています。</p>
+        <p class="text-xs sm:text-sm text-slate-500">外部向けに組織の全体構造（局・各本部・政調会）を簡潔に示しています[cite: 3]。</p>
       </div>
 
       <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-xs space-y-6">
@@ -269,36 +269,36 @@ const pickupNews = [
           <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100 space-y-3">
             <span class="font-black text-[#002b54] text-sm block border-b border-slate-200 pb-2">各局（法人基盤・統括）</span>
             <ul class="text-slate-600 space-y-1.5 font-medium">
-              <li>・<strong>事務局</strong>（総務・会計・法務・情報部）</li>
-              <li>・<strong>人事局</strong>（採用・組織育成）</li>
-              <li>・<strong>広報局</strong>（デザイン課・SNS発信・プレス）</li>
-              <li>・<strong>外務局</strong>（渉外・連携）</li>
+              <li>・<strong>事務局</strong>（総務・会計・法務・情報部）[cite: 3]</li>
+              <li>・<strong>人事局</strong>（採用・組織育成）[cite: 3]</li>
+              <li>・<strong>広報局</strong>（デザイン課・SNS発信・プレス）[cite: 3]</li>
+              <li>・<strong>外務局</strong>（渉外・連携）[cite: 3]</li>
             </ul>
           </div>
 
           <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100 space-y-3">
             <span class="font-black text-[#002b54] text-sm block border-b border-slate-200 pb-2">各事業本部（プロジェクト推進）</span>
             <ul class="text-slate-600 space-y-1.5 font-medium">
-              <li>・<strong>防災事業本部</strong>（生徒会サミット・避難所改善）</li>
-              <li>・<strong>復興事業本部</strong>（能登現地支援・食文化継承）</li>
-              <li>・<strong>地域事業本部</strong>（街頭募金・地域防災出展）</li>
-              <li>・<strong>国際事業本部</strong>（Y-VITAL・模擬防災国連）</li>
+              <li>・<strong>防災事業本部</strong>（生徒会サミット・避難所改善）[cite: 3]</li>
+              <li>・<strong>復興事業本部</strong>（能登現地支援・食文化継承）[cite: 3]</li>
+              <li>・<strong>地域事業本部</strong>（街頭募金・地域防災出展）[cite: 3]</li>
+              <li>・<strong>国際事業本部</strong>（Y-VITAL・模擬防災国連）[cite: 3]</li>
             </ul>
           </div>
 
           <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100 space-y-3">
             <span class="font-black text-[#002b54] text-sm block border-b border-slate-200 pb-2">政務調査会 ＆ 連携コミュニティ</span>
             <ul class="text-slate-600 space-y-1.5 font-medium">
-              <li>・<strong>政務調査会</strong>（防災政策提言・法案調査）</li>
-              <li>・<strong>中高生コミュニティ NSF PROJECTS</strong></li>
-              <li>・<strong>避難所議連 事務局支援</strong></li>
+              <li>・<strong>政務調査会</strong>（防災政策提言・法案調査）[cite: 3]</li>
+              <li>・<strong>中高生コミュニティ NSF PROJECTS</strong>[cite: 3]</li>
+              <li>・<strong>避難所議連 事務局支援</strong>[cite: 3]</li>
             </ul>
           </div>
 
         </div>
 
         <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-          <span class="text-slate-500 font-medium">意思決定機関：理事会（理事長：久保 壮太郎） / 監査：監事</span>
+          <span class="text-slate-500 font-medium">意思決定機関：理事会（理事長：久保 壮太郎） / 監査：監事[cite: 3]</span>
           <a href={`/about${langParam}#members`} class="font-bold text-[#009aa6] hover:underline no-underline">
             役員・メンバー紹介ページを見る ➔
           </a>
