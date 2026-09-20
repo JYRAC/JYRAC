@@ -1,74 +1,302 @@
 ---
 // src/pages/governance.astro
 import Layout from '../layouts/Layout.astro';
-import { translations, type Lang } from '../lib/i18n';
 
-// URLから言語パラメーターを取得 (プロトコルをhttpsに整形)
-const requestUrl = Astro.request.url.replace(/^http:/, 'https:');
-const url = new URL(requestUrl);
-const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
-const t = translations[currentLang];
+const currentLang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
+const langParam = currentLang === 'en' ? '?lang=en' : '';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <Layout 
-    title={currentLang === 'en' ? 'Governance & Public Notice | JYRAC' : '情報公開・設立公告 | 日本若者防災復興協会'} 
-    currentTab="governance"
+  title={currentLang === 'en' ? 'Governance & Public Notice | JYRAC' : '情報公開・設立公告 | 日本若者防災復興協会'} 
+  currentTab="governance"
 >
-    <div class="content-panel">
-        <h2>
-            {currentLang === 'en' ? 'Governance & Public Notice' : '情報公開・設立公告'}
-        </h2>
+  <div class="gov-container">
 
-        <div class="alert-box" style="background-color: #eafaf1; border-left: 4px solid #2ecc71; color: #27ae60; padding: 15px; margin-bottom: 20px; border-radius: 4px; font-weight: bold;">
-            <strong>
-                {currentLang === 'en' 
-                    ? '[Notice Regarding Completion of NPO Incorporation Registration]' 
-                    : '【特定非営利活動法人 設立登記完了に関するお知らせ】'}
-            </strong><br>
-            {currentLang === 'en'
-                ? 'In accordance with Article 10, Paragraph 1 of the Act on Promotion of Specified Non-profit Activities, our organization applied for certification of establishment to the Governor of Tokyo. After receiving official approval, we completed incorporation registration at the Tokyo Legal Affairs Bureau and officially became an incorporated entity.'
-                : '当団体は、特定非営利活動促進法第10条第1項の規定に基づき東京都知事へ設立認証申請を行い、正式に認証を受けた後、東京法務局にて設立登記の手続きを完了し、正式に法人として成立いたしました。'}
-        </div>
+    <!-- ページヘッダー -->
+    <header class="gov-header">
+      <span class="sub-label">GOVERNANCE & PUBLIC NOTICE</span>
+      <h1 class="main-heading">
+        {currentLang === 'en' ? 'Governance & Public Notice' : '情報公開・設立公告'}
+      </h1>
+      <p class="desc-text">
+        {currentLang === 'en'
+          ? 'Official public records, legal establishment notices, and disclosure documents of JYRAC.'
+          : '特定非営利活動法人日本若者防災復興協会の設立認証、登記完了公告および公開書類です。'}
+      </p>
+    </header>
 
-        <h3>
-            {currentLang === 'en' ? 'Public Application Documents & Corporate Information' : '縦覧（申請）書類・法人情報'}
-        </h3>
-
-        <table class="info-table">
-            <tr>
-                <th>{currentLang === 'en' ? 'Establishment Date' : '設立（成立）年月日'}</th>
-                <td>{currentLang === 'en' ? 'June 21, 2026' : '令和8年6月21日'}</td>
-            </tr>
-            <tr>
-                <th>{currentLang === 'en' ? 'Approval Status' : '認証年月日'}</th>
-                <td>{currentLang === 'en' ? 'Officially Certified' : '正式認証済'}</td>
-            </tr>
-            <tr>
-                <th>{currentLang === 'en' ? 'Competent Authority' : '所轄庁'}</th>
-                <td>
-                    {currentLang === 'en' 
-                        ? 'Tokyo Metropolitan Government (Bureau of Citizens, Culture and Sports)' 
-                        : '東京都（生活文化スポーツ局 都民生活部 管理法人課）'}
-                </td>
-            </tr>
-            <tr>
-                <th>{currentLang === 'en' ? 'Principal Office' : '主たる事務所'}</th>
-                <td>{currentLang === 'en' ? 'Bunkyo-ku, Tokyo' : '東京都文京区'}</td>
-            </tr>
-            <tr>
-                <th>{currentLang === 'en' ? 'Public Documents' : '公開書類'}</th>
-                <td>
-                    <ul style="margin: 0; padding-left: 20px;">
-                        <li style="margin-bottom: 8px;">
-                            <a href="https://drive.google.com/file/d/1LXItvQ8IgZbzPygGrHyoaYjicA4a5bK5/view?usp=sharing" target="_blank" rel="noopener noreferrer" style="color: #3498db; text-decoration: underline; font-weight: bold;">
-                                {currentLang === 'en' 
-                                    ? 'Establishment Documents Set (Articles of Incorporation, Prospectus, Business Plan, etc.) [Google Drive]' 
-                                    : '設立関連書類一式（定款・設立趣旨書・事業計画書 等）[Google Drive]'}
-                            </a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        </table>
+    <!-- 設立登記完了 アラートカード -->
+    <div class="alert-banner">
+      <div class="alert-badge">
+        <span>STATUS: INCORPORATED</span>
+      </div>
+      <h2 class="alert-title">
+        {currentLang === 'en' 
+          ? 'Notice: Completion of NPO Incorporation Registration' 
+          : '特定非営利活動法人 設立登記完了に関する公告'}
+      </h2>
+      <p class="alert-text">
+        {currentLang === 'en'
+          ? 'In accordance with Article 10, Paragraph 1 of the Act on Promotion of Specified Non-profit Activities, our organization applied for establishment certification to the Governor of Tokyo. Following official approval, we completed incorporation registration at the Tokyo Legal Affairs Bureau on June 21, 2026, officially establishing as a certified NPO.'
+          : '当団体は、特定非営利活動促進法第10条第1項の規定に基づき東京都知事へ設立認証申請を行い、正式に認証を受けた後、東京法務局にて設立登記の手続きを完了し、令和8年6月21日をもって正式に法人として成立いたしました。'}[cite: 1]
+      </p>
     </div>
+
+    <!-- 法人登記・縦覧情報スペック表 -->
+    <section class="section-card">
+      <span class="sub-label">CORPORATE REGISTRATION</span>
+      <h2 class="card-heading">
+        {currentLang === 'en' ? 'Public Corporate Details' : '縦覧（申請）書類・法人情報'}
+      </h2>
+
+      <table class="info-table">
+        <tbody>
+          <tr>
+            <th>{currentLang === 'en' ? 'Corporate Name' : '法人名称'}</th>
+            <td>特定非営利活動法人日本若者防災復興協会（略称：JYRAC）</td>
+          </tr>
+          <tr>
+            <th>{currentLang === 'en' ? 'Establishment Date' : '設立（成立）年月日'}</th>
+            <td>{currentLang === 'en' ? 'June 21, 2026' : '令和8年6月21日（登記完了）'}[cite: 1]</td>
+          </tr>
+          <tr>
+            <th>{currentLang === 'en' ? 'Certification Status' : '認証状況'}</th>
+            <td>{currentLang === 'en' ? 'Officially Certified by Tokyo Metropolitan Government' : '東京都知事より正式認証済'}</td>
+          </tr>
+          <tr>
+            <th>{currentLang === 'en' ? 'Competent Authority' : '所轄庁'}</th>
+            <td>
+              {currentLang === 'en' 
+                ? 'Tokyo Metropolitan Government (Bureau of Citizens, Culture and Sports)' 
+                : '東京都（生活文化スポーツ局 都民生活部 管理法人課）'}
+            </td>
+          </tr>
+          <tr>
+            <th>{currentLang === 'en' ? 'Principal Office' : '主たる事務所の所在地'}</th>
+            <td>東京都文京区小日向四丁目4番6-603号[cite: 1]</td>
+          </tr>
+          <tr>
+            <th>{currentLang === 'en' ? 'Public Disclosure' : '公開書類・定款等'}</th>
+            <td>
+              <div class="doc-link-wrap">
+                <a 
+                  href="https://drive.google.com/file/d/1LXItvQ8IgZbzPygGrHyoaYjicA4a5bK5/view?usp=sharing" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="btn-doc-download"
+                >
+                  <span class="doc-icon">📄</span>
+                  <span>
+                    {currentLang === 'en' 
+                      ? 'View Official Establishment Documents (Articles of Incorporation, Business Plan, Prospectus) [Google Drive] ↗' 
+                      : '設立関連書類一式（定款・設立趣旨書・事業計画書 等）を開く [Google Drive] ↗'}
+                  </span>
+                </a>
+                <span class="doc-note">※別ウィンドウでGoogle Driveの共有ファイルが開きます。</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ガバナンス方針カード -->
+    <section class="section-card">
+      <span class="sub-label">TRANSPARENCY & COMPLIANCE</span>
+      <h2 class="card-heading">
+        {currentLang === 'en' ? 'Governance Policy' : '透明性とガバナンスへの取り組み'}
+      </h2>
+      <p class="body-text">
+        当法人は、若者主体の組織でありながら行政・企業・自治体と連携する公共的なプラットフォームとして、事業運営・会計処理における高い透明性と説明責任を重視しています。監事による業務および財産状況の適正監査を受けるとともに、年度ごとの事業報告書および活動計算書を適時適切に開示してまいります。
+      </p>
+    </section>
+
+    <!-- 戻るリンク -->
+    <div class="back-row">
+      <a href={`${baseUrl}/${langParam}`} class="header-link">← ホームに戻る</a>
+    </div>
+
+  </div>
 </Layout>
+
+<style>
+  .gov-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+  }
+
+  .gov-header {
+    text-align: center;
+  }
+  .sub-label {
+    font-size: 10px;
+    font-family: ui-monospace, monospace;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .main-heading {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--jyrac-navy);
+    line-height: 1.3;
+  }
+  .desc-text {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 6px;
+  }
+
+  /* アラートバナー */
+  .alert-banner {
+    background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+    border: 1px solid #bbf7d0;
+    border-left: 5px solid #16a34a;
+    border-radius: 16px;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .alert-badge {
+    display: inline-block;
+  }
+  .alert-badge span {
+    font-size: 9px;
+    font-family: ui-monospace, monospace;
+    font-weight: 800;
+    background: #dcfce7;
+    color: #15803d;
+    padding: 2px 8px;
+    border-radius: 12px;
+  }
+  .alert-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #166534;
+    margin: 0;
+  }
+  .alert-text {
+    font-size: 13px;
+    color: #374151;
+    line-height: 1.75;
+    margin: 0;
+  }
+
+  /* セクションカード */
+  .section-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .card-heading {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--jyrac-navy);
+    margin: 0;
+  }
+  .body-text {
+    font-size: 13.5px;
+    color: var(--text-main);
+    line-height: 1.8;
+  }
+
+  /* テーブル */
+  .info-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+  .info-table th {
+    width: 28%;
+    background-color: var(--bg-light);
+    color: var(--jyrac-navy);
+    font-weight: 800;
+    text-align: left;
+    padding: 14px 18px;
+    border: 1px solid var(--border-color);
+    vertical-align: middle;
+  }
+  .info-table td {
+    padding: 14px 18px;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    line-height: 1.6;
+  }
+
+  /* 書類リンク */
+  .doc-link-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .btn-doc-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #f0fdfa;
+    border: 1px solid #99f6e4;
+    color: var(--jyrac-teal-dark);
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: background-color 0.2s, border-color 0.2s;
+    width: fit-content;
+  }
+  .btn-doc-download:hover {
+    background: #ccfbf1;
+    border-color: var(--jyrac-teal);
+  }
+  .doc-icon {
+    font-size: 15px;
+  }
+  .doc-note {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .header-link {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+    text-decoration: none;
+  }
+  .header-link:hover {
+    text-decoration: underline;
+  }
+  .back-row {
+    text-align: center;
+    padding-top: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .section-card {
+      padding: 20px 16px;
+    }
+    .info-table th, .info-table td {
+      padding: 10px 12px;
+      font-size: 12px;
+    }
+    .info-table th {
+      width: 35%;
+    }
+    .btn-doc-download {
+      font-size: 12px;
+      width: 100%;
+    }
+  }
+</style>
