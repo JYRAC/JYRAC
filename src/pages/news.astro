@@ -1,0 +1,318 @@
+---
+// src/pages/news.astro
+import Layout from '../layouts/Layout.astro';
+import { type Lang } from '../lib/i18n';
+
+const currentLang: Lang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
+const langParam = currentLang === 'en' ? '?lang=en' : '';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// お知らせ・活動報告データ一覧
+const newsArticles = [
+  {
+    id: "recruit-pr",
+    date: "2026.03.15",
+    category: "RECRUIT",
+    categoryJa: "採用情報",
+    categoryType: "recruit",
+    titleJa: "【広報局員募集】「伝える力」で、若者の防災・減災アクションを社会へ届けるメンバーを募集開始",
+    titleEn: "[PR Staff Wanted] Now Recruiting Youth PR Staff to Amplify Disaster Resilience Action Nationwide",
+    summaryJa: "公式SNS運用、記事執筆、プレスリリース作成、イベント告知画像制作などを行う広報スタッフの募集を開始しました。完全オンラインで全国の中高大生が参加可能です。",
+    summaryEn: "We are actively recruiting PR staff for official SNS management, article writing, and graphic design. Fully remote, open to youth nationwide.",
+    link: `${baseUrl}/join-pr${langParam}`,
+    isExternal: false
+  },
+  {
+    id: "summit-report",
+    date: "2026.02.20",
+    category: "EVENT",
+    categoryJa: "イベント報告",
+    categoryType: "event",
+    titleJa: "内閣府共催「全国生徒会防災サミット」を開催、若者主導の『次世代防災提言』を発表",
+    titleEn: "Held National Student Council Disaster Prevention Summit; Released Next-Generation Youth Policy Proposals",
+    summaryJa: "全国の中高生・生徒会役員が衆議院議員会館に集い、地域防災や避難所環境改善に向けた議論を実施。成果を取りまとめた提言書を国へ提出しました。",
+    summaryEn: "Middle and high school student councils gathered at the House of Representatives to debate regional disaster mitigation, submitting recommendations to the government.",
+    link: "https://summit.jyrac.stki.org",
+    isExternal: true
+  },
+  {
+    id: "noto-relief-report",
+    date: "2026.01.25",
+    category: "ACTIVITY",
+    categoryJa: "復興支援",
+    categoryType: "activity",
+    titleJa: "能登半島現地ボランティア活動報告：珠洲市・七尾市での家屋片付け支援および炊き出し実施",
+    titleEn: "Noto Peninsula Recovery Dispatch: Student Volunteer Operations & Hot Meal Kitchens in Suzu and Nanao",
+    summaryJa: "復興事業本部による能登現地派遣を実施。被災家屋の片付けや仮設住宅での交流・炊き出し、伝統郷土食の継承に向けた現地高校生との意見交換を行いました。",
+    summaryEn: "Youth volunteers conducted debris clearing, warm meal distribution at temporary shelters, and inter-school exchanges with local high schools in Noto.",
+    link: `${baseUrl}/services${langParam}`,
+    isExternal: false
+  },
+  {
+    id: "fundraising-59",
+    date: "2025.12.18",
+    category: "REPORT",
+    categoryJa: "実績報告",
+    categoryType: "report",
+    titleJa: "街頭支援募金活動が累計59回を達成、支援総額260万円を突破いたしました",
+    titleEn: "Relief Street Fundraising Campaigns Reached 59 Sessions, Totaling Over 2.6 Million Yen",
+    summaryJa: "学生主体で実施してきた街頭支援募金が累計59回に達しました。温かいご支援をいただいた皆様に深く御礼申し上げます。全額を現地支援センター等へ届けています。",
+    summaryEn: "Student-led street fundraising reached a milestone of 59 drives, raising 2.6M+ JPY, all delivered directly to local disaster assistance initiatives.",
+    link: `${baseUrl}/history${langParam}`,
+    isExternal: false
+  },
+  {
+    id: "mwcdrr-launch",
+    date: "2025.11.10",
+    category: "INITIATIVE",
+    categoryJa: "事業発表",
+    categoryType: "initiative",
+    titleJa: "国際会議形式で防災政策を学ぶ「模擬防災国連（MWCDRR）」特設サイトを公開",
+    titleEn: "Launched Official Portal for Model World Conference on Disaster Risk Reduction (MWCDRR)",
+    summaryJa: "国連防災世界会議をモデルとした次世代育成プログラム「模擬防災国連」の特設ページを開設しました。国際的な視点から防災・減災を議論する場を提供します。",
+    summaryEn: "Unveiled the project portal for MWCDRR, an educational simulation enabling youth to debate multinational disaster governance and climate adaptation.",
+    link: "https://mwcdrr.jyrac.stki.org/",
+    isExternal: true
+  }
+];
+---
+
+<Layout 
+  title={currentLang === 'en' ? 'News & Announcements | JYRAC' : 'お知らせ・最新情報 | 日本若者防災復興協会'} 
+  currentTab="news"
+>
+  <div class="news-page-container">
+
+    <!-- ページ見出し -->
+    <header class="page-header">
+      <span class="sub-label">NEWS & RELEASES</span>
+      <h1 class="main-heading">
+        {currentLang === 'en' ? 'News & Announcements' : 'お知らせ・最新情報'}
+      </h1>
+      <p class="desc-text">
+        {currentLang === 'en'
+          ? 'Official announcements, press releases, activity reports, and recruitment updates from JYRAC.'
+          : '特定非営利活動法人 日本若者防災復興協会（JYRAC）の最新の活動実績、プレスリリース、募集情報をお届けします。'}
+      </p>
+    </header>
+
+    <!-- お知らせ記事リスト -->
+    <div class="news-list-stack">
+      {newsArticles.map(article => (
+        <article class="news-card">
+          <div class="news-meta">
+            <time class="news-date">{article.date}</time>
+            <span class={`news-category cat-${article.categoryType}`}>
+              {currentLang === 'en' ? article.category : article.categoryJa}
+            </span>
+          </div>
+
+          <h2 class="news-title">
+            <a 
+              href={article.link} 
+              target={article.isExternal ? "_blank" : "_self"}
+              rel={article.isExternal ? "noopener noreferrer" : ""}
+            >
+              {currentLang === 'en' ? article.titleEn : article.titleJa}
+              {article.isExternal && <span class="external-icon">↗</span>}
+            </a>
+          </h2>
+
+          <p class="news-summary">
+            {currentLang === 'en' ? article.summaryEn : article.summaryJa}
+          </p>
+
+          <div class="news-action">
+            <a 
+              href={article.link} 
+              target={article.isExternal ? "_blank" : "_self"}
+              rel={article.isExternal ? "noopener noreferrer" : ""}
+              class="news-link-btn"
+            >
+              {currentLang === 'en' 
+                ? (article.isExternal ? 'Open Link ↗' : 'Read More ➔') 
+                : (article.isExternal ? '詳細ページを開く ↗' : '詳細を見る ➔')}
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <!-- 戻るリンク -->
+    <div class="back-row">
+      <a href={`${baseUrl}/${langParam}`} class="header-link">
+        {currentLang === 'en' ? '← Back to Home' : '← ホームに戻る'}
+      </a>
+    </div>
+
+  </div>
+</Layout>
+
+<style>
+  .news-page-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .page-header {
+    text-align: center;
+  }
+  .sub-label {
+    font-size: 10px;
+    font-family: ui-monospace, monospace;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .main-heading {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--jyrac-navy);
+    line-height: 1.3;
+  }
+  .desc-text {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    line-height: 1.7;
+  }
+
+  /* 記事リスト */
+  .news-list-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .news-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+  }
+  .news-card:hover {
+    border-color: var(--jyrac-teal);
+    box-shadow: 0 4px 16px rgba(0, 43, 84, 0.04);
+    transform: translateY(-2px);
+  }
+
+  /* メタ情報 */
+  .news-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .news-date {
+    font-family: ui-monospace, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted);
+  }
+  .news-category {
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.03em;
+  }
+
+  /* カテゴリ別カラー */
+  .cat-recruit {
+    background: #fef3c7;
+    color: #b45309;
+  }
+  .cat-event {
+    background: #e0f2fe;
+    color: #0369a1;
+  }
+  .cat-activity {
+    background: #ccfbf1;
+    color: #0f766e;
+  }
+  .cat-report {
+    background: #f1f5f9;
+    color: #475569;
+  }
+  .cat-initiative {
+    background: #ede9fe;
+    color: #6d28d9;
+  }
+
+  /* タイトル */
+  .news-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--jyrac-navy);
+    line-height: 1.45;
+    margin: 0;
+  }
+  .news-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .news-title a:hover {
+    color: var(--jyrac-teal);
+  }
+  .external-icon {
+    font-size: 12px;
+    margin-left: 4px;
+    color: var(--jyrac-teal);
+  }
+
+  /* サマリー本文 */
+  .news-summary {
+    font-size: 13px;
+    color: var(--text-main);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* アクションリンク */
+  .news-action {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 4px;
+  }
+  .news-link-btn {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+    text-decoration: none;
+  }
+  .news-link-btn:hover {
+    text-decoration: underline;
+  }
+
+  .header-link {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+    text-decoration: none;
+  }
+  .header-link:hover {
+    text-decoration: underline;
+  }
+  .back-row {
+    text-align: center;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 640px) {
+    .news-card {
+      padding: 18px 16px;
+    }
+    .news-title {
+      font-size: 15.5px;
+    }
+  }
+</style>
