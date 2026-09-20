@@ -1,16 +1,12 @@
 ---
 // src/pages/gioco.astro
 import Layout from '../layouts/Layout.astro';
-import { translations, type Lang } from '../lib/i18n';
+import { type Lang } from '../lib/i18n';
 
-// URLから言語パラメーターを取得 (プロトコルをhttpsに整形)
-const requestUrl = Astro.request.url.replace(/^http:/, 'https:');
-const url = new URL(requestUrl);
-const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
-const t = translations[currentLang];
-
-// 言語に応じたクエリパラメータ（リンク維持用）
+// URLから言語パラメーターを取得
+const currentLang: Lang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
 const langParam = currentLang === 'en' ? '?lang=en' : '';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <Layout 
@@ -64,7 +60,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
             </ul>
           </div>
           <div class="card-bottom">
-            <a href={`/hug-gioco${langParam}`} class="btn-launch btn-gioco" target="_blank" rel="noopener">
+            <a href={`${baseUrl}/hug-gioco${langParam}`} class="btn-launch btn-gioco" target="_blank" rel="noopener">
               {currentLang === 'en' ? '🎲 Launch HUG Gioco ➔' : '🎲 HUG Gioco を起動する ➔'}
             </a>
             <span class="btn-note">
@@ -97,7 +93,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
             </ul>
           </div>
           <div class="card-bottom">
-            <a href={`/bosai8${langParam}`} class="btn-launch btn-bosai8">
+            <a href={`${baseUrl}/bosai8${langParam}`} class="btn-launch btn-bosai8">
               {currentLang === 'en' ? '🐾 Start Bosai 8 ➔' : '🐾 ぼうさい8 をはじめる ➔'}
             </a>
             <span class="btn-note">
@@ -106,6 +102,13 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
           </div>
         </div>
 
+      </div>
+
+      <!-- 戻るリンク -->
+      <div class="back-row">
+        <a href={`${baseUrl}/${langParam}`} class="header-link">
+          {currentLang === 'en' ? '← Back to Home' : '← ホームに戻る'}
+        </a>
       </div>
 
     </div>
@@ -126,11 +129,11 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     --shadow: 0 8px 24px rgba(27, 58, 140, 0.08);
 
     color: var(--ink);
-    padding: 10px 0 30px;
+    padding: clamp(20px, 4vw, 40px) 16px;
   }
 
   .content-panel {
-    max-width: 900px;
+    max-width: 960px;
     margin: 0 auto;
     text-align: left;
   }
@@ -158,14 +161,14 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
   .portal-header h2 {
     font-family: 'Baloo 2', 'Zen Maru Gothic', sans-serif;
     color: var(--navy);
-    font-size: 2rem;
+    font-size: clamp(1.6rem, 4vw, 2rem);
     font-weight: 900;
     margin: 0 0 10px 0;
     line-height: 1.2;
   }
 
   .portal-desc {
-    font-size: 0.98rem;
+    font-size: 0.95rem;
     color: var(--ink-soft);
     line-height: 1.7;
     margin: 0 auto;
@@ -240,7 +243,7 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
 
   .sub-title {
     display: block;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     color: var(--ink-soft);
     font-weight: 700;
     margin-top: 4px;
@@ -283,10 +286,10 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
   .btn-launch {
     font-family: 'Baloo 2', 'Zen Maru Gothic', sans-serif;
     font-weight: 800;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     text-decoration: none;
     border-radius: 999px;
-    padding: 15px 24px;
+    padding: 14px 24px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -329,10 +332,22 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
     font-weight: 600;
   }
 
+  /* 戻るリンク */
+  .back-row {
+    text-align: center;
+    margin-top: 40px;
+  }
+  .header-link {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--jyrac-teal, #009aa6);
+    text-decoration: none;
+  }
+  .header-link:hover {
+    text-decoration: underline;
+  }
+
   @media (max-width: 640px) {
-    .portal-header h2 {
-      font-size: 1.6rem;
-    }
     .tool-card {
       padding: 24px 20px;
     }
