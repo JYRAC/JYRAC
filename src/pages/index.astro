@@ -1,56 +1,54 @@
 ---
 // src/pages/index.astro
 import Layout from "../layouts/Layout.astro";
-import { translations, type Lang } from "../lib/i18n";
 
-const requestUrl = Astro.request.url.replace(/^http:/, 'https:');
-const url = new URL(requestUrl);
-const currentLang: Lang = url.searchParams.get("lang") === "en" ? "en" : "ja";
+const currentLang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
 const langParam = currentLang === 'en' ? '?lang=en' : '';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-// 2. 数字で見るJYRAC データ (2026年6月時点・公式事業説明資料より起算)
+// 2. 数字で見るJYRAC データ (2026年6月時点・公式事業説明資料より起算)[cite: 1]
 const stats = [
-  { num: "478", unit: "名", label: "メンバー総数", en: "MEMBERS" },
-  { num: "23", unit: "件", label: "プロジェクト総数", en: "PROJECTS" },
-  { num: "59", unit: "回", label: "募金活動実施数", en: "FUNDRAISING" },
-  { num: "42", unit: "件", label: "イベント総数", en: "EVENTS" },
-  { num: "10,128", unit: "人", label: "Instagram総フォロワー", en: "FOLLOWERS" },
-  { num: "264", unit: "万円超", label: "募金活動総額", en: "DONATIONS" }
+  { num: "478", unit: "名", label: "メンバー総数", en: "MEMBERS" }, //[cite: 1]
+  { num: "23", unit: "件", label: "プロジェクト総数", en: "PROJECTS" }, //[cite: 1]
+  { num: "59", unit: "回", label: "募金活動実施数", en: "FUNDRAISING" }, //[cite: 1]
+  { num: "42", unit: "件", label: "イベント総数", en: "EVENTS" }, //[cite: 1]
+  { num: "10,128", unit: "人", label: "Instagram総フォロワー", en: "FOLLOWERS" }, //[cite: 1]
+  { num: "264", unit: "万円超", label: "募金活動総額", en: "DONATIONS" } //[cite: 1]
 ];
 
-// 3. 4つの事業領域
+// 3. 4つの事業領域[cite: 1]
 const businessDomains = [
   {
     num: "01",
     title: "防災事業",
     enTitle: "Disaster Prevention",
-    desc: "内閣府共催「全国生徒会防災サミット」の開催や、自衛隊協力のもと実施する避難所宿泊体験・ハザードマップ作成など、若者自らが行う実践教育を推進。",
-    badge: "生徒会サミット・政策提言・避難所改善",
-    link: `/services${langParam}#disaster-prevention`
+    desc: "内閣府共催「全国生徒会防災サミット」の開催や、自衛隊協力のもと実施する避難所宿泊体験・ハザードマップ作成など、若者自らが行う実践教育を推進。", //[cite: 1]
+    badge: "生徒会サミット・政策提言・避難所改善", //[cite: 1]
+    link: `${baseUrl}/services${langParam}#disaster-prevention`
   },
   {
     num: "02",
     title: "復興事業",
     enTitle: "Disaster Recovery",
-    desc: "能登現地での家屋片付けボランティアや炊き出し支援、能登うまいもん再発見プロジェクトを通じた食・伝統文化の継承など、息の長い支援を展開。",
-    badge: "能登現地活動・伝統食文化継承",
-    link: `/services${langParam}#recovery`
+    desc: "能登現地での家屋片付けボランティアや炊き出し支援、能登うまいもん再発見プロジェクトを通じた食・伝統文化の継承など、息の長い支援を展開。", //[cite: 1]
+    badge: "能登現地活動・伝統食文化継承", //[cite: 1]
+    link: `${baseUrl}/services${langParam}#recovery`
   },
   {
     num: "03",
     title: "地域事業",
     enTitle: "Community & Local",
-    desc: "街頭募金活動（計59回・260万円超）の実施や、各地の地域防災イベント出展を通じて、住民と若者が平時から手を取り合う共助の基盤を創出。",
-    badge: "街頭募金・地域防災行事出展",
-    link: `/services${langParam}#community`
+    desc: "街頭募金活動（計59回・260万円超）の実施や、各地の地域防災イベント出展を通じて、住民と若者が平時から手を取り合う共助の基盤を創出。", //[cite: 1]
+    badge: "街頭募金・地域防災行事出展", //[cite: 1]
+    link: `${baseUrl}/services${langParam}#community`
   },
   {
     num: "04",
     title: "国際事業",
     enTitle: "Global Initiatives",
-    desc: "世界の若者と災害対応を議論する「模擬防災国連」や、国際若者防災復興コミュニティ「Y-VITAL構想」を通じ、日本の防災・復興の経験を世界へ発信。",
-    badge: "Y-VITAL構想・模擬防災国連",
-    link: `/services${langParam}#international`
+    desc: "世界の若者と災害対応を議論する「模擬防災国連」や、国際若者防災復興コミュニティ「Y-VITAL構想」を通じ、日本の防災・復興の経験を世界へ発信。", //[cite: 1]
+    badge: "Y-VITAL構想・模擬防災国連", //[cite: 1]
+    link: `${baseUrl}/services${langParam}#international`
   }
 ];
 
@@ -59,7 +57,6 @@ const pickupNews = [
   {
     date: "2026.09.20",
     category: "サミット",
-    badgeClass: "bg-blue-600 text-white",
     title: "「全国生徒会防災サミット2026 秋の陣 DAY 2（10/24開催）」参加エントリー受付中",
     url: "https://summit.jyrac.stki.org/autumn/day2",
     isExt: true
@@ -67,7 +64,6 @@ const pickupNews = [
   {
     date: "2026.08.15",
     category: "復興支援",
-    badgeClass: "bg-teal-600 text-white",
     title: "【熊本地震】被災地へ願いを届けるデジタル絵馬ページを公開しました",
     url: "https://nsf.stki.org/ema",
     isExt: true
@@ -75,9 +71,8 @@ const pickupNews = [
   {
     date: "2026.06.21",
     category: "法人情報",
-    badgeClass: "bg-slate-700 text-white",
-    title: "特定非営利活動法人 日本若者防災復興協会 正式設立（登記完了）のお知らせ",
-    url: `/about${langParam}`,
+    title: "特定非営利活動法人 日本若者防災復興協会 正式設立（登記完了）のお知らせ", //[cite: 1]
+    url: `${baseUrl}/about${langParam}`,
     isExt: false
   }
 ];
@@ -86,253 +81,661 @@ const pickupNews = [
 <Layout title="特定非営利活動法人 日本若者防災復興協会（JYRAC）" currentTab="home">
 
   <!-- 1. トップページのファーストビュー -->
-  <section class="relative bg-gradient-to-b from-teal-50/60 via-white to-white py-16 sm:py-24 overflow-hidden border-b border-slate-100">
-    <div class="absolute inset-0 mx-auto w-[600px] h-[300px] bg-gradient-to-tr from-teal-200/30 via-blue-200/30 to-orange-200/20 blur-3xl pointer-events-none -z-10 rounded-full"></div>
-
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center space-y-6">
-      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-teal-200 shadow-xs">
-        <span class="w-2 h-2 rounded-full bg-teal-600 animate-pulse"></span>
-        <span class="text-xs font-mono font-black tracking-wide text-teal-800">
-          OFFICIAL PORTAL / JYRAC
-        </span>
+  <section class="hero-wrap">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        <span>OFFICIAL PORTAL / JYRAC</span>
       </div>
 
-      <h1 class="text-3xl sm:text-5xl md:text-6xl font-black text-[#002b54] tracking-tight leading-[1.25]">
+      <h1 class="hero-heading">
         「いつもの暮らし」が、いちばん強い。<br />
-        <span class="bg-gradient-to-r from-[#009aa6] via-blue-600 to-teal-500 bg-clip-text text-transparent">
-          若者から始める、新しい防災と復興。
-        </span>
+        <span class="text-gradient">若者から始める、新しい防災と復興。</span> <!--[cite: 1] -->
       </h1>
 
-      <p class="max-w-2xl mx-auto text-sm sm:text-base text-slate-600 leading-relaxed font-medium">
-        特定非営利活動法人日本若者防災復興協会（JYRAC）は、全国の中学生・高校生・大学生が主体となり、
-        お堅い「お勉強の防災」を刷新。誰もが自然と関わりたくなる持続可能な防災・復興のスタンダードを築くNPO法人です[cite: 3]。
+      <p class="hero-subtext">
+        特定非営利活動法人日本若者防災復興協会（JYRAC）は、全国の中学生・高校生・大学生が主体となり、お堅い「お勉強の防災」を刷新。誰もが自然と関わりたくなる持続可能な防災・復興のスタンダードを築くNPO法人です[cite: 1]。
       </p>
 
-      <!-- 主要ページ誘導ボタン群 -->
-      <div class="pt-4 flex flex-wrap items-center justify-center gap-3.5">
-        <a href={`/about${langParam}`} class="px-6 py-3.5 rounded-xl bg-[#002b54] hover:bg-[#0d3b66] text-white text-sm font-black shadow-md transition no-underline">
-          JYRACについて知る
-        </a>
-        <a href="#business-domains" class="px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-[#002b54] border border-slate-300 text-sm font-black shadow-xs transition no-underline">
-          活動・事業領域を見る
-        </a>
-        <a href={`/recruitment${langParam}`} class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#009aa6] to-teal-500 hover:to-[#007c87] text-white text-sm font-black shadow-md transition no-underline active:scale-95">
-          メンバーとして参加する ↗
-        </a>
+      <div class="hero-btn-row">
+        <a href={`${baseUrl}/about${langParam}`} class="btn-hero btn-navy">JYRACについて知る</a> <!--[cite: 1] -->
+        <a href="#business-domains" class="btn-hero btn-white">活動・事業領域を見る</a>
+        <a href={`${baseUrl}/recruitment${langParam}`} class="btn-hero btn-teal">メンバーとして参加する ↗</a>
       </div>
     </div>
   </section>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-24">
+  <div class="content-container">
 
     <!-- 直近の注力プロジェクト（秋の陣 DAY 2） -->
-    <section class="relative overflow-hidden bg-gradient-to-br from-[#002b54] via-slate-900 to-teal-900 rounded-3xl p-6 sm:p-10 text-white shadow-xl">
-      <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-        <div class="space-y-2 max-w-2xl">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/20 border border-teal-400/30 text-teal-300 text-[10px] font-mono font-bold tracking-wider uppercase">
-            NEXT EVENT / 2026.10.24 SAT ZOOM
-          </div>
-          <h2 class="text-2xl sm:text-3xl font-black tracking-tight">
-            全国生徒会防災サミット2026 秋の陣 DAY 2
-          </h2>
-          <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
-            10月のテーマは【考える防災から動く防災へ】。全国の中高生・生徒会役員が集結し、地域や学校の枠を越えたアクションを共創します（参加費完全無料）。
-          </p>
-        </div>
-        <a
-          href="https://summit.jyrac.stki.org/autumn/day2"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-xl bg-white text-[#002b54] font-black text-sm shadow-md hover:bg-teal-50 transition no-underline shrink-0"
-        >
-          <span>詳細・エントリーページを開く ↗</span>
-        </a>
+    <section class="banner-event">
+      <div class="banner-text-col">
+        <span class="event-tag">NEXT EVENT / 2026.10.24 SAT ZOOM</span>
+        <h2 class="event-title">全国生徒会防災サミット2026 秋の陣 DAY 2</h2> <!--[cite: 1] -->
+        <p class="event-desc">
+          10月のテーマは【考える防災から動く防災へ】。全国の中高生・生徒会役員が集結し、地域や学校の枠を越えたアクションを共創します（参加費完全無料）。
+        </p>
       </div>
+      <a href="https://summit.jyrac.stki.org/autumn/day2" target="_blank" rel="noopener noreferrer" class="btn-event">
+        詳細・エントリー ↗
+      </a>
     </section>
 
     <!-- 2. 数字で見るJYRAC -->
-    <section class="space-y-8">
-      <div class="text-center space-y-2">
-        <span class="text-xs font-mono font-black text-[#009aa6] uppercase tracking-widest">FACTS & NUMBERS</span>
-        <h2 class="text-2xl sm:text-3xl font-black text-[#002b54]">数字で見るJYRAC</h2>
-        <p class="text-xs sm:text-sm text-slate-500">2024年能登半島地震支援の発足から現在までに積み上げてきた活動実績です[cite: 3]。</p>
+    <section class="section-block">
+      <div class="section-header-center">
+        <span class="sub-label">FACTS & NUMBERS</span>
+        <h2 class="main-heading">数字で見るJYRAC</h2> <!--[cite: 1] -->
+        <p class="desc-text">2024年能登半島地震支援の発足から現在までに積み上げてきた活動実績です[cite: 1]。</p>
       </div>
 
-      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+      <div class="stats-grid">
         {stats.map(s => (
-          <div class="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs text-center flex flex-col justify-between hover:border-teal-400 transition">
-            <span class="text-[10px] font-mono font-bold text-slate-400">{s.en}</span>
-            <div class="my-3">
-              <span class="text-3xl sm:text-4xl font-black text-[#002b54] font-mono">{s.num}</span>
-              <span class="text-xs font-bold text-slate-600 ml-1">{s.unit}</span>
+          <div class="stat-card">
+            <span class="stat-en">{s.en}</span>
+            <div class="stat-num-row">
+              <span class="stat-num">{s.num}</span> <!--[cite: 1] -->
+              <span class="stat-unit">{s.unit}</span>
             </div>
-            <span class="text-xs font-black text-slate-700">{s.label}</span>
+            <span class="stat-label">{s.label}</span> <!--[cite: 1] -->
           </div>
         ))}
       </div>
     </section>
 
     <!-- 3. 事業内容（4つの事業領域） -->
-    <section id="business-domains" class="space-y-8 scroll-mt-24">
-      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-slate-200 pb-4">
-        <div class="space-y-1">
-          <span class="text-xs font-mono font-black text-[#009aa6] uppercase tracking-widest">BUSINESS DOMAINS</span>
-          <h2 class="text-2xl sm:text-3xl font-black text-[#002b54]">4つの事業領域</h2>
+    <section id="business-domains" class="section-block">
+      <div class="section-header-split">
+        <div>
+          <span class="sub-label">BUSINESS DOMAINS</span>
+          <h2 class="main-heading">4つの事業領域</h2> <!--[cite: 1] -->
         </div>
-        <a href={`/services${langParam}`} class="text-xs font-black text-[#009aa6] hover:underline no-underline">
-          各事業・プロジェクトの詳細を見る ➔
+        <a href={`${baseUrl}/services${langParam}`} class="header-link">
+          各事業の詳細を見る ➔
         </a>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="domain-grid">
         {businessDomains.map(b => (
-          <div class="p-7 rounded-3xl bg-white border border-slate-200 shadow-xs hover:border-[#009aa6] hover:shadow-md transition space-y-4">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-mono font-black text-[#009aa6]">{b.num} / {b.enTitle}</span>
-              <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600">{b.badge}</span>
+          <div class="domain-card">
+            <div class="domain-top">
+              <span class="domain-no">{b.num} / {b.enTitle}</span>
+              <span class="domain-badge">{b.badge}</span> <!--[cite: 1] -->
             </div>
-            <h3 class="text-xl font-black text-[#002b54]">{b.title}</h3>
-            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">{b.desc}</p>
+            <h3 class="domain-title">{b.title}</h3> <!--[cite: 1] -->
+            <p class="domain-desc">{b.desc}</p> <!--[cite: 1] -->
           </div>
         ))}
       </div>
     </section>
 
-    <!-- 4. 最新ニュース ＆ 活動沿革ダイジェスト -->
-    <section class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <!-- ニュース枠（2カラム分） -->
-      <div class="lg:col-span-2 space-y-4">
-        <div class="flex items-center justify-between border-b border-slate-200 pb-3">
-          <h3 class="text-lg font-black text-[#002b54]">最新情報・お知らせ</h3>
-          <a href={`/news${langParam}`} class="text-xs font-bold text-[#009aa6] hover:underline no-underline">すべて見る ➔</a>
+    <!-- 4. 最新ニュース ＆ 活動沿革 -->
+    <section class="news-history-grid">
+      <!-- ニュース -->
+      <div class="news-column">
+        <div class="section-header-split" style="margin-bottom: 16px;">
+          <h3 style="font-size: 18px; font-weight: 800; color: var(--jyrac-navy);">最新情報・お知らせ</h3>
+          <a href={`${baseUrl}/news${langParam}`} class="header-link">すべて見る ➔</a>
         </div>
-        <div class="space-y-2.5">
+        <div class="news-list-vertical">
           {pickupNews.map(n => (
             <a
               href={n.url}
               target={n.isExt ? "_blank" : "_self"}
               rel={n.isExt ? "noopener noreferrer" : ""}
-              class="p-4 rounded-2xl bg-white border border-slate-200 hover:border-teal-400 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 no-underline group transition"
+              class="news-row-card"
             >
-              <div class="flex items-center gap-3">
-                <span class={`text-[10px] font-bold px-2.5 py-0.5 rounded shrink-0 ${n.badgeClass}`}>{n.category}</span>
-                <time class="text-xs font-mono text-slate-400 shrink-0">{n.date}</time>
-                <span class="text-xs sm:text-sm font-bold text-slate-800 group-hover:text-teal-600 transition truncate">
-                  {n.title}
-                </span>
+              <div class="news-row-left">
+                <span class="news-badge">{n.category}</span>
+                <time class="news-time">{n.date}</time>
+                <span class="news-title-text">{n.title}</span> <!--[cite: 1] -->
               </div>
-              <span class="text-xs font-bold text-teal-600 shrink-0 hidden sm:inline">詳細 →</span>
+              <span class="arrow-sym">→</span>
             </a>
           ))}
         </div>
       </div>
 
-      <!-- 沿革要約（1カラム分） -->
-      <div class="bg-slate-50 rounded-3xl p-6 border border-slate-200 space-y-4">
-        <h3 class="text-base font-black text-[#002b54] border-b border-slate-200 pb-2">これまでの歩み</h3>
-        <ul class="space-y-3 text-xs">
-          <li class="space-y-0.5">
-            <span class="font-mono font-bold text-teal-700">2024年01月</span>
-            <p class="text-slate-600 font-medium">能登半島地震を受け、学生支援募金プロジェクト発足[cite: 3]</p>
+      <!-- 沿革 -->
+      <div class="history-column">
+        <h3 style="font-size: 16px; font-weight: 800; color: var(--jyrac-navy); border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">これまでの歩み</h3> <!--[cite: 1] -->
+        <ul class="history-list">
+          <li>
+            <strong>2024年01月</strong> <!--[cite: 1] -->
+            <p>能登半島地震を受け、学生支援募金プロジェクト発足[cite: 1]</p>
           </li>
-          <li class="space-y-0.5">
-            <span class="font-mono font-bold text-teal-700">2025年12月</span>
-            <p class="text-slate-600 font-medium">「U20若者活動AWARD 2025 優秀賞」を受賞[cite: 3]</p>
+          <li>
+            <strong>2025年12月</strong> <!--[cite: 1] -->
+            <p>「U20若者活動AWARD 2025 優秀賞」を受賞[cite: 1]</p>
           </li>
-          <li class="space-y-0.5">
-            <span class="font-mono font-bold text-teal-700">2026年03月</span>
-            <p class="text-slate-600 font-medium">内閣府共催「全国生徒会防災サミット2026」開催（衆議院議員会館）[cite: 3]</p>
+          <li>
+            <strong>2026年03月</strong> <!--[cite: 1] -->
+            <p>内閣府共催「全国生徒会防災サミット2026」開催（衆議院議員会館）[cite: 1]</p>
           </li>
-          <li class="space-y-0.5">
-            <span class="font-mono font-bold text-teal-700">2026年06月</span>
-            <p class="text-slate-600 font-medium">「特定非営利活動法人 日本若者防災復興協会」登記完了[cite: 3]</p>
+          <li>
+            <strong>2026年06月</strong> <!--[cite: 1] -->
+            <p>「特定非営利活動法人 日本若者防災復興協会」登記完了[cite: 1]</p>
           </li>
         </ul>
-        <a href={`/history${langParam}`} class="block pt-2 text-xs font-bold text-[#009aa6] hover:underline no-underline">
+        <a href={`${baseUrl}/history${langParam}`} class="header-link" style="display: block; margin-top: 12px;">
           詳細な沿革・実績年表を見る ➔
         </a>
       </div>
     </section>
 
-    <!-- 7. 組織図の簡潔掲載（局・本部・政調会まで） -->
-    <section class="space-y-6">
-      <div class="space-y-1">
-        <span class="text-xs font-mono font-black text-[#009aa6] uppercase tracking-widest">ORGANIZATION CHART</span>
-        <h2 class="text-2xl sm:text-3xl font-black text-[#002b54]">組織体制</h2>
-        <p class="text-xs sm:text-sm text-slate-500">外部向けに組織の全体構造（局・各本部・政調会）を簡潔に示しています[cite: 3]。</p>
+    <!-- 7. 組織体制 -->
+    <section class="section-block">
+      <div style="margin-bottom: 20px;">
+        <span class="sub-label">ORGANIZATION CHART</span>
+        <h2 class="main-heading">組織体制</h2> <!--[cite: 1] -->
+        <p class="desc-text">外部向けに組織の全体構造（局・各本部・政調会）を簡潔に示しています[cite: 1]。</p>
       </div>
 
-      <div class="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200 shadow-xs space-y-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
-          
-          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100 space-y-3">
-            <span class="font-black text-[#002b54] text-sm block border-b border-slate-200 pb-2">各局（法人基盤・統括）</span>
-            <ul class="text-slate-600 space-y-1.5 font-medium">
-              <li>・<strong>事務局</strong>（総務・会計・法務・情報部）[cite: 3]</li>
-              <li>・<strong>人事局</strong>（採用・組織育成）[cite: 3]</li>
-              <li>・<strong>広報局</strong>（デザイン課・SNS発信・プレス）[cite: 3]</li>
-              <li>・<strong>外務局</strong>（渉外・連携）[cite: 3]</li>
+      <div class="org-box">
+        <div class="org-3col">
+          <div class="org-card">
+            <h4>各局（法人基盤・統括）</h4>
+            <ul>
+              <li>・<strong>事務局</strong>（総務・会計・法務・情報部）[cite: 1]</li>
+              <li>・<strong>人事局</strong>（採用・組織育成）[cite: 1]</li>
+              <li>・<strong>広報局</strong>（デザイン課・SNS発信・プレス）[cite: 1]</li>
+              <li>・<strong>外務局</strong>（渉外・連携）[cite: 1]</li>
             </ul>
           </div>
 
-          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100 space-y-3">
-            <span class="font-black text-[#002b54] text-sm block border-b border-slate-200 pb-2">各事業本部（プロジェクト推進）</span>
-            <ul class="text-slate-600 space-y-1.5 font-medium">
-              <li>・<strong>防災事業本部</strong>（生徒会サミット・避難所改善）[cite: 3]</li>
-              <li>・<strong>復興事業本部</strong>（能登現地支援・食文化継承）[cite: 3]</li>
-              <li>・<strong>地域事業本部</strong>（街頭募金・地域防災出展）[cite: 3]</li>
-              <li>・<strong>国際事業本部</strong>（Y-VITAL・模擬防災国連）[cite: 3]</li>
+          <div class="org-card">
+            <h4>各事業本部（プロジェクト推進）</h4>
+            <ul>
+              <li>・<strong>防災事業本部</strong>（生徒会サミット・避難所改善）[cite: 1]</li>
+              <li>・<strong>復興事業本部</strong>（能登現地支援・食文化継承）[cite: 1]</li>
+              <li>・<strong>地域事業本部</strong>（街頭募金・地域防災出展）[cite: 1]</li>
+              <li>・<strong>国際事業本部</strong>（Y-VITAL・模擬防災国連）[cite: 1]</li>
             </ul>
           </div>
 
-          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-100 space-y-3">
-            <span class="font-black text-[#002b54] text-sm block border-b border-slate-200 pb-2">政務調査会 ＆ 連携コミュニティ</span>
-            <ul class="text-slate-600 space-y-1.5 font-medium">
-              <li>・<strong>政務調査会</strong>（防災政策提言・法案調査）[cite: 3]</li>
-              <li>・<strong>中高生コミュニティ NSF PROJECTS</strong>[cite: 3]</li>
-              <li>・<strong>避難所議連 事務局支援</strong>[cite: 3]</li>
+          <div class="org-card">
+            <h4>政務調査会 ＆ 連携コミュニティ</h4>
+            <ul>
+              <li>・<strong>政務調査会</strong>（防災政策提言・法案調査）[cite: 1]</li>
+              <li>・<strong>中高生コミュニティ NSF PROJECTS</strong>[cite: 1]</li>
+              <li>・<strong>避難所議連 事務局支援</strong>[cite: 1]</li>
             </ul>
           </div>
-
         </div>
 
-        <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-          <span class="text-slate-500 font-medium">意思決定機関：理事会（理事長：久保 壮太郎） / 監査：監事[cite: 3]</span>
-          <a href={`/about${langParam}#members`} class="font-bold text-[#009aa6] hover:underline no-underline">
-            役員・メンバー紹介ページを見る ➔
-          </a>
+        <div class="org-footer">
+          <span>意思決定機関：理事会（理事長：久保 壮太郎） / 監査：監事[cite: 1]</span>
+          <a href={`${baseUrl}/about${langParam}#members`} class="header-link">役員・メンバー紹介を見る ➔</a> <!--[cite: 1] -->
         </div>
       </div>
     </section>
 
     <!-- 8. メンバー募集 CTA -->
-    <section class="rounded-3xl bg-gradient-to-r from-[#002b54] via-slate-900 to-[#002b54] text-white p-8 sm:p-14 text-center space-y-6 shadow-xl">
-      <div class="max-w-2xl mx-auto space-y-3">
-        <h2 class="text-2xl sm:text-4xl font-black tracking-tight">
-          あなたもJYRACで、未来を動かしませんか？
-        </h2>
-        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed font-medium">
-          全国の中学・高校・大学生がオンライン・地方問わず多数活動しています。
-          企画、デザイン、広報、政策提言、現地支援など、あなたの強みを発揮できるチームが必ずあります。
-        </p>
-      </div>
-      <div class="pt-2 flex flex-wrap items-center justify-center gap-4">
-        <a
-          href={`/recruitment${langParam}`}
-          class="px-8 py-4 rounded-xl bg-gradient-to-r from-[#009aa6] to-teal-500 hover:to-[#007c87] text-white font-black text-sm shadow-lg transition no-underline active:scale-95"
-        >
-          募集要項・活動詳細を見る ➔
-        </a>
-        <a
-          href={`/contact${langParam}`}
-          class="px-6 py-4 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-sm border border-white/20 transition no-underline"
-        >
-          お問い合わせ
-        </a>
+    <section class="cta-banner">
+      <h2>あなたもJYRACで、未来を動かしませんか？</h2>
+      <p>
+        全国の中学・高校・大学生がオンライン・地方問わず多数活動しています。企画、デザイン、広報、政策提言、現地支援など、あなたの強みを発揮できるチームが必ずあります。
+      </p>
+      <div class="cta-btn-row">
+        <a href={`${baseUrl}/recruitment${langParam}`} class="btn-cta-teal">募集要項・活動詳細を見る ➔</a>
+        <a href={`${baseUrl}/contact${langParam}`} class="btn-cta-trans">お問い合わせ</a>
       </div>
     </section>
 
   </div>
 
 </Layout>
+
+<style>
+  /* ページ内スタイル（Tailwind不使用・完全標準CSS） */
+  .hero-wrap {
+    background: linear-gradient(180deg, #f0fdfa 0%, #ffffff 100%);
+    padding: 64px 16px;
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+  }
+  .hero-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff;
+    border: 1px solid #ccfbf1;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+    font-family: ui-monospace, monospace;
+  }
+  .pulse-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--jyrac-teal);
+  }
+  .hero-heading {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--jyrac-navy);
+    line-height: 1.3;
+  }
+  .text-gradient {
+    background: linear-gradient(90deg, var(--jyrac-teal) 0%, #2563eb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-subtext {
+    max-width: 680px;
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+  .hero-btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .btn-hero {
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  .btn-hero:hover {
+    transform: translateY(-2px);
+  }
+  .btn-navy {
+    background: var(--jyrac-navy);
+    color: #ffffff;
+  }
+  .btn-white {
+    background: #ffffff;
+    color: var(--jyrac-navy);
+    border: 1px solid var(--border-color);
+  }
+  .btn-teal {
+    background: var(--jyrac-teal);
+    color: #ffffff;
+  }
+
+  /* コンテナ */
+  .content-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+  }
+
+  /* イベントバナー */
+  .banner-event {
+    background: linear-gradient(135deg, var(--jyrac-navy) 0%, #064e3b 100%);
+    border-radius: 20px;
+    padding: 32px;
+    color: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+  }
+  .banner-text-col {
+    max-width: 700px;
+  }
+  .event-tag {
+    font-size: 10px;
+    font-family: ui-monospace, monospace;
+    font-weight: 800;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 3px 10px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .event-title {
+    font-size: 22px;
+    font-weight: 900;
+    margin-bottom: 6px;
+  }
+  .event-desc {
+    font-size: 13px;
+    color: #cbd5e1;
+    line-height: 1.6;
+  }
+  .btn-event {
+    background: #ffffff;
+    color: var(--jyrac-navy);
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  /* セクション共通見出し */
+  .section-header-center {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .section-header-split {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 20px;
+  }
+  .sub-label {
+    font-size: 10px;
+    font-family: ui-monospace, monospace;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+    display: block;
+    letter-spacing: 0.08em;
+  }
+  .main-heading {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--jyrac-navy);
+  }
+  .desc-text {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .header-link {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+    text-decoration: none;
+  }
+  .header-link:hover {
+    text-decoration: underline;
+  }
+
+  /* 数字で見るJYRAC */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+  }
+  .stat-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-en {
+    font-size: 9px;
+    font-family: ui-monospace, monospace;
+    color: #94a3b8;
+    display: block;
+  }
+  .stat-num-row {
+    margin: 8px 0;
+  }
+  .stat-num {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--jyrac-navy);
+    font-family: ui-monospace, monospace;
+  }
+  .stat-unit {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text-muted);
+    margin-left: 2px;
+  }
+  .stat-label {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  /* 4大事業領域 */
+  .domain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .domain-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .domain-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .domain-no {
+    font-size: 11px;
+    font-family: ui-monospace, monospace;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+  }
+  .domain-badge {
+    font-size: 9px;
+    background: #f1f5f9;
+    color: var(--text-muted);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+  .domain-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--jyrac-navy);
+  }
+  .domain-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* ニュース & 沿革 */
+  .news-history-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+  }
+  .news-list-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .news-row-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    color: var(--text-main);
+    transition: border-color 0.2s;
+  }
+  .news-row-card:hover {
+    border-color: var(--jyrac-teal);
+  }
+  .news-row-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    overflow: hidden;
+  }
+  .news-badge {
+    font-size: 10px;
+    font-weight: 800;
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 2px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .news-time {
+    font-size: 11px;
+    font-family: ui-monospace, monospace;
+    color: #94a3b8;
+  }
+  .news-title-text {
+    font-size: 13px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .arrow-sym {
+    color: var(--jyrac-teal);
+    font-size: 12px;
+  }
+  .history-column {
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 20px;
+  }
+  .history-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .history-list strong {
+    font-size: 11px;
+    font-family: ui-monospace, monospace;
+    color: var(--jyrac-teal);
+    display: block;
+  }
+  .history-list p {
+    font-size: 12px;
+    color: var(--text-main);
+  }
+
+  /* 組織図 */
+  .org-box {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .org-3col {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .org-card {
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .org-card h4 {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--jyrac-navy);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 6px;
+    margin-bottom: 10px;
+  }
+  .org-card ul {
+    list-style: none;
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--text-muted);
+  }
+  .org-footer {
+    border-top: 1px solid var(--border-color);
+    margin-top: 16px;
+    padding-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* CTA */
+  .cta-banner {
+    background: var(--jyrac-navy);
+    border-radius: 20px;
+    padding: 48px 24px;
+    text-align: center;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  .cta-banner h2 {
+    font-size: 24px;
+    font-weight: 900;
+  }
+  .cta-banner p {
+    max-width: 600px;
+    font-size: 13px;
+    color: #cbd5e1;
+    line-height: 1.7;
+  }
+  .cta-btn-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .btn-cta-teal {
+    background: var(--jyrac-teal);
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+  }
+  .btn-cta-trans {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  @media (max-width: 860px) {
+    .banner-event {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .news-history-grid {
+      grid-template-columns: 1fr;
+    }
+    .news-row-card {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .arrow-sym {
+      display: none;
+    }
+  }
+</style>
