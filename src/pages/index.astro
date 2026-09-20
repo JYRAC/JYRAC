@@ -6,48 +6,48 @@ const currentLang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
 const langParam = currentLang === 'en' ? '?lang=en' : '';
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-// 2. 数字で見るJYRAC データ (2026年6月時点・公式事業説明資料より起算)[cite: 1]
+// 2. 数字で見るJYRAC データ (2026年6月時点・公式事業説明資料より起算)
 const stats = [
-  { num: "478", unit: "名", label: "メンバー総数", en: "MEMBERS" }, //[cite: 1]
-  { num: "23", unit: "件", label: "プロジェクト総数", en: "PROJECTS" }, //[cite: 1]
-  { num: "59", unit: "回", label: "募金活動実施数", en: "FUNDRAISING" }, //[cite: 1]
-  { num: "42", unit: "件", label: "イベント総数", en: "EVENTS" }, //[cite: 1]
-  { num: "10,128", unit: "人", label: "Instagram総フォロワー", en: "FOLLOWERS" }, //[cite: 1]
-  { num: "264", unit: "万円超", label: "募金活動総額", en: "DONATIONS" } //[cite: 1]
+  { num: "478", unit: "名", label: "メンバー総数", en: "MEMBERS" }, 
+  { num: "23", unit: "件", label: "プロジェクト総数", en: "PROJECTS" },
+  { num: "59", unit: "回", label: "募金活動実施数", en: "FUNDRAISING" }, 
+  { num: "42", unit: "件", label: "イベント総数", en: "EVENTS" }, 
+  { num: "10,128", unit: "人", label: "Instagram総フォロワー", en: "FOLLOWERS" }, 
+  { num: "264", unit: "万円超", label: "募金活動総額", en: "DONATIONS" }
 ];
 
-// 3. 4つの事業領域[cite: 1]
+// 3. 4つの事業領域
 const businessDomains = [
   {
     num: "01",
     title: "防災事業",
     enTitle: "Disaster Prevention",
-    desc: "内閣府共催「全国生徒会防災サミット」の開催や、自衛隊協力のもと実施する避難所宿泊体験・ハザードマップ作成など、若者自らが行う実践教育を推進。", //[cite: 1]
-    badge: "生徒会サミット・政策提言・避難所改善", //[cite: 1]
+    desc: "内閣府共催「全国生徒会防災サミット」の開催や、自衛隊協力のもと実施する避難所宿泊体験・ハザードマップ作成など、若者自らが行う実践教育を推進。", 
+    badge: "生徒会サミット・政策提言・避難所改善", 
     link: `${baseUrl}/services${langParam}#disaster-prevention`
   },
   {
     num: "02",
     title: "復興事業",
     enTitle: "Disaster Recovery",
-    desc: "能登現地での家屋片付けボランティアや炊き出し支援、能登うまいもん再発見プロジェクトを通じた食・伝統文化の継承など、息の長い支援を展開。", //[cite: 1]
-    badge: "能登現地活動・伝統食文化継承", //[cite: 1]
+    desc: "能登現地での家屋片付けボランティアや炊き出し支援、能登うまいもん再発見プロジェクトを通じた食・伝統文化の継承など、息の長い支援を展開。", 
+    badge: "能登現地活動・伝統食文化継承", 
     link: `${baseUrl}/services${langParam}#recovery`
   },
   {
     num: "03",
     title: "地域事業",
     enTitle: "Community & Local",
-    desc: "街頭募金活動（計59回・260万円超）の実施や、各地の地域防災イベント出展を通じて、住民と若者が平時から手を取り合う共助の基盤を創出。", //[cite: 1]
-    badge: "街頭募金・地域防災行事出展", //[cite: 1]
+    desc: "街頭募金活動（計59回・260万円超）の実施や、各地の地域防災イベント出展を通じて、住民と若者が平時から手を取り合う共助の基盤を創出。", 
+    badge: "街頭募金・地域防災行事出展", 
     link: `${baseUrl}/services${langParam}#community`
   },
   {
     num: "04",
     title: "国際事業",
     enTitle: "Global Initiatives",
-    desc: "世界の若者と災害対応を議論する「模擬防災国連」や、国際若者防災復興コミュニティ「Y-VITAL構想」を通じ、日本の防災・復興の経験を世界へ発信。", //[cite: 1]
-    badge: "Y-VITAL構想・模擬防災国連", //[cite: 1]
+    desc: "世界の若者と災害対応を議論する「模擬防災国連」や、国際若者防災復興コミュニティ「Y-VITAL構想」を通じ、日本の防災・復興の経験を世界へ発信。", 
+    badge: "Y-VITAL構想・模擬防災国連", 
     link: `${baseUrl}/services${langParam}#international`
   }
 ];
@@ -89,8 +89,8 @@ const pickupNews = [
       </div>
 
       <h1 class="hero-heading">
-        「いつもの暮らし」が、いちばん強い。<br />
-        <span class="text-gradient">若者から始める、新しい防災と復興。</span> <!--[cite: 1] -->
+        「いつもの暮らし」が、いちばん強い。<br/>
+        <span class="text-gradient">若者から始める、新しい防災と復興。</span> 
       </h1>
 
       <p class="hero-subtext">
@@ -98,7 +98,7 @@ const pickupNews = [
       </p>
 
       <div class="hero-btn-row">
-        <a href={`${baseUrl}/about${langParam}`} class="btn-hero btn-navy">JYRACについて知る</a> <!--[cite: 1] -->
+        <a href={`${baseUrl}/about${langParam}`} class="btn-hero btn-navy">JYRACについて知る</a> 
         <a href="#business-domains" class="btn-hero btn-white">活動・事業領域を見る</a>
         <a href={`${baseUrl}/recruitment${langParam}`} class="btn-hero btn-teal">メンバーとして参加する ↗</a>
       </div>
@@ -111,7 +111,7 @@ const pickupNews = [
     <section class="banner-event">
       <div class="banner-text-col">
         <span class="event-tag">NEXT EVENT / 2026.10.24 SAT ZOOM</span>
-        <h2 class="event-title">全国生徒会防災サミット2026 秋の陣 DAY 2</h2> <!--[cite: 1] -->
+        <h2 class="event-title">全国生徒会防災サミット2026 秋の陣 DAY 2</h2>
         <p class="event-desc">
           10月のテーマは【考える防災から動く防災へ】。全国の中高生・生徒会役員が集結し、地域や学校の枠を越えたアクションを共創します（参加費完全無料）。
         </p>
@@ -125,8 +125,8 @@ const pickupNews = [
     <section class="section-block">
       <div class="section-header-center">
         <span class="sub-label">FACTS & NUMBERS</span>
-        <h2 class="main-heading">数字で見るJYRAC</h2> <!--[cite: 1] -->
-        <p class="desc-text">2024年能登半島地震支援の発足から現在までに積み上げてきた活動実績です[cite: 1]。</p>
+        <h2 class="main-heading">数字で見るJYRAC</h2>
+        <p class="desc-text">2024年能登半島地震支援の発足から現在までに積み上げてきた活動実績です。</p>
       </div>
 
       <div class="stats-grid">
@@ -134,10 +134,10 @@ const pickupNews = [
           <div class="stat-card">
             <span class="stat-en">{s.en}</span>
             <div class="stat-num-row">
-              <span class="stat-num">{s.num}</span> <!--[cite: 1] -->
+              <span class="stat-num">{s.num}</span> 
               <span class="stat-unit">{s.unit}</span>
             </div>
-            <span class="stat-label">{s.label}</span> <!--[cite: 1] -->
+            <span class="stat-label">{s.label}</span> 
           </div>
         ))}
       </div>
@@ -148,7 +148,7 @@ const pickupNews = [
       <div class="section-header-split">
         <div>
           <span class="sub-label">BUSINESS DOMAINS</span>
-          <h2 class="main-heading">4つの事業領域</h2> <!--[cite: 1] -->
+          <h2 class="main-heading">4つの事業領域</h2> 
         </div>
         <a href={`${baseUrl}/services${langParam}`} class="header-link">
           各事業の詳細を見る ➔
@@ -160,10 +160,10 @@ const pickupNews = [
           <div class="domain-card">
             <div class="domain-top">
               <span class="domain-no">{b.num} / {b.enTitle}</span>
-              <span class="domain-badge">{b.badge}</span> <!--[cite: 1] -->
+              <span class="domain-badge">{b.badge}</span>
             </div>
-            <h3 class="domain-title">{b.title}</h3> <!--[cite: 1] -->
-            <p class="domain-desc">{b.desc}</p> <!--[cite: 1] -->
+            <h3 class="domain-title">{b.title}</h3> 
+            <p class="domain-desc">{b.desc}</p> 
           </div>
         ))}
       </div>
@@ -188,7 +188,7 @@ const pickupNews = [
               <div class="news-row-left">
                 <span class="news-badge">{n.category}</span>
                 <time class="news-time">{n.date}</time>
-                <span class="news-title-text">{n.title}</span> <!--[cite: 1] -->
+                <span class="news-title-text">{n.title}</span> 
               </div>
               <span class="arrow-sym">→</span>
             </a>
@@ -198,23 +198,23 @@ const pickupNews = [
 
       <!-- 沿革 -->
       <div class="history-column">
-        <h3 style="font-size: 16px; font-weight: 800; color: var(--jyrac-navy); border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">これまでの歩み</h3> <!--[cite: 1] -->
+        <h3 style="font-size: 16px; font-weight: 800; color: var(--jyrac-navy); border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">これまでの歩み</h3> 
         <ul class="history-list">
           <li>
-            <strong>2024年01月</strong> <!--[cite: 1] -->
-            <p>能登半島地震を受け、学生支援募金プロジェクト発足[cite: 1]</p>
+            <strong>2024年01月</strong>
+            <p>能登半島地震を受け、学生支援募金プロジェクト発足</p>
           </li>
           <li>
-            <strong>2025年12月</strong> <!--[cite: 1] -->
+            <strong>2025年12月</strong>
             <p>「U20若者活動AWARD 2025 優秀賞」を受賞[cite: 1]</p>
           </li>
           <li>
-            <strong>2026年03月</strong> <!--[cite: 1] -->
-            <p>内閣府共催「全国生徒会防災サミット2026」開催（衆議院議員会館）[cite: 1]</p>
+            <strong>2026年03月</strong>
+            <p>内閣府共催「全国生徒会防災サミット2026」開催（衆議院議員会館）</p>
           </li>
           <li>
-            <strong>2026年06月</strong> <!--[cite: 1] -->
-            <p>「特定非営利活動法人 日本若者防災復興協会」登記完了[cite: 1]</p>
+            <strong>2026年06月</strong> 
+            <p>「特定非営利活動法人 日本若者防災復興協会」登記完了</p>
           </li>
         </ul>
         <a href={`${baseUrl}/history${langParam}`} class="header-link" style="display: block; margin-top: 12px;">
@@ -227,8 +227,8 @@ const pickupNews = [
     <section class="section-block">
       <div style="margin-bottom: 20px;">
         <span class="sub-label">ORGANIZATION CHART</span>
-        <h2 class="main-heading">組織体制</h2> <!--[cite: 1] -->
-        <p class="desc-text">外部向けに組織の全体構造（局・各本部・政調会）を簡潔に示しています[cite: 1]。</p>
+        <h2 class="main-heading">組織体制</h2> 
+        <p class="desc-text">外部向けに組織の全体構造（局・各本部・政調会）を簡潔に示しています。</p>
       </div>
 
       <div class="org-box">
@@ -236,36 +236,36 @@ const pickupNews = [
           <div class="org-card">
             <h4>各局（法人基盤・統括）</h4>
             <ul>
-              <li>・<strong>事務局</strong>（総務・会計・法務・情報部）[cite: 1]</li>
-              <li>・<strong>人事局</strong>（採用・組織育成）[cite: 1]</li>
-              <li>・<strong>広報局</strong>（デザイン課・SNS発信・プレス）[cite: 1]</li>
-              <li>・<strong>外務局</strong>（渉外・連携）[cite: 1]</li>
+              <li>・<strong>事務局</strong>（総務・会計・法務・情報部）</li>
+              <li>・<strong>人事局</strong>（採用・組織育成）</li>
+              <li>・<strong>広報局</strong>（デザイン課・SNS発信・プレス）</li>
+              <li>・<strong>外務局</strong>（渉外・連携）</li>
             </ul>
           </div>
 
           <div class="org-card">
             <h4>各事業本部（プロジェクト推進）</h4>
             <ul>
-              <li>・<strong>防災事業本部</strong>（生徒会サミット・避難所改善）[cite: 1]</li>
-              <li>・<strong>復興事業本部</strong>（能登現地支援・食文化継承）[cite: 1]</li>
-              <li>・<strong>地域事業本部</strong>（街頭募金・地域防災出展）[cite: 1]</li>
-              <li>・<strong>国際事業本部</strong>（Y-VITAL・模擬防災国連）[cite: 1]</li>
+              <li>・<strong>防災事業本部</strong>（生徒会サミット・避難所改善）</li>
+              <li>・<strong>復興事業本部</strong>（能登現地支援・食文化継承）</li>
+              <li>・<strong>地域事業本部</strong>（街頭募金・地域防災出展）</li>
+              <li>・<strong>国際事業本部</strong>（Y-VITAL・模擬防災国連）</li>
             </ul>
           </div>
 
           <div class="org-card">
             <h4>政務調査会 ＆ 連携コミュニティ</h4>
             <ul>
-              <li>・<strong>政務調査会</strong>（防災政策提言・法案調査）[cite: 1]</li>
-              <li>・<strong>中高生コミュニティ NSF PROJECTS</strong>[cite: 1]</li>
-              <li>・<strong>避難所議連 事務局支援</strong>[cite: 1]</li>
+              <li>・<strong>政務調査会</strong>（防災政策提言・法案調査）</li>
+              <li>・<strong>中高生コミュニティ NSF PROJECTS</strong></li>
+              <li>・<strong>避難所議連 事務局支援</strong></li>
             </ul>
           </div>
         </div>
 
         <div class="org-footer">
-          <span>意思決定機関：理事会（理事長：久保 壮太郎） / 監査：監事[cite: 1]</span>
-          <a href={`${baseUrl}/about${langParam}#members`} class="header-link">役員・メンバー紹介を見る ➔</a> <!--[cite: 1] -->
+          <span>意思決定機関：理事会（理事長：久保 壮太郎） / 監査：監事</span>
+          <a href={`${baseUrl}/about${langParam}#members`} class="header-link">役員・メンバー紹介を見る ➔</a>
         </div>
       </div>
     </section>
