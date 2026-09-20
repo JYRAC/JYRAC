@@ -1,0 +1,356 @@
+---
+// src/pages/history.astro
+import Layout from '../layouts/Layout.astro';
+import { type Lang } from '../lib/i18n';
+
+const currentLang: Lang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
+const langParam = currentLang === 'en' ? '?lang=en' : '';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// 沿革・活動実績タイムラインデータ
+const historyTimeline = [
+  {
+    year: "2026",
+    date: "2026年3月",
+    category: "RECRUIT",
+    titleJa: "広報局を中心とした新体制メンバー募集の開始",
+    titleEn: "Launched Nationwide PR Bureau Recruitment Campaign",
+    descJa: "全国の中高生・大学生・若手社会人を対象に、発信力・デザイン・Web記事制作を強化する広報スタッフの公募を開始。",
+    descEn: "Started nationwide recruitment for PR staff to amplify youth-driven disaster resilience communication."
+  },
+  {
+    year: "2026",
+    date: "2026年2月",
+    category: "SUMMIT",
+    titleJa: "内閣府共催「全国生徒会防災サミット」開催・次世代防災提言を発表",
+    titleEn: "Held National Student Council Disaster Prevention Summit (Cabinet Office Co-host)",
+    descJa: "衆議院議員会館にて全国の生徒会役員・中高生が結集。避難所環境改善（守寝プロジェクト）や地域共助に関する提言を取りまとめ、国・行政へ発信。",
+    descEn: "Gathered student councils nationwide at the National Diet to discuss emergency shelter conditions and submit youth policy proposals."
+  },
+  {
+    year: "2025",
+    date: "2025年12月",
+    category: "FUNDRAISING",
+    titleJa: "能登半島地震 街頭支援募金が累計59回・総額260万円を突破",
+    titleEn: "Street Relief Fundraising Reached 59 Sessions, Totaling Over ¥2.6M",
+    descJa: "学生主体で継続実施してきた街頭募金活動が累計59回を達成。集まった義援金は現地民間ボランティアセンターや被災地支援活動へ全額送金。",
+    descEn: "Student-led street fundraising drives reached 59 sessions, transferring over 2.6 million yen directly to local disaster relief centers."
+  },
+  {
+    year: "2025",
+    date: "2025年11月",
+    category: "GLOBAL",
+    titleJa: "模擬防災国連（MWCDRR）構想の立ち上げ・ポータル公開",
+    titleEn: "Inaugurated Model World Conference on Disaster Risk Reduction (MWCDRR)",
+    descJa: "国際会議形式で災害対策や気候変動へのレジリエンスを議論・合意形成する次世代育成プログラム「模擬防災国連」を開設。",
+    descEn: "Launched an educational simulation initiative empowering youth to represent nations and debate international disaster risk governance."
+  },
+  {
+    year: "2025",
+    date: "2025年8月〜",
+    category: "FIELDWORK",
+    titleJa: "能登半島現地復興支援プロジェクト（珠洲市・七尾市派遣）",
+    titleEn: "Noto Recovery Fieldwork: Debris Clearing & Community Kitchens",
+    descJa: "復興事業本部による能登現地派遣。被災家屋の片付け支援、仮設住宅での交流・炊き出し、「能登うまいもん再発見プロジェクト」などの食文化継承企画を展開。",
+    descEn: "Conducted continuous on-site volunteering in Suzu and Nanao, organizing debris cleanup, hot meal kitchens, and cultural heritage culinary initiatives."
+  },
+  {
+    year: "2024",
+    date: "2024年1月〜",
+    category: "RELIEF",
+    titleJa: "令和6年能登半島地震 発生直後の緊急支援体制発足・街頭募金開始",
+    titleEn: "Emergency Relief Mobilization Following the 2024 Noto Peninsula Earthquake",
+    descJa: "発災直後より若者有志による緊急アクションを開始。学生主体プロジェクト「NSF PROJECTs」と連携し、全国規模での支援活動基盤を整備。",
+    descEn: "Mobilized immediate relief drives and partnered with student movement NSF PROJECTs to establish youth-driven recovery infrastructure."
+  }
+];
+
+// 主要実績ハイライト数値
+const keyMetrics = [
+  { labelJa: "全国登録メンバー", labelEn: "Registered Youth", value: "470+", unit: "名" },
+  { labelJa: "街頭支援募金", labelEn: "Fundraising Drives", value: "59", unit: "回" },
+  { labelJa: "支援金総額", labelEn: "Relief Funds Raised", value: "260+", unit: "万円" },
+  { labelJa: "提言・サミット連携", labelEn: "Summit Partnerships", value: "内閣府", unit: "共催" }
+];
+---
+
+<Layout 
+  title={currentLang === 'en' ? 'History & Track Record | JYRAC' : '活動実績・沿革 | 日本若者防災復興協会'} 
+  currentTab="history"
+>
+  <div class="history-container">
+
+    <!-- ページ見出し -->
+    <header class="page-header">
+      <span class="sub-label">HISTORY & TRACK RECORD</span>
+      <h1 class="main-heading">
+        {currentLang === 'en' ? 'Our Journey & Achievements' : '活動実績・沿革'}
+      </h1>
+      <p class="desc-text">
+        {currentLang === 'en'
+          ? 'Tracing our path of empowering next-generation disaster resilience and hands-on recovery actions across Japan.'
+          : '若者の柔軟な行動力と発信力を社会の力へ。能登復興支援から政策提言まで、JYRACが歩んできた主な足跡と活動実績です。'}
+      </p>
+    </header>
+
+    <!-- 実績ハイライト数値 -->
+    <section class="metrics-card">
+      <div class="metrics-grid">
+        {keyMetrics.map(m => (
+          <div class="metric-item">
+            <span class="metric-label">{currentLang === 'en' ? m.labelEn : m.labelJa}</span>
+            <div class="metric-value-wrap">
+              <span class="metric-num">{m.value}</span>
+              <span class="metric-unit">{m.unit}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- 沿革タイムライン -->
+    <section class="timeline-section">
+      <div class="timeline-list">
+        {historyTimeline.map((item, idx) => (
+          <div class="timeline-item">
+            <div class="timeline-left">
+              <span class="timeline-date">{item.date}</span>
+              <span class="timeline-badge">{item.category}</span>
+            </div>
+
+            <div class="timeline-center">
+              <div class="timeline-dot"></div>
+              {idx !== historyTimeline.length - 1 && <div class="timeline-line"></div>}
+            </div>
+
+            <div class="timeline-right">
+              <h2 class="timeline-title">
+                {currentLang === 'en' ? item.titleEn : item.titleJa}
+              </h2>
+              <p class="timeline-desc">
+                {currentLang === 'en' ? item.descEn : item.descJa}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- 戻るリンク -->
+    <div class="back-row">
+      <a href={`${baseUrl}/${langParam}`} class="header-link">
+        {currentLang === 'en' ? '← Back to Home' : '← ホームに戻る'}
+      </a>
+    </div>
+
+  </div>
+</Layout>
+
+<style>
+  .history-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+  }
+
+  .page-header {
+    text-align: center;
+  }
+  .sub-label {
+    font-size: 10px;
+    font-family: ui-monospace, monospace;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .main-heading {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--jyrac-navy);
+    line-height: 1.3;
+  }
+  .desc-text {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    line-height: 1.7;
+  }
+
+  /* 実績ハイライト数値 */
+  .metrics-card {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 24px 32px;
+    box-shadow: 0 4px 16px rgba(0, 43, 84, 0.03);
+  }
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    text-align: center;
+  }
+  .metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+  }
+  .metric-label {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+  }
+  .metric-value-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+  .metric-num {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--jyrac-navy);
+    font-family: ui-monospace, monospace;
+    line-height: 1;
+  }
+  .metric-unit {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+  }
+
+  /* タイムライン */
+  .timeline-section {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 40px 32px;
+    box-shadow: 0 4px 16px rgba(0, 43, 84, 0.02);
+  }
+  .timeline-list {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .timeline-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    position: relative;
+  }
+
+  .timeline-left {
+    width: 140px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    text-align: right;
+  }
+  .timeline-date {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--jyrac-navy);
+    font-family: ui-monospace, monospace;
+  }
+  .timeline-badge {
+    font-size: 9px;
+    font-family: ui-monospace, monospace;
+    font-weight: 800;
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
+    color: var(--jyrac-teal);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .timeline-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding-top: 4px;
+  }
+  .timeline-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--jyrac-teal);
+    border: 2px solid #ffffff;
+    box-shadow: 0 0 0 2px var(--jyrac-teal);
+    z-index: 1;
+  }
+  .timeline-line {
+    position: absolute;
+    top: 16px;
+    bottom: -32px;
+    width: 2px;
+    background: var(--border-color);
+  }
+
+  .timeline-right {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-bottom: 8px;
+  }
+  .timeline-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--jyrac-navy);
+    line-height: 1.45;
+    margin: 0;
+  }
+  .timeline-desc {
+    font-size: 13px;
+    color: var(--text-main);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .header-link {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--jyrac-teal);
+    text-decoration: none;
+  }
+  .header-link:hover {
+    text-decoration: underline;
+  }
+  .back-row {
+    text-align: center;
+  }
+
+  @media (max-width: 640px) {
+    .timeline-section {
+      padding: 28px 16px;
+    }
+    .timeline-item {
+      flex-direction: column;
+      gap: 12px;
+    }
+    .timeline-left {
+      width: 100%;
+      align-items: flex-start;
+      flex-direction: row;
+      gap: 10px;
+    }
+    .timeline-center {
+      display: none;
+    }
+    .timeline-right {
+      padding-left: 0;
+    }
+    .metrics-card {
+      padding: 20px 16px;
+    }
+  }
+</style>
