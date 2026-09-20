@@ -45,15 +45,24 @@ const navLinks = [
   <link rel="icon" href="/JYRAC.jpg" type="image/jpeg">
   <link rel="apple-touch-icon" href="/JYRAC.jpg">
   
-  <style is:global>
-    :root {
-      --primary: #009aa6;
-      --primary-dark: #007c87;
-      --navy: #002b54;
-      --navy-light: #0d3b66;
-      --accent: #e67e22;
-      --bg-slate: #f8fafc;
+  <!-- Tailwind CSS CDN を読み込み -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script is:inline>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            jyracNavy: '#002b54',
+            jyracTeal: '#009aa6',
+            jyracTealDark: '#007c87',
+            jyracAccent: '#e67e22',
+          }
+        }
+      }
     }
+  </script>
+
+  <style is:global>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
       margin: 0;
@@ -71,15 +80,15 @@ const navLinks = [
     }
   </style>
 </head>
-<body class="flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen bg-white">
 
   <!-- グローバルヘッダー -->
-  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 shadow-xs">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between gap-4">
+  <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
       
       <!-- ロゴ＆団体名 -->
       <a href={`/${langParam}`} class="flex items-center gap-3 no-underline shrink-0 group">
-        <img src={logoSrc} alt="JYRAC ロゴ" class="w-10 h-10 sm:w-11 sm:h-11 object-contain rounded-xl shadow-xs group-hover:scale-105 transition" />
+        <img src={logoSrc} alt="JYRAC ロゴ" class="w-10 h-10 sm:w-12 sm:h-12 object-contain rounded-xl shadow-sm group-hover:scale-105 transition" />
         <div class="flex flex-col">
           <span class="text-base sm:text-lg font-black tracking-tight text-[#002b54] leading-tight">
             日本若者防災復興協会
@@ -97,8 +106,8 @@ const navLinks = [
             href={link.href}
             class={`px-3 py-2 rounded-lg text-xs font-black transition no-underline ${
               currentTab === link.key 
-                ? 'text-[#009aa6] bg-teal-50/80 font-black' 
-                : 'text-slate-600 hover:text-[#002b54] hover:bg-slate-100/70'
+                ? 'text-[#009aa6] bg-teal-50 font-black' 
+                : 'text-slate-600 hover:text-[#002b54] hover:bg-slate-100'
             }`}
           >
             {link.label}
@@ -107,15 +116,15 @@ const navLinks = [
       </nav>
 
       <!-- 言語切替 ＆ アクション -->
-      <div class="flex items-center gap-2.5 shrink-0">
+      <div class="flex items-center gap-3 shrink-0">
         <div class="flex items-center bg-slate-100 rounded-full p-1 border border-slate-200 text-[11px] font-bold">
-          <a href={`${currentPath}?lang=ja`} class={`px-2.5 py-1 rounded-full transition no-underline ${currentLang === 'ja' ? 'bg-white text-[#002b54] shadow-2xs font-black' : 'text-slate-500'}`}>JA</a>
-          <a href={`${currentPath}?lang=en`} class={`px-2.5 py-1 rounded-full transition no-underline ${currentLang === 'en' ? 'bg-white text-[#002b54] shadow-2xs font-black' : 'text-slate-500'}`}>EN</a>
+          <a href={`${currentPath}?lang=ja`} class={`px-2.5 py-1 rounded-full transition no-underline ${currentLang === 'ja' ? 'bg-white text-[#002b54] shadow-sm font-black' : 'text-slate-500'}`}>JA</a>
+          <a href={`${currentPath}?lang=en`} class={`px-2.5 py-1 rounded-full transition no-underline ${currentLang === 'en' ? 'bg-white text-[#002b54] shadow-sm font-black' : 'text-slate-500'}`}>EN</a>
         </div>
 
         <a
           href={`/recruitment${langParam}`}
-          class="hidden sm:inline-flex items-center justify-center px-4 py-2 rounded-xl bg-gradient-to-r from-[#009aa6] to-teal-500 hover:to-[#007c87] text-white text-xs font-black shadow-sm transition no-underline active:scale-95"
+          class="hidden sm:inline-flex items-center justify-center px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#009aa6] to-teal-500 hover:to-[#007c87] text-white text-xs font-black shadow-md transition no-underline active:scale-95"
         >
           <span>参加する</span>
         </a>
@@ -124,14 +133,14 @@ const navLinks = [
     </div>
 
     <!-- スマホ・タブレット用 サブナビゲーションスクロールバー -->
-    <div class="lg:hidden border-t border-slate-100 bg-slate-50/90 px-4 py-2 overflow-x-auto flex items-center gap-2 no-scrollbar">
+    <div class="lg:hidden border-t border-slate-100 bg-slate-50 px-4 py-2 overflow-x-auto flex items-center gap-2 no-scrollbar">
       {navLinks.map(link => (
         <a
           href={link.href}
           class={`px-3.5 py-1.5 rounded-full text-[11px] font-bold shrink-0 no-underline transition ${
             currentTab === link.key 
-              ? 'bg-[#002b54] text-white shadow-xs' 
-              : 'bg-white text-slate-600 border border-slate-200/80'
+              ? 'bg-[#002b54] text-white shadow-sm' 
+              : 'bg-white text-slate-600 border border-slate-200'
           }`}
         >
           {link.label}
@@ -159,20 +168,20 @@ const navLinks = [
             </div>
           </div>
           <p class="text-xs text-slate-300 leading-relaxed max-w-md">
-            「いつもの暮らし」が、いちばん強い。若者の力で、防災を日常に。被災地に確かな未来を。全国の中高生・大学生と手を取り合い、新しい防災・復興のスタンダードを築きます[cite: 3]。
+            「いつもの暮らし」が、いちばん強い。若者の力で、防災を日常に。被災地に確かな未来を[cite: 1]。全国の中高生・大学生と手を取り合い、新しい防災・復興のスタンダードを築きます[cite: 1]。
           </p>
           <div class="text-xs text-slate-400 space-y-1">
-            <p>所在地：東京都文京区小日向四丁目4番6-603号[cite: 3]</p>
-            <p>連絡先：jy.rac.gaimu@gmail.com[cite: 3]</p>
+            <p>所在地：東京都文京区小日向四丁目4番6-603号[cite: 1]</p>
+            <p>連絡先：jy.rac.gaimu@gmail.com[cite: 1]</p>
           </div>
         </div>
 
         <div class="space-y-3">
           <span class="text-xs font-mono font-black text-teal-400 uppercase tracking-wider block">NAVIGATION</span>
           <ul class="space-y-2 text-xs text-slate-300">
-            <li><a href={`/about${langParam}`} class="hover:text-white transition no-underline">JYRACについて[cite: 3]</a></li>
-            <li><a href={`/services${langParam}`} class="hover:text-white transition no-underline">事業内容（4大領域）[cite: 3]</a></li>
-            <li><a href={`/history${langParam}`} class="hover:text-white transition no-underline">活動実績・沿革[cite: 3]</a></li>
+            <li><a href={`/about${langParam}`} class="hover:text-white transition no-underline">JYRACについて[cite: 1]</a></li>
+            <li><a href={`/services${langParam}`} class="hover:text-white transition no-underline">事業内容（4大領域）[cite: 1]</a></li>
+            <li><a href={`/history${langParam}`} class="hover:text-white transition no-underline">活動実績・沿革[cite: 1]</a></li>
             <li><a href={`/recruitment${langParam}`} class="hover:text-white transition no-underline">メンバー募集要項</a></li>
           </ul>
         </div>
@@ -180,7 +189,7 @@ const navLinks = [
         <div class="space-y-3">
           <span class="text-xs font-mono font-black text-teal-400 uppercase tracking-wider block">PROJECTS & TOOLS</span>
           <ul class="space-y-2 text-xs text-slate-300">
-            <li><a href="https://summit.jyrac.stki.org" target="_blank" rel="noopener noreferrer" class="hover:text-white transition no-underline">生徒会防災サミット ↗[cite: 3]</a></li>
+            <li><a href="https://summit.jyrac.stki.org" target="_blank" rel="noopener noreferrer" class="hover:text-white transition no-underline">生徒会防災サミット ↗[cite: 1]</a></li>
             <li><a href="https://nsf.stki.org/ema" target="_blank" rel="noopener noreferrer" class="hover:text-white transition no-underline">デジタル絵馬プロジェクト ↗</a></li>
             <li><a href={`/gioco${langParam}`} class="hover:text-white transition no-underline">教材・診断ツール</a></li>
             <li><a href={`/contact${langParam}`} class="hover:text-white transition no-underline">取材・お問い合わせ</a></li>
@@ -193,7 +202,7 @@ const navLinks = [
         <p>© 2026 特定非営利活動法人 日本若者防災復興協会 (JYRAC) All Rights Reserved.</p>
         <div class="flex items-center gap-4">
           <a href={`/governance${langParam}`} class="hover:text-slate-200 no-underline">情報公開</a>
-          <a href="https://www.instagram.com/pred.studentsummit" target="_blank" rel="noopener noreferrer" class="hover:text-slate-200 no-underline">公式Instagram[cite: 3]</a>
+          <a href="https://www.instagram.com/pred.studentsummit" target="_blank" rel="noopener noreferrer" class="hover:text-slate-200 no-underline">公式Instagram[cite: 1]</a>
         </div>
       </div>
     </div>
