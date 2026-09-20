@@ -80,28 +80,53 @@ const pickupNews = [
 
 <Layout title="特定非営利活動法人 日本若者防災復興協会（JYRAC）" currentTab="home">
 
-  <!-- 1. トップページのファーストビュー -->
+  <!-- 1. トップページのファーストビュー（浮遊クリスタル付き） -->
   <section class="hero-wrap">
-    <div class="hero-inner">
-      <div class="hero-badge">
-        <span class="pulse-dot"></span>
-        <span>OFFICIAL PORTAL / JYRAC</span>
+    <div class="hero-layout">
+      
+      <!-- テキストカラム -->
+      <div class="hero-text-col">
+        <div class="hero-badge">
+          <span class="pulse-dot"></span>
+          <span>OFFICIAL PORTAL / JYRAC</span>
+        </div>
+
+        <h1 class="hero-heading">
+          「いつもの暮らし」が、いちばん強い。<br class="pc-br" />
+          <span class="text-gradient">若者から始める、新しい防災と復興。</span> 
+        </h1>
+
+        <p class="hero-subtext">
+          特定非営利活動法人日本若者防災復興協会（JYRAC）は、全国の中学生・高校生・大学生が主体となり、お堅い「お勉強の防災」を刷新。誰もが自然と関わりたくなる持続可能な防災・復興のスタンダードを築くNPO法人です。
+        </p>
+
+        <div class="hero-btn-row">
+          <a href={`${baseUrl}/about${langParam}`} class="btn-hero btn-navy">JYRACについて知る</a> 
+          <a href="#business-domains" class="btn-hero btn-white">活動・事業領域を見る</a>
+          <a href={`${baseUrl}/recruitment${langParam}`} class="btn-hero btn-teal">メンバーとして参加する ↗</a>
+        </div>
       </div>
 
-      <h1 class="hero-heading">
-        「いつもの暮らし」が、いちばん強い。<br class="pc-br" />
-        <span class="text-gradient">若者から始める、新しい防災と復興。</span> 
-      </h1>
-
-      <p class="hero-subtext">
-        特定非営利活動法人日本若者防災復興協会（JYRAC）は、全国の中学生・高校生・大学生が主体となり、お堅い「お勉強の防災」を刷新。誰もが自然と関わりたくなる持続可能な防災・復興のスタンダードを築くNPO法人です。
-      </p>
-
-      <div class="hero-btn-row">
-        <a href={`${baseUrl}/about${langParam}`} class="btn-hero btn-navy">JYRACについて知る</a> 
-        <a href="#business-domains" class="btn-hero btn-white">活動・事業領域を見る</a>
-        <a href={`${baseUrl}/recruitment${langParam}`} class="btn-hero btn-teal">メンバーとして参加する ↗</a>
+      <!-- 浮遊するクリスタルグラフィック -->
+      <div class="hero-crystal-col" aria-hidden="true">
+        <div class="crystal-stage">
+          <div class="crystal-body">
+            <div class="crystal-face f1"></div>
+            <div class="crystal-face f2"></div>
+            <div class="crystal-face f3"></div>
+            <div class="crystal-face f4"></div>
+            <div class="crystal-face f5"></div>
+            <div class="crystal-face f6"></div>
+            <div class="crystal-face f7"></div>
+            <div class="crystal-face f8"></div>
+          </div>
+          <!-- 光の軌道リング -->
+          <div class="crystal-orbit orbit-1"></div>
+          <div class="crystal-orbit orbit-2"></div>
+          <div class="crystal-glow"></div>
+        </div>
       </div>
+
     </div>
   </section>
 
@@ -289,20 +314,29 @@ const pickupNews = [
 </Layout>
 
 <style>
-  /* ヒーローセクション */
+  /* ヒーロー全体レイアウト */
   .hero-wrap {
     background: linear-gradient(180deg, #f0fdfa 0%, #ffffff 100%);
-    padding: clamp(40px, 8vw, 72px) 16px;
+    padding: clamp(36px, 6vw, 72px) 16px;
     border-bottom: 1px solid var(--border-color);
-    text-align: center;
+    position: relative;
+    overflow: hidden;
   }
-  .hero-inner {
-    max-width: 900px;
+  .hero-layout {
+    max-width: 1160px;
     margin: 0 auto;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 16px;
+    justify-content: space-between;
+    gap: clamp(24px, 5vw, 48px);
+  }
+  .hero-text-col {
+    flex: 1 1 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    text-align: left;
   }
   .hero-badge {
     display: inline-flex;
@@ -324,7 +358,7 @@ const pickupNews = [
     background: var(--jyrac-teal);
   }
   .hero-heading {
-    font-size: clamp(22px, 5.5vw, 34px);
+    font-size: clamp(23px, 4.5vw, 34px);
     font-weight: 900;
     color: var(--jyrac-navy);
     line-height: 1.35;
@@ -337,17 +371,16 @@ const pickupNews = [
     -webkit-text-fill-color: transparent;
   }
   .hero-subtext {
-    max-width: 680px;
-    font-size: clamp(13px, 3.5vw, 14.5px);
+    max-width: 620px;
+    font-size: clamp(13px, 2.5vw, 14.5px);
     color: var(--text-muted);
     line-height: 1.8;
   }
   .hero-btn-row {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: 10px;
-    margin-top: 8px;
+    margin-top: 6px;
     width: 100%;
   }
   .btn-hero {
@@ -375,6 +408,141 @@ const pickupNews = [
   .btn-teal {
     background: var(--jyrac-teal);
     color: #ffffff !important;
+  }
+
+  /* 💎 浮遊するクリスタルアニメーション */
+  .hero-crystal-col {
+    flex: 0 0 320px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .crystal-stage {
+    position: relative;
+    width: 220px;
+    height: 260px;
+    perspective: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .crystal-body {
+    position: relative;
+    width: 90px;
+    height: 140px;
+    transform-style: preserve-3d;
+    animation: crystalFloat 6s ease-in-out infinite, crystalSpin 14s linear infinite;
+  }
+  .crystal-face {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 45px solid transparent;
+    border-right: 45px solid transparent;
+    opacity: 0.82;
+    backdrop-filter: blur(4px);
+    transform-origin: 50% 100%;
+  }
+  /* 上半分4面（ティール〜シアンのグラデーション） */
+  .crystal-face.f1 {
+    border-bottom: 70px solid rgba(0, 154, 166, 0.7);
+    transform: rotateY(0deg) translateZ(26px) rotateX(24deg);
+  }
+  .crystal-face.f2 {
+    border-bottom: 70px solid rgba(0, 210, 224, 0.65);
+    transform: rotateY(90deg) translateZ(26px) rotateX(24deg);
+  }
+  .crystal-face.f3 {
+    border-bottom: 70px solid rgba(37, 99, 235, 0.68);
+    transform: rotateY(180deg) translateZ(26px) rotateX(24deg);
+  }
+  .crystal-face.f4 {
+    border-bottom: 70px solid rgba(2, 132, 199, 0.7);
+    transform: rotateY(270deg) translateZ(26px) rotateX(24deg);
+  }
+  /* 下半分4面（ネイビー〜ディープティール） */
+  .crystal-face.f5 {
+    top: 70px;
+    border-top: 70px solid rgba(0, 43, 84, 0.75);
+    border-bottom: none;
+    transform: rotateY(0deg) translateZ(26px) rotateX(-24deg);
+    transform-origin: 50% 0%;
+  }
+  .crystal-face.f6 {
+    top: 70px;
+    border-top: 70px solid rgba(0, 154, 166, 0.7);
+    border-bottom: none;
+    transform: rotateY(90deg) translateZ(26px) rotateX(-24deg);
+    transform-origin: 50% 0%;
+  }
+  .crystal-face.f7 {
+    top: 70px;
+    border-top: 70px solid rgba(30, 64, 175, 0.75);
+    border-bottom: none;
+    transform: rotateY(180deg) translateZ(26px) rotateX(-24deg);
+    transform-origin: 50% 0%;
+  }
+  .crystal-face.f8 {
+    top: 70px;
+    border-top: 70px solid rgba(0, 90, 156, 0.7);
+    border-bottom: none;
+    transform: rotateY(270deg) translateZ(26px) rotateX(-24deg);
+    transform-origin: 50% 0%;
+  }
+
+  /* オービットリング */
+  .crystal-orbit {
+    position: absolute;
+    border-radius: 50%;
+    border: 1.5px dashed rgba(0, 154, 166, 0.4);
+    pointer-events: none;
+  }
+  .orbit-1 {
+    width: 200px;
+    height: 200px;
+    transform: rotateX(72deg) rotateY(15deg);
+    animation: orbitSpin 10s linear infinite;
+  }
+  .orbit-2 {
+    width: 170px;
+    height: 170px;
+    transform: rotateX(65deg) rotateY(-25deg);
+    border-color: rgba(37, 99, 235, 0.35);
+    animation: orbitSpinRev 8s linear infinite;
+  }
+  .crystal-glow {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgba(0, 210, 224, 0.3) 0%, rgba(37, 99, 235, 0.08) 50%, transparent 70%);
+    filter: blur(16px);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  @keyframes crystalFloat {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-16px);
+    }
+  }
+  @keyframes crystalSpin {
+    0% {
+      transform: rotateY(0deg) rotateX(12deg);
+    }
+    100% {
+      transform: rotateY(360deg) rotateX(12deg);
+    }
+  }
+  @keyframes orbitSpin {
+    0% { transform: rotateX(72deg) rotateY(15deg) rotateZ(0deg); }
+    100% { transform: rotateX(72deg) rotateY(15deg) rotateZ(360deg); }
+  }
+  @keyframes orbitSpinRev {
+    0% { transform: rotateX(65deg) rotateY(-25deg) rotateZ(360deg); }
+    100% { transform: rotateX(65deg) rotateY(-25deg) rotateZ(0deg); }
   }
 
   /* コンテナ */
@@ -754,8 +922,55 @@ const pickupNews = [
     text-align: center;
   }
 
-  /* モバイル対応メディアクエリ */
-  @media (max-width: 860px) {
+  /* タブレット〜スマホ対応 */
+  @media (max-width: 900px) {
+    .hero-layout {
+      flex-direction: column-reverse;
+      text-align: center;
+      gap: 20px;
+    }
+    .hero-text-col {
+      align-items: center;
+      text-align: center;
+    }
+    .hero-crystal-col {
+      flex: 0 0 auto;
+      margin-bottom: -10px;
+    }
+    .crystal-stage {
+      width: 180px;
+      height: 190px;
+    }
+    .crystal-body {
+      width: 70px;
+      height: 110px;
+    }
+    .crystal-face {
+      border-left-width: 35px;
+      border-right-width: 35px;
+    }
+    .crystal-face.f1, .crystal-face.f2, .crystal-face.f3, .crystal-face.f4 {
+      border-bottom-width: 55px;
+      transform: rotateY(var(--deg, 0deg)) translateZ(20px) rotateX(24deg);
+    }
+    .crystal-face.f1 { --deg: 0deg; }
+    .crystal-face.f2 { --deg: 90deg; }
+    .crystal-face.f3 { --deg: 180deg; }
+    .crystal-face.f4 { --deg: 270deg; }
+
+    .crystal-face.f5, .crystal-face.f6, .crystal-face.f7, .crystal-face.f8 {
+      top: 55px;
+      border-top-width: 55px;
+      transform: rotateY(var(--deg, 0deg)) translateZ(20px) rotateX(-24deg);
+    }
+    .crystal-face.f5 { --deg: 0deg; }
+    .crystal-face.f6 { --deg: 90deg; }
+    .crystal-face.f7 { --deg: 180deg; }
+    .crystal-face.f8 { --deg: 270deg; }
+
+    .orbit-1 { width: 150px; height: 150px; }
+    .orbit-2 { width: 125px; height: 125px; }
+
     .banner-event {
       flex-direction: column;
       align-items: flex-start;
