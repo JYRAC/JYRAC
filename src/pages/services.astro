@@ -6,466 +6,239 @@ import { type Lang } from '../lib/i18n';
 const currentLang: Lang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
 const langParam = currentLang === 'en' ? '?lang=en' : '';
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
-
-// 4大事業体系データ（事業説明資料に基づく構成）
-const domainSections = [
-  {
-    id: "disaster-prevention",
-    num: "01",
-    title: currentLang === 'en' ? 'Disaster Prevention' : '防災事業',
-    enTitle: "Disaster Prevention",
-    summary: currentLang === 'en' 
-      ? 'Redefining disaster awareness from routine study to proactive youth-led action nationwide.' 
-      : 'お堅い「お勉強」としての防災を刷新し、若者が主体となって災害に備える力を全国に広げます。',
-    projects: [
-      {
-        name: currentLang === 'en' ? 'National Student Council Disaster Prevention Summit' : '全国生徒会防災サミット',
-        sub: currentLang === 'en' ? 'Co-hosted with the Cabinet Office of Japan' : '内閣府共催・全国規模の中高生防災イベント',
-        desc: currentLang === 'en'
-          ? 'A national platform where middle and high school student councils assemble to formulate Next-Generation Disaster Management Proposals.'
-          : '全国の中高生・生徒会が防災をテーマに結集するプラットフォーム。内閣府共催のもと衆議院議員会館にて開催し、若者発の「次世代防災提言」を発信。',
-        link: "https://summit.jyrac.stki.org",
-        badge: currentLang === 'en' ? 'Co-hosted Event' : '主催・内閣府共催'
-      },
-      {
-        name: currentLang === 'en' ? 'Morine Project (Shelter Improvement)' : '守寝プロジェクト（避難所環境改善）',
-        sub: currentLang === 'en' ? 'Cardboard beds & emergency overnight drills' : 'ダンボールベッド組み立て体験・避難生活改善',
-        desc: currentLang === 'en'
-          ? 'Conducting assembly drills of cardboard beds with SDF cooperation, addressing shelter health risks and collaborating with parliamentary groups.'
-          : '自衛隊等の協力のもとダンボールベッドの組み立てや宿泊体験を実施。「避難所議連」と連携した政策提言や、被災地での多角的な調査・発信を推進。',
-        badge: currentLang === 'en' ? 'Policy & Practice' : '実践・政策連携'
-      },
-      {
-        name: currentLang === 'en' ? 'Local Hazard Mapping' : '地域防災・ハザードマップ企画',
-        sub: currentLang === 'en' ? 'Empowering local action nationwide' : '夕張市をはじめとする全国各地での実践',
-        desc: currentLang === 'en'
-          ? 'Interactive town walk workshops where youth and residents assess flood and landslide hazards in their neighborhoods.'
-          : '全国各地で若者や地域住民が防災を身近に考える機会を創出。ハザードマップ作成ワークショップを通じて、地域の災害リスクを学び合います。',
-        badge: currentLang === 'en' ? 'Community' : '地域連携'
-      },
-      {
-        name: currentLang === 'en' ? 'Policy Proposals' : '防災政策提言',
-        sub: currentLang === 'en' ? 'Submitting proposals to Cabinet Ministers' : '若者の声を国の防災制度へ反映',
-        desc: currentLang === 'en'
-          ? 'Submitting institutional reform proposals directly to the Minister for Disaster Management, giving youth a seat at the policy table.'
-          : '現場での実践活動や若者の視点から防災課題を整理し、防災担当大臣への直接提言や行政機関との対話を実施。制度改善に向けた参画機会を広げています。',
-        badge: currentLang === 'en' ? 'Advocacy' : '政策提言'
-      }
-    ]
-  },
-  {
-    id: "recovery",
-    num: "02",
-    title: currentLang === 'en' ? 'Disaster Recovery' : '復興事業',
-    enTitle: "Disaster Recovery",
-    summary: currentLang === 'en'
-      ? 'Providing sustained support beyond immediate relief, sustaining communities and regional cultures.'
-      : '被災地への一時的な支援にとどまらず、若者が継続的に関わり地域の暮らし・文化・未来を支えます。',
-    projects: [
-      {
-        name: currentLang === 'en' ? 'Noto On-site Volunteers & Fieldwork' : '能登現地プロジェクト（ボランティア・視察）',
-        sub: currentLang === 'en' ? 'Active ongoing relief in Suzu and Nanao cities' : '珠洲市・七尾市での継続的現地活動',
-        desc: currentLang === 'en'
-          ? 'Clearing damaged residences in Suzu, organizing food kitchens in Nanao, and visiting temporary housing to listen to evacuees.'
-          : '珠洲市での家屋片付け支援や沿岸部視察、七尾市での「たろめん」炊き出し、仮設住宅のローラー訪問傾聴活動、住民交流会などを定期実施。',
-        badge: currentLang === 'en' ? 'Fieldwork' : '現地支援'
-      },
-      {
-        name: currentLang === 'en' ? 'Noto Gourmet & Cultural Heritage' : '能登うまいもん再発見プロジェクト',
-        sub: currentLang === 'en' ? 'Preserving food culture through Tokyo events' : '食文化と伝統の継承・東京からの魅力発信',
-        desc: currentLang === 'en'
-          ? 'Connecting local high school students in Noto with urban youth in Tokyo through traditional food workshops and charity bazaars.'
-          : '能登現地の高校生との交流や郷土料理作りを通じて伝統を学び、東京等で食の魅力を届けるイベントを自発的に企画運営。生産者と都市部の若者をつなぎます。',
-        badge: currentLang === 'en' ? 'Culture' : '伝統文化継承'
-      },
-      {
-        name: currentLang === 'en' ? 'Endless Recovery Project' : '果てなき復興プロジェクト',
-        sub: currentLang === 'en' ? 'Long-term narrative driven by students' : '次世代が描く中長期の復興ストーリー',
-        desc: currentLang === 'en'
-          ? 'Investigating ongoing long-term recovery in Noto and Fukushima to pass down experiential lessons to future generations.'
-          : '能登や震災から年月を経た福島の現在地と向き合い、若者主体の調査・成果報告・発信を展開。災害復興学生団体連合を通じた団体間連携も推進。',
-        badge: currentLang === 'en' ? 'Vision' : '中長期構想'
-      }
-    ]
-  },
-  {
-    id: "community",
-    num: "03",
-    title: currentLang === 'en' ? 'Community Action' : '地域事業',
-    enTitle: "Community & Local",
-    summary: currentLang === 'en'
-      ? 'Establishing mutual aid routines between youth and residents through regular street fundraising and civic events.'
-      : '街頭募金活動や地域行事出展を通じて、住民と若者が平時から手を取り合う共助の基盤をつくります。',
-    projects: [
-      {
-        name: currentLang === 'en' ? 'Relief Fundraising' : '支援募金活動',
-        sub: currentLang === 'en' ? '59 campaigns totaling over ¥2.6 million' : '累計59回・総額260万円超の支援実績',
-        desc: currentLang === 'en'
-          ? 'Student-led street fundraising campaigns immediately following earthquakes, sending 100% of proceeds to on-site volunteer centers.'
-          : '能登半島地震発災直後から学生主体で開始した街頭募金活動。集まった義援金は現地民間ボランティアセンター等へ届けています。',
-        badge: currentLang === 'en' ? 'Track Record' : '募金実績59回'
-      },
-      {
-        name: currentLang === 'en' ? 'Disaster Festival Booths' : '地域防災行事・イベント出展',
-        sub: currentLang === 'en' ? 'Interactive experiences for citizens' : '展示や体験企画を通じた地域の意識向上',
-        desc: currentLang === 'en'
-          ? 'Setting up hands-on emergency training booths at regional festivals, lowering the threshold for civic disaster preparedness.'
-          : '地域の防災フェスや自治体イベントに若者ブースを出展。展示や体験型ワークショップを通じて、地域住民が防災を身近に感じる入口をつくります。',
-        badge: currentLang === 'en' ? 'Exhibition' : '出展・交流'
-      }
-    ]
-  },
-  {
-    id: "international",
-    num: "04",
-    title: currentLang === 'en' ? 'Global Initiatives' : '国際事業',
-    enTitle: "Global Initiatives",
-    summary: currentLang === 'en'
-      ? 'Sharing Japanese disaster lessons internationally and building cross-border networks with youth worldwide.'
-      : '日本の防災・復興の教訓を世界へ発信し、海外の若者と国境を越えた協働プラットフォームを築きます。',
-    projects: [
-      {
-        name: currentLang === 'en' ? 'Model World Conference on Disaster Risk Reduction' : '模擬防災国連（MWCDRR）',
-        sub: currentLang === 'en' ? 'International policy simulation program' : '国際会議形式で災害対策を議論する教育プログラム',
-        desc: currentLang === 'en'
-          ? 'Simulating UN multilateral negotiations where youth represent global delegates to draft resolutions on disaster resilience and climate adaptation.'
-          : '模擬国連の手法を用い、参加者が各国代表の立場で避難所環境や国際支援、気候災害への実効性ある解決策を多角的に議論・合意形成するプログラム。',
-        link: "https://mwcdrr.jyrac.stki.org/",
-        badge: currentLang === 'en' ? 'Global Education' : '国際教育'
-      },
-      {
-        name: currentLang === 'en' ? 'Y-VITAL Initiative' : 'Y-VITAL構想',
-        sub: currentLang === 'en' ? 'Global youth disaster resilience community' : '国際若者防災復興コミュニティプラットフォーム',
-        desc: currentLang === 'en'
-          ? 'A worldwide initiative empowering young leaders to exchange disaster knowledge and channel youth voices directly to global organizations.'
-          : '世界各国の若者が主体となり、防災・災害対応・復興の各段階において学び合い、国際機関や各国の仕組みへ若者の視点を届けるグローバル構想。',
-        badge: currentLang === 'en' ? 'Global Network' : '国際連携構想'
-      }
-    ]
-  }
-];
 ---
 
 <Layout 
-  title={currentLang === 'en' ? 'Services & Domains | JYRAC' : '事業案内（4大事業領域） | 日本若者防災復興協会'} 
+  title={currentLang === 'en' ? 'Services & Activities | JYRAC' : '主な事業・活動内容 | 日本若者防災復興協会'} 
   currentTab="services"
 >
-  <div class="services-container">
-
-    <!-- ページ見出し -->
-    <header class="services-header">
-      <span class="sub-label">SERVICES & DOMAINS</span>
-      <h1 class="main-heading">
-        {currentLang === 'en' ? 'Our Core Domains & Projects' : '事業案内・プロジェクト体系'}
-      </h1>
-      <p class="desc-text">
-        {currentLang === 'en'
-          ? 'JYRAC operates across four integrated domains: Disaster Prevention, Disaster Recovery, Community Action, and Global Initiatives.'
-          : '特定非営利活動法人日本若者防災復興協会は、4つの基盤領域を柱として多彩な若者主導プロジェクトを推進しています。'}
-      </p>
-    </header>
-
-    <!-- 事業体系ナビゲーション -->
-    <nav class="domain-quick-nav">
-      {domainSections.map(s => (
-        <a href={`#${s.id}`} class="quick-nav-item">
-          <span class="quick-nav-num">{s.num}</span>
-          <span class="quick-nav-text">{s.title}</span>
-        </a>
-      ))}
-    </nav>
-
-    <!-- 各事業領域セクション -->
-    <div class="domain-sections-stack">
-      {domainSections.map(domain => (
-        <section id={domain.id} class="domain-section-card">
-          <div class="domain-header">
-            <div class="domain-title-wrap">
-              <span class="domain-code">{domain.num} / {domain.enTitle}</span>
-              <h2 class="domain-heading">{domain.title}</h2>
-            </div>
-            <p class="domain-summary">{domain.summary}</p>
-          </div>
-
-          <div class="projects-grid">
-            {domain.projects.map(p => (
-              <div class="project-box">
-                <div class="project-top">
-                  <span class="project-badge">{p.badge}</span>
-                </div>
-                <h3 class="project-name">{p.name}</h3>
-                <span class="project-sub">{p.sub}</span>
-                <p class="project-desc">{p.desc}</p>
-                {p.link && (
-                  <div class="project-link-wrap">
-                    <a href={p.link} target="_blank" rel="noopener noreferrer" class="btn-project-link">
-                      {currentLang === 'en' ? 'Visit Project Site ↗' : '特設サイトを開く ↗'}
-                    </a>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-      ))}
-    </div>
-
-    <!-- 連携プラットフォーム -->
-    <section class="platform-card">
-      <span class="sub-label">PLATFORM SUPPORT</span>
-      <h2 class="platform-heading">
-        {currentLang === 'en' ? 'Secretariat Support for "NSF PROJECTs"' : '中高生コミュニティ「NSF PROJECTS」事務支援'}
-      </h2>
-      <p class="platform-desc">
-        {currentLang === 'en'
-          ? 'JYRAC provides legal, financial, and operational foundations for NSF PROJECTs, a nationwide youth movement supporting Noto recovery and disaster prevention.'
-          : '能登の復興と中高生の防災意識向上を掲げる学生コミュニティ「NSF PROJECTS」の法的・広報的・事務的なバックアップを実施しています。若者の柔軟なアイデアが継続的な社会変革につながるよう、団体の垣根を越えたプラットフォーム連携を推進しています。'}
-      </p>
-      <div class="platform-action">
-        <a href="https://nsf.stki.org/" target="_blank" rel="noopener noreferrer" class="btn-platform">
-          {currentLang === 'en' ? 'NSF PROJECTs Official Site ↗' : 'NSF PROJECTS 公式サイト ↗'}
+  <div class="content-panel">
+    <h2>
+      {currentLang === 'en' ? 'Main Services & Activities' : '主な事業・活動内容'}
+    </h2>
+    
+    <p class="lead-text">
+      {currentLang === 'en'
+        ? 'To comprehensively support the proactive and creative disaster prevention and recovery activities of youth, our organization develops and backs the following core infrastructure initiatives.'
+        : '当団体は、若者たちの主体かつ創造的な防災・復興活動を全面的にサポートするため、以下の基盤事業を展開・支援してまいります。'}
+    </p>
+    
+    <div class="project-grid">
+      <!-- 1. NSF PROJECTs -->
+      <div class="project-card">
+        <div class="card-body">
+          <h4>
+            <span class="project-badge">
+              {currentLang === 'en' ? 'Support Platform' : '支援基盤事業'}
+            </span>
+            {currentLang === 'en' ? 'Student-Led Project "NSF PROJECTs"' : '学生主体プロジェクト「NSF PROJECTs」'}
+          </h4>
+          <p>
+            {currentLang === 'en'
+              ? 'Centered around junior high, high school, and university students nationwide, this project conducts recovery support for disaster-affected areas such as the Noto Peninsula Earthquake, as well as flexible disaster awareness from a youth perspective. JYRAC supports their legal and financial foundations.'
+              : '全国の中高生・大学生が中心となり、能登半島地震をはじめとする被災地への復興支援や、若者目線での柔軟な防災啓発を行っています。当団体は、彼らの法的・財政的基盤を支えています。'}
+          </p>
+        </div>
+        <a href="https://nsf.stki.org/" class="btn-link" target="_blank" rel="noopener noreferrer">
+          {currentLang === 'en' ? 'Official Site ➔' : '公式サイト ➔'}
         </a>
       </div>
-    </section>
 
-    <!-- 戻るリンク -->
+      <!-- 2. 全国生徒会防災サミット -->
+      <div class="project-card orange-card">
+        <div class="card-body">
+          <h4>
+            <span class="project-badge summit">
+              {currentLang === 'en' ? 'Hosted Event' : '主催事業'}
+            </span>
+            {currentLang === 'en' ? 'National Student Council Disaster Prevention Summit' : '全国生徒会防災サミット'}
+          </h4>
+          <p>
+            {currentLang === 'en'
+              ? 'The flagship summit organized by JYRAC. We pass down lessons from the Great East Japan Earthquake and the Noto Peninsula Earthquake, hold cross-regional and intergenerational disaster management discussions, and issue "Next-Generation Disaster Management Proposals" driven by youth.'
+              : 'JYRACが主催する最重要サミットです。東日本大震災や能登半島地震などの教訓の継承、地域や世代を超えた防災ディスカッションを行い、若者発の「次世代防災提言」を発信しています。'}
+          </p>
+        </div>
+        <a href="https://summit.jyrac.stki.org" class="btn-link btn-summit" target="_blank" rel="noopener noreferrer">
+          {currentLang === 'en' ? 'Official Site ➔' : '公式サイト ➔'}
+        </a>
+      </div>
+
+      <!-- 3. 模擬防災国連 (MWCDRR) -->
+      <div class="project-card navy-card">
+        <div class="card-body">
+          <h4>
+            <span class="project-badge mwcdrr">
+              {currentLang === 'en' ? 'Hosted Event' : '主催事業'}
+            </span>
+            {currentLang === 'en' ? 'Model World Conference on Disaster Risk Reduction (MWCDRR)' : '模擬防災国連（MWCDRR）'}
+          </h4>
+          <p>
+            {currentLang === 'en'
+              ? 'Modeled after the UN World Conference on Disaster Risk Reduction, participants represent various nations to discuss, negotiate, and formulate international disaster policies. This program empowers youth to tackle global disaster risk reduction from international perspectives.'
+              : '国連防災世界会議をモデルとし、参加者が各国代表になりきって国際的な防災・減災政策を議論・交渉するプログラムです。「模擬国連」の仕組みを通じて、若者が国際的・多角的な視野から防災に向き合う場を提供します。'}
+          </p>
+        </div>
+        <a href="https://mwcdrr.jyrac.stki.org/" class="btn-link btn-mwcdrr" target="_blank" rel="noopener noreferrer">
+          {currentLang === 'en' ? 'Official Site ➔' : '公式サイト ➔'}
+        </a>
+      </div>
+    </div>
+
+    <!-- ホームへ戻る -->
     <div class="back-row">
       <a href={`${baseUrl}/${langParam}`} class="header-link">
         {currentLang === 'en' ? '← Back to Home' : '← ホームに戻る'}
       </a>
     </div>
-
   </div>
 </Layout>
 
 <style>
-  .services-container {
-    max-width: 1060px;
+  .content-panel {
+    max-width: 1040px;
     margin: 0 auto;
-    padding: 48px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 48px;
+    padding: 36px 16px 48px 16px;
   }
-
-  .services-header {
-    text-align: center;
-  }
-  .sub-label {
-    font-size: 10px;
-    font-family: ui-monospace, monospace;
+  
+  h2 {
+    color: var(--jyrac-navy, #002b54);
+    font-size: 24px;
     font-weight: 800;
-    color: var(--jyrac-teal);
-    letter-spacing: 0.08em;
-    display: block;
-    margin-bottom: 4px;
-  }
-  .main-heading {
-    font-size: 28px;
-    font-weight: 900;
-    color: var(--jyrac-navy);
-    line-height: 1.3;
-  }
-  .desc-text {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-top: 6px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-left: 5px solid var(--jyrac-teal, #009aa6);
+    padding-left: 15px;
   }
 
-  /* クイックナビ */
-  .domain-quick-nav {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-  .quick-nav-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: #ffffff;
-    border: 1px solid var(--border-color);
-    padding: 8px 18px;
-    border-radius: 30px;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 800;
-    color: var(--jyrac-navy);
-    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-    transition: border-color 0.2s, background-color 0.2s;
-  }
-  .quick-nav-item:hover {
-    border-color: var(--jyrac-teal);
-    background-color: #f0fdfa;
-  }
-  .quick-nav-num {
-    font-family: ui-monospace, monospace;
-    color: var(--jyrac-teal);
-    font-size: 11px;
+  .lead-text {
+    color: #4f5e71;
+    font-size: 14.5px;
+    line-height: 1.8;
+    margin-bottom: 35px;
   }
 
-  /* ドメインスタック */
-  .domain-sections-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-  }
-  .domain-section-card {
-    background: #ffffff;
-    border: 1px solid var(--border-color);
-    border-radius: 20px;
-    padding: 36px;
-    scroll-margin-top: 90px;
-    display: flex;
-    flex-direction: column;
+  /* グリッドレイアウト */
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 24px;
   }
-  .domain-header {
-    border-bottom: 1.5px solid var(--border-color);
-    padding-bottom: 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .domain-code {
-    font-size: 11px;
-    font-family: ui-monospace, monospace;
-    font-weight: 800;
-    color: var(--jyrac-teal);
-  }
-  .domain-heading {
-    font-size: 22px;
-    font-weight: 900;
-    color: var(--jyrac-navy);
-  }
-  .domain-summary {
-    font-size: 13px;
-    color: var(--text-muted);
-    line-height: 1.6;
+  @media (min-width: 768px) {
+    .project-grid {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
   }
 
-  /* プロジェクトグリッド */
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  /* カードデザイン */
+  .project-card {
+    background: #ffffff;
+    border: 1px solid rgba(0, 154, 166, 0.15);
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 4px 16px rgba(0, 43, 84, 0.03);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     gap: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
-  .project-box {
-    background: var(--bg-light);
-    border: 1px solid var(--border-color);
-    border-radius: 14px;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    transition: transform 0.2s, box-shadow 0.2s;
+  .project-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0, 154, 166, 0.1);
   }
-  .project-box:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+  .project-card.orange-card {
+    border-color: rgba(230, 126, 34, 0.25);
   }
-  .project-top {
-    display: flex;
-    justify-content: flex-start;
-  }
-  .project-badge {
-    font-size: 10px;
-    font-weight: 800;
-    background: #e0f2fe;
-    color: #0369a1;
-    padding: 3px 8px;
-    border-radius: 6px;
-  }
-  .project-name {
-    font-size: 17px;
-    font-weight: 800;
-    color: var(--jyrac-navy);
-    line-height: 1.4;
-  }
-  .project-sub {
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--jyrac-teal);
-    line-height: 1.4;
-  }
-  .project-desc {
-    font-size: 12.5px;
-    color: var(--text-main);
-    line-height: 1.7;
-    margin-top: 4px;
-    flex-grow: 1;
-  }
-  .project-link-wrap {
-    margin-top: 12px;
-    padding-top: 8px;
-  }
-  .btn-project-link {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 800;
-    color: var(--jyrac-teal);
-    text-decoration: none;
-  }
-  .btn-project-link:hover {
-    text-decoration: underline;
+  .project-card.navy-card {
+    border-color: rgba(0, 43, 84, 0.25);
   }
 
-  /* 支援基盤カード */
-  .platform-card {
-    background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 100%);
-    border: 1px solid #ccfbf1;
-    border-radius: 20px;
-    padding: 32px;
+  .card-body {
     display: flex;
     flex-direction: column;
     gap: 12px;
   }
-  .platform-heading {
-    font-size: 19px;
+
+  .project-card h4 {
+    margin: 0;
+    font-size: 17px;
     font-weight: 800;
-    color: var(--jyrac-navy);
-  }
-  .platform-desc {
-    font-size: 13px;
-    color: var(--text-main);
-    line-height: 1.75;
-  }
-  .platform-action {
-    margin-top: 6px;
-  }
-  .btn-platform {
-    display: inline-block;
-    background: var(--jyrac-navy);
-    color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-size: 12px;
-    font-weight: 800;
-    text-decoration: none;
-  }
-  .btn-platform:hover {
-    background: var(--jyrac-teal-dark);
+    color: var(--jyrac-navy, #002b54);
+    line-height: 1.45;
   }
 
-  .header-link {
-    font-size: 12px;
+  /* バッジ */
+  .project-badge {
+    display: block;
+    width: fit-content;
+    font-size: 10px;
     font-weight: 800;
-    color: var(--jyrac-teal);
+    color: #fff;
+    background: var(--jyrac-teal, #009aa6);
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+  .project-badge.summit {
+    background: #e67e22;
+  }
+  .project-badge.mwcdrr {
+    background: #005a9c;
+  }
+
+  .project-card p {
+    margin: 0;
+    color: #5b6779;
+    font-size: 13.5px;
+    line-height: 1.7;
+  }
+
+  /* ボタンリンク */
+  .btn-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff !important;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 13.5px;
+    background: linear-gradient(135deg, #009aa6 0%, #00b4c5 100%);
+    box-shadow: 0 4px 14px rgba(0, 154, 166, 0.2);
+    transition: opacity 0.2s, transform 0.1s;
+    margin-top: auto;
+  }
+  .btn-link:hover {
+    opacity: 0.95;
+  }
+  .btn-link:active {
+    transform: translateY(2px);
+  }
+
+  .btn-summit {
+    background: linear-gradient(135deg, #e67e22 0%, #f39c12 100%);
+    box-shadow: 0 4px 14px rgba(230, 126, 34, 0.25);
+  }
+
+  .btn-mwcdrr {
+    background: linear-gradient(135deg, #005a9c 0%, #1a82d2 100%);
+    box-shadow: 0 4px 14px rgba(0, 90, 156, 0.25);
+  }
+
+  .back-row {
+    text-align: center;
+    margin-top: 48px;
+  }
+  .header-link {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--jyrac-teal, #009aa6);
     text-decoration: none;
   }
   .header-link:hover {
     text-decoration: underline;
-  }
-  .back-row {
-    text-align: center;
-  }
-
-  @media (max-width: 768px) {
-    .domain-section-card {
-      padding: 24px 16px;
-    }
-    .projects-grid {
-      grid-template-columns: 1fr;
-    }
   }
 </style>
