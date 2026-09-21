@@ -13,19 +13,22 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   currentTab="services"
 >
   <div class="content-panel">
-    <h2>
-      {currentLang === 'en' ? 'Main Services & Activities' : '主な事業・活動内容'}
-    </h2>
-    
-    <p class="lead-text">
-      {currentLang === 'en'
-        ? 'To comprehensively support the proactive and creative disaster prevention and recovery activities of youth, our organization develops and backs the following core infrastructure initiatives.'
-        : '当団体は、若者たちの主体かつ創造的な防災・復興活動を全面的にサポートするため、以下の基盤事業を展開・支援してまいります。'}
-    </p>
+    <header class="services-header">
+      <span class="sub-label">SERVICES & INITIATIVES</span>
+      <h2>
+        {currentLang === 'en' ? 'Main Services & Activities' : '主な事業・活動内容'}
+      </h2>
+      
+      <p class="lead-text">
+        {currentLang === 'en'
+          ? 'To comprehensively support the proactive and creative disaster prevention and recovery activities of youth, our organization develops and backs the following core infrastructure initiatives.'
+          : '当団体は、若者たちの主体かつ創造的な防災・復興活動を全面的にサポートするため、以下の基盤事業を展開・支援してまいります。'}
+      </p>
+    </header>
     
     <div class="project-grid">
       <!-- 1. NSF PROJECTs -->
-      <div class="project-card">
+      <article class="project-card">
         <div class="card-body">
           <h4>
             <span class="project-badge">
@@ -40,12 +43,12 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
           </p>
         </div>
         <a href="https://nsf.stki.org/" class="btn-link" target="_blank" rel="noopener noreferrer">
-          {currentLang === 'en' ? 'Official Site ➔' : '公式サイト ➔'}
+          {currentLang === 'en' ? 'Official Site ↗' : '公式サイト ↗'}
         </a>
-      </div>
+      </article>
 
       <!-- 2. 全国生徒会防災サミット -->
-      <div class="project-card orange-card">
+      <article class="project-card orange-card">
         <div class="card-body">
           <h4>
             <span class="project-badge summit">
@@ -60,12 +63,12 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
           </p>
         </div>
         <a href="https://summit.jyrac.stki.org" class="btn-link btn-summit" target="_blank" rel="noopener noreferrer">
-          {currentLang === 'en' ? 'Official Site ➔' : '公式サイト ➔'}
+          {currentLang === 'en' ? 'Official Site ↗' : '公式サイト ↗'}
         </a>
-      </div>
+      </article>
 
       <!-- 3. 模擬防災国連 (MWCDRR) -->
-      <div class="project-card navy-card">
+      <article class="project-card navy-card">
         <div class="card-body">
           <h4>
             <span class="project-badge mwcdrr">
@@ -80,9 +83,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
           </p>
         </div>
         <a href="https://mwcdrr.jyrac.stki.org/" class="btn-link btn-mwcdrr" target="_blank" rel="noopener noreferrer">
-          {currentLang === 'en' ? 'Official Site ➔' : '公式サイト ➔'}
+          {currentLang === 'en' ? 'Official Site ↗' : '公式サイト ↗'}
         </a>
-      </div>
+      </article>
     </div>
 
     <!-- ホームへ戻る -->
@@ -98,31 +101,46 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   .content-panel {
     max-width: 1040px;
     margin: 0 auto;
-    padding: 36px 16px 48px 16px;
+    padding: clamp(24px, 5vw, 44px) 16px clamp(36px, 6vw, 56px) 16px;
+  }
+
+  .services-header {
+    margin-bottom: clamp(20px, 4vw, 32px);
+  }
+
+  .sub-label {
+    font-size: 10px;
+    font-family: ui-monospace, monospace;
+    font-weight: 800;
+    color: var(--jyrac-teal, #009aa6);
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 4px;
   }
   
   h2 {
     color: var(--jyrac-navy, #002b54);
-    font-size: 24px;
-    font-weight: 800;
+    font-size: clamp(20px, 4.5vw, 25px);
+    font-weight: 900;
     margin-top: 0;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     border-left: 5px solid var(--jyrac-teal, #009aa6);
-    padding-left: 15px;
+    padding-left: 12px;
+    line-height: 1.35;
   }
 
   .lead-text {
     color: #4f5e71;
-    font-size: 14.5px;
+    font-size: clamp(13px, 3vw, 14.5px);
     line-height: 1.8;
-    margin-bottom: 35px;
+    margin: 0;
   }
 
   /* グリッドレイアウト */
   .project-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: clamp(16px, 3vw, 24px);
   }
   @media (min-width: 768px) {
     .project-grid {
@@ -134,18 +152,19 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   .project-card {
     background: #ffffff;
     border: 1px solid rgba(0, 154, 166, 0.15);
-    border-radius: 16px;
-    padding: 28px;
+    border-radius: 18px;
+    padding: clamp(18px, 4vw, 28px);
     box-shadow: 0 4px 16px rgba(0, 43, 84, 0.03);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 20px;
+    gap: 18px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
   }
   .project-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 24px rgba(0, 154, 166, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0, 154, 166, 0.1);
   }
   .project-card.orange-card {
     border-color: rgba(230, 126, 34, 0.25);
@@ -157,12 +176,12 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   .card-body {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
   }
 
   .project-card h4 {
     margin: 0;
-    font-size: 17px;
+    font-size: clamp(15.5px, 3.8vw, 17px);
     font-weight: 800;
     color: var(--jyrac-navy, #002b54);
     line-height: 1.45;
@@ -191,7 +210,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   .project-card p {
     margin: 0;
     color: #5b6779;
-    font-size: 13.5px;
+    font-size: 13px;
     line-height: 1.7;
   }
 
@@ -201,18 +220,20 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     align-items: center;
     justify-content: center;
     color: #ffffff !important;
-    padding: 12px 24px;
+    padding: 12px 20px;
     text-decoration: none;
     border-radius: 10px;
     font-weight: 700;
-    font-size: 13.5px;
+    font-size: 13px;
     background: linear-gradient(135deg, #009aa6 0%, #00b4c5 100%);
     box-shadow: 0 4px 14px rgba(0, 154, 166, 0.2);
     transition: opacity 0.2s, transform 0.1s;
     margin-top: auto;
+    box-sizing: border-box;
+    text-align: center;
   }
   .btn-link:hover {
-    opacity: 0.95;
+    opacity: 0.92;
   }
   .btn-link:active {
     transform: translateY(2px);
@@ -230,7 +251,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   .back-row {
     text-align: center;
-    margin-top: 48px;
+    margin-top: clamp(28px, 5vw, 44px);
   }
   .header-link {
     font-size: 12.5px;
@@ -240,5 +261,12 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   }
   .header-link:hover {
     text-decoration: underline;
+  }
+
+  /* スマートフォン対応 */
+  @media (max-width: 640px) {
+    .btn-link {
+      width: 100%;
+    }
   }
 </style>
