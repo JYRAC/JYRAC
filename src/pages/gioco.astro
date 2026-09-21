@@ -17,7 +17,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="content-panel">
       
       <!-- ヘッダーエリア -->
-      <div class="portal-header">
+      <header class="portal-header">
         <div class="title-badge">
           {currentLang === 'en' ? 'JYRAC Original Digital Tools' : 'JYRAC独自開発デジタル教材・ツール'}
         </div>
@@ -31,13 +31,13 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
             <>子どもから大人まで直感的に学べる避難所運営ゲームや、自分の助け方の強みを知る共助診断ツールを体験できます。</>
           )}
         </p>
-      </div>
+      </header>
 
       <!-- ツール選択グリッド -->
       <div class="tools-grid">
 
         <!-- カード 1: HUG Gioco -->
-        <div class="tool-card card-gioco">
+        <article class="tool-card card-gioco">
           <div class="card-top">
             <span class="category-badge badge-sun">🎮 {currentLang === 'en' ? 'Simulation Game' : '防災ゲーム'}</span>
             <h3>HUG Gioco</h3>
@@ -67,10 +67,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
               {currentLang === 'en' ? '*Opens in a new window (PC, Tablet, Smartphone)' : '※別ウィンドウで起動（PC・スマホ対応）'}
             </span>
           </div>
-        </div>
+        </article>
 
         <!-- カード 2: ぼうさい8 -->
-        <div class="tool-card card-bosai8">
+        <article class="tool-card card-bosai8">
           <div class="card-top">
             <span class="category-badge badge-coral">🐾 {currentLang === 'en' ? 'Type Diagnosis' : '共助診断'}</span>
             <h3>ぼうさい8</h3>
@@ -100,7 +100,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
               {currentLang === 'en' ? '*Results sent directly to your email' : '※結果をメールで保存可能'}
             </span>
           </div>
-        </div>
+        </article>
 
       </div>
 
@@ -129,7 +129,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     --shadow: 0 8px 24px rgba(27, 58, 140, 0.08);
 
     color: var(--ink);
-    padding: clamp(20px, 4vw, 40px) 16px;
+    padding: clamp(20px, 5vw, 44px) 16px;
   }
 
   .content-panel {
@@ -141,9 +141,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   /* ポータルヘッダー */
   .portal-header {
     text-align: center;
-    margin-bottom: 35px;
+    margin-bottom: clamp(24px, 4vw, 36px);
     border-bottom: 2px solid rgba(0, 154, 166, 0.15);
-    padding-bottom: 20px;
+    padding-bottom: clamp(16px, 3vw, 24px);
   }
 
   .title-badge {
@@ -154,32 +154,32 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     font-weight: 800;
     padding: 4px 12px;
     border-radius: 6px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     letter-spacing: 0.5px;
   }
 
   .portal-header h2 {
     font-family: 'Baloo 2', 'Zen Maru Gothic', sans-serif;
     color: var(--navy);
-    font-size: clamp(1.6rem, 4vw, 2rem);
+    font-size: clamp(1.45rem, 5vw, 2rem);
     font-weight: 900;
     margin: 0 0 10px 0;
-    line-height: 1.2;
+    line-height: 1.25;
   }
 
   .portal-desc {
-    font-size: 0.95rem;
+    font-size: clamp(0.88rem, 2.5vw, 0.95rem);
     color: var(--ink-soft);
     line-height: 1.7;
     margin: 0 auto;
     max-width: 650px;
   }
 
-  /* 2カラム・グリッド */
+  /* ツール選択グリッド */
   .tools-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 28px;
+    gap: clamp(18px, 3vw, 28px);
   }
 
   @media (min-width: 768px) {
@@ -193,7 +193,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     background: #fff;
     border: 2px solid var(--line);
     border-radius: 22px;
-    padding: 32px 26px;
+    padding: clamp(20px, 4vw, 32px) clamp(16px, 3.5vw, 26px);
     box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
@@ -205,7 +205,6 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     transform: translateY(-4px);
   }
 
-  /* カード個別アクセント */
   .card-gioco {
     border-color: #ffe599;
   }
@@ -225,9 +224,9 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     display: inline-block;
     font-size: 0.75rem;
     font-weight: 800;
-    padding: 4px 10px;
+    padding: 3px 9px;
     border-radius: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
   .badge-sun { background: #fff4cc; color: #8a6d00; }
   .badge-coral { background: #ffe9e4; color: #c0392b; }
@@ -235,7 +234,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   .tool-card h3 {
     font-family: 'Baloo 2', 'Zen Maru Gothic', sans-serif;
     color: var(--navy);
-    font-size: 1.7rem;
+    font-size: clamp(1.4rem, 4vw, 1.7rem);
     font-weight: 900;
     margin: 0;
     line-height: 1.2;
@@ -243,31 +242,31 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   .sub-title {
     display: block;
-    font-size: 0.88rem;
+    font-size: clamp(0.8rem, 2.3vw, 0.88rem);
     color: var(--ink-soft);
     font-weight: 700;
     margin-top: 4px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
 
   .card-desc {
-    font-size: 0.92rem;
+    font-size: clamp(0.85rem, 2.4vw, 0.92rem);
     color: var(--ink);
     line-height: 1.65;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
   }
 
   /* 特徴リスト */
   .feature-list {
     list-style: none;
     padding: 0;
-    margin: 0 0 24px 0;
+    margin: 0 0 20px 0;
     border-top: 1px dashed var(--line);
-    padding-top: 14px;
+    padding-top: 12px;
   }
 
   .feature-list li {
-    font-size: 0.85rem;
+    font-size: clamp(0.8rem, 2.2vw, 0.85rem);
     font-weight: 700;
     color: var(--ink-soft);
     margin-bottom: 8px;
@@ -286,14 +285,16 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   .btn-launch {
     font-family: 'Baloo 2', 'Zen Maru Gothic', sans-serif;
     font-weight: 800;
-    font-size: 1.05rem;
+    font-size: clamp(0.95rem, 2.6vw, 1.05rem);
     text-decoration: none;
     border-radius: 999px;
-    padding: 14px 24px;
+    padding: 13px 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: transform 0.08s ease, box-shadow 0.08s ease;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .btn-gioco {
@@ -326,16 +327,16 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   .btn-note {
     display: block;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: var(--ink-soft);
-    margin-top: 10px;
+    margin-top: 8px;
     font-weight: 600;
   }
 
   /* 戻るリンク */
   .back-row {
     text-align: center;
-    margin-top: 40px;
+    margin-top: clamp(24px, 5vw, 40px);
   }
   .header-link {
     font-size: 12.5px;
@@ -345,11 +346,5 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   }
   .header-link:hover {
     text-decoration: underline;
-  }
-
-  @media (max-width: 640px) {
-    .tool-card {
-      padding: 24px 20px;
-    }
   }
 </style>
