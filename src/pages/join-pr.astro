@@ -1,4 +1,5 @@
 ---
+// src/pages/join-pr.astro
 import Layout from "../layouts/Layout.astro";
 
 const currentLang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
@@ -137,10 +138,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   .pr-recruit-container {
     max-width: 900px;
     margin: 0 auto;
-    padding: 36px 16px 64px 16px;
+    padding: clamp(20px, 4vw, 36px) 16px 64px 16px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: clamp(16px, 3vw, 24px);
   }
 
   .breadcrumb a {
@@ -157,19 +158,19 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 20px;
-    padding: 36px 32px;
+    padding: clamp(20px, 4vw, 36px) clamp(16px, 4vw, 32px);
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: clamp(24px, 4vw, 32px);
     box-shadow: 0 4px 16px rgba(0, 43, 84, 0.03);
   }
 
   .article-header {
     border-bottom: 2px solid var(--border-color);
-    padding-bottom: 20px;
+    padding-bottom: 18px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
   }
   .badge-row {
     display: flex;
@@ -178,25 +179,25 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     flex-wrap: wrap;
   }
   .sub-tag {
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 800;
     color: var(--jyrac-teal);
     background: #f0fdfa;
     border: 1px solid #ccfbf1;
-    padding: 3px 10px;
+    padding: 3px 8px;
     border-radius: 6px;
   }
   .status-badge {
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 800;
     color: #c2410c;
     background: #fff7ed;
     border: 1px solid #ffedd5;
-    padding: 3px 10px;
+    padding: 3px 8px;
     border-radius: 6px;
   }
   .post-title {
-    font-size: 24px;
+    font-size: clamp(18px, 4.5vw, 24px);
     font-weight: 900;
     color: var(--jyrac-navy);
     line-height: 1.4;
@@ -206,10 +207,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   .lead-box {
     background: var(--bg-light);
     border-left: 4px solid var(--jyrac-teal);
-    padding: 16px 20px;
+    padding: 14px 18px;
     border-radius: 0 12px 12px 0;
-    font-size: 14px;
-    line-height: 1.8;
+    font-size: clamp(13px, 3vw, 14px);
+    line-height: 1.75;
     color: var(--text-main);
   }
   .lead-box p {
@@ -219,10 +220,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   .content-section {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
   }
   .section-heading {
-    font-size: 18px;
+    font-size: clamp(16px, 3.8vw, 18px);
     font-weight: 900;
     color: var(--jyrac-navy);
     border-bottom: 1.5px solid var(--border-color);
@@ -235,19 +236,19 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
   }
   .styled-list li {
     font-size: 13.5px;
     color: var(--text-main);
     line-height: 1.7;
     position: relative;
-    padding-left: 20px;
+    padding-left: 18px;
   }
   .styled-list li::before {
     content: "●";
     color: var(--jyrac-teal);
-    font-size: 10px;
+    font-size: 9px;
     position: absolute;
     left: 2px;
     top: 3px;
@@ -255,14 +256,14 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   .work-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
   }
   .work-item {
     background: var(--bg-light);
     border: 1px solid var(--border-color);
     border-radius: 14px;
-    padding: 20px;
+    padding: 18px;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -274,7 +275,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     color: var(--jyrac-teal);
   }
   .work-item h3 {
-    font-size: 15px;
+    font-size: 14.5px;
     font-weight: 800;
     color: var(--jyrac-navy);
     margin: 0;
@@ -286,13 +287,14 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     margin: 0;
   }
 
+  /* 募集条件テーブル */
   .req-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 13px;
   }
   .req-table th {
-    width: 22%;
+    width: 24%;
     background: var(--bg-light);
     color: var(--jyrac-navy);
     font-weight: 800;
@@ -300,6 +302,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     padding: 14px 16px;
     border: 1px solid var(--border-color);
     vertical-align: top;
+    white-space: nowrap;
   }
   .req-table td {
     padding: 14px 16px;
@@ -329,22 +332,23 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   .cta-card {
     background: linear-gradient(135deg, var(--jyrac-navy) 0%, #002b54 100%);
     border-radius: 16px;
-    padding: 36px 24px;
+    padding: clamp(24px, 5vw, 36px) clamp(16px, 4vw, 24px);
     text-align: center;
     color: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 12px;
-    margin-top: 12px;
+    margin-top: 8px;
   }
   .cta-card h2 {
-    font-size: 20px;
+    font-size: clamp(17px, 4vw, 20px);
     font-weight: 900;
     margin: 0;
+    line-height: 1.35;
   }
   .cta-card p {
-    font-size: 13px;
+    font-size: 12.5px;
     color: #cbd5e1;
     max-width: 520px;
     margin: 0;
@@ -357,11 +361,13 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     text-decoration: none;
     font-size: 13.5px;
     font-weight: 800;
-    padding: 14px 32px;
+    padding: 13px 28px;
     border-radius: 10px;
-    margin-top: 8px;
+    margin-top: 6px;
     box-shadow: 0 4px 14px rgba(0, 154, 166, 0.3);
     transition: transform 0.2s, background-color 0.2s;
+    text-align: center;
+    box-sizing: border-box;
   }
   .btn-apply:hover {
     background: var(--jyrac-teal-dark);
@@ -381,24 +387,44 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     text-decoration: underline;
   }
 
+  /* モバイル対応（幅640px以下） */
   @media (max-width: 640px) {
-    .article-card {
-      padding: 24px 16px;
+    /* テーブルを縦積みカードに変換して横スクロールや文字潰れを防止 */
+    .req-table,
+    .req-table tbody,
+    .req-table tr,
+    .req-table th,
+    .req-table td {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
     }
-    .post-title {
-      font-size: 19px;
+    .req-table tr {
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+    .req-table tr:last-child {
+      margin-bottom: 0;
     }
     .req-table th {
-      width: 28%;
-      padding: 10px;
+      background: var(--bg-light);
+      border: none;
+      border-bottom: 1px solid var(--border-color);
+      padding: 8px 12px;
+      font-size: 12px;
     }
     .req-table td {
-      padding: 10px;
+      border: none;
+      padding: 10px 12px;
+      font-size: 12.5px;
     }
+
     .btn-apply {
       width: 100%;
-      padding: 14px 16px;
-      box-sizing: border-box;
+      padding: 13px 16px;
     }
   }
 </style>
