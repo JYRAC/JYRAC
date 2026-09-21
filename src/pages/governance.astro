@@ -39,7 +39,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
       <p class="alert-text">
         {currentLang === 'en'
           ? 'In accordance with Article 10, Paragraph 1 of the Act on Promotion of Specified Non-profit Activities, our organization applied for establishment certification to the Governor of Tokyo. Following official approval, we completed incorporation registration at the Tokyo Legal Affairs Bureau on June 21, 2026, officially establishing as a certified NPO.'
-          : '当団体は、特定非営利活動促進法第10条第1項の規定に基づき東京都知事へ設立認証申請を行い、正式に認証を受けた後、東京法務局にて設立登記の手続きを完了し、令和8年6月21日をもって正式に法人として成立いたしました。'}[cite: 1]
+          : '当団体は、特定非営利活動促進法第10条第1項の規定に基づき東京都知事へ設立認証申請を行い、正式に認証を受けた後、東京法務局にて設立登記の手続きを完了し、令和8年6月21日をもって正式に法人として成立いたしました。'}
       </p>
     </div>
 
@@ -58,7 +58,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
           </tr>
           <tr>
             <th>{currentLang === 'en' ? 'Establishment Date' : '設立（成立）年月日'}</th>
-            <td>{currentLang === 'en' ? 'June 21, 2026' : '令和8年6月21日（登記完了）'}[cite: 1]</td>
+            <td>{currentLang === 'en' ? 'June 21, 2026' : '令和8年6月21日（登記完了）'}</td>
           </tr>
           <tr>
             <th>{currentLang === 'en' ? 'Certification Status' : '認証状況'}</th>
@@ -74,7 +74,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
           </tr>
           <tr>
             <th>{currentLang === 'en' ? 'Principal Office' : '主たる事務所の所在地'}</th>
-            <td>東京都文京区小日向四丁目4番6-603号[cite: 1]</td>
+            <td>東京都文京区小日向四丁目4番6-603号</td>
           </tr>
           <tr>
             <th>{currentLang === 'en' ? 'Public Disclosure' : '公開書類・定款等'}</th>
@@ -87,7 +87,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
                   class="btn-doc-download"
                 >
                   <span class="doc-icon">📄</span>
-                  <span>
+                  <span class="doc-text">
                     {currentLang === 'en' 
                       ? 'View Official Establishment Documents (Articles of Incorporation, Business Plan, Prospectus) [Google Drive] ↗' 
                       : '設立関連書類一式（定款・設立趣旨書・事業計画書 等）を開く [Google Drive] ↗'}
@@ -124,10 +124,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   .gov-container {
     max-width: 960px;
     margin: 0 auto;
-    padding: 48px 16px;
+    padding: clamp(24px, 5vw, 48px) 16px;
     display: flex;
     flex-direction: column;
-    gap: 36px;
+    gap: clamp(20px, 4vw, 36px);
   }
 
   .gov-header {
@@ -143,7 +143,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     margin-bottom: 4px;
   }
   .main-heading {
-    font-size: 28px;
+    font-size: clamp(22px, 5vw, 28px);
     font-weight: 900;
     color: var(--jyrac-navy);
     line-height: 1.3;
@@ -152,6 +152,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     font-size: 13px;
     color: var(--text-muted);
     margin-top: 6px;
+    line-height: 1.6;
   }
 
   /* アラートバナー */
@@ -160,10 +161,11 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     border: 1px solid #bbf7d0;
     border-left: 5px solid #16a34a;
     border-radius: 16px;
-    padding: 24px 28px;
+    padding: clamp(18px, 4vw, 24px) clamp(16px, 4vw, 28px);
     display: flex;
     flex-direction: column;
     gap: 10px;
+    box-shadow: 0 4px 16px rgba(0, 43, 84, 0.02);
   }
   .alert-badge {
     display: inline-block;
@@ -178,10 +180,11 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     border-radius: 12px;
   }
   .alert-title {
-    font-size: 18px;
+    font-size: clamp(16px, 4vw, 18px);
     font-weight: 800;
     color: #166534;
     margin: 0;
+    line-height: 1.4;
   }
   .alert-text {
     font-size: 13px;
@@ -195,16 +198,18 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 20px;
-    padding: 32px;
+    padding: clamp(18px, 4vw, 32px);
     display: flex;
     flex-direction: column;
     gap: 16px;
+    box-shadow: 0 4px 16px rgba(0, 43, 84, 0.02);
   }
   .card-heading {
-    font-size: 20px;
+    font-size: clamp(17px, 4vw, 20px);
     font-weight: 900;
     color: var(--jyrac-navy);
     margin: 0;
+    line-height: 1.35;
   }
   .body-text {
     font-size: 13.5px;
@@ -212,28 +217,30 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     line-height: 1.8;
   }
 
-  /* テーブル */
+  /* テーブル（PC標準） */
   .info-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 13px;
-    margin-top: 8px;
+    margin-top: 4px;
   }
   .info-table th {
-    width: 28%;
+    width: 25%;
     background-color: var(--bg-light);
     color: var(--jyrac-navy);
     font-weight: 800;
     text-align: left;
-    padding: 14px 18px;
+    padding: 12px 16px;
     border: 1px solid var(--border-color);
     vertical-align: middle;
+    white-space: nowrap;
   }
   .info-table td {
-    padding: 14px 18px;
+    padding: 12px 16px;
     border: 1px solid var(--border-color);
     color: var(--text-main);
     line-height: 1.6;
+    word-break: break-word;
   }
 
   /* 書類リンク */
@@ -244,17 +251,19 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   }
   .btn-doc-download {
     display: inline-flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 8px;
     background: #f0fdfa;
     border: 1px solid #99f6e4;
     color: var(--jyrac-teal-dark);
-    padding: 10px 16px;
+    padding: 10px 14px;
     border-radius: 10px;
     font-size: 13px;
     font-weight: 800;
     text-decoration: none;
+    line-height: 1.5;
     transition: background-color 0.2s, border-color 0.2s;
+    box-sizing: border-box;
     width: fit-content;
   }
   .btn-doc-download:hover {
@@ -263,6 +272,11 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   }
   .doc-icon {
     font-size: 15px;
+    flex-shrink: 0;
+    line-height: 1.4;
+  }
+  .doc-text {
+    flex-grow: 1;
   }
   .doc-note {
     font-size: 11px;
@@ -283,17 +297,46 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     padding-top: 8px;
   }
 
+  /* モバイル対応（幅768px以下） */
   @media (max-width: 768px) {
     .section-card {
-      padding: 20px 16px;
+      padding: 18px 14px;
+      border-radius: 16px;
     }
-    .info-table th, .info-table td {
-      padding: 10px 12px;
-      font-size: 12px;
+
+    /* テーブルを縦積みカード化して横スクロール・はみ出しを完全防止 */
+    .info-table, 
+    .info-table tbody, 
+    .info-table tr, 
+    .info-table th, 
+    .info-table td {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .info-table tr {
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      background: #ffffff;
+    }
+    .info-table tr:last-child {
+      margin-bottom: 0;
     }
     .info-table th {
-      width: 35%;
+      background-color: var(--bg-light);
+      border: none;
+      border-bottom: 1px solid var(--border-color);
+      padding: 8px 12px;
+      font-size: 11.5px;
     }
+    .info-table td {
+      border: none;
+      padding: 10px 12px;
+      font-size: 12.5px;
+    }
+
     .btn-doc-download {
       font-size: 12px;
       width: 100%;
