@@ -7,25 +7,34 @@ const currentLang: Lang = Astro.url.searchParams.get("lang") === "en" ? "en" : "
 const langParam = currentLang === 'en' ? '?lang=en' : '';
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-// 沿革・活動実績タイムラインデータ
+// 沿革・活動実績タイムラインデータ（時系列整合版）
 const historyTimeline = [
+  {
+    year: "2026",
+    date: "2026年6月",
+    category: "CORPORATE",
+    titleJa: "「特定非営利活動法人 日本若者防災復興協会」登記完了・法人成立",
+    titleEn: "Official NPO Incorporation: Japan Youth Resilience Action Consortium Established",
+    descJa: "東京都知事による設立認証を経て、東京法務局にて設立登記を完了。社会的な信用力と強固なガバナンス体制を備えたNPO法人として新たなスタートを切る。",
+    descEn: "Completed official NPO registration in Tokyo, establishing a formalized institutional framework to empower youth-led disaster resilience nationwide."
+  },
+  {
+    year: "2026",
+    date: "2026年3月",
+    category: "SUMMIT",
+    titleJa: "衆議院議員会館にて内閣府共催「全国生徒会防災サミット2026」を開催",
+    titleEn: "Held National Student Council Disaster Prevention Summit at National Diet",
+    descJa: "全国の中高生・生徒会役員が結集。避難所環境改善（守寝プロジェクト）や地域共助に関する『次世代防災提言』を取りまとめ、関係省庁・行政へ提出。",
+    descEn: "Gathered student councils across Japan at the House of Representatives, formulating and submitting next-generation disaster policy proposals to government agencies."
+  },
   {
     year: "2026",
     date: "2026年3月",
     category: "RECRUIT",
     titleJa: "広報局を中心とした新体制メンバー募集の開始",
-    titleEn: "Launched Nationwide PR Bureau Recruitment Campaign",
-    descJa: "全国の中高生・大学生・若手社会人を対象に、発信力・デザイン・Web記事制作を強化する広報スタッフの公募を開始。",
-    descEn: "Started nationwide recruitment for PR staff to amplify youth-driven disaster resilience communication."
-  },
-  {
-    year: "2026",
-    date: "2026年2月",
-    category: "SUMMIT",
-    titleJa: "内閣府共催「全国生徒会防災サミット」開催・次世代防災提言を発表",
-    titleEn: "Held National Student Council Disaster Prevention Summit (Cabinet Office Co-host)",
-    descJa: "衆議院議員会館にて全国の生徒会役員・中高生が結集。避難所環境改善（守寝プロジェクト）や地域共助に関する提言を取りまとめ、国・行政へ発信。",
-    descEn: "Gathered student councils nationwide at the National Diet to discuss emergency shelter conditions and submit youth policy proposals."
+    titleEn: "Launched Nationwide PR Bureau Youth Recruitment Campaign",
+    descJa: "全国の中高生・大学生・若手を対象に、発信力・デザイン・Web記事制作を強化する広報スタッフの公募を開始。",
+    descEn: "Started recruitment for youth PR staff to amplify youth-driven disaster resilience actions through digital media."
   },
   {
     year: "2025",
@@ -34,13 +43,13 @@ const historyTimeline = [
     titleJa: "能登半島地震 街頭支援募金が累計59回・総額260万円を突破",
     titleEn: "Street Relief Fundraising Reached 59 Sessions, Totaling Over ¥2.6M",
     descJa: "学生主体で継続実施してきた街頭募金活動が累計59回を達成。集まった義援金は現地民間ボランティアセンターや被災地支援活動へ全額送金。",
-    descEn: "Student-led street fundraising drives reached 59 sessions, transferring over 2.6 million yen directly to local disaster relief centers."
+    descEn: "Student-led street fundraising drives reached 59 sessions, delivering over 2.6 million yen directly to local disaster assistance initiatives."
   },
   {
     year: "2025",
     date: "2025年11月",
     category: "GLOBAL",
-    titleJa: "模擬防災国連（MWCDRR）構想の立ち上げ・ポータル公開",
+    titleJa: "模擬防災国連（MWCDRR）構想の立ち上げ・特設サイト公開",
     titleEn: "Inaugurated Model World Conference on Disaster Risk Reduction (MWCDRR)",
     descJa: "国際会議形式で災害対策や気候変動へのレジリエンスを議論・合意形成する次世代育成プログラム「模擬防災国連」を開設。",
     descEn: "Launched an educational simulation initiative empowering youth to represent nations and debate international disaster risk governance."
@@ -52,7 +61,7 @@ const historyTimeline = [
     titleJa: "能登半島現地復興支援プロジェクト（珠洲市・七尾市派遣）",
     titleEn: "Noto Recovery Fieldwork: Debris Clearing & Community Kitchens",
     descJa: "復興事業本部による能登現地派遣。被災家屋の片付け支援、仮設住宅での交流・炊き出し、「能登うまいもん再発見プロジェクト」などの食文化継承企画を展開。",
-    descEn: "Conducted continuous on-site volunteering in Suzu and Nanao, organizing debris cleanup, hot meal kitchens, and cultural heritage culinary initiatives."
+    descEn: "Conducted continuous on-site volunteering in Suzu and Nanao, organizing debris cleanup, hot meal kitchens, and cultural food heritage initiatives."
   },
   {
     year: "2024",
@@ -89,7 +98,7 @@ const keyMetrics = [
       <p class="desc-text">
         {currentLang === 'en'
           ? 'Tracing our path of empowering next-generation disaster resilience and hands-on recovery actions across Japan.'
-          : '若者の柔軟な行動力と発信力を社会の力へ。能登復興支援から政策提言まで、JYRACが歩んできた主な足跡と活動実績です。'}
+          : '若者の柔軟な行動力と発信力を社会の力へ。能登復興支援から政策提言、法人化まで、JYRACが歩んできた主な足跡と活動実績です。'}
       </p>
     </header>
 
@@ -150,10 +159,10 @@ const keyMetrics = [
   .history-container {
     max-width: 960px;
     margin: 0 auto;
-    padding: 48px 16px;
+    padding: clamp(24px, 5vw, 48px) 16px;
     display: flex;
     flex-direction: column;
-    gap: 44px;
+    gap: clamp(24px, 5vw, 44px);
   }
 
   .page-header {
@@ -169,7 +178,7 @@ const keyMetrics = [
     margin-bottom: 4px;
   }
   .main-heading {
-    font-size: 28px;
+    font-size: clamp(22px, 5vw, 28px);
     font-weight: 900;
     color: var(--jyrac-navy);
     line-height: 1.3;
@@ -177,7 +186,7 @@ const keyMetrics = [
   .desc-text {
     font-size: 13.5px;
     color: var(--text-muted);
-    margin-top: 8px;
+    margin-top: 6px;
     line-height: 1.7;
   }
 
@@ -186,19 +195,19 @@ const keyMetrics = [
     background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 18px;
-    padding: 24px 32px;
+    padding: clamp(16px, 4vw, 24px) clamp(14px, 4vw, 32px);
     box-shadow: 0 4px 16px rgba(0, 43, 84, 0.03);
   }
   .metrics-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 16px;
     text-align: center;
   }
   .metric-item {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
     align-items: center;
   }
   .metric-label {
@@ -213,14 +222,14 @@ const keyMetrics = [
     gap: 4px;
   }
   .metric-num {
-    font-size: 28px;
+    font-size: clamp(24px, 6vw, 28px);
     font-weight: 900;
     color: var(--jyrac-navy);
     font-family: ui-monospace, monospace;
     line-height: 1;
   }
   .metric-unit {
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 800;
     color: var(--jyrac-teal);
   }
@@ -230,23 +239,23 @@ const keyMetrics = [
     background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 20px;
-    padding: 40px 32px;
+    padding: clamp(20px, 5vw, 40px) clamp(16px, 4vw, 32px);
     box-shadow: 0 4px 16px rgba(0, 43, 84, 0.02);
   }
   .timeline-list {
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: 28px;
   }
   .timeline-item {
     display: flex;
     align-items: flex-start;
-    gap: 24px;
+    gap: 20px;
     position: relative;
   }
 
   .timeline-left {
-    width: 140px;
+    width: 130px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
@@ -259,6 +268,7 @@ const keyMetrics = [
     font-weight: 800;
     color: var(--jyrac-navy);
     font-family: ui-monospace, monospace;
+    white-space: nowrap;
   }
   .timeline-badge {
     font-size: 9px;
@@ -269,6 +279,7 @@ const keyMetrics = [
     color: var(--jyrac-teal);
     padding: 2px 6px;
     border-radius: 4px;
+    white-space: nowrap;
   }
 
   .timeline-center {
@@ -277,6 +288,7 @@ const keyMetrics = [
     align-items: center;
     position: relative;
     padding-top: 4px;
+    flex-shrink: 0;
   }
   .timeline-dot {
     width: 12px;
@@ -290,7 +302,7 @@ const keyMetrics = [
   .timeline-line {
     position: absolute;
     top: 16px;
-    bottom: -32px;
+    bottom: -28px;
     width: 2px;
     background: var(--border-color);
   }
@@ -300,10 +312,10 @@ const keyMetrics = [
     display: flex;
     flex-direction: column;
     gap: 6px;
-    padding-bottom: 8px;
+    padding-bottom: 4px;
   }
   .timeline-title {
-    font-size: 16px;
+    font-size: clamp(15px, 3.8vw, 16px);
     font-weight: 800;
     color: var(--jyrac-navy);
     line-height: 1.45;
@@ -329,18 +341,23 @@ const keyMetrics = [
     text-align: center;
   }
 
+  /* モバイル対応（幅640px以下） */
   @media (max-width: 640px) {
-    .timeline-section {
-      padding: 28px 16px;
-    }
     .timeline-item {
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 20px;
+    }
+    .timeline-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
     }
     .timeline-left {
       width: 100%;
-      align-items: flex-start;
+      align-items: center;
       flex-direction: row;
+      justify-content: flex-start;
       gap: 10px;
     }
     .timeline-center {
@@ -349,8 +366,9 @@ const keyMetrics = [
     .timeline-right {
       padding-left: 0;
     }
-    .metrics-card {
-      padding: 20px 16px;
+    .metrics-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
     }
   }
 </style>
