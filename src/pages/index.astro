@@ -142,7 +142,7 @@ const pickupNews = [
         </p>
       </div>
       <a href="https://summit.jyrac.stki.org/autumn/day2" target="_blank" rel="noopener noreferrer" class="btn-event">
-        詳細・エントリー
+        詳細・エントリー ↗
       </a>
     </section>
 
@@ -198,7 +198,7 @@ const pickupNews = [
     <section class="news-history-grid">
       <!-- ニュース -->
       <div class="news-column">
-        <div class="section-header-split" style="margin-bottom: 16px;">
+        <div class="section-header-split" style="margin-bottom: 14px;">
           <h3 style="font-size: 18px; font-weight: 800; color: var(--jyrac-navy);">最新情報・お知らせ</h3>
           <a href={`${baseUrl}/news${langParam}`} class="header-link">すべて見る ➔</a>
         </div>
@@ -217,7 +217,7 @@ const pickupNews = [
                 </div>
                 <span class="news-title-text">{n.title}</span> 
               </div>
-              <span class="arrow-sym">→</span>
+              <span class="arrow-sym">{n.isExt ? '↗' : '➔'}</span>
             </a>
           ))}
         </div>
@@ -252,7 +252,7 @@ const pickupNews = [
 
     <!-- 7. 組織体制 -->
     <section class="section-block">
-      <div style="margin-bottom: 20px;">
+      <div style="margin-bottom: 18px;">
         <span class="sub-label">ORGANIZATION CHART</span>
         <h2 class="main-heading">組織体制</h2> 
         <p class="desc-text">外部向けに組織の全体構造（局・各本部・政調会）を簡潔に示しています。</p>
@@ -317,7 +317,7 @@ const pickupNews = [
   /* ヒーロー全体レイアウト */
   .hero-wrap {
     background: linear-gradient(180deg, #f0fdfa 0%, #ffffff 100%);
-    padding: clamp(36px, 6vw, 72px) 16px;
+    padding: clamp(32px, 5vw, 64px) 16px;
     border-bottom: 1px solid var(--border-color);
     position: relative;
     overflow: hidden;
@@ -328,14 +328,14 @@ const pickupNews = [
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: clamp(24px, 5vw, 48px);
+    gap: clamp(20px, 4vw, 44px);
   }
   .hero-text-col {
-    flex: 1 1 600px;
+    flex: 1 1 580px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 18px;
+    gap: 16px;
     text-align: left;
   }
   .hero-badge {
@@ -344,7 +344,7 @@ const pickupNews = [
     gap: 8px;
     background: #ffffff;
     border: 1px solid #ccfbf1;
-    padding: 4px 14px;
+    padding: 4px 12px;
     border-radius: 20px;
     font-size: 11px;
     font-weight: 800;
@@ -358,7 +358,7 @@ const pickupNews = [
     background: var(--jyrac-teal);
   }
   .hero-heading {
-    font-size: clamp(23px, 4.5vw, 34px);
+    font-size: clamp(22px, 4.2vw, 32px);
     font-weight: 900;
     color: var(--jyrac-navy);
     line-height: 1.35;
@@ -372,7 +372,7 @@ const pickupNews = [
   }
   .hero-subtext {
     max-width: 620px;
-    font-size: clamp(13px, 2.5vw, 14.5px);
+    font-size: clamp(13px, 2.4vw, 14px);
     color: var(--text-muted);
     line-height: 1.8;
   }
@@ -380,11 +380,11 @@ const pickupNews = [
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin-top: 6px;
+    margin-top: 4px;
     width: 100%;
   }
   .btn-hero {
-    padding: 12px 22px;
+    padding: 12px 20px;
     border-radius: 12px;
     font-size: 13px;
     font-weight: 800;
@@ -392,6 +392,7 @@ const pickupNews = [
     text-align: center;
     transition: transform 0.2s, opacity 0.2s;
     box-sizing: border-box;
+    white-space: nowrap;
   }
   .btn-hero:hover {
     transform: translateY(-2px);
@@ -412,15 +413,15 @@ const pickupNews = [
 
   /* 💎 浮遊するクリスタルアニメーション */
   .hero-crystal-col {
-    flex: 0 0 320px;
+    flex: 0 0 300px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
   .crystal-stage {
     position: relative;
-    width: 220px;
-    height: 260px;
+    width: 200px;
+    height: 240px;
     perspective: 800px;
     display: flex;
     justify-content: center;
@@ -428,8 +429,8 @@ const pickupNews = [
   }
   .crystal-body {
     position: relative;
-    width: 90px;
-    height: 140px;
+    width: 80px;
+    height: 130px;
     transform-style: preserve-3d;
     animation: crystalFloat 6s ease-in-out infinite, crystalSpin 14s linear infinite;
   }
@@ -437,54 +438,54 @@ const pickupNews = [
     position: absolute;
     width: 0;
     height: 0;
-    border-left: 45px solid transparent;
-    border-right: 45px solid transparent;
+    border-left: 40px solid transparent;
+    border-right: 40px solid transparent;
     opacity: 0.82;
     backdrop-filter: blur(4px);
     transform-origin: 50% 100%;
   }
   .crystal-face.f1 {
-    border-bottom: 70px solid rgba(0, 154, 166, 0.7);
-    transform: rotateY(0deg) translateZ(26px) rotateX(24deg);
+    border-bottom: 65px solid rgba(0, 154, 166, 0.7);
+    transform: rotateY(0deg) translateZ(24px) rotateX(24deg);
   }
   .crystal-face.f2 {
-    border-bottom: 70px solid rgba(0, 210, 224, 0.65);
-    transform: rotateY(90deg) translateZ(26px) rotateX(24deg);
+    border-bottom: 65px solid rgba(0, 210, 224, 0.65);
+    transform: rotateY(90deg) translateZ(24px) rotateX(24deg);
   }
   .crystal-face.f3 {
-    border-bottom: 70px solid rgba(37, 99, 235, 0.68);
-    transform: rotateY(180deg) translateZ(26px) rotateX(24deg);
+    border-bottom: 65px solid rgba(37, 99, 235, 0.68);
+    transform: rotateY(180deg) translateZ(24px) rotateX(24deg);
   }
   .crystal-face.f4 {
-    border-bottom: 70px solid rgba(2, 132, 199, 0.7);
-    transform: rotateY(270deg) translateZ(26px) rotateX(24deg);
+    border-bottom: 65px solid rgba(2, 132, 199, 0.7);
+    transform: rotateY(270deg) translateZ(24px) rotateX(24deg);
   }
   .crystal-face.f5 {
-    top: 70px;
-    border-top: 70px solid rgba(0, 43, 84, 0.75);
+    top: 65px;
+    border-top: 65px solid rgba(0, 43, 84, 0.75);
     border-bottom: none;
-    transform: rotateY(0deg) translateZ(26px) rotateX(-24deg);
+    transform: rotateY(0deg) translateZ(24px) rotateX(-24deg);
     transform-origin: 50% 0%;
   }
   .crystal-face.f6 {
-    top: 70px;
-    border-top: 70px solid rgba(0, 154, 166, 0.7);
+    top: 65px;
+    border-top: 65px solid rgba(0, 154, 166, 0.7);
     border-bottom: none;
-    transform: rotateY(90deg) translateZ(26px) rotateX(-24deg);
+    transform: rotateY(90deg) translateZ(24px) rotateX(-24deg);
     transform-origin: 50% 0%;
   }
   .crystal-face.f7 {
-    top: 70px;
-    border-top: 70px solid rgba(30, 64, 175, 0.75);
+    top: 65px;
+    border-top: 65px solid rgba(30, 64, 175, 0.75);
     border-bottom: none;
-    transform: rotateY(180deg) translateZ(26px) rotateX(-24deg);
+    transform: rotateY(180deg) translateZ(24px) rotateX(-24deg);
     transform-origin: 50% 0%;
   }
   .crystal-face.f8 {
-    top: 70px;
-    border-top: 70px solid rgba(0, 90, 156, 0.7);
+    top: 65px;
+    border-top: 65px solid rgba(0, 90, 156, 0.7);
     border-bottom: none;
-    transform: rotateY(270deg) translateZ(26px) rotateX(-24deg);
+    transform: rotateY(270deg) translateZ(24px) rotateX(-24deg);
     transform-origin: 50% 0%;
   }
 
@@ -495,31 +496,31 @@ const pickupNews = [
     pointer-events: none;
   }
   .orbit-1 {
-    width: 200px;
-    height: 200px;
+    width: 180px;
+    height: 180px;
     transform: rotateX(72deg) rotateY(15deg);
     animation: orbitSpin 10s linear infinite;
   }
   .orbit-2 {
-    width: 170px;
-    height: 170px;
+    width: 150px;
+    height: 150px;
     transform: rotateX(65deg) rotateY(-25deg);
     border-color: rgba(37, 99, 235, 0.35);
     animation: orbitSpinRev 8s linear infinite;
   }
   .crystal-glow {
     position: absolute;
-    width: 140px;
-    height: 140px;
+    width: 130px;
+    height: 130px;
     background: radial-gradient(circle, rgba(0, 210, 224, 0.3) 0%, rgba(37, 99, 235, 0.08) 50%, transparent 70%);
-    filter: blur(16px);
+    filter: blur(14px);
     z-index: 0;
     pointer-events: none;
   }
 
   @keyframes crystalFloat {
     0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-16px); }
+    50% { transform: translateY(-12px); }
   }
   @keyframes crystalSpin {
     0% { transform: rotateY(0deg) rotateX(12deg); }
@@ -536,25 +537,25 @@ const pickupNews = [
 
   /* コンテナ */
   .content-container {
-    max-width: 1200px;
+    max-width: 1160px;
     margin: 0 auto;
-    padding: clamp(32px, 6vw, 56px) 16px;
+    padding: clamp(28px, 5vw, 48px) 16px;
     display: flex;
     flex-direction: column;
-    gap: clamp(40px, 8vw, 64px);
+    gap: clamp(32px, 6vw, 54px);
   }
 
   /* イベントバナー */
   .banner-event {
     background: linear-gradient(135deg, var(--jyrac-navy) 0%, #064e3b 100%);
-    border-radius: 20px;
-    padding: clamp(20px, 4vw, 32px);
+    border-radius: 18px;
+    padding: clamp(18px, 4vw, 28px);
     color: #ffffff;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    gap: 20px;
+    gap: 16px;
   }
   .banner-text-col {
     max-width: 700px;
@@ -567,10 +568,10 @@ const pickupNews = [
     padding: 3px 10px;
     border-radius: 12px;
     display: inline-block;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
   .event-title {
-    font-size: clamp(17px, 4.5vw, 22px);
+    font-size: clamp(16px, 4vw, 20px);
     font-weight: 900;
     margin-bottom: 6px;
     line-height: 1.35;
@@ -583,25 +584,26 @@ const pickupNews = [
   .btn-event {
     background: #ffffff;
     color: var(--jyrac-navy) !important;
-    padding: 12px 24px;
-    border-radius: 12px;
+    padding: 11px 22px;
+    border-radius: 10px;
     font-size: 13px;
     font-weight: 800;
     text-decoration: none;
     white-space: nowrap;
     text-align: center;
+    box-sizing: border-box;
   }
 
   /* セクション見出し共通 */
   .section-header-center {
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
   .section-header-split {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     flex-wrap: wrap;
     gap: 8px;
   }
@@ -614,7 +616,7 @@ const pickupNews = [
     letter-spacing: 0.08em;
   }
   .main-heading {
-    font-size: clamp(20px, 5vw, 25px);
+    font-size: clamp(19px, 4.5vw, 24px);
     font-weight: 900;
     color: var(--jyrac-navy);
     line-height: 1.3;
@@ -629,6 +631,7 @@ const pickupNews = [
     font-weight: 800;
     color: var(--jyrac-teal);
     text-decoration: none;
+    white-space: nowrap;
   }
   .header-link:hover {
     text-decoration: underline;
@@ -637,14 +640,14 @@ const pickupNews = [
   /* 数字で見るJYRAC */
   .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     gap: 12px;
   }
   .stat-card {
     background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 14px;
-    padding: 16px 12px;
+    padding: 14px 10px;
     text-align: center;
   }
   .stat-en {
@@ -654,10 +657,10 @@ const pickupNews = [
     display: block;
   }
   .stat-num-row {
-    margin: 6px 0;
+    margin: 4px 0;
   }
   .stat-num {
-    font-size: clamp(22px, 5vw, 28px);
+    font-size: clamp(20px, 5vw, 26px);
     font-weight: 900;
     color: var(--jyrac-navy);
     font-family: ui-monospace, monospace;
@@ -669,7 +672,7 @@ const pickupNews = [
     margin-left: 2px;
   }
   .stat-label {
-    font-size: 11.5px;
+    font-size: 11px;
     font-weight: 800;
     color: var(--text-main);
   }
@@ -677,14 +680,14 @@ const pickupNews = [
   /* 4大事業領域 */
   .domain-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
   }
   .domain-card {
     background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 16px;
-    padding: 22px;
+    padding: 18px;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -706,17 +709,17 @@ const pickupNews = [
     font-size: 9px;
     background: #f1f5f9;
     color: var(--text-muted);
-    padding: 2px 8px;
+    padding: 2px 7px;
     border-radius: 6px;
     font-weight: 700;
   }
   .domain-title {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 800;
     color: var(--jyrac-navy);
   }
   .domain-desc {
-    font-size: 13px;
+    font-size: 12.5px;
     color: var(--text-muted);
     line-height: 1.6;
   }
@@ -725,7 +728,7 @@ const pickupNews = [
   .news-history-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 24px;
+    gap: 20px;
   }
   .news-list-vertical {
     display: flex;
@@ -736,13 +739,13 @@ const pickupNews = [
     background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 12px;
-    padding: 14px 16px;
+    padding: 12px 14px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     text-decoration: none;
     color: var(--text-main);
-    gap: 12px;
+    gap: 10px;
     transition: border-color 0.2s;
   }
   .news-row-card:hover {
@@ -751,22 +754,22 @@ const pickupNews = [
   .news-row-left {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     overflow: hidden;
     flex-grow: 1;
   }
   .news-meta-inline {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     flex-shrink: 0;
   }
   .news-badge {
-    font-size: 10px;
+    font-size: 9.5px;
     font-weight: 800;
     background: #e0f2fe;
     color: #0369a1;
-    padding: 2px 8px;
+    padding: 2px 7px;
     border-radius: 6px;
     white-space: nowrap;
   }
@@ -777,7 +780,7 @@ const pickupNews = [
     white-space: nowrap;
   }
   .news-title-text {
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 700;
     white-space: nowrap;
     overflow: hidden;
@@ -792,14 +795,14 @@ const pickupNews = [
     background: var(--bg-light);
     border: 1px solid var(--border-color);
     border-radius: 16px;
-    padding: 20px;
+    padding: 18px;
   }
   .history-list {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-top: 12px;
+    gap: 10px;
+    margin-top: 10px;
   }
   .history-list strong {
     font-size: 11px;
@@ -818,41 +821,41 @@ const pickupNews = [
     background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 16px;
-    padding: clamp(16px, 4vw, 24px);
+    padding: clamp(14px, 3.5vw, 22px);
   }
   .org-3col {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
   }
   .org-card {
     background: var(--bg-light);
     border: 1px solid var(--border-color);
     border-radius: 12px;
-    padding: 16px;
+    padding: 14px;
   }
   .org-card h4 {
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 800;
     color: var(--jyrac-navy);
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 6px;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
   .org-card ul {
     list-style: none;
-    font-size: 12px;
+    font-size: 11.5px;
     line-height: 1.7;
     color: var(--text-muted);
   }
   .org-footer {
     border-top: 1px solid var(--border-color);
-    margin-top: 16px;
+    margin-top: 14px;
     padding-top: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 12px;
+    font-size: 11.5px;
     color: var(--text-muted);
     flex-wrap: wrap;
     gap: 8px;
@@ -862,29 +865,29 @@ const pickupNews = [
   .cta-banner {
     background: var(--jyrac-navy);
     border-radius: 20px;
-    padding: clamp(32px, 6vw, 48px) 16px;
+    padding: clamp(28px, 5vw, 44px) 16px;
     text-align: center;
     color: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
   }
   .cta-banner h2 {
-    font-size: clamp(19px, 4.5vw, 24px);
+    font-size: clamp(18px, 4vw, 22px);
     font-weight: 900;
     line-height: 1.35;
   }
   .cta-banner p {
     max-width: 600px;
-    font-size: 13px;
+    font-size: 12.5px;
     color: #cbd5e1;
     line-height: 1.7;
   }
   .cta-btn-row {
     display: flex;
     gap: 10px;
-    margin-top: 8px;
+    margin-top: 6px;
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
@@ -892,31 +895,33 @@ const pickupNews = [
   .btn-cta-teal {
     background: var(--jyrac-teal);
     color: #ffffff !important;
-    padding: 12px 24px;
-    border-radius: 12px;
+    padding: 12px 22px;
+    border-radius: 10px;
     font-size: 13px;
     font-weight: 800;
     text-decoration: none;
     text-align: center;
+    box-sizing: border-box;
   }
   .btn-cta-trans {
     background: rgba(255, 255, 255, 0.1);
     color: #ffffff !important;
-    padding: 12px 24px;
-    border-radius: 12px;
+    padding: 12px 22px;
+    border-radius: 10px;
     font-size: 13px;
     font-weight: 800;
     text-decoration: none;
     border: 1px solid rgba(255, 255, 255, 0.2);
     text-align: center;
+    box-sizing: border-box;
   }
 
-  /* タブレット〜スマホ対応 */
+  /* タブレット〜スマホ対応（900px以下） */
   @media (max-width: 900px) {
     .hero-layout {
       flex-direction: column-reverse;
       text-align: center;
-      gap: 20px;
+      gap: 16px;
     }
     .hero-text-col {
       align-items: center;
@@ -924,23 +929,23 @@ const pickupNews = [
     }
     .hero-crystal-col {
       flex: 0 0 auto;
-      margin-bottom: -10px;
+      margin-bottom: -6px;
     }
     .crystal-stage {
-      width: 180px;
-      height: 190px;
+      width: 160px;
+      height: 180px;
     }
     .crystal-body {
-      width: 70px;
-      height: 110px;
+      width: 65px;
+      height: 105px;
     }
     .crystal-face {
-      border-left-width: 35px;
-      border-right-width: 35px;
+      border-left-width: 32px;
+      border-right-width: 32px;
     }
     .crystal-face.f1, .crystal-face.f2, .crystal-face.f3, .crystal-face.f4 {
-      border-bottom-width: 55px;
-      transform: rotateY(var(--deg, 0deg)) translateZ(20px) rotateX(24deg);
+      border-bottom-width: 52px;
+      transform: rotateY(var(--deg, 0deg)) translateZ(19px) rotateX(24deg);
     }
     .crystal-face.f1 { --deg: 0deg; }
     .crystal-face.f2 { --deg: 90deg; }
@@ -948,17 +953,17 @@ const pickupNews = [
     .crystal-face.f4 { --deg: 270deg; }
 
     .crystal-face.f5, .crystal-face.f6, .crystal-face.f7, .crystal-face.f8 {
-      top: 55px;
-      border-top-width: 55px;
-      transform: rotateY(var(--deg, 0deg)) translateZ(20px) rotateX(-24deg);
+      top: 52px;
+      border-top-width: 52px;
+      transform: rotateY(var(--deg, 0deg)) translateZ(19px) rotateX(-24deg);
     }
     .crystal-face.f5 { --deg: 0deg; }
     .crystal-face.f6 { --deg: 90deg; }
     .crystal-face.f7 { --deg: 180deg; }
     .crystal-face.f8 { --deg: 270deg; }
 
-    .orbit-1 { width: 150px; height: 150px; }
-    .orbit-2 { width: 125px; height: 125px; }
+    .orbit-1 { width: 140px; height: 140px; }
+    .orbit-2 { width: 115px; height: 115px; }
 
     .banner-event {
       flex-direction: column;
@@ -988,6 +993,7 @@ const pickupNews = [
     }
   }
 
+  /* スマートフォン対応（580px以下） */
   @media (max-width: 580px) {
     .pc-br {
       display: none;
@@ -1001,6 +1007,7 @@ const pickupNews = [
     }
     .stats-grid {
       grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
     }
     .cta-btn-row {
       flex-direction: column;
@@ -1008,6 +1015,16 @@ const pickupNews = [
     }
     .btn-cta-teal, .btn-cta-trans {
       width: 100%;
+    }
+  }
+
+  /* 極小画面（360px以下）の微調整 */
+  @media (max-width: 360px) {
+    .stat-num {
+      font-size: 19px;
+    }
+    .stat-unit {
+      font-size: 10px;
     }
   }
 </style>
