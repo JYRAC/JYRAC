@@ -42,7 +42,14 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
           メンバー参加に関するご相談、一般的なご質問、取材のお申し込みは専用フォームからも簡単にご送信いただけます。
         </p>
         <div class="form-btn-wrap">
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form" target="_blank"  rel="noopener noreferrer"class="btn-form">Googleフォームを開く</a>
+          <a 
+            href="https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="btn-form"
+          >
+            Googleフォームを開く ↗
+          </a>
         </div>
         <p class="note-text">※別ウィンドウでGoogle Formsが開きます。</p>
       </div>
@@ -87,10 +94,10 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   .contact-container {
     max-width: 960px;
     margin: 0 auto;
-    padding: clamp(32px, 6vw, 48px) 16px;
+    padding: clamp(24px, 5vw, 48px) 16px;
     display: flex;
     flex-direction: column;
-    gap: clamp(24px, 5vw, 40px);
+    gap: clamp(20px, 4vw, 36px);
   }
   .contact-header {
     text-align: center;
@@ -119,14 +126,14 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   .contact-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
   }
   .contact-card {
     background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 18px;
-    padding: clamp(20px, 4vw, 32px);
+    padding: clamp(18px, 4vw, 28px);
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -147,7 +154,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     width: fit-content;
   }
   .card-title {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 800;
     color: var(--jyrac-navy);
     margin: 0;
@@ -155,7 +162,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   .card-desc {
     font-size: 13px;
     color: var(--text-main);
-    line-height: 1.7;
+    line-height: 1.65;
     margin: 0;
     flex-grow: 1;
   }
@@ -163,8 +170,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     background: var(--bg-light);
     border: 1px solid var(--border-color);
     border-radius: 10px;
-    padding: 12px 16px;
-    margin-top: 8px;
+    padding: 12px 14px;
+    margin-top: 6px;
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -175,24 +182,26 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     color: var(--text-muted);
   }
   .email-link {
-    font-size: 15px;
+    font-size: clamp(13.5px, 3.5vw, 15px);
     font-weight: 800;
     font-family: ui-monospace, monospace;
     color: var(--jyrac-navy);
     text-decoration: underline;
+    overflow-wrap: anywhere;
     word-break: break-all;
   }
   .form-btn-wrap {
-    margin-top: 12px;
+    margin-top: 8px;
   }
   .btn-form {
-    display: inline-block;
+    display: block;
+    width: 100%;
     background: var(--jyrac-navy);
     color: #ffffff !important;
     text-decoration: none;
     font-size: 13.5px;
     font-weight: 800;
-    padding: 12px 28px;
+    padding: 13px 20px;
     border-radius: 10px;
     text-align: center;
     transition: background-color 0.2s, transform 0.1s;
@@ -211,14 +220,14 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: 18px;
-    padding: clamp(20px, 4vw, 32px);
+    padding: clamp(18px, 4vw, 28px);
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
     box-shadow: 0 4px 16px rgba(0, 43, 84, 0.02);
   }
   .office-heading {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: 800;
     color: var(--jyrac-navy);
     margin: 0;
@@ -229,20 +238,21 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     font-size: 13px;
   }
   .office-table th {
-    width: 24%;
+    width: 25%;
     background: var(--bg-light);
     color: var(--jyrac-navy);
     font-weight: 800;
     text-align: left;
-    padding: 14px 16px;
+    padding: 12px 14px;
     border: 1px solid var(--border-color);
     white-space: nowrap;
   }
   .office-table td {
-    padding: 14px 16px;
+    padding: 12px 14px;
     border: 1px solid var(--border-color);
     color: var(--text-main);
     line-height: 1.6;
+    word-break: break-word;
   }
 
   .header-link {
@@ -263,9 +273,6 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     .contact-grid {
       grid-template-columns: 1fr;
     }
-    .btn-form {
-      width: 100%;
-    }
 
     /* テーブルを縦積みカード化 */
     .office-table,
@@ -280,7 +287,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     .office-table tr {
       border: 1px solid var(--border-color);
       border-radius: 12px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       overflow: hidden;
       background: #ffffff;
     }
@@ -291,13 +298,13 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
       background: var(--bg-light);
       border: none;
       border-bottom: 1px solid var(--border-color);
-      padding: 10px 14px;
-      font-size: 12px;
+      padding: 8px 12px;
+      font-size: 11.5px;
     }
     .office-table td {
       border: none;
-      padding: 12px 14px;
-      font-size: 13px;
+      padding: 10px 12px;
+      font-size: 12.5px;
     }
   }
 </style>
