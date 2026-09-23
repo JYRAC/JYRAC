@@ -1,45 +1,70 @@
 ---
 // src/pages/contact.astro
 import Layout from '../layouts/Layout.astro';
+import { translations, type Lang } from '../lib/i18n';
 
-const currentLang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
-const langParam = currentLang === 'en' ? '?lang=en' : '';
+const currentLang: Lang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
+const isEn = currentLang === 'en';
+const langParam = isEn ? '?lang=en' : '';
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const t = translations[currentLang];
 ---
 
-<Layout title={currentLang === 'en' ? 'Contact | JYRAC' : 'お問い合わせ | 日本若者防災復興協会'} currentTab="contact">
+<Layout 
+  title={isEn ? 'Contact | JYRAC' : 'お問い合わせ | 日本若者防災復興協会'} 
+  currentTab="contact"
+>
   <div class="contact-container">
 
     <header class="contact-header">
       <span class="sub-label">GET IN TOUCH</span>
-      <h1 class="main-heading">お問い合わせ・取材窓口</h1>
+      <h1 class="main-heading">
+        {isEn ? 'Contact & Inquiries' : 'お問い合わせ・取材窓口'}
+      </h1>
       <p class="desc-text">
-        JYRACへの取材依頼、行政・企業・学校関係者様からの連携相談、活動に関するご質問などはこちらから受け付けております。
+        {isEn
+          ? 'We welcome media inquiries, collaboration proposals from government bodies, corporations, and educational institutions, as well as general questions regarding our initiatives.'
+          : 'JYRACへの取材依頼、行政・企業・学校関係者様からの連携相談、活動に関するご質問などはこちらから受け付けております。'}
       </p>
     </header>
 
     <div class="contact-grid">
       
-      <!-- メール窓口カード -->
+      <!-- メール窓口カード（ドメインメール優先） -->
       <div class="contact-card">
         <span class="card-badge">DIRECT EMAIL</span>
-        <h2 class="card-title">メールでのお問い合わせ</h2>
+        <h2 class="card-title">
+          {isEn ? 'Email Inquiry' : 'メールでのお問い合わせ'}
+        </h2>
         <p class="card-desc">
-          取材依頼、ご協賛・パートナーシップのご提案、公的機関・学校関係者様からのご連絡は、総合窓口まで直接メールをお送りください。
+          {isEn
+            ? 'For media coverage, partnership proposals, and official inquiries from public or educational institutions, please email our general desk directly.'
+            : '取材依頼、ご協賛・パートナーシップのご提案、公的機関・学校関係者様からのご連絡は、総合窓口まで直接メールをお送りください。'}
         </p>
         <div class="email-box">
-          <span class="email-label">公式メールアドレス：</span>
-          <a href="mailto:jyrac.pr@gmail.com" class="email-link">jyrac.pr@gmail.com</a>
+          <span class="email-label">
+            {isEn ? 'Official Inquiries (General Desk):' : '公式窓口（総合・対外連携）：'}
+          </span>
+          <a href="mailto:info@jyrac.stki.org" class="email-link">info@jyrac.stki.org</a>
+          <span class="email-sub-note">
+            {isEn ? 'PR & Media desk: jyrac.pr@gmail.com' : '広報・メディア対応：jyrac.pr@gmail.com'}
+          </span>
         </div>
-        <p class="note-text">※通常2〜3営業日以内に担当（広報局）よりご返信いたします。</p>
+        <p class="note-text">
+          {isEn ? '*We typically respond within 2–3 business days.' : '※通常2〜3営業日以内に担当（広報局・事務局）よりご返信いたします。'}
+        </p>
       </div>
 
       <!-- フォーム窓口カード -->
       <div class="contact-card card-teal">
         <span class="card-badge">WEB FORM</span>
-        <h2 class="card-title">フォームからのお問い合わせ</h2>
+        <h2 class="card-title">
+          {isEn ? 'Online Inquiry Form' : 'フォームからのお問い合わせ'}
+        </h2>
         <p class="card-desc">
-          メンバー参加に関するご相談、一般的なご質問、取材のお申し込みは専用フォームからも簡単にご送信いただけます。
+          {isEn
+            ? 'Questions regarding member participation, general consultations, or media request submissions can also be completed through our dedicated online form.'
+            : 'メンバー参加に関するご相談、一般的なご質問、取材のお申し込みは専用フォームからも簡単にご送信いただけます。'}
         </p>
         <div class="form-btn-wrap">
           <a 
@@ -48,35 +73,71 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
             rel="noopener noreferrer" 
             class="btn-form"
           >
-            Googleフォームを開く ↗
+            {isEn ? 'Open Google Form ↗' : 'Googleフォームを開く ↗'}
           </a>
         </div>
-        <p class="note-text">※別ウィンドウでGoogle Formsが開きます。</p>
+        <p class="note-text">
+          {isEn ? '*Opens Google Forms in a new tab.' : '※別ウィンドウでGoogle Formsが開きます。'}
+        </p>
       </div>
 
     </div>
 
-    <!-- 事務所情報 -->
+    <!-- 事務所情報・法人概要 -->
     <section class="office-card">
       <span class="sub-label">OFFICE DETAILS</span>
-      <h3 class="office-heading">法人所在地・連絡先情報</h3>
+      <h3 class="office-heading">
+        {isEn ? 'Legal Entity & Office Details' : '法人所在地・登記連絡先情報'}
+      </h3>
       <table class="office-table">
         <tbody>
           <tr>
-            <th>法人名称</th>
-            <td>特定非営利活動法人 日本若者防災復興協会（JYRAC）</td>
+            <th>{isEn ? 'Legal Name' : '法人名称'}</th>
+            <td>
+              {isEn 
+                ? '特定非営利活動法人 日本若者防災復興協会 (Japan Youth Resilience Action Consortium / JYRAC)' 
+                : '特定非営利活動法人 日本若者防災復興協会（英語略称：JYRAC / カナ：ニホンワカモノボウサイフッコウキョウカイ）'}
+            </td>
           </tr>
           <tr>
-            <th>所在地</th>
-            <td>東京都文京区</td>
+            <th>{isEn ? 'Corporate Number' : '法人番号'}</th>
+            <td>
+              <code>2010005042019</code>
+              <span class="sub-note">（{isEn ? 'National Tax Agency Corporate Number' : '国税庁指定法人番号'}）</span>
+            </td>
           </tr>
           <tr>
-            <th>代表者</th>
-            <td>理事長 久保 壮太郎</td>
+            <th>{isEn ? 'Principal Office' : '所在地'}</th>
+            <td>
+              {isEn 
+                ? '603, 4-4-6 Kohinata, Bunkyo-ku, Tokyo, 112-0006, Japan' 
+                : '東京都文京区小日向四丁目4番6-603号'}
+            </td>
           </tr>
           <tr>
-            <th>所轄庁</th>
-            <td>東京都（生活文化スポーツ局）</td>
+            <th>{isEn ? 'Representative' : '代表者'}</th>
+            <td>
+              {isEn ? 'President: Sohtaro Kubo' : '理事長 久保 壮太郎'}
+            </td>
+          </tr>
+          <tr>
+            <th>{isEn ? 'Competent Authority' : '所轄庁'}</th>
+            <td>
+              {isEn 
+                ? 'Tokyo Metropolitan Government (Bureau of Citizens, Culture and Sports)' 
+                : '東京都知事（生活文化スポーツ局）'}
+            </td>
+          </tr>
+          <tr>
+            <th>{isEn ? 'Official Domain' : '公式ドメイン'}</th>
+            <td>
+              <code>jyrac.stki.org</code>
+              <span class="sub-note">
+                {isEn 
+                  ? '(Operated under gratuitous loan by partner platform "TRANs")' 
+                  : '（協力団体 TRANs より公式無償貸与を受けて運用）'}
+              </span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -84,7 +145,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
     <!-- 戻るリンク -->
     <div class="back-row">
-      <a href={`${baseUrl}/${langParam}`} class="header-link">← ホームに戻る</a>
+      <a href={`${baseUrl}/${langParam}`} class="header-link">{t.common.backToHome}</a>
     </div>
 
   </div>
@@ -190,6 +251,11 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     overflow-wrap: anywhere;
     word-break: break-all;
   }
+  .email-sub-note {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
   .form-btn-wrap {
     margin-top: 8px;
   }
@@ -246,6 +312,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     padding: 12px 14px;
     border: 1px solid var(--border-color);
     white-space: nowrap;
+    vertical-align: top;
   }
   .office-table td {
     padding: 12px 14px;
@@ -253,6 +320,12 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     color: var(--text-main);
     line-height: 1.6;
     word-break: break-word;
+  }
+  .sub-note {
+    display: inline-block;
+    color: var(--text-muted);
+    font-size: 11.5px;
+    margin-left: 4px;
   }
 
   .header-link {
@@ -274,7 +347,6 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
       grid-template-columns: 1fr;
     }
 
-    /* テーブルを縦積みカード化 */
     .office-table,
     .office-table tbody,
     .office-table tr,
