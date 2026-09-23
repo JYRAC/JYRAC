@@ -1,86 +1,119 @@
 ---
 // src/pages/index.astro
 import Layout from "../layouts/Layout.astro";
+import { translations, type Lang } from '../lib/i18n';
 
-const currentLang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
-const langParam = currentLang === 'en' ? '?lang=en' : '';
+const currentLang: Lang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
+const isEn = currentLang === 'en';
+const langParam = isEn ? '?lang=en' : '';
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const t = translations[currentLang];
 
-// 2. 数字で見るJYRAC データ (2026年6月時点・公式事業説明資料より起算)
+// 2. 数字で見るJYRAC データ
 const stats = [
-  { num: "478", unit: "名", label: "メンバー総数", en: "MEMBERS" }, 
-  { num: "23", unit: "件", label: "プロジェクト総数", en: "PROJECTS" },
-  { num: "59", unit: "回", label: "募金活動実施数", en: "FUNDRAISING" }, 
-  { num: "42", unit: "件", label: "イベント総数", en: "EVENTS" }, 
-  { num: "10,128", unit: "人", label: "Instagram総フォロワー", en: "FOLLOWERS" }, 
-  { num: "264", unit: "万円超", label: "募金活動総額", en: "DONATIONS" }
+  { num: "478", unit: isEn ? "" : "名", label: isEn ? "Total Members" : "メンバー総数", en: "MEMBERS" }, 
+  { num: "23", unit: isEn ? "" : "件", label: isEn ? "Total Projects" : "プロジェクト総数", en: "PROJECTS" },
+  { num: "59", unit: isEn ? " times" : "回", label: isEn ? "Fundraising Drives" : "募金活動実施数", en: "FUNDRAISING" }, 
+  { num: "42", unit: isEn ? "" : "件", label: isEn ? "Total Events" : "イベント総数", en: "EVENTS" }, 
+  { num: "10,128", unit: isEn ? "" : "人", label: isEn ? "Instagram Followers" : "Instagram総フォロワー", en: "FOLLOWERS" }, 
+  { num: "2.64M+", unit: isEn ? " JPY" : "万円超", label: isEn ? "Total Donations Raised" : "募金活動総額", en: "DONATIONS" }
 ];
 
 // 3. 4つの事業領域
 const businessDomains = [
   {
     num: "01",
-    title: "防災事業",
+    title: isEn ? "Disaster Prevention" : "防災事業",
     enTitle: "Disaster Prevention",
-    desc: "内閣府共催「全国生徒会防災サミット」の開催や、自衛隊協力のもと実施する避難所宿泊体験・ハザードマップ作成など、若者自らが行う実践教育を推進。", 
-    badge: "生徒会サミット・政策提言・避難所改善", 
+    desc: isEn 
+      ? "Advancing hands-on disaster preparedness led by youth, including co-hosting the National Student Council Disaster Summit with the Cabinet Office, overnight shelter drills, and localized hazard mapping."
+      : "内閣府共催「全国生徒会防災サミット」の開催や、自衛隊協力のもと実施する避難所宿泊体験・ハザードマップ作成など、若者自らが行う実践教育を推進。", 
+    badge: isEn ? "Student Summits & Shelter Improvements" : "生徒会サミット・政策提言・避難所改善", 
     link: `${baseUrl}/services${langParam}#disaster-prevention`
   },
   {
     num: "02",
-    title: "復興事業",
+    title: isEn ? "Disaster Recovery" : "復興事業",
     enTitle: "Disaster Recovery",
-    desc: "能登現地での家屋片付けボランティアや炊き出し支援、能登うまいもん再発見プロジェクトを通じた食・伝統文化の継承など、息の長い支援を展開。", 
-    badge: "能登現地活動・伝統食文化継承", 
+    desc: isEn
+      ? "Providing continuous field support in the Noto Peninsula, including debris clearing, soup kitchens, and preserving local food and cultural traditions."
+      : "能登現地での家屋片付けボランティアや炊き出し支援、能登うまいもん再発見プロジェクトを通じた食・伝統文化の継承など、息の長い支援を展開。", 
+    badge: isEn ? "Noto Field Relief & Food Culture" : "能登現地活動・伝統食文化継承", 
     link: `${baseUrl}/services${langParam}#recovery`
   },
   {
     num: "03",
-    title: "地域事業",
+    title: isEn ? "Community & Local" : "地域事業",
     enTitle: "Community & Local",
-    desc: "街頭募金活動（計59回・260万円超）の実施や、各地の地域防災イベント出展を通じて、住民と若者が平時から手を取り合う共助の基盤を創出。", 
-    badge: "街頭募金・地域防災行事出展", 
+    desc: isEn
+      ? "Building everyday community resilience through 59 nationwide street fundraising drives (over 2.6M JPY) and regional disaster awareness festival booths."
+      : "街頭募金活動（計59回・260万円超）の実施や、各地の地域防災イベント出展を通じて、住民と若者が平時から手を取り合う共助の基盤を創出。", 
+    badge: isEn ? "Street Fundraising & Local Events" : "街頭募金・地域防災行事出展", 
     link: `${baseUrl}/services${langParam}#community`
   },
   {
     num: "04",
-    title: "国際事業",
+    title: isEn ? "Global Initiatives" : "国際事業",
     enTitle: "Global Initiatives",
-    desc: "世界の若者と災害対応を議論する「模擬防災国連」や、国際若者防災復興コミュニティ「Y-VITAL構想」を通じ、日本の防災・復興の経験を世界へ発信。", 
-    badge: "Y-VITAL構想・模擬防災国連", 
+    desc: isEn
+      ? "Sharing Japan's disaster resilience and recovery knowledge globally through Model Disaster UN sessions and the international Y-VITAL youth resilience network."
+      : "世界の若者と災害対応を議論する「模擬防災国連」や、国際若者防災復興コミュニティ「Y-VITAL構想」を通じ、日本の防災・復興の経験を世界へ発信。", 
+    badge: isEn ? "Y-VITAL & Model Disaster UN" : "Y-VITAL構想・模擬防災国連", 
     link: `${baseUrl}/services${langParam}#international`
   }
 ];
 
-// ピックアップ最新ニュース（直近3件・news.astroと完全同期）
+// ピックアップ最新ニュース
 const pickupNews = [
   {
     date: "2026.09.20",
-    category: "サミット",
-    title: "「全国生徒会防災サミット2026 秋の陣 DAY 2（10/24開催）」参加エントリー受付中",
+    category: isEn ? "Summit" : "サミット",
+    title: isEn 
+      ? "National Student Disaster Summit 2026 Autumn DAY 2 (Oct 24) - Applications Open"
+      : "「全国生徒会防災サミット2026 秋の陣 DAY 2（10/24開催）」参加エントリー受付中",
     url: "https://summit.jyrac.stki.org/autumn/day2",
     isExt: true
   },
   {
     date: "2026.09.01",
-    category: "募集情報",
-    title: "【秋期メンバー募集】企画・デザイン・広報・政策提言を担うユースメンバーの募集を開始",
+    category: isEn ? "Recruitment" : "募集情報",
+    title: isEn
+      ? "【Autumn Cohort】Open Call for Youth Staff in Planning, Design, PR & Policy Advocacy"
+      : "【秋期メンバー募集】企画・デザイン・広報・政策提言を担うユースメンバーの募集を開始",
     url: `${baseUrl}/recruitment${langParam}`,
     isExt: false
   },
   {
     date: "2026.08.15",
-    category: "復興支援",
-    title: "【熊本地震】被災地へ願いを届けるデジタル絵馬特設ページを公開",
+    category: isEn ? "Relief" : "復興支援",
+    title: isEn
+      ? "【Kumamoto Earthquake Relief】Digital Ema Special Page Launched"
+      : "【熊本地震】被災地へ願いを届けるデジタル絵馬特設ページを公開",
     url: "https://nsf.stki.org/ema",
     isExt: true
   }
 ];
+
+// 沿革リスト
+const historyItems = isEn ? [
+  { date: "Jan 2024", desc: "Student relief fundraising project launched following the Noto Peninsula Earthquake" },
+  { date: "Dec 2025", desc: "Awarded Excellence Prize at the U20 Youth Action Awards 2025" },
+  { date: "Mar 2026", desc: "Co-hosted National Student Disaster Summit 2026 at the House of Representatives" },
+  { date: "Jun 2026", desc: "Formally registered as Specified Non-Profit Corporation (JYRAC)" }
+] : [
+  { date: "2024年01月", desc: "能登半島地震を受け、学生支援募金プロジェクト発足" },
+  { date: "2025年12月", desc: "「U20若者活動AWARD 2025 優秀賞」を受賞" },
+  { date: "2026年03月", desc: "内閣府共催「全国生徒会防災サミット2026」開催（衆議院議員会館）" },
+  { date: "2026年06月", desc: "「特定非営利活動法人 日本若者防災復興協会」登記完了" }
+];
 ---
 
-<Layout title="特定非営利活動法人 日本若者防災復興協会（JYRAC）" currentTab="home">
+<Layout 
+  title={isEn ? "Japan Youth Resilience Action Consortium (JYRAC)" : "特定非営利活動法人 日本若者防災復興協会（JYRAC）"} 
+  currentTab="home"
+>
 
-  <!-- 1. トップページのファーストビュー（浮遊クリスタル付き） -->
+  <!-- 1. トップページのファーストビュー -->
   <section class="hero-wrap">
     <div class="hero-layout">
       
@@ -92,18 +125,41 @@ const pickupNews = [
         </div>
 
         <h1 class="hero-heading">
-          「いつもの暮らし」が、いちばん強い。<br class="pc-br"/>
-          <span class="text-gradient">若者から始める、新しい防災と復興。</span> 
+          {isEn ? (
+            <>
+              Everyday Resilience is Our Greatest Strength.<br class="pc-br"/>
+              <span class="text-gradient">Youth-led Innovation in Disaster Preparedness.</span>
+            </>
+          ) : (
+            <>
+              「いつもの暮らし」が、いちばん強い。<br class="pc-br"/>
+              <span class="text-gradient">若者から始める、新しい防災と復興。</span> 
+            </>
+          )}
         </h1>
 
         <p class="hero-subtext">
-          特定非営利活動法人日本若者防災復興協会（JYRAC）は、全国の中学生・高校生・大学生が主体となり、お堅い「お勉強の防災」を刷新。誰もが自然と関わりたくなる持続可能な防災・復興のスタンダードを築くNPO法人です。
+          {isEn ? (
+            <>
+              <strong>特定非営利活動法人 日本若者防災復興協会 (JYRAC)</strong> is a youth-led non-profit organization uniting junior high, high school, and university students across Japan to transform rigid disaster education into accessible, sustainable everyday preparedness.
+            </>
+          ) : (
+            <>
+              特定非営利活動法人日本若者防災復興協会（JYRAC）は、全国の中学生・高校生・大学生が主体となり、お堅い「お勉強の防災」を刷新。誰もが自然と関わりたくなる持続可能な防災・復興のスタンダードを築くNPO法人です。
+            </>
+          )}
         </p>
 
         <div class="hero-btn-row">
-          <a href={`${baseUrl}/about${langParam}`} class="btn-hero btn-navy">JYRACについて知る</a> 
-          <a href="#business-domains" class="btn-hero btn-white">活動・事業領域を見る</a>
-          <a href={`${baseUrl}/recruitment${langParam}`} class="btn-hero btn-teal">メンバーとして参加する ↗</a>
+          <a href={`${baseUrl}/about${langParam}`} class="btn-hero btn-navy">
+            {isEn ? "About JYRAC" : "JYRACについて知る"}
+          </a> 
+          <a href="#business-domains" class="btn-hero btn-white">
+            {isEn ? "Explore Initiatives" : "活動・事業領域を見る"}
+          </a>
+          <a href={`${baseUrl}/recruitment${langParam}`} class="btn-hero btn-teal">
+            {isEn ? "Join as Member ↗" : "メンバーとして参加する ↗"}
+          </a>
         </div>
       </div>
 
@@ -136,13 +192,17 @@ const pickupNews = [
     <section class="banner-event">
       <div class="banner-text-col">
         <span class="event-tag">NEXT EVENT / 2026.10.24 SAT ZOOM</span>
-        <h2 class="event-title">全国生徒会防災サミット2026 秋の陣 DAY 2</h2>
+        <h2 class="event-title">
+          {isEn ? "National Student Council Disaster Summit 2026 Autumn DAY 2" : "全国生徒会防災サミット2026 秋の陣 DAY 2"}
+        </h2>
         <p class="event-desc">
-          10月のテーマは【考える防災から動く防災へ】。全国の中高生・生徒会役員が集結し、地域や学校の枠を越えたアクションを共創します（参加費完全無料）。
+          {isEn 
+            ? "Theme: From Thinking to Action. Student council representatives and youth across Japan unite online to create actionable disaster initiatives across schools and regions (Free admission)."
+            : "10月のテーマは【考える防災から動く防災へ】。全国の中高生・生徒会役員が集結し、地域や学校の枠を越えたアクションを共創します（参加費完全無料）。"}
         </p>
       </div>
       <a href="https://summit.jyrac.stki.org/autumn/day2" target="_blank" rel="noopener noreferrer" class="btn-event">
-        詳細・エントリー ↗
+        {isEn ? "Details & Entry ↗" : "詳細・エントリー ↗"}
       </a>
     </section>
 
@@ -150,8 +210,14 @@ const pickupNews = [
     <section class="section-block">
       <div class="section-header-center">
         <span class="sub-label">FACTS & NUMBERS</span>
-        <h2 class="main-heading">数字で見るJYRAC</h2>
-        <p class="desc-text">2024年能登半島地震支援の発足から現在までに積み上げてきた活動実績です。</p>
+        <h2 class="main-heading">
+          {isEn ? "JYRAC in Numbers" : "数字で見るJYRAC"}
+        </h2>
+        <p class="desc-text">
+          {isEn 
+            ? "Cumulative operational milestones achieved since our inception during the 2024 Noto Earthquake relief."
+            : "2024年能登半島地震支援の発足から現在までに積み上げてきた活動実績です。"}
+        </p>
       </div>
 
       <div class="stats-grid">
@@ -173,10 +239,12 @@ const pickupNews = [
       <div class="section-header-split">
         <div>
           <span class="sub-label">BUSINESS DOMAINS</span>
-          <h2 class="main-heading">4つの事業領域</h2> 
+          <h2 class="main-heading">
+            {isEn ? "4 Core Program Domains" : "4つの事業領域"}
+          </h2> 
         </div>
         <a href={`${baseUrl}/services${langParam}`} class="header-link">
-          各事業の詳細を見る ➔
+          {isEn ? "View Detailed Programs ➔" : "各事業の詳細を見る ➔"}
         </a>
       </div>
 
@@ -199,8 +267,12 @@ const pickupNews = [
       <!-- ニュース -->
       <div class="news-column">
         <div class="section-header-split" style="margin-bottom: 14px;">
-          <h3 style="font-size: 18px; font-weight: 800; color: var(--jyrac-navy);">最新情報・お知らせ</h3>
-          <a href={`${baseUrl}/news${langParam}`} class="header-link">すべて見る ➔</a>
+          <h3 style="font-size: 18px; font-weight: 800; color: var(--jyrac-navy);">
+            {isEn ? "Latest News & Notices" : "最新情報・お知らせ"}
+          </h3>
+          <a href={`${baseUrl}/news${langParam}`} class="header-link">
+            {isEn ? "View All ➔" : "すべて見る ➔"}
+          </a>
         </div>
         <div class="news-list-vertical">
           {pickupNews.map(n => (
@@ -225,27 +297,19 @@ const pickupNews = [
 
       <!-- 沿革 -->
       <div class="history-column">
-        <h3 style="font-size: 16px; font-weight: 800; color: var(--jyrac-navy); border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">これまでの歩み</h3> 
+        <h3 style="font-size: 16px; font-weight: 800; color: var(--jyrac-navy); border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+          {isEn ? "Our Journey" : "これまでの歩み"}
+        </h3> 
         <ul class="history-list">
-          <li>
-            <strong>2024年01月</strong>
-            <p>能登半島地震を受け、学生支援募金プロジェクト発足</p>
-          </li>
-          <li>
-            <strong>2025年12月</strong>
-            <p>「U20若者活動AWARD 2025 優秀賞」を受賞</p>
-          </li>
-          <li>
-            <strong>2026年03月</strong>
-            <p>内閣府共催「全国生徒会防災サミット2026」開催（衆議院議員会館）</p>
-          </li>
-          <li>
-            <strong>2026年06月</strong> 
-            <p>「特定非営利活動法人 日本若者防災復興協会」登記完了</p>
-          </li>
+          {historyItems.map(item => (
+            <li>
+              <strong>{item.date}</strong>
+              <p>{item.desc}</p>
+            </li>
+          ))}
         </ul>
         <a href={`${baseUrl}/history${langParam}`} class="header-link" style="display: block; margin-top: 16px;">
-          詳細な沿革・実績年表を見る ➔
+          {isEn ? "View Full Timeline ➔" : "詳細な沿革・実績年表を見る ➔"}
         </a>
       </div>
     </section>
@@ -254,58 +318,110 @@ const pickupNews = [
     <section class="section-block">
       <div style="margin-bottom: 18px;">
         <span class="sub-label">ORGANIZATION CHART</span>
-        <h2 class="main-heading">組織体制</h2> 
-        <p class="desc-text">外部向けに組織の全体構造（局・各本部・政調会）を簡潔に示しています。</p>
+        <h2 class="main-heading">
+          {isEn ? "Organization & Structure" : "組織体制"}
+        </h2> 
+        <p class="desc-text">
+          {isEn 
+            ? "High-level overview of our operational bureaus, project teams, and policy council."
+            : "外部向けに組織の全体構造（局・各本部・政調会）を簡潔に示しています。"}
+        </p>
       </div>
 
       <div class="org-box">
         <div class="org-3col">
           <div class="org-card">
-            <h4>各局（法人基盤・統括）</h4>
+            <h4>{isEn ? "Corporate Divisions" : "各局（法人基盤・統括）"}</h4>
             <ul>
-              <li>・<strong>事務局</strong>（総務・会計・法務・情報部）</li>
-              <li>・<strong>人事局</strong>（採用・組織育成）</li>
-              <li>・<strong>広報局</strong>（デザイン課・SNS発信・プレス）</li>
-              <li>・<strong>外務局</strong>（渉外・連携）</li>
+              {isEn ? (
+                <>
+                  <li>・<strong>Secretariat</strong> (General Affairs, Finance, Legal, IT)</li>
+                  <li>・<strong>Human Resources</strong> (Recruiting, Talent Dev)</li>
+                  <li>・<strong>Public Relations</strong> (Design, SNS, Press)</li>
+                  <li>・<strong>External Relations</strong> (Partnerships)</li>
+                </>
+              ) : (
+                <>
+                  <li>・<strong>事務局</strong>（総務・会計・法務・情報部）</li>
+                  <li>・<strong>人事局</strong>（採用・組織育成）</li>
+                  <li>・<strong>広報局</strong>（デザイン課・SNS発信・プレス）</li>
+                  <li>・<strong>外務局</strong>（渉外・連携）</li>
+                </>
+              )}
             </ul>
           </div>
 
           <div class="org-card">
-            <h4>各事業本部（プロジェクト推進）</h4>
+            <h4>{isEn ? "Project Bureaus" : "各事業本部（プロジェクト推進）"}</h4>
             <ul>
-              <li>・<strong>防災事業本部</strong>（生徒会サミット・避難所改善）</li>
-              <li>・<strong>復興事業本部</strong>（能登現地支援・食文化継承）</li>
-              <li>・<strong>地域事業本部</strong>（街頭募金・地域防災出展）</li>
-              <li>・<strong>国際事業本部</strong>（Y-VITAL・模擬防災国連）</li>
+              {isEn ? (
+                <>
+                  <li>・<strong>Disaster Prevention</strong> (Summits, Shelter Improvement)</li>
+                  <li>・<strong>Disaster Recovery</strong> (Noto Field Relief, Food Culture)</li>
+                  <li>・<strong>Regional Bureau</strong> (Street Fundraising, Expos)</li>
+                  <li>・<strong>Global Initiatives</strong> (Y-VITAL, Model Disaster UN)</li>
+                </>
+              ) : (
+                <>
+                  <li>・<strong>防災事業本部</strong>（生徒会サミット・避難所改善）</li>
+                  <li>・<strong>復興事業本部</strong>（能登現地支援・食文化継承）</li>
+                  <li>・<strong>地域事業本部</strong>（街頭募金・地域防災出展）</li>
+                  <li>・<strong>国際事業本部</strong>（Y-VITAL・模擬防災国連）</li>
+                </>
+              )}
             </ul>
           </div>
 
           <div class="org-card">
-            <h4>政務調査会 ＆ 連携コミュニティ</h4>
+            <h4>{isEn ? "Policy Council & Alliances" : "政務調査会 ＆ 連携コミュニティ"}</h4>
             <ul>
-              <li>・<strong>政務調査会</strong>（防災政策提言・法案調査）</li>
-              <li>・<strong>中高生コミュニティ NSF PROJECTS</strong></li>
-              <li>・<strong>避難所議連 事務局支援</strong></li>
+              {isEn ? (
+                <>
+                  <li>・<strong>Policy Research Council</strong> (Proposals & Legislative Research)</li>
+                  <li>・<strong>Youth Community NSF PROJECTS</strong></li>
+                  <li>・<strong>Shelter Parliamentary Group Support</strong></li>
+                </>
+              ) : (
+                <>
+                  <li>・<strong>政務調査会</strong>（防災政策提言・法案調査）</li>
+                  <li>・<strong>中高生コミュニティ NSF PROJECTS</strong></li>
+                  <li>・<strong>避難所議連 事務局支援</strong></li>
+                </>
+              )}
             </ul>
           </div>
         </div>
 
         <div class="org-footer">
-          <span>意思決定機関：理事会（理事長：久保 壮太郎） / 監査：監事</span>
-          <a href={`${baseUrl}/about${langParam}#members`} class="header-link">役員・メンバー紹介を見る ➔</a>
+          <span>
+            {isEn 
+              ? "Governance: Board of Directors (President: Sohtaro Kubo) / Auditor" 
+              : "意思決定機関：理事会（理事長：久保 壮太郎） / 監査：監事"}
+          </span>
+          <a href={`${baseUrl}/about${langParam}#members`} class="header-link">
+            {isEn ? "View Officers & Members ➔" : "役員・メンバー紹介を見る ➔"}
+          </a>
         </div>
       </div>
     </section>
 
     <!-- 8. メンバー募集 CTA -->
     <section class="cta-banner">
-      <h2>あなたもJYRACで、未来を動かしませんか？</h2>
+      <h2>
+        {isEn ? "Join JYRAC and Shape the Future Together" : "あなたもJYRACで、未来を動かしませんか？"}
+      </h2>
       <p>
-        全国の中学・高校・大学生がオンライン・地方問わず多数活動しています。企画、デザイン、広報、政策提言、現地支援など、あなたの強みを発揮できるチームが必ずあります。
+        {isEn 
+          ? "Junior high, high school, and university students across Japan are collaborating online and locally. From planning, design, and PR to policy research and disaster relief, there is a place for your passion and talents."
+          : "全国の中学・高校・大学生がオンライン・地方問わず多数活動しています。企画、デザイン、広報、政策提言、現地支援など、あなたの強みを発揮できるチームが必ずあります。"}
       </p>
       <div class="cta-btn-row">
-        <a href={`${baseUrl}/recruitment${langParam}`} class="btn-cta-teal">募集要項・活動詳細を見る ➔</a>
-        <a href={`${baseUrl}/contact${langParam}`} class="btn-cta-trans">お問い合わせ</a>
+        <a href={`${baseUrl}/recruitment${langParam}`} class="btn-cta-teal">
+          {isEn ? "View Openings & Requirements ➔" : "募集要項・活動詳細を見る ➔"}
+        </a>
+        <a href={`${baseUrl}/contact${langParam}`} class="btn-cta-trans">
+          {t.common.contact}
+        </a>
       </div>
     </section>
 
