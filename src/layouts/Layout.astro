@@ -107,19 +107,35 @@ const navItems = [
       <slot />
     </main>
 
-    <!-- フッター -->
+    <!-- フッター（審査要件：法人番号・完全な登記住所・ドメイン貸与注記を明記） -->
     <footer class="global-footer">
       <div class="footer-inner">
         <div class="footer-brand">
-          <span class="footer-name">特定非営利活動法人 日本若者防災復興協会（JYRAC）</span>
-          <span class="footer-address">東京都文京区</span>
+          <span class="footer-name">
+            {currentLang === 'en' 
+              ? 'Japan Youth Resilience Action Consortium (JYRAC)' 
+              : '特定非営利活動法人 日本若者防災復興協会（JYRAC）'}
+          </span>
+          <span class="footer-meta">
+            {currentLang === 'en' ? 'Corporate Number: 2010005042019' : '法人番号：2010005042019'}
+          </span>
+          <span class="footer-address">
+            {currentLang === 'en' 
+              ? '603, 4-4-6 Kohinata, Bunkyo-ku, Tokyo, 112-0006, Japan' 
+              : '東京都文京区小日向四丁目4番6-603号'}
+          </span>
+          <span class="footer-domain-note">
+            {currentLang === 'en'
+              ? 'Official domain provided and supported by youth platform "TRANs".'
+              : '※本公式サイトのドメイン（jyrac.stki.org）は協力団体「TRANs」より公式無償貸与を受けて運用しております。'}
+          </span>
         </div>
         <div class="footer-links">
-          <a href={`${baseUrl}/${langParam}`}>ホーム</a>
-          <a href={`${baseUrl}/about${langParam}`}>団体概要</a>
-          <a href={`${baseUrl}/gioco${langParam}`}>教材・診断</a>
-          <a href={`${baseUrl}/governance${langParam}`}>情報公開</a>
-          <a href={`${baseUrl}/contact${langParam}`}>お問い合わせ</a>
+          <a href={`${baseUrl}/${langParam}`}>{t.nav.home}</a>
+          <a href={`${baseUrl}/about${langParam}`}>{t.nav.about}</a>
+          <a href={`${baseUrl}/gioco${langParam}`}>{t.nav.gioco}</a>
+          <a href={`${baseUrl}/governance${langParam}`}>{currentLang === 'en' ? 'Public Notice' : '情報公開'}</a>
+          <a href={`${baseUrl}/contact${langParam}`}>{t.nav.contact}</a>
         </div>
       </div>
       <div class="footer-bottom">
@@ -409,14 +425,28 @@ const navItems = [
     display: flex;
     flex-direction: column;
     gap: 6px;
+    max-width: 520px;
   }
   .footer-name {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 800;
   }
-  .footer-address {
+  .footer-meta {
     font-size: 12px;
+    color: #38bdf8;
+    font-family: ui-monospace, monospace;
+    font-weight: 600;
+  }
+  .footer-address {
+    font-size: 12.5px;
+    color: #cbd5e1;
+    line-height: 1.5;
+  }
+  .footer-domain-note {
+    font-size: 11px;
     color: #94a3b8;
+    line-height: 1.5;
+    margin-top: 4px;
   }
   .footer-links {
     display: flex;
