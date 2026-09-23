@@ -1,32 +1,35 @@
 ---
 // src/pages/about.astro
 import Layout from '../layouts/Layout.astro';
+import { translations, type Lang } from '../lib/i18n';
 
-const currentLang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
+const currentLang: Lang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
 const langParam = currentLang === 'en' ? '?lang=en' : '';
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const t = translations[currentLang];
+const a = t.about;
 
-// 6. 役員・代表紹介データ
+// 役員データ（英語・日本語切り替え）
 const boardMembers = [
   {
     role: currentLang === 'en' ? 'President & Representative Director' : '理事長',
-    name: '久保 壮太郎',
-    enName: 'Sohtaro Kubo'
+    name: currentLang === 'en' ? 'Sohtaro Kubo' : '久保 壮太郎',
+    enName: currentLang === 'en' ? 'President' : 'Sohtaro Kubo'
   },
   {
     role: currentLang === 'en' ? 'Director' : '理事',
-    name: '関口 俊',
-    enName: 'Shun Sekiguchi'
+    name: currentLang === 'en' ? 'Shun Sekiguchi' : '関口 俊',
+    enName: currentLang === 'en' ? 'Director' : 'Shun Sekiguchi'
   },
   {
     role: currentLang === 'en' ? 'Director' : '理事',
-    name: '鈴木 陽向',
-    enName: 'Hinata Suzuki'
+    name: currentLang === 'en' ? 'Hinata Suzuki' : '鈴木 陽向',
+    enName: currentLang === 'en' ? 'Director' : 'Hinata Suzuki'
   },
   {
     role: currentLang === 'en' ? 'Director' : '理事',
-    name: '毛利 仁哉',
-    enName: 'Hiroya Mouri'
+    name: currentLang === 'en' ? 'Hiroya Mouri' : '毛利 仁哉',
+    enName: currentLang === 'en' ? 'Director' : 'Hiroya Mouri'
   }
 ];
 ---
@@ -39,66 +42,43 @@ const boardMembers = [
 
     <!-- ページ見出し -->
     <header class="about-header">
-      <span class="sub-label">ABOUT JYRAC</span>
-      <h1 class="main-heading">
-        {currentLang === 'en' ? 'About Our Organization' : '当法人について'}
-      </h1>
-      <p class="desc-text">
-        {currentLang === 'en'
-          ? 'Information regarding the mission, vision, officers, and structure of Japan Youth Resilience Action Consortium.'
-          : '特定非営利活動法人日本若者防災復興協会の理念・設立の想い・役員体制・組織概要です。'}
-      </p>
+      <span class="sub-label">{a.header.sub}</span>
+      <h1 class="main-heading">{a.header.title}</h1>
+      <p class="desc-text">{a.header.desc}</p>
     </header>
 
-    <!-- 5. 理念（Mission・Vision・想い） -->
+    <!-- 理念（Mission・Vision） -->
     <section class="section-card">
       <div class="card-inner-box">
-        <span class="sub-label">MISSION & VISION</span>
-        <h2 class="card-heading">
-          {currentLang === 'en' ? 'Our Philosophy & Mission' : '組織理念・目指す社会'}
-        </h2>
-        <p class="lead-quote">
-          「いつもの暮らし」が、いちばん強い。<br />
-          若者から始める、新しい防災と復興。
-        </p>
-        <p class="body-text">
-          私たちは、災害の悲しみをただの記憶で終わらせません。若者ならではの柔軟な発想力と圧倒的な行動力をもって、お堅い「お勉強」としての防災を刷新し、誰もが主体的に関わりたくなる新しい防災・復興のスタンダードを築きます。地域と世代の壁を越え、すべての人が手を取り合って災害に立ち向かえる、安全で持続可能な社会を私たちが先頭に立って創り上げます。
-        </p>
+        <span class="sub-label">{a.mission.sub}</span>
+        <h2 class="card-heading">{a.mission.heading}</h2>
+        <p class="lead-quote" style="white-space: pre-line;">{a.mission.leadQuote}</p>
+        <p class="body-text">{a.mission.body}</p>
       </div>
     </section>
 
     <!-- 理事長挨拶 -->
     <section class="section-card">
-      <span class="sub-label">MESSAGE FROM THE PRESIDENT</span>
-      <h2 class="card-heading">
-        {currentLang === 'en' ? 'President Message' : '理事長 挨拶'}
-      </h2>
+      <span class="sub-label">{a.president.sub}</span>
+      <h2 class="card-heading">{a.president.heading}</h2>
       
       <div class="message-body">
-        <p>
-          災害は、ある日突然、私たちの日常を奪います。しかし同時に、そこから立ち上がろうとする人々の歩みの中には、地域の強さ、人と人とのつながり、未来を担う若者の可能性が確かに存在しています。
-        </p>
-        <p>
-          私たちは、被災地への一時的な支援にとどまらず、若者が継続的に地域と関わり、学び、行動し、社会に提言していく仕組みをつくっていきたいと考えています。防災を「特別な人だけが担うもの」ではなく、すべての若者が自分ごととして考え、参加できる社会へ。その実現こそが、JYRACの使命です。
-        </p>
-        <p>
-          災害の記憶を風化させず、次の行動へつなげること。支援する側とされる側を超え、ともに未来をつくる仲間になること。JYRACはその先頭に立ち、若者の挑戦を社会の力へと変えていきます。
-        </p>
+        <p>{a.president.p1}</p>
+        <p>{a.president.p2}</p>
+        <p>{a.president.p3}</p>
         <div class="message-signature">
-          <span>特定非営利活動法人 日本若者防災復興協会</span>
-          <strong>理事長 久保 壮太郎</strong>
+          <span>{a.president.orgName}</span>
+          <strong>{a.president.roleAndName}</strong>
         </div>
       </div>
     </section>
 
-    <!-- 6. 代表・役員紹介 -->
+    <!-- 役員紹介 -->
     <section id="members" class="section-card">
       <div class="section-header-split">
         <div>
-          <span class="sub-label">BOARD OF DIRECTORS</span>
-          <h2 class="card-heading">
-            {currentLang === 'en' ? 'Board Members' : '役員紹介'}
-          </h2>
+          <span class="sub-label">{a.members.sub}</span>
+          <h2 class="card-heading">{a.members.heading}</h2>
         </div>
       </div>
 
@@ -113,128 +93,88 @@ const boardMembers = [
       </div>
     </section>
 
-    <!-- 7. 組織図・体制 -->
+    <!-- 組織図・体制 -->
     <section class="section-card">
-      <span class="sub-label">ORGANIZATION STRUCTURE</span>
-      <h2 class="card-heading">
-        {currentLang === 'en' ? 'Organization Chart' : '組織体制・ガバナンス'}
-      </h2>
-      <p class="desc-text" style="margin-bottom: 20px;">
-        最高意思決定機関である理事会および監査を行う監事のもと、各局・各事業本部・政務調査会が連携して活動を展開しています。
-      </p>
+      <span class="sub-label">{a.org.sub}</span>
+      <h2 class="card-heading">{a.org.heading}</h2>
+      <p class="desc-text" style="margin-bottom: 20px;">{a.org.desc}</p>
 
       <div class="org-layout-grid">
         <div class="org-col">
-          <h4 class="org-title">各局（法人基盤・統括）</h4>
+          <h4 class="org-title">{a.org.divisionsTitle}</h4>
           <ul class="org-list">
-            <li>・<strong>事務局</strong>（総務・会計・法務・情報部）</li>
-            <li>・<strong>人事局</strong>（採用・メンバー育成）</li>
-            <li>・<strong>広報局</strong>（デザイン課・SNS発信課・メディアプレス課）</li>
-            <li>・<strong>外務局</strong>（渉外・パートナーシップ）</li>
+            {a.org.divisions.map(item => <li>・{item}</li>)}
           </ul>
         </div>
 
         <div class="org-col">
-          <h4 class="org-title">各事業本部（プロジェクト推進）</h4>
+          <h4 class="org-title">{a.org.projectsTitle}</h4>
           <ul class="org-list">
-            <li>・<strong>防災事業本部</strong>（生徒会サミット・避難所環境改善）</li>
-            <li>・<strong>復興事業本部</strong>（能登現地支援・伝統食文化継承）</li>
-            <li>・<strong>地域事業本部 / 募金事業本部</strong>（街頭募金・地域防災出展）</li>
-            <li>・<strong>国際事業本部</strong>（Y-VITAL・模擬防災国連）</li>
+            {a.org.projects.map(item => <li>・{item}</li>)}
           </ul>
         </div>
 
         <div class="org-col">
-          <h4 class="org-title">政務調査会 ＆ 連携コミュニティ</h4>
+          <h4 class="org-title">{a.org.policyTitle}</h4>
           <ul class="org-list">
-            <li>・<strong>政務調査会</strong>（政策提言・法案調査・意見交換）</li>
-            <li>・<strong>中高生コミュニティ NSF PROJECTS</strong></li>
-            <li>・<strong>超党派避難所議連 事務局支援</strong></li>
+            {a.org.policy.map(item => <li>・{item}</li>)}
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- 法人概要スペック表 -->
+    <!-- 法人概要スペック表（審査項目対応） -->
     <section class="section-card">
-      <span class="sub-label">ORGANIZATION OVERVIEW</span>
-      <h2 class="card-heading">
-        {currentLang === 'en' ? 'Legal Details' : '法人概要'}
-      </h2>
+      <span class="sub-label">{a.legal.sub}</span>
+      <h2 class="card-heading">{a.legal.heading}</h2>
 
       <table class="info-table">
         <tbody>
           <tr>
-            <th>{currentLang === 'en' ? 'Organization Name' : '法人・団体名称'}</th>
+            <th>{a.legal.nameLabel}</th>
+            <td>{a.legal.nameValue}</td>
+          </tr>
+          <tr>
+            <th>{a.legal.corpNumLabel}</th>
             <td>
-              {currentLang === 'en' 
-                ? 'Japan Youth Resilience Action Consortium (Specified Non-Profit Corporation)' 
-                : '特定非営利活動法人日本若者防災復興協会（英語略称：JYRAC / カナ：ニホンワカモノボウサイフッコウキョウカイ）'}
+              <code>{a.legal.corpNumValue}</code>
+              <span class="sub-note">{a.legal.corpNumSub}</span>
             </td>
           </tr>
           <tr>
-            <th>{currentLang === 'en' ? 'Corporate Number' : '法人番号'}</th>
-            <td>
-              <code>2010005042019</code>
-              <span class="sub-note">（{currentLang === 'en' ? 'National Tax Agency Corporate Number' : '国税庁指定法人番号'}）</span>
-            </td>
+            <th>{a.legal.certDateLabel}</th>
+            <td>{a.legal.certDateValue}</td>
           </tr>
           <tr>
-            <th>{currentLang === 'en' ? 'Certification / Registration Date' : '認証日・設立登記日'}</th>
-            <td>
-              {currentLang === 'en'
-                ? 'Certified: June 18, 2026 (Tokyo Metropolitan Government) / Registered: June 21, 2026'
-                : '認証日：令和8年6月18日（東京都認証） / 設立登記日：令和8年6月21日'}
-            </td>
+            <th>{a.legal.repLabel}</th>
+            <td>{a.legal.repValue}</td>
           </tr>
           <tr>
-            <th>{currentLang === 'en' ? 'Representative' : '代表者'}</th>
-            <td>
-              {currentLang === 'en' ? 'President Sohtaro Kubo' : '理事長 久保 壮太郎'}
-            </td>
+            <th>{a.legal.addressLabel}</th>
+            <td>{a.legal.addressValue}</td>
           </tr>
           <tr>
-            <th>{currentLang === 'en' ? 'Principal Office' : '主たる事務所の所在地'}</th>
+            <th>{a.legal.purposeLabel}</th>
             <td>
-              {currentLang === 'en'
-                ? '603, 4-4-6 Kohinata, Bunkyo-ku, Tokyo, 112-0006, Japan'
-                : '東京都文京区小日向四丁目4番6-603号'}
-            </td>
-          </tr>
-          <tr>
-            <th>{currentLang === 'en' ? 'Mission & Activities' : '定款の目的・主な活動領域'}</th>
-            <td>
-              {currentLang === 'en'
-                ? 'Promoting disaster risk reduction, mitigation, and post-disaster recovery driven by youth initiatives; fostering regional cooperation, disaster awareness education, and youth-led policy advocacy.'
-                : '若者が主体となって防災、減災及び災害復興に取り組むための事業を行い、地域社会の防災力向上と安全で安心な持続可能社会の実現に寄与することを目的とする。'}
+              {a.legal.purposeValue}
               <br />
-              <span class="sub-note">
-                {currentLang === 'en'
-                  ? 'Key Domains: Disaster Prevention Education / Post-Disaster Recovery / Youth Engagement / Policy Recommendation'
-                  : '（活動領域：防災教育・実践体験、被災地復興支援・文化継承、街頭啓蒙・募金、国際交流、政策提言）'}
-              </span>
+              <span class="sub-note">{a.legal.purposeSub}</span>
             </td>
           </tr>
           <tr>
-            <th>{currentLang === 'en' ? 'Major Achievements' : '主な実績'}</th>
-            <td>
-              内閣府共催「全国生徒会防災サミット2026」開催、避難所環境改善・政策提言、能登半島現地復興ボランティア、街頭募金活動59回（総額260万円超）
-            </td>
+            <th>{a.legal.achievementsLabel}</th>
+            <td>{a.legal.achievementsValue}</td>
           </tr>
           <tr>
-            <th>{currentLang === 'en' ? 'Official Contact' : '公式連絡先'}</th>
+            <th>{a.legal.contactLabel}</th>
             <td>
               <a href="mailto:info@jyrac.stki.org" class="table-link">info@jyrac.stki.org</a>
-              <span class="sub-note">（広報窓口：jyrac.pr@gmail.com）</span>
+              <span class="sub-note">{a.legal.contactSub}</span>
             </td>
           </tr>
           <tr>
-            <th>{currentLang === 'en' ? 'Domain & Infrastructure' : 'ドメインの運用について'}</th>
-            <td>
-              {currentLang === 'en'
-                ? 'The official domain (jyrac.stki.org) of JYRAC is provided and operated under official authorization and gratuitous loan by our partner youth platform "TRANs".'
-                : '当団体の公式ウェブサイトおよびシステム運用ドメイン（jyrac.stki.org）は、初期運用コストの最適化のため、協力関係にある学生支援組織「TRANs」より正式な許諾を得て無償貸与を受けて運用しております。'}
-            </td>
+            <th>{a.legal.domainLabel}</th>
+            <td>{a.legal.domainValue}</td>
           </tr>
         </tbody>
       </table>
@@ -242,7 +182,7 @@ const boardMembers = [
 
     <!-- 戻るリンク -->
     <div class="back-row">
-      <a href={`${baseUrl}/${langParam}`} class="header-link">← ホームに戻る</a>
+      <a href={`${baseUrl}/${langParam}`} class="header-link">{t.common.backToHome}</a>
     </div>
 
   </div>
@@ -399,7 +339,7 @@ const boardMembers = [
     line-height: 1.75;
   }
 
-  /* テーブル（PC標準） */
+  /* テーブル */
   .info-table {
     width: 100%;
     border-collapse: collapse;
@@ -407,7 +347,7 @@ const boardMembers = [
     margin-top: 4px;
   }
   .info-table th {
-    width: 25%;
+    width: 28%;
     background-color: var(--bg-light);
     color: var(--jyrac-navy);
     font-weight: 800;
@@ -454,13 +394,12 @@ const boardMembers = [
     padding-top: 12px;
   }
 
-  /* タブレット・スマートフォン最適化 */
+  /* レスポンシブ最適化 */
   @media (max-width: 768px) {
     .section-card {
       padding: 18px 14px;
       border-radius: 16px;
     }
-
     .info-table, 
     .info-table tbody, 
     .info-table tr, 
@@ -492,7 +431,6 @@ const boardMembers = [
       padding: 10px 12px;
       font-size: 12.5px;
     }
-
     .board-grid {
       grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       gap: 10px;
@@ -503,7 +441,6 @@ const boardMembers = [
     .board-name {
       font-size: 16px;
     }
-
     .org-layout-grid {
       grid-template-columns: 1fr;
     }
