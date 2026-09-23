@@ -1,27 +1,56 @@
 ---
 // src/pages/recruitment.astro
 import Layout from "../layouts/Layout.astro";
+import { translations, type Lang } from '../lib/i18n';
 
-const currentLang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
-const langParam = currentLang === 'en' ? '?lang=en' : '';
+const currentLang: Lang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
+const isEn = currentLang === 'en';
+const langParam = isEn ? '?lang=en' : '';
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const t = translations[currentLang];
 
-// ポジション一覧（現在募集しているのは広報局のみ）
+// ポジション一覧（広報局）
 const activeJob = {
   id: "pr",
-  department: "広報局",
-  title: "広報スタッフ（公式SNS運用・デザイン・Web記事執筆）",
-  badge: "積極募集中",
-  badgeType: "open",
-  target: "中学生 / 高校生 / 大学生 / 若手社会人",
-  location: "完全オンライン（全国どこからでも参加可能）",
-  timeCommitment: "週1〜3時間程度（学業・試験期間最優先）",
-  summary: "公式Instagram・X・noteの企画運用や、Canvaを用いた画像・動画制作、Webサイト更新、プレスリリース作成などを通じて、若者の防災・減災アクションを社会へ届けるクリエイティブポジションです。",
+  department: isEn ? "Public Relations Bureau" : "広報局",
+  title: isEn ? "PR Staff (Official Social Media, Design & Web Editorial)" : "広報スタッフ（公式SNS運用・デザイン・Web記事執筆）",
+  badge: isEn ? "Actively Hiring" : "積極募集中",
+  target: isEn ? "Junior High / High School / University Students & Young Professionals" : "中学生 / 高校生 / 大学生 / 若手社会人",
+  location: isEn ? "Fully Remote (Join from anywhere across Japan & overseas)" : "完全オンライン（全国どこからでも参加可能）",
+  timeCommitment: isEn ? "Approx. 1–3 hours/week (Academics & exams come first)" : "週1〜3時間程度（学業・試験期間最優先）",
+  summary: isEn
+    ? "A creative role delivering youth-led disaster risk reduction and recovery initiatives to society through Instagram, X, and note management, Canva graphic/video production, web updates, and press releases."
+    : "公式Instagram・X・noteの企画運用や、Canvaを用いた画像・動画制作、Webサイト更新、プレスリリース作成などを通じて、若者の防災・減災アクションを社会へ届けるクリエイティブポジションです。",
   detailLink: `${baseUrl}/join-pr${langParam}`
 };
 
 // 募集停止中・準備中の部門
-const upcomingDepartments = [
+const upcomingDepartments = isEn ? [
+  {
+    department: "Disaster Prevention Bureau",
+    title: "Student Disaster Summit Planning & Policy Advocacy Support",
+    badge: "Upcoming",
+    summary: "Planning and running the National Student Council Disaster Summit, conducting evacuation shelter environment surveys, and drafting policy proposals."
+  },
+  {
+    department: "Disaster Recovery Bureau",
+    title: "Noto On-site Support & Food Culture Heritage Project",
+    badge: "Upcoming",
+    summary: "Volunteer activities in the Noto Peninsula, community exchanges in temporary housing, and regional food promotion projects."
+  },
+  {
+    department: "Regional & Fundraising Bureau",
+    title: "Street Fundraising & Local Disaster Event Staff",
+    badge: "Upcoming",
+    summary: "Operating street fundraising campaigns across Japan, organizing booths and interactive workshops at community disaster awareness festivals."
+  },
+  {
+    department: "Secretariat / HR / External Relations",
+    title: "Operations, Member Onboarding & Partnership Support",
+    badge: "Upcoming",
+    summary: "Member onboarding and development, IT tool administration, and external liaison with government bodies, corporations, and partner groups."
+  }
+] : [
   {
     department: "防災事業本部",
     title: "生徒会防災サミット 企画運営・政策提言サポート",
@@ -47,10 +76,20 @@ const upcomingDepartments = [
     summary: "メンバー採用オンボーディング、ITツール管理、行政・企業・他団体との連携窓口など。"
   }
 ];
+
+const steps = isEn ? [
+  { num: '01', text: 'Review Job Details' },
+  { num: '02', text: 'Apply via Google Form' },
+  { num: '03', text: 'Online Interview & Join Discord' }
+] : [
+  { num: '01', text: '募集要項を確認' },
+  { num: '02', text: 'Googleフォームからエントリー' },
+  { num: '03', text: 'オンライン面談・Discord合流' }
+];
 ---
 
 <Layout 
-  title={currentLang === 'en' ? 'Recruitment | JYRAC' : 'メンバー募集一覧 | 日本若者防災復興協会'} 
+  title={isEn ? 'Recruitment | JYRAC' : 'メンバー募集一覧 | 日本若者防災復興協会'} 
   currentTab="recruitment"
 >
   <div class="recruit-list-container">
@@ -58,36 +97,44 @@ const upcomingDepartments = [
     <!-- ページ見出し -->
     <header class="page-header">
       <span class="sub-label">JOIN JYRAC</span>
-      <h1 class="main-heading">メンバー募集</h1>
+      <h1 class="main-heading">
+        {isEn ? 'Join Our Team' : 'メンバー募集'}
+      </h1>
       <p class="desc-text">
-        現在、日本若者防災復興協会（JYRAC）では<strong>【広報局】</strong>のメンバーを重点募集しています。<br class="pc-br" />
-        全国の中学・高校・大学生が完全オンラインで活動中。あなたの発信力やデザインへの興味を、防災と復興の現場で活かしてみませんか？
+        {isEn ? (
+          <>
+            JYRAC is currently actively recruiting members for the <strong>【Public Relations Bureau】</strong>.<br class="pc-br" />
+            Junior high, high school, and university students across Japan are collaborating fully online. Leverage your creativity and passion to shape the future of disaster resilience!
+          </>
+        ) : (
+          <>
+            現在、日本若者防災復興協会（JYRAC）では<strong>【広報局】</strong>のメンバーを重点募集しています。<br class="pc-br" />
+            全国の中学・高校・大学生が完全オンラインで活動中。あなたの発信力やデザインへの興味を、防災と復興の現場で活かしてみませんか？
+          </>
+        )}
       </p>
     </header>
 
     <!-- 応募手順ガイド -->
     <div class="quick-guide-bar">
-      <div class="guide-item">
-        <span class="step-num">01</span>
-        <span>募集要項を確認</span>
-      </div>
-      <span class="guide-arrow">➔</span>
-      <div class="guide-item">
-        <span class="step-num">02</span>
-        <span>Googleフォームからエントリー</span>
-      </div>
-      <span class="guide-arrow">➔</span>
-      <div class="guide-item">
-        <span class="step-num">03</span>
-        <span>オンライン面談・Discord合流</span>
-      </div>
+      {steps.map((s, idx) => (
+        <>
+          <div class="guide-item">
+            <span class="step-num">{s.num}</span>
+            <span>{s.text}</span>
+          </div>
+          {idx < steps.length - 1 && <span class="guide-arrow">➔</span>}
+        </>
+      ))}
     </div>
 
     <!-- 募集中セクション -->
     <section class="section-block">
       <div class="section-title-wrap">
         <span class="status-indicator"></span>
-        <h2 class="section-title">現在募集中のポジション</h2>
+        <h2 class="section-title">
+          {isEn ? 'Open Positions' : '現在募集中のポジション'}
+        </h2>
       </div>
 
       <!-- 広報局員 注目カード -->
@@ -105,15 +152,15 @@ const upcomingDepartments = [
           <p class="job-summary">{activeJob.summary}</p>
 
           <div class="job-spec-chips">
-            <span class="spec-chip">👤 対象：{activeJob.target}</span>
-            <span class="spec-chip">📍 拠点：{activeJob.location}</span>
-            <span class="spec-chip">⏱ 目安：{activeJob.timeCommitment}</span>
+            <span class="spec-chip">👤 {isEn ? 'Target: ' : '対象：'}{activeJob.target}</span>
+            <span class="spec-chip">📍 {isEn ? 'Location: ' : '拠点：'}{activeJob.location}</span>
+            <span class="spec-chip">⏱ {isEn ? 'Commitment: ' : '目安：'}{activeJob.timeCommitment}</span>
           </div>
         </div>
 
         <div class="job-card-action">
           <a href={activeJob.detailLink} class="btn-job-detail">
-            募集要項・詳細を見る ➔
+            {isEn ? 'View Requirements ➔' : '募集要項・詳細を見る ➔'}
           </a>
           <a 
             href="https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form" 
@@ -121,7 +168,7 @@ const upcomingDepartments = [
             rel="noopener noreferrer" 
             class="btn-job-apply"
           >
-            直接エントリー ↗
+            {isEn ? 'Direct Application ↗' : '直接エントリー ↗'}
           </a>
         </div>
       </article>
@@ -130,8 +177,14 @@ const upcomingDepartments = [
     <!-- 募集準備中セクション -->
     <section class="section-block">
       <div class="section-title-wrap">
-        <h2 class="section-title-sub">次回募集準備中のポジション</h2>
-        <span class="sub-note">※以下の部門は現在定員またはプロジェクト準備中のため、次回募集開始時に改めて告知いたします。</span>
+        <h2 class="section-title-sub">
+          {isEn ? 'Upcoming Positions (In Preparation)' : '次回募集準備中のポジション'}
+        </h2>
+        <span class="sub-note">
+          {isEn 
+            ? '*The following bureaus are currently at capacity or preparing projects. Applications will reopen in future cohorts.'
+            : '※以下の部門は現在定員またはプロジェクト準備中のため、次回募集開始時に改めて告知いたします。'}
+        </span>
       </div>
 
       <div class="closed-jobs-grid">
@@ -150,9 +203,13 @@ const upcomingDepartments = [
 
     <!-- お問い合わせ・相談カード -->
     <section class="common-notice-card">
-      <h3 class="notice-heading">応募前の質問・相談について</h3>
+      <h3 class="notice-heading">
+        {isEn ? 'Questions or Consultation Before Applying?' : '応募前の質問・相談について'}
+      </h3>
       <p class="notice-desc">
-        「学業や部活動と両立できるか不安」「まずは活動の雰囲気を聞いてみたい」という方も大歓迎です。エントリーフォームまたは公式メールよりお気軽にご連絡ください。
+        {isEn
+          ? 'Feel free to reach out if you have concerns about balancing activities with your studies or school clubs, or simply wish to learn more about our team culture.'
+          : '「学業や部活動と両立できるか不安」「まずは活動の雰囲気を聞いてみたい」という方も大歓迎です。エントリーフォームまたは公式メールよりお気軽にご連絡ください。'}
       </p>
       <div class="notice-btn-row">
         <a 
@@ -161,14 +218,14 @@ const upcomingDepartments = [
           rel="noopener noreferrer" 
           class="btn-general-apply"
         >
-          応募・相談フォームを開く ↗
+          {isEn ? 'Open Application & Inquiry Form ↗' : '応募・相談フォームを開く ↗'}
         </a>
       </div>
     </section>
 
     <!-- 戻るリンク -->
     <div class="back-row">
-      <a href={`${baseUrl}/${langParam}`} class="header-link">← ホームに戻る</a>
+      <a href={`${baseUrl}/${langParam}`} class="header-link">{t.common.backToHome}</a>
     </div>
 
   </div>
