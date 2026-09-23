@@ -165,32 +165,76 @@ const boardMembers = [
       <table class="info-table">
         <tbody>
           <tr>
-            <th>団体名称</th>
-            <td>特定非営利活動法人日本若者防災復興協会（英語略称：JYRAC）</td>
+            <th>{currentLang === 'en' ? 'Organization Name' : '法人・団体名称'}</th>
+            <td>
+              {currentLang === 'en' 
+                ? 'Japan Youth Resilience Action Consortium (Specified Non-Profit Corporation)' 
+                : '特定非営利活動法人日本若者防災復興協会（英語略称：JYRAC / カナ：ニホンワカモノボウサイフッコウキョウカイ）'}
+            </td>
           </tr>
           <tr>
-            <th>設立登記日</th>
-            <td>令和8年6月21日</td>
+            <th>{currentLang === 'en' ? 'Corporate Number' : '法人番号'}</th>
+            <td>
+              <code>2010005042019</code>
+              <span class="sub-note">（{currentLang === 'en' ? 'National Tax Agency Corporate Number' : '国税庁指定法人番号'}）</span>
+            </td>
           </tr>
           <tr>
-            <th>代表者</th>
-            <td>理事長 久保 壮太郎</td>
+            <th>{currentLang === 'en' ? 'Certification / Registration Date' : '認証日・設立登記日'}</th>
+            <td>
+              {currentLang === 'en'
+                ? 'Certified: June 18, 2026 (Tokyo Metropolitan Government) / Registered: June 21, 2026'
+                : '認証日：令和8年6月18日（東京都認証） / 設立登記日：令和8年6月21日'}
+            </td>
           </tr>
           <tr>
-            <th>所在地</th>
-            <td>東京都文京区</td>
+            <th>{currentLang === 'en' ? 'Representative' : '代表者'}</th>
+            <td>
+              {currentLang === 'en' ? 'President Sohtaro Kubo' : '理事長 久保 壮太郎'}
+            </td>
           </tr>
           <tr>
-            <th>主な活動領域</th>
-            <td>防災教育 / 被災地復興支援 / 若者参画 / 地域連携 / コミュニティ形成 / 政策提言</td>
+            <th>{currentLang === 'en' ? 'Principal Office' : '主たる事務所の所在地'}</th>
+            <td>
+              {currentLang === 'en'
+                ? '603, 4-4-6 Kohinata, Bunkyo-ku, Tokyo, 112-0006, Japan'
+                : '東京都文京区小日向四丁目4番6-603号'}
+            </td>
           </tr>
           <tr>
-            <th>主な実績</th>
-            <td>内閣府共催「全国生徒会防災サミット2026」開催、避難所環境改善・政策提言、能登半島現地復興ボランティア、街頭募金活動59回（総額260万円超）</td>
+            <th>{currentLang === 'en' ? 'Mission & Activities' : '定款の目的・主な活動領域'}</th>
+            <td>
+              {currentLang === 'en'
+                ? 'Promoting disaster risk reduction, mitigation, and post-disaster recovery driven by youth initiatives; fostering regional cooperation, disaster awareness education, and youth-led policy advocacy.'
+                : '若者が主体となって防災、減災及び災害復興に取り組むための事業を行い、地域社会の防災力向上と安全で安心な持続可能社会の実現に寄与することを目的とする。'}
+              <br />
+              <span class="sub-note">
+                {currentLang === 'en'
+                  ? 'Key Domains: Disaster Prevention Education / Post-Disaster Recovery / Youth Engagement / Policy Recommendation'
+                  : '（活動領域：防災教育・実践体験、被災地復興支援・文化継承、街頭啓蒙・募金、国際交流、政策提言）'}
+              </span>
+            </td>
           </tr>
           <tr>
-            <th>連絡先</th>
-            <td>jyrac.pr@gmail.com</td>
+            <th>{currentLang === 'en' ? 'Major Achievements' : '主な実績'}</th>
+            <td>
+              内閣府共催「全国生徒会防災サミット2026」開催、避難所環境改善・政策提言、能登半島現地復興ボランティア、街頭募金活動59回（総額260万円超）
+            </td>
+          </tr>
+          <tr>
+            <th>{currentLang === 'en' ? 'Official Contact' : '公式連絡先'}</th>
+            <td>
+              <a href="mailto:info@jyrac.stki.org" class="table-link">info@jyrac.stki.org</a>
+              <span class="sub-note">（広報窓口：jyrac.pr@gmail.com）</span>
+            </td>
+          </tr>
+          <tr>
+            <th>{currentLang === 'en' ? 'Domain & Infrastructure' : 'ドメインの運用について'}</th>
+            <td>
+              {currentLang === 'en'
+                ? 'The official domain (jyrac.stki.org) of JYRAC is provided and operated under official authorization and gratuitous loan by our partner youth platform "TRANs".'
+                : '当団体の公式ウェブサイトおよびシステム運用ドメイン（jyrac.stki.org）は、初期運用コストの最適化のため、協力関係にある学生支援組織「TRANs」より正式な許諾を得て無償貸与を受けて運用しております。'}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -296,7 +340,7 @@ const boardMembers = [
     color: var(--jyrac-navy);
   }
 
-  /* 役員グリッド（スマホで無理なく並ぶ設定） */
+  /* 役員グリッド */
   .board-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -381,6 +425,21 @@ const boardMembers = [
     word-break: break-word;
   }
 
+  .sub-note {
+    display: inline-block;
+    color: var(--text-muted);
+    font-size: 12px;
+    margin-left: 4px;
+  }
+  .table-link {
+    color: var(--jyrac-teal);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .table-link:hover {
+    text-decoration: underline;
+  }
+
   .header-link {
     font-size: 12px;
     font-weight: 800;
@@ -395,14 +454,13 @@ const boardMembers = [
     padding-top: 12px;
   }
 
-  /* タブレット・スマートフォン最適化（幅768px以下） */
+  /* タブレット・スマートフォン最適化 */
   @media (max-width: 768px) {
     .section-card {
       padding: 18px 14px;
       border-radius: 16px;
     }
 
-    /* 法人概要テーブルを縦積みブロック化 */
     .info-table, 
     .info-table tbody, 
     .info-table tr, 
