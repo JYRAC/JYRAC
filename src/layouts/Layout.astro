@@ -16,10 +16,11 @@ const langParam = currentLang === 'en' ? '?lang=en' : '';
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 const t = translations[currentLang];
 
-// ナビゲーション定義（教材・診断ツール gioco を配置）
+// ナビゲーション定義（「賛助会員」を追加）
 const navItems = [
   { id: 'home', label: t.nav.home, href: `${baseUrl}/${langParam}` },
   { id: 'about', label: t.nav.about, href: `${baseUrl}/about${langParam}` },
+  { id: 'supporting-members', label: currentLang === 'en' ? 'Sponsors' : '賛助会員', href: `${baseUrl}/supporting-members${langParam}` },
   { id: 'services', label: t.nav.services, href: `${baseUrl}/services${langParam}` },
   { id: 'history', label: t.nav.history, href: `${baseUrl}/history${langParam}` },
   { id: 'news', label: t.nav.news, href: `${baseUrl}/news${langParam}` },
@@ -133,6 +134,7 @@ const navItems = [
         <div class="footer-links">
           <a href={`${baseUrl}/${langParam}`}>{t.nav.home}</a>
           <a href={`${baseUrl}/about${langParam}`}>{t.nav.about}</a>
+          <a href={`${baseUrl}/supporting-members${langParam}`}>{currentLang === 'en' ? 'Sponsors' : '賛助会員'}</a>
           <a href={`${baseUrl}/gioco${langParam}`}>{t.nav.gioco}</a>
           <a href={`${baseUrl}/governance${langParam}`}>{currentLang === 'en' ? 'Public Notice' : '情報公開'}</a>
           <a href={`${baseUrl}/contact${langParam}`}>{t.nav.contact}</a>
@@ -273,12 +275,12 @@ const navItems = [
   .nav-list {
     display: flex;
     list-style: none;
-    gap: 14px;
+    gap: 12px;
     align-items: center;
   }
   .nav-link {
     text-decoration: none;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 700;
     color: var(--jyrac-navy);
     padding: 6px 4px;
