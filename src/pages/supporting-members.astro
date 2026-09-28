@@ -8,52 +8,19 @@ const langParam = isEn ? '?lang=en' : '';
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 const t = translations[currentLang];
 
-// 1. ロゴ掲載企業・団体（3口以上）
-const corporateLogoMembers = [
-  {
-    name: "株式会社防災テック・ソリューションズ",
-    enName: "Disaster Tech Solutions Co., Ltd.",
-    logoUrl: "/images/partners/disaster-tech.png",
-    url: "https://example.com/disaster-tech"
-  },
-  {
-    name: "日本ソーシャルレジリエンスホールディングス",
-    enName: "Japan Social Resilience Holdings",
-    logoUrl: "/images/partners/social-resilience.png",
-    url: "https://example.com/social-resilience"
-  },
-  {
-    name: "未来防災イノベーション合同会社",
-    enName: "Mirai Disaster Innovation LLC",
-    logoUrl: "", // ロゴデータ準備中の場合のテキストフォールバック
-    url: "https://example.com/mirai-innovation"
-  }
-];
+// 1. 企業・団体（3口以上：ロゴ掲載）
+const corporateLogoMembers: { name: string; enName: string; logoUrl: string; url: string }[] = [];
 
-// 2. 名称掲載企業・団体（1口以上）
-const corporateNameMembers = [
-  { name: "あおぞら損害保険株式会社", url: "https://example.com" },
-  { name: "合同会社クリエイティブ・フォース", url: "" },
-  { name: "西日本地域防災パートナーズ株式会社", url: "https://example.com" },
-  { name: "ファースト・レスポンダーズ税理士法人", url: "" },
-  { name: "みずほロジスティクスサービス株式会社", url: "" }
-];
+// 2. 企業・団体（1口以上：名称掲載）
+const corporateNameMembers: { name: string; url: string }[] = [];
 
-// 3. 個人会員（1口以上・掲載希望者のみ）
-const individualMembers = [
-  "阿部 健太郎 様",
-  "佐藤 巧 様",
-  "T. K. 様",
-  "高橋 結衣 様",
-  "中村 慎之介 様",
-  "H. M. 様",
-  "匿名希望 1名"
-];
+// 3. 個人（掲載許可を得た方の名前掲載）
+const individualMembers: string[] = [];
 ---
 
 <Layout 
   title={isEn ? "Supporting Members | JYRAC" : "賛助会員のご紹介 | 特定非営利活動法人 日本若者防災復興協会（JYRAC）"} 
-  currentTab="about"
+  currentTab="supporting-members"
 >
 
   <!-- ヒーローセクション -->
@@ -108,13 +75,13 @@ const individualMembers = [
 
   <div class="content-container">
 
-    <!-- 1. ロゴ掲載企業・団体（3口以上） -->
+    <!-- 1. 企業・団体（ロゴ掲載：3口以上） -->
     <section id="corporate-logo" class="section-block">
       <div class="section-header-split">
         <div>
           <span class="sub-label">CORPORATE PARTNERS</span>
           <h2 class="main-heading">
-            {isEn ? "Corporate Members" : "賛助会員（企業・団体）"}
+            {isEn ? "Corporate Members (Logo Display)" : "賛助会員（企業・団体 - ロゴ掲載）"}
           </h2>
           <p class="desc-text">
             {isEn 
@@ -124,38 +91,45 @@ const individualMembers = [
         </div>
       </div>
 
-      <div class="logo-grid">
-        {corporateLogoMembers.map(m => (
-          <div class="logo-card">
-            <div class="logo-box">
-              {m.logoUrl ? (
-                <img src={m.logoUrl} alt={m.name} class="partner-logo" />
-              ) : (
-                <div class="logo-placeholder">
-                  <span>{m.name}</span>
-                </div>
-              )}
+      {corporateLogoMembers.length > 0 ? (
+        <div class="logo-grid">
+          {corporateLogoMembers.map(m => (
+            <div class="logo-card">
+              <div class="logo-box">
+                {m.logoUrl ? (
+                  <img src={m.logoUrl} alt={m.name} class="partner-logo" />
+                ) : (
+                  <div class="logo-placeholder">
+                    <span>{m.name}</span>
+                  </div>
+                )}
+              </div>
+              <div class="logo-body">
+                <h3 class="company-name">{isEn ? m.enName : m.name}</h3>
+                {m.url && (
+                  <a href={m.url} target="_blank" rel="noopener noreferrer" class="company-link" title="Webサイトを開く">
+                    {isEn ? "Official Website ↗" : "Webサイト ↗"}
+                  </a>
+                )}
+              </div>
             </div>
-            <div class="logo-body">
-              <h3 class="company-name">{isEn ? m.enName : m.name}</h3>
-              {m.url && (
-                <a href={m.url} target="_blank" rel="noopener noreferrer" class="company-link">
-                  {isEn ? "Official Website ↗" : "Webサイト ↗"}
-                </a>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div class="coming-soon-box">
+          <span class="cs-tag">COMING SOON</span>
+          <p class="cs-text">{isEn ? "Member information will be published soon." : "順次公開・更新予定です。"}</p>
+        </div>
+      )}
     </section>
 
-    <!-- 2. 名称掲載企業・団体（1口以上） -->
+    <!-- 2. 企業・団体（名称掲載：1口以上） -->
     <section id="corporate-name" class="section-block">
       <div class="section-header-split">
         <div>
           <span class="sub-label">CORPORATE MEMBERS</span>
           <h2 class="main-heading">
-            {isEn ? "Corporate Members (Name Display)" : "賛助会員（企業・団体）"}
+            {isEn ? "Corporate Members (Name Display)" : "賛助会員（企業・団体 - 名称掲載）"}
           </h2>
           <p class="desc-text">
             {isEn 
@@ -165,21 +139,28 @@ const individualMembers = [
         </div>
       </div>
 
-      <div class="name-corporate-grid">
-        {corporateNameMembers.map(m => (
-          <div class="name-card">
-            <span class="corp-title">{m.name}</span>
-            {m.url && (
-              <a href={m.url} target="_blank" rel="noopener noreferrer" class="arrow-link" title="Webサイトを開く">
-                ↗
-              </a>
-            )}
-          </div>
-        ))}
-      </div>
+      {corporateNameMembers.length > 0 ? (
+        <div class="name-corporate-grid">
+          {corporateNameMembers.map(m => (
+            <div class="name-card">
+              <span class="corp-title">{m.name}</span>
+              {m.url && (
+                <a href={m.url} target="_blank" rel="noopener noreferrer" class="arrow-link" title="Webサイトを開く">
+                  ↗
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="coming-soon-box">
+          <span class="cs-tag">COMING SOON</span>
+          <p class="cs-text">{isEn ? "Member information will be published soon." : "順次公開・更新予定です。"}</p>
+        </div>
+      )}
     </section>
 
-    <!-- 3. 個人会員（1口以上） -->
+    <!-- 3. 個人（1口以上） -->
     <section id="individuals" class="section-block">
       <div class="section-header-split">
         <div>
@@ -195,18 +176,25 @@ const individualMembers = [
         </div>
       </div>
 
-      <div class="individual-box">
-        <ul class="individual-list">
-          {individualMembers.map(name => (
-            <li class="individual-item">
-              <span class="indiv-name">{name}</span>
-            </li>
-          ))}
-        </ul>
-        <p class="privacy-note">
-          ※掲載のご希望をいただいた方のみ掲載しております。
-        </p>
-      </div>
+      {individualMembers.length > 0 ? (
+        <div class="individual-box">
+          <ul class="individual-list">
+            {individualMembers.map(name => (
+              <li class="individual-item">
+                <span class="indiv-name">{name}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="privacy-note">
+            ※掲載のご希望をいただいた方のみ掲載しております。
+          </p>
+        </div>
+      ) : (
+        <div class="coming-soon-box">
+          <span class="cs-tag">COMING SOON</span>
+          <p class="cs-text">{isEn ? "Member information will be published soon." : "順次公開・更新予定です。"}</p>
+        </div>
+      )}
     </section>
 
   </div>
@@ -461,6 +449,36 @@ const individualMembers = [
     color: var(--text-muted);
     margin-top: 14px;
     text-align: right;
+  }
+
+  /* Coming Soon 表示スタイル */
+  .coming-soon-box {
+    background: #ffffff;
+    border: 1px dashed var(--border-color);
+    border-radius: 14px;
+    padding: 32px 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .cs-tag {
+    font-size: 12px;
+    font-weight: 900;
+    font-family: ui-monospace, monospace;
+    color: var(--jyrac-teal);
+    background: #f0fdfa;
+    border: 1px solid #ccfbf1;
+    padding: 3px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.08em;
+  }
+  .cs-text {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0;
   }
 
   @media (max-width: 768px) {
