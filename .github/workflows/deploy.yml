@@ -1,56 +1,26 @@
-name: Deploy Astro site to GitHub Pages
+name: Cloudflare Pages
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  pull_request:
 
 jobs:
-  build:
-    name: Build
+  publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    name: Publish to Cloudflare Pages
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Wait for Cloudflare Pages deployment
+        uses: Khan/cloudflare-pages-build-action@v1
         with:
-          node-version: 22
-
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v5
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build with Astro
-        run: npm run build
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: "./dist"
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    needs: build
-    runs-on: ubuntu-latest
-    name: Deploy
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          cloudflareToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountEmail: ${{ secrets.CLOUDFLARE_EMAIL }}
+          project: "your-project-name" # Cloudflare Pagesのプロジェクト名に変更してください
