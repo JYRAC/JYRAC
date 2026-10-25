@@ -66,6 +66,15 @@ const businessDomains = [
 // ピックアップ最新ニュース
 const pickupNews = [
   {
+    date: "2026.10.23",
+    category: isEn ? "Press" : "お知らせ",
+    title: isEn
+      ? "Press Release Published: Nationwide Youth Survey on Disaster Relief & Recovery Volunteering"
+      : "プレスリリース掲載：「災害復旧・復興ボランティア活動に関する全国アンケート」の実施について",
+    url: `${baseUrl}/news/20261023${langParam}`,
+    isExt: false
+  },
+  {
     date: "2026.09.20",
     category: isEn ? "Summit" : "サミット",
     title: isEn 
@@ -1090,57 +1099,6 @@ const historyItems = isEn ? [
     }
     .news-history-grid {
       grid-template-columns: 1fr;
-    }
-    .news-row-card {
-      align-items: flex-start;
-    }
-    .news-row-left {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 6px;
-      width: 100%;
-    }
-    .news-title-text {
-      white-space: normal;
-      line-height: 1.5;
-    }
-    .arrow-sym {
-      display: none;
-    }
-  }
-
-  /* スマートフォン対応（580px以下） */
-  @media (max-width: 580px) {
-    .pc-br {
-      display: none;
-    }
-    .hero-btn-row {
-      flex-direction: column;
-      width: 100%;
-    }
-    .btn-hero {
-      width: 100%;
-    }
-    .stats-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-    }
-    .cta-btn-row {
-      flex-direction: column;
-      width: 100%;
-    }
-    .btn-cta-teal, .btn-cta-trans {
-      width: 100%;
-    }
-  }
-
-  /* 極小画面（360px以下）の微調整 */
-  @media (max-width: 360px) {
-    .stat-num {
-      font-size: 19px;
-    }
-    .stat-unit {
-      font-size: 10px;
     }
   }
 </style>
