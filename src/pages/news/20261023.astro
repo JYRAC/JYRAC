@@ -85,4 +85,140 @@ const langParam = isEn ? '?lang=en' : '';
       </p>
 
       <div class="back-link-wrap">
-        <a href={`${baseUrl}/${lang
+        <a href={`${baseUrl}/${langParam}`} class="btn-back">
+          {isEn ? "← Back to Home" : "← トップページへ戻る"}
+        </a>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .news-detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: clamp(32px, 5vw, 60px) 16px;
+  }
+  .news-header {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+    margin-bottom: 28px;
+  }
+  .meta-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .news-badge {
+    font-size: 11px;
+    font-weight: 800;
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 3px 10px;
+    border-radius: 6px;
+  }
+  .news-date {
+    font-size: 12px;
+    font-family: ui-monospace, monospace;
+    color: #94a3b8;
+  }
+  .news-title {
+    font-size: clamp(20px, 4vw, 26px);
+    font-weight: 900;
+    color: var(--jyrac-navy);
+    line-height: 1.4;
+  }
+  .news-content {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text-main);
+  }
+  .press-link-box, .survey-details {
+    background: var(--bg-light);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 28px 0;
+  }
+  .press-link-box h2, .survey-details h2 {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--jyrac-navy);
+    margin-bottom: 12px;
+    border-bottom: 2px solid var(--jyrac-teal);
+    padding-bottom: 4px;
+    display: inline-block;
+  }
+  .press-intro {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+  .media-list, .survey-details ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .media-list li {
+    margin-bottom: 16px;
+    line-height: 1.6;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .media-name {
+    color: var(--jyrac-navy);
+    font-size: 14px;
+  }
+  .media-list a {
+    color: var(--jyrac-teal);
+    word-break: break-all;
+    font-weight: 700;
+    text-decoration: underline;
+  }
+  .sub-link {
+    font-size: 12px;
+    color: var(--text-muted);
+    display: inline-block;
+    margin-top: 4px;
+  }
+  .survey-details ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .survey-details li {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .survey-details li strong {
+    color: var(--jyrac-navy);
+  }
+  .call-to-action {
+    margin-top: 24px;
+    font-weight: 700;
+    line-height: 1.8;
+  }
+  .back-link-wrap {
+    margin-top: 40px;
+    text-align: center;
+  }
+  .btn-back {
+    display: inline-block;
+    padding: 10px 24px;
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--jyrac-navy);
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 13px;
+    transition: all 0.2s ease;
+  }
+  .btn-back:hover {
+    border-color: var(--jyrac-teal);
+    color: var(--jyrac-teal);
+  }
+</style>
