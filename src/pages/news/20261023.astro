@@ -1,0 +1,88 @@
+---
+// src/pages/news/20261023.astro
+import Layout from "../../layouts/Layout.astro";
+import { translations, type Lang } from '../../lib/i18n';
+
+const currentLang: Lang = Astro.url.searchParams.get("lang") === "en" ? "en" : "ja";
+const isEn = currentLang === 'en';
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const langParam = isEn ? '?lang=en' : '';
+---
+
+<Layout 
+  title={isEn ? "Press Release Published | JYRAC" : "プレスリリース掲載のお知らせ | JYRAC"}
+  currentTab="news"
+>
+  <div class="news-detail-container">
+    <div class="news-header">
+      <div class="meta-row">
+        <span class="news-badge">{isEn ? "Press" : "お知らせ"}</span>
+        <time class="news-date">2026.10.23</time>
+      </div>
+      <h1 class="news-title">
+        {isEn 
+          ? "Press Release Published: Nationwide Survey on Youth Disaster Relief & Recovery Volunteer Barriers"
+          : "【プレスリリース掲載】「災害復旧・復興ボランティア活動に関するアンケート」の実施について"}
+      </h1>
+    </div>
+
+    <div class="news-content">
+      <p>
+        {isEn 
+          ? "Japan Youth Resilience Action Consortium (JYRAC) has launched a nationwide survey to identify barriers to youth participation in disaster relief and recovery volunteering, aiming to build a more sustainable and effective support network."
+          : "特定非営利活動法人日本若者防災復興協会（JYRAC）では、災害ボランティアの「参加の壁」を明らかにし、今後の迅速かつ持続可能な支援体制を構築するため、災害復旧・復興ボランティアに関する全国アンケート調査を開始いたしました。"}
+      </p>
+
+      <div class="press-link-box">
+        <h2>{isEn ? "Press Release Media Listings" : "プレスリリース掲載実績・各配信サイト"}</h2>
+        <p class="press-intro">
+          {isEn
+            ? "This press release has been featured on the following media platforms:"
+            : "本取り組みに関するプレスリリースが、以下の各プレスリリース配信サイト・メディアにて掲載されましたのでお知らせいたします。"}
+        </p>
+        
+        <ul class="media-list">
+          <li>
+            <strong class="media-name">PRESSNOW（プレスナウ）</strong><br />
+            掲載ページ：<a href="https://pressnow.jp/2026/10/23/jyrac/" target="_blank" rel="noopener noreferrer">https://pressnow.jp/2026/10/23/jyrac/</a><br />
+            <span class="sub-link">（プレスリリース配信サイト「PRESSNOW プレスナウ」：<a href="https://pressnow.jp/" target="_blank" rel="noopener noreferrer">https://pressnow.jp/</a>）</span>
+          </li>
+          <li>
+            <strong class="media-name">ZeroPress（ゼロプレス）</strong><br />
+            掲載ページ：<a href="https://zero-press.net/p/pressnow-7864" target="_blank" rel="noopener noreferrer">https://zero-press.net/p/pressnow-7864</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="survey-details">
+        <h2>{isEn ? "Survey Overview" : "アンケート調査の概要"}</h2>
+        <ul>
+          <li>
+            <strong>{isEn ? "Survey Title" : "調査件名"}：</strong>
+            {isEn 
+              ? "Nationwide Survey on Disaster Relief & Recovery Volunteering" 
+              : "【調査開始】災害ボランティアの「参加の壁」を明らかに。災害復旧・復興ボランティアの全国アンケート"}
+          </li>
+          <li>
+            <strong>{isEn ? "Target Audience" : "対象者"}：</strong>
+            {isEn 
+              ? "Youth, students, and general public who are interested in, have participated in, or considered participating in disaster volunteering." 
+              : "災害ボランティア活動に関心のある方、過去に参加経験・見送った経験のある若者・学生・一般の皆様"}
+          </li>
+          <li>
+            <strong>{isEn ? "Purpose" : "目的"}：</strong>
+            {isEn 
+              ? "Identifying real-world obstacles to volunteer participation to improve relief frameworks and youth-led policy recommendations." 
+              : "参加にあたっての課題・障壁を可視化し、今後の迅速な支援体制の整備および若者による政策提言・支援活動の推進に活用するため"}
+          </li>
+        </ul>
+      </div>
+
+      <p class="call-to-action">
+        {isEn
+          ? "Your valuable experiences and opinions directly contribute to creating stronger, more resilient disaster response networks. We appreciate your cooperation."
+          : "皆様からの貴重なご意見・ご体験談が、今後の迅速かつ持続可能な支援体制の構築につながります。ぜひアンケートへのご協力をお願い申し上げます。"}
+      </p>
+
+      <div class="back-link-wrap">
+        <a href={`${baseUrl}/${lang
