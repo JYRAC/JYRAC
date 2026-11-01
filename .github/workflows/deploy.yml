@@ -17,10 +17,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Wait for Cloudflare Pages deployment
-        uses: Khan/cloudflare-pages-build-action@v1
+      # Cloudflare Pages にビルド＆デプロイを指示し、完了まで待機
+      - name: Trigger and Wait for Cloudflare Pages Build
+        uses: cloudflare/pages-action@v1
         with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
-          cloudflareToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountEmail: ${{ secrets.CLOUDFLARE_EMAIL }}
-          project: "your-project-name" # Cloudflare Pagesのプロジェクト名に変更してください
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: "your-project-name" # ★実際のCloudflare Pagesプロジェクト名に変更
+          # GitHubのアクション側ではなくCloudflare側でビルドを完結させるため、
+          # ソースコードを送信してCloudflareにビルドを委任します
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
