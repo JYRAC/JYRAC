@@ -23,7 +23,7 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install  # ★ npm ci から npm install に変更
 
       - name: Build project
         run: npm run build
@@ -33,4 +33,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy . --project-name="jyrac" # ★実際のCloudflare Pagesプロジェクト名に書き換えてください
+          command: pages deploy . --project-name="jyrac" # ★実際のCloudflare Pagesプロジェクト名に合わせて変更してください
