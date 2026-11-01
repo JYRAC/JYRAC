@@ -20,10 +20,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22  # ★ 20 から 22 に変更
 
       - name: Install dependencies
-        run: npm install  # ★ npm ci から npm install に変更
+        run: npm install
 
       - name: Build project
         run: npm run build
