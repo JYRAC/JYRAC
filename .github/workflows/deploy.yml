@@ -3,8 +3,7 @@ name: Deploy to Cloudflare Pages
 on:
   push:
     branches:
-      - main
-  pull_request:
+      - main # デプロイ対象のブランチ名に合わせて変更してください
 
 jobs:
   deploy:
@@ -12,24 +11,27 @@ jobs:
     permissions:
       contents: read
       deployments: write
-    name: Build & Deploy to Cloudflare Pages
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
+          cache: npm # pnpm や yarn を使用している場合は変更してください
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Build project
+      - name: Build Astro project
         run: npm run build
 
       - name: Deploy to Cloudflare Pages
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: npx wrangler pages deploy ./dist --project-name="jyrac-hp"
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: my-astro-app # Cloudflare Pagesのプロジェクト名に変更してください
+          directory: ./dist
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
