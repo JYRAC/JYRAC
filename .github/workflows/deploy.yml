@@ -1,9 +1,9 @@
-name: Deploy to Cloudflare Pages
+name: Deploy to Cloudflare Workers
 
 on:
   push:
     branches:
-      - main # デプロイ対象のブランチ名に合わせて変更してください
+      - main
 
 jobs:
   deploy:
@@ -19,19 +19,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm # pnpm や yarn を使用している場合は変更してください
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build Astro project
+      - name: Build Astro
         run: npm run build
 
-      - name: Deploy to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: my-astro-app # Cloudflare Pagesのプロジェクト名に変更してください
-          directory: ./dist
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: deploy
