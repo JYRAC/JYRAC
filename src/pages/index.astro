@@ -75,12 +75,12 @@ const pickupNews = [
     isExt: false
   },
   {
-    date: "2026.09.20",
+    date: "2026.10.25",
     category: isEn ? "Summit" : "サミット",
     title: isEn 
-      ? "Event Completed: National Student Council Disaster Summit 2026 Autumn DAY 2"
-      : "【開催終了・御礼】「全国生徒会防災サミット2026 秋の陣 DAY 2（10/24開催）」",
-    url: "https://summit.jyrac.stki.org/autumn/day2",
+      ? "Now Registering: National Student Council Disaster Summit 2026 Autumn DAY 3 (Nov 28)"
+      : "【受付中】「全国生徒会防災サミット2026 秋の陣 DAY 3（11/28開催）」エントリー開始",
+    url: "https://summit.jyrac.stki.org/autumn/day3",
     isExt: true
   },
   {
@@ -197,21 +197,21 @@ const historyItems = isEn ? [
 
   <div class="content-container">
 
-    <!-- 注力プロジェクト（秋の陣 DAY 2 終了案内） -->
+    <!-- 注力プロジェクト（秋の陣 DAY 3 エントリー受付中） -->
     <section class="banner-event">
       <div class="banner-text-col">
-        <span class="event-tag">EVENT COMPLETED / 2026.10.24 SAT</span>
+        <span class="event-tag">ENTRY OPEN / 2026.11.28 SAT</span>
         <h2 class="event-title">
-          {isEn ? "National Student Council Disaster Summit 2026 Autumn DAY 2" : "全国生徒会防災サミット2026 秋の陣 DAY 2"}
+          {isEn ? "National Student Council Disaster Summit 2026 Autumn DAY 3" : "全国生徒会防災サミット2026 秋の陣 DAY 3"}
         </h2>
         <p class="event-desc">
           {isEn 
-            ? "Thank you to all student council representatives and youth across Japan who joined Autumn DAY 2 online. Stay tuned for upcoming initiatives!"
-            : "「全国生徒会防災サミット2026 秋の陣 DAY 2」は無事全日程を終了いたしました。ご参加・ご協力いただいた全国の中高生・関係者の皆様、誠にありがとうございました。"}
+            ? "Theme: Final Output & Joint National Policy Proposal. Open to all junior high and high school students nationwide! Join online via Zoom."
+            : "テーマ：【成果発表・全国共同提言の策定】。秋の陣シリーズの集大成！全国の中高生・生徒会の皆様のご参加を心よりお待ちしています。（参加費無料・Zoom開催）"}
         </p>
       </div>
-      <a href="https://summit.jyrac.stki.org/autumn/day2" target="_blank" rel="noopener noreferrer" class="btn-event">
-        {isEn ? "Event Summary ↗" : "特設サイトを見る ↗"}
+      <a href="https://summit.jyrac.stki.org/autumn/day3" target="_blank" rel="noopener noreferrer" class="btn-event">
+        {isEn ? "Register & Details ↗" : "詳細・エントリーはこちら ↗"}
       </a>
     </section>
 
@@ -670,9 +670,9 @@ const historyItems = isEn ? [
     gap: clamp(32px, 6vw, 54px);
   }
 
-  /* イベントバナー */
+  /* イベントバナー (DAY 3 受付中カラー) */
   .banner-event {
-    background: linear-gradient(135deg, var(--jyrac-navy) 0%, #064e3b 100%);
+    background: linear-gradient(135deg, #312e81 0%, var(--jyrac-navy) 100%);
     border-radius: 18px;
     padding: clamp(18px, 4vw, 28px);
     color: #ffffff;
@@ -681,6 +681,7 @@ const historyItems = isEn ? [
     justify-content: space-between;
     align-items: center;
     gap: 16px;
+    border: 1px solid rgba(99, 102, 241, 0.3);
   }
   .banner-text-col {
     max-width: 700px;
@@ -689,7 +690,8 @@ const historyItems = isEn ? [
     font-size: 10px;
     font-family: ui-monospace, monospace;
     font-weight: 800;
-    background: rgba(255, 255, 255, 0.15);
+    background: #4f46e5;
+    color: #ffffff;
     padding: 3px 10px;
     border-radius: 12px;
     display: inline-block;
@@ -708,7 +710,7 @@ const historyItems = isEn ? [
   }
   .btn-event {
     background: #ffffff;
-    color: var(--jyrac-navy) !important;
+    color: #312e81 !important;
     padding: 11px 22px;
     border-radius: 10px;
     font-size: 13px;
@@ -717,6 +719,11 @@ const historyItems = isEn ? [
     white-space: nowrap;
     text-align: center;
     box-sizing: border-box;
+    transition: transform 0.2s, background-color 0.2s;
+  }
+  .btn-event:hover {
+    transform: translateY(-2px);
+    background: #f8fafc;
   }
 
   /* セクション見出し共通 */
