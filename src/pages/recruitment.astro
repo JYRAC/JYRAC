@@ -27,9 +27,6 @@ const activeJobs = [
     location: isEn
       ? "Fully Remote (Join from anywhere across Japan & overseas)"
       : "完全オンライン（全国どこからでも参加可能）",
-    timeCommitment: isEn
-      ? "Approx. 1–3 hours/week (Academics & exams come first)"
-      : "週1〜3時間程度（学業・試験期間最優先）",
     summary: isEn
       ? "A creative role delivering youth-led disaster risk reduction and recovery initiatives to society through Instagram, X, and note management, Canva graphic/video production, web updates, and press releases."
       : "公式Instagram・X・noteの企画運用や、Canvaを用いた画像・動画制作、Webサイト更新、プレスリリース作成などを通じて、若者の防災・減災アクションを社会へ届けるクリエイティブポジションです。",
@@ -49,9 +46,6 @@ const activeJobs = [
     location: isEn
       ? "Each Region across Japan + Online Collaboration"
       : "各地域（現地＋オンライン併用）",
-    timeCommitment: isEn
-      ? "Approx. 1–3 hours/week (Flexible around school & events)"
-      : "週1〜3時間程度（学業・イベント時期に合わせて調整可能）",
     summary: isEn
       ? "Drive community-based disaster preparedness and recovery activities in your own region—planning local disaster workshops, collaborating with schools and municipalities, and connecting regional youth."
       : "お住まいの地域やゆかりのあるエリアを拠点に、地域防災ワークショップ・イベントの企画運営、学校・自治体・地域団体との連携、地元ユースネットワークづくりを担うポジションです。",
@@ -115,12 +109,10 @@ const upcomingDepartments = isEn ? [
 
 const steps = isEn ? [
   { num: '01', text: 'Review Job Details' },
-  { num: '02', text: 'Apply via Google Form' },
-  { num: '03', text: 'Online Interview & Join Discord' }
+  { num: '02', text: 'Apply via Google Form & Join Discord' }
 ] : [
   { num: '01', text: '募集要項を確認' },
-  { num: '02', text: 'Googleフォームからエントリー' },
-  { num: '03', text: 'オンライン面談・Discord合流' }
+  { num: '02', text: 'Googleフォームからエントリー・Discord合流' }
 ];
 ---
 
@@ -197,7 +189,6 @@ const steps = isEn ? [
               <div class="job-spec-chips">
                 <span class="spec-chip">👤 {isEn ? 'Target: ' : '対象：'}{job.target}</span>
                 <span class="spec-chip">📍 {isEn ? 'Location: ' : '拠点：'}{job.location}</span>
-                <span class="spec-chip">⏱ {isEn ? 'Commitment: ' : '目安：'}{job.timeCommitment}</span>
               </div>
             </div>
 
