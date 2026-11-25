@@ -9,20 +9,56 @@ const langParam = isEn ? '?lang=en' : '';
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 const t = translations[currentLang];
 
-// ポジション一覧（広報局）
-const activeJob = {
-  id: "pr",
-  department: isEn ? "Public Relations Bureau" : "広報局",
-  title: isEn ? "PR Staff (Official Social Media, Design & Web Editorial)" : "広報スタッフ（公式SNS運用・デザイン・Web記事執筆）",
-  badge: isEn ? "Actively Hiring" : "積極募集中",
-  target: isEn ? "Junior High / High School / University Students & Young Professionals" : "中学生 / 高校生 / 大学生 / 若手社会人",
-  location: isEn ? "Fully Remote (Join from anywhere across Japan & overseas)" : "完全オンライン（全国どこからでも参加可能）",
-  timeCommitment: isEn ? "Approx. 1–3 hours/week (Academics & exams come first)" : "週1〜3時間程度（学業・試験期間最優先）",
-  summary: isEn
-    ? "A creative role delivering youth-led disaster risk reduction and recovery initiatives to society through Instagram, X, and note management, Canva graphic/video production, web updates, and press releases."
-    : "公式Instagram・X・noteの企画運用や、Canvaを用いた画像・動画制作、Webサイト更新、プレスリリース作成などを通じて、若者の防災・減災アクションを社会へ届けるクリエイティブポジションです。",
-  detailLink: `${baseUrl}/join-pr${langParam}`
-};
+const applicationFormUrl =
+  "https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form";
+
+// 現在募集中のポジション一覧（広報局・地域事業本部）
+const activeJobs = [
+  {
+    id: "pr",
+    department: isEn ? "Public Relations Bureau" : "広報局",
+    title: isEn
+      ? "PR Staff (Official Social Media, Design & Web Editorial)"
+      : "広報スタッフ（公式SNS運用・デザイン・Web記事執筆）",
+    badge: isEn ? "Actively Hiring" : "積極募集中",
+    target: isEn
+      ? "Junior High / High School / University Students & Young Professionals"
+      : "中学生 / 高校生 / 大学生 / 若手社会人",
+    location: isEn
+      ? "Fully Remote (Join from anywhere across Japan & overseas)"
+      : "完全オンライン（全国どこからでも参加可能）",
+    timeCommitment: isEn
+      ? "Approx. 1–3 hours/week (Academics & exams come first)"
+      : "週1〜3時間程度（学業・試験期間最優先）",
+    summary: isEn
+      ? "A creative role delivering youth-led disaster risk reduction and recovery initiatives to society through Instagram, X, and note management, Canva graphic/video production, web updates, and press releases."
+      : "公式Instagram・X・noteの企画運用や、Canvaを用いた画像・動画制作、Webサイト更新、プレスリリース作成などを通じて、若者の防災・減災アクションを社会へ届けるクリエイティブポジションです。",
+    detailLink: `${baseUrl}/join-pr${langParam}`,
+    isExternalDetail: false
+  },
+  {
+    id: "regional",
+    department: isEn ? "Regional Operations Bureau" : "地域事業本部",
+    title: isEn
+      ? "Regional Members (All Regions: Hokkaido/Tohoku, Kanto, Chubu, Kinki, Chugoku/Shikoku, Kyushu/Okinawa)"
+      : "各地域メンバー（北海道・東北 / 関東 / 中部 / 近畿 / 中国・四国 / 九州・沖縄）",
+    badge: isEn ? "Actively Hiring" : "積極募集中",
+    target: isEn
+      ? "Junior High / High School / University Students & Young Professionals"
+      : "中学生 / 高校生 / 大学生 / 若手社会人",
+    location: isEn
+      ? "Each Region across Japan + Online Collaboration"
+      : "各地域（現地＋オンライン併用）",
+    timeCommitment: isEn
+      ? "Approx. 1–3 hours/week (Flexible around school & events)"
+      : "週1〜3時間程度（学業・イベント時期に合わせて調整可能）",
+    summary: isEn
+      ? "Drive community-based disaster preparedness and recovery activities in your own region—planning local disaster workshops, collaborating with schools and municipalities, and connecting regional youth."
+      : "お住まいの地域やゆかりのあるエリアを拠点に、地域防災ワークショップ・イベントの企画運営、学校・自治体・地域団体との連携、地元ユースネットワークづくりを担うポジションです。",
+    detailLink: applicationFormUrl,
+    isExternalDetail: true
+  }
+];
 
 // 募集停止中・準備中の部門
 const upcomingDepartments = isEn ? [
@@ -39,7 +75,7 @@ const upcomingDepartments = isEn ? [
     summary: "Volunteer activities in the Noto Peninsula, community exchanges in temporary housing, and regional food promotion projects."
   },
   {
-    department: "Regional & Fundraising Bureau",
+    department: "Fundraising Bureau",
     title: "Street Fundraising & Local Disaster Event Staff",
     badge: "Upcoming",
     summary: "Operating street fundraising campaigns across Japan, organizing booths and interactive workshops at community disaster awareness festivals."
@@ -64,7 +100,7 @@ const upcomingDepartments = isEn ? [
     summary: "能登半島でのボランティア活動、仮設住宅交流会、郷土食の魅力を伝える物産企画など。"
   },
   {
-    department: "地域事業本部 / 募金事業本部",
+    department: "募金事業本部",
     title: "街頭支援募金・地域防災イベントスタッフ",
     badge: "次回募集準備中",
     summary: "全国各地での街頭募金活動の運営、地域防災フェスへのブース出展・ワークショップ企画など。"
@@ -103,13 +139,13 @@ const steps = isEn ? [
       <p class="desc-text">
         {isEn ? (
           <>
-            JYRAC is currently actively recruiting members for the <strong>【Public Relations Bureau】</strong>.<br class="pc-br" />
-            Junior high, high school, and university students across Japan are collaborating fully online. Leverage your creativity and passion to shape the future of disaster resilience!
+            JYRAC is currently actively recruiting members for the <strong>【Public Relations Bureau】</strong> and <strong>【Regional Operations Bureau (All Regions)】</strong>.<br class="pc-br" />
+            Junior high, high school, and university students across Japan are collaborating online and in local communities. Leverage your creativity, local perspective, and passion to shape the future of disaster resilience!
           </>
         ) : (
           <>
-            現在、日本若者防災復興協会（JYRAC）では<strong>【広報局】</strong>のメンバーを重点募集しています。<br class="pc-br" />
-            全国の中学・高校・大学生が完全オンラインで活動中。あなたの発信力やデザインへの興味を、防災と復興の現場で活かしてみませんか？
+            現在、日本若者防災復興協会（JYRAC）では<strong>【広報局】</strong>および<strong>【地域事業本部（各地域メンバー）】</strong>のメンバーを重点募集しています。<br class="pc-br" />
+            全国の中学・高校・大学生がオンラインや各地域で活動中。あなたの発信力・デザインへの興味や、地元・地域でのアクションを防災と復興の現場で活かしてみませんか？
           </>
         )}
       </p>
@@ -137,41 +173,63 @@ const steps = isEn ? [
         </h2>
       </div>
 
-      <!-- 広報局員 注目カード -->
-      <article class="active-job-card">
-        <div class="job-card-main">
-          <div class="job-top-row">
-            <span class="dept-tag">{activeJob.department}</span>
-            <span class="status-pill pill-active">{activeJob.badge}</span>
-          </div>
+      <div class="active-jobs-list">
+        {activeJobs.map(job => (
+          <article class="active-job-card">
+            <div class="job-card-main">
+              <div class="job-top-row">
+                <span class="dept-tag">{job.department}</span>
+                <span class="status-pill pill-active">{job.badge}</span>
+              </div>
 
-          <h3 class="job-title">
-            <a href={activeJob.detailLink}>{activeJob.title}</a>
-          </h3>
+              <h3 class="job-title">
+                <a
+                  href={job.detailLink}
+                  target={job.isExternalDetail ? "_blank" : undefined}
+                  rel={job.isExternalDetail ? "noopener noreferrer" : undefined}
+                >
+                  {job.title}
+                </a>
+              </h3>
 
-          <p class="job-summary">{activeJob.summary}</p>
+              <p class="job-summary">{job.summary}</p>
 
-          <div class="job-spec-chips">
-            <span class="spec-chip">👤 {isEn ? 'Target: ' : '対象：'}{activeJob.target}</span>
-            <span class="spec-chip">📍 {isEn ? 'Location: ' : '拠点：'}{activeJob.location}</span>
-            <span class="spec-chip">⏱ {isEn ? 'Commitment: ' : '目安：'}{activeJob.timeCommitment}</span>
-          </div>
-        </div>
+              <div class="job-spec-chips">
+                <span class="spec-chip">👤 {isEn ? 'Target: ' : '対象：'}{job.target}</span>
+                <span class="spec-chip">📍 {isEn ? 'Location: ' : '拠点：'}{job.location}</span>
+                <span class="spec-chip">⏱ {isEn ? 'Commitment: ' : '目安：'}{job.timeCommitment}</span>
+              </div>
+            </div>
 
-        <div class="job-card-action">
-          <a href={activeJob.detailLink} class="btn-job-detail">
-            {isEn ? 'View Requirements ➔' : '募集要項・詳細を見る ➔'}
-          </a>
-          <a 
-            href="https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            class="btn-job-apply"
-          >
-            {isEn ? 'Direct Application ↗' : '直接エントリー ↗'}
-          </a>
-        </div>
-      </article>
+            <div class="job-card-action">
+              {job.isExternalDetail ? (
+                <a
+                  href={job.detailLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-job-detail"
+                >
+                  {isEn ? 'Apply via Form ➔' : 'フォームから応募・相談 ➔'}
+                </a>
+              ) : (
+                <>
+                  <a href={job.detailLink} class="btn-job-detail">
+                    {isEn ? 'View Requirements ➔' : '募集要項・詳細を見る ➔'}
+                  </a>
+                  <a
+                    href={applicationFormUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn-job-apply"
+                  >
+                    {isEn ? 'Direct Application ↗' : '直接エントリー ↗'}
+                  </a>
+                </>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
     </section>
 
     <!-- 募集準備中セクション -->
@@ -208,12 +266,12 @@ const steps = isEn ? [
       </h3>
       <p class="notice-desc">
         {isEn
-          ? 'Feel free to reach out if you have concerns about balancing activities with your studies or school clubs, or simply wish to learn more about our team culture.'
-          : '「学業や部活動と両立できるか不安」「まずは活動の雰囲気を聞いてみたい」という方も大歓迎です。エントリーフォームまたは公式メールよりお気軽にご連絡ください。'}
+          ? 'Feel free to reach out if you have concerns about balancing activities with your studies or school clubs, want to check regional activity availability, or simply wish to learn more about our team culture.'
+          : '「学業や部活動と両立できるか不安」「自分の地域の活動状況を知りたい」「まずは活動の雰囲気を聞いてみたい」という方も大歓迎です。エントリーフォームまたは公式メールよりお気軽にご連絡ください。'}
       </p>
       <div class="notice-btn-row">
         <a 
-          href="https://docs.google.com/forms/d/e/1FAIpQLScv5WAo-g4J7_vufh_NbB-dqhACP9iQihiBCtrK8XJWa2lM_g/viewform?usp=send_form" 
+          href={applicationFormUrl} 
           target="_blank" 
           rel="noopener noreferrer" 
           class="btn-general-apply"
@@ -340,6 +398,11 @@ const steps = isEn ? [
   }
 
   /* 募集中カード */
+  .active-jobs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
   .active-job-card {
     background: #ffffff;
     border: 2px solid var(--jyrac-teal);
